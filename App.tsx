@@ -16,7 +16,7 @@ import {Block} from './components'
 // TODO change the ip address before production
 const cache = new InMemoryCache();
 const link = new HttpLink({
-  uri: 'http://10.53.18.97:4466'
+  uri: 'http://10.53.18.97:4000'
 });
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
