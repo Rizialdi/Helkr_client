@@ -92,7 +92,7 @@ export default class Input extends Component {
           style={inputStyles}
           secureTextEntry={isSecure}
           autoComplete="off"
-          autoCapitalize="none"
+          autoCapitalize="words"
           autoCorrect={false}
           keyboardType={inputType}
           {...props}

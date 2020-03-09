@@ -9,22 +9,19 @@ import {
   ScrollView,
   View
 } from "react-native";
+import Toast from 'react-native-simple-toast';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import ValidationComponent from 'react-native-form-validator';
 
 const { width, height } = Dimensions.get('screen')
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
-const VALID_NUMERO = "0780813564";
 
-interface Props {
-  navigation?: any
-}
-
-export default class Login extends Component<Props> {
+class Form extends ValidationComponent {
   state = {
-    numero: VALID_NUMERO,
-    errors: [],
+    numero: '',
+    errorMessage: false,
     loading: false,
     showTerms: false,
     showConfirmation: false
@@ -219,20 +216,21 @@ export default class Login extends Component<Props> {
 
     Keyboard.dismiss();
     this.setState({ loading: true });
-
     // check with backend API or with some static data
-    if (numero !== VALID_NUMERO) {
-      errors.push("numero");
-    }
+    this.validate({
+      numero: { numbers: true, minlength: 8, maxlength: 8, required: true },
+    });
 
-    this.setState({ errors, loading: false });
+    if (!this.isFormValid()) { (() => this.setState({ errorMessage: true }))() }
 
-    if (!errors.length) { (() => this.setState({ showConfirmation: true }))() }
+    setTimeout(() => this.setState({ loading: false, errorMessage: false }), 500)
+
+    if (this.isFormValid()) { (() => this.setState({ showConfirmation: true }))() }
   }
 
   render() {
     const { loading, errors } = this.state;
-    const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
+    const hasErrors = key => (this.isFieldInError(key) ? styles.hasErrors : null);
 
     return (
       <KeyboardAvoidingView style={styles.login} behavior="padding">
@@ -243,10 +241,11 @@ export default class Login extends Component<Props> {
           <Block padding={[60, 0]}>
             <Input
               phone
+              ref="numero"
               label="Numéro"
+              placeholder="Numero"
               error={hasErrors("numero")}
               style={[styles.input, hasErrors("numero")]}
-              defaultValue={this.state.numero}
               onChangeText={text => this.setState({ numero: text })}
             />
             <Button gradient onPress={() => this.handleLogin()}>
@@ -260,12 +259,19 @@ export default class Login extends Component<Props> {
             </Button>
             <Text caption style={{ paddingTop: 15, fontFamily: 'josefinLight', fontSize: 12, textAlign: 'center' }}>Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez. Apprenez plus sur nos <Text caption style={{ textDecorationLine: "underline", color: theme.colors.primary }} onPress={() => this.setState({ showTerms: true })}>politiques</Text></Text>
           </Block>
-          {this.renderConfirmation()}
           {this.renderTermsService()}
+          {!this.state.errorMessage && this.renderConfirmation()}
+          {this.state.errorMessage && Toast.show(this.getErrorMessages().split('\n')[0])}
         </Block>
       </KeyboardAvoidingView>
     );
   }
+}
+
+export default ({ navigation }) => {
+  return (
+    <Form deviceLocale="fr" navigation={navigation} />
+  )
 }
 
 const styles = StyleSheet.create({

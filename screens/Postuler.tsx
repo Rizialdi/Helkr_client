@@ -20,9 +20,9 @@ const Postuler = () => {
     loading ? (<Text> Loading ...</Text>) : (
       <View style={styles.container}>
         <Text>Maison</Text>
-        {data.users.map(user => (
+        {/* {data.users.map(user => (
           <Text key={user.numero}>{user.nom} {user.prenom} {user.numero}</Text>
-        ))}
+        ))} */}
       </View >
     )
   )

@@ -7,33 +7,32 @@ import {
   Modal,
   ScrollView,
   View,
-  Dimensions
+  Dimensions,
+
 } from "react-native";
+import Toast from 'react-native-simple-toast';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import ValidationComponent from 'react-native-form-validator';
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
+import navigation from "../navigation";
 
-const {width, height} = Dimensions.get('screen')
+const { width, height } = Dimensions.get('screen')
 
-const VALID_NOM = "Diack";
-const VALID_PRENOM = "Abou";
-const VALID_NUMERO = "0780813564";
-
-interface Props {
-  navigation?: any
-}
-
-export default class Login extends Component<Props> {
-  state = {
-    nom: VALID_NOM,
-    prenom: VALID_PRENOM,
-    numero: VALID_NUMERO,
-    errors: [],
-    loading: false,
-    showTerms: false,
-    showConfirmation: false
-  };
+class Form extends ValidationComponent {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nom: '',
+      prenom: '',
+      numero: '',
+      errorMessage: false,
+      loading: false,
+      showTerms: false,
+      showConfirmation: false
+    };
+  }
 
   renderTermsService() {
     return (
@@ -220,32 +219,27 @@ export default class Login extends Component<Props> {
   handleLogin() {
     const { navigation } = this.props;
     const { nom, prenom, numero } = this.state;
-    const errors = [];
-
     Keyboard.dismiss();
     this.setState({ loading: true });
 
     // check with backend API or with some static data
-    if (nom !== VALID_NOM) {
-      errors.push("nom");
-    }
-    if (prenom !== VALID_PRENOM) {
-      errors.push("prenom");
-    }
-    if (numero !== VALID_NUMERO) {
-      errors.push("numero");
-    }
+    this.validate({
+      nom: { minlength: 4, maxlength: 15, required: true },
+      prenom: { minlength: 4, maxlength: 15, required: true },
+      numero: { numbers: true, minlength: 8, maxlength: 8, required: true },
+    });
 
-    this.setState({ errors, loading: false });
+    if (!this.isFormValid()) { (() => this.setState({ errorMessage: true }))() }
 
-    if (!errors.length) { (() => this.setState({ showConfirmation: true }))()}
+    setTimeout(() => this.setState({ loading: false, errorMessage: false }), 500)
 
+    if (this.isFormValid()) { (() => this.setState({ showConfirmation: true }))() }
   }
 
   render() {
     const { navigation } = this.props;
-    const { loading, errors } = this.state;
-    const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
+    const { loading } = this.state;
+    const hasErrors = key => (this.isFieldInError(key) ? styles.hasErrors : null);
 
     return (
       <KeyboardAvoidingView style={styles.login} behavior="padding">
@@ -256,25 +250,28 @@ export default class Login extends Component<Props> {
             </Text>
             <Block padding={[20, 0]}>
               <Input
+                ref="nom"
                 label="Nom"
+                placeholder="Nom"
                 error={hasErrors("nom")}
                 style={[styles.input, hasErrors("nom")]}
-                defaultValue={this.state.nom}
                 onChangeText={text => this.setState({ nom: text })}
               />
               <Input
+                ref="prenom"
                 label="Prénom"
+                placeholder="Prenom"
                 error={hasErrors("prenom")}
                 style={[styles.input, hasErrors("prenom")]}
-                defaultValue={this.state.prenom}
                 onChangeText={text => this.setState({ prenom: text })}
               />
               <Input
                 phone
+                ref="numero"
                 label="Numéro"
+                placeholder="Numero"
                 error={hasErrors("numero")}
                 style={[styles.input, hasErrors("numero")]}
-                defaultValue={this.state.numero}
                 onChangeText={text => this.setState({ numero: text })}
               />
               <Button gradient onPress={() => this.handleLogin()}>
@@ -286,7 +283,6 @@ export default class Login extends Component<Props> {
                 </Text>
                   )}
               </Button>
-
               <Button onPress={() => navigation.navigate("Identification")}>
                 <Text
                   gray
@@ -299,13 +295,20 @@ export default class Login extends Component<Props> {
               </Button>
               <Text caption style={{ paddingTop: 15, fontFamily: 'josefinLight', fontSize: 12, textAlign: 'center' }}>Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez. Apprenez plus sur nos <Text caption style={{ textDecorationLine: "underline", color: theme.colors.primary }} onPress={() => this.setState({ showTerms: true })}>politiques</Text></Text>
             </Block>
-            </Block>
-          {this.renderConfirmation()}
+          </Block>
           {this.renderTermsService()}
+          {!this.state.errorMessage && this.renderConfirmation()}
+          {this.state.errorMessage && Toast.show(this.getErrorMessages().split('\n')[0])}
         </Block>
       </KeyboardAvoidingView>
     );
   }
+}
+
+export default ({navigation}) => {
+  return (
+    <Form deviceLocale="fr" navigation={navigation} />
+  )
 }
 
 const styles = StyleSheet.create({
