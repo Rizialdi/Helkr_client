@@ -4,6 +4,7 @@ import { View,
   StyleSheet, 
   ActivityIndicator,
   Keyboard } from 'react-native'
+import Toast from 'react-native-simple-toast';
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
@@ -13,23 +14,64 @@ interface Props {
   navigation?: any
 }
 
-const VALID_CODE = "0780813564";
-
 export class Verification extends Component<Props> {
   state = {
-    validationCode: VALID_CODE,
+    id: '',
+    token: '',
+    status: '',
     loading: false,
     showTerms: false,
+    CodeSent: false
   };
 
   handleVerification() {
-    Keyboard.dismiss();
-    this.setState({ loading: true });
-    this.props.navigation.navigate('PrincipalView')
-    this.setState({ loading: false });
+    Keyboard.dismiss()
+    this.setState({ loading: true })
+    this.setState({ loading: false })
+    fetch('http://10.53.18.97:4000/api/v1/register-step2', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify({
+        id: this.state.id,
+        token: this.state.token
+      })
+    }).then(res => res.json())
+      .then(res => this.setState({ status: res.status },
+       () => {
+         // TODO add a case when the token sent is invalid
+        if (this.state.status !== 'verified')
+         return Toast.show('Verifiez votre code')
+      }))
+      .catch((error) => {
+        return new Error('Verification failed')
+      });
   }
+
+  sendRequest = async (numero) => {
+    fetch('http://10.53.18.97:4000/api/v1/register-step1', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        numero: numero
+      })
+    }).then(res => res.json())
+      .then(res => this.setState({ id : res.id}))
+      .catch((error) => {
+        return new Error('Message not sent')
+      });
+    this.setState({ CodeSent: true})
+  }
+
   render() {
-    const { loading } = this.state;
+    const { loading, CodeSent } = this.state;
+    const { numero } = this.props.route.params
+    setTimeout(() => { if (!CodeSent) { this.sendRequest(numero) }}, 500)
     return (
       <KeyboardAvoidingView style={styles.login} behavior="padding">
         <Block padding={[40, theme.sizes.base * 2]}>
@@ -41,7 +83,7 @@ export class Verification extends Component<Props> {
             <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>Entrez le code de vérification en dessous:</Text>
             <Input
               phone
-              onChangeText={text => this.setState({ numero: text })}
+              onChangeText={text => this.setState({ token: text })}
             />
             <Button gradient onPress={() => this.handleVerification()}>
               {loading ? (
@@ -54,6 +96,7 @@ export class Verification extends Component<Props> {
             </Button>
           </Block>
         </Block>
+        {(this.state.status === 'verified') && this.props.navigation.navigate('PrincipalView')}
       </KeyboardAvoidingView>
     )
   }

@@ -184,6 +184,7 @@ class Form extends ValidationComponent {
   };
 
   renderConfirmation() {
+    const { nom, prenom, numero } = this.state
     return (
       <View style={{ position: 'absolute', top: 0, height: height, width: width }}>
         <AwesomeAlert
@@ -209,7 +210,9 @@ class Form extends ValidationComponent {
             this.hideConfirmation();
             this.props.navigation.navigate('Verification', {
               parent: 'Enregistrement',
-              number: this.state.numero
+              nom: nom,
+              prenom: prenom,
+              numero: numero,
             });
           }} />
       </View>
