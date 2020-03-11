@@ -6,7 +6,9 @@ import * as Font from 'expo-font';
 import { Asset } from "expo-asset";
 
 import { ApolloClient } from 'apollo-client';
+import { persistCache } from 'apollo-cache-persist';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { AsyncStorage } from 'react-native';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 
@@ -15,6 +17,13 @@ import {Block} from './components'
 
 // TODO change the ip address before production
 const cache = new InMemoryCache();
+
+persistCache({
+  cache,
+  storage: AsyncStorage,
+  trigger: 'background'
+});
+
 const link = new HttpLink({
   uri: 'http://10.53.18.97:4000'
 });

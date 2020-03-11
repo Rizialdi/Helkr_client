@@ -4,6 +4,8 @@ import { View,
   StyleSheet, 
   ActivityIndicator,
   Keyboard } from 'react-native'
+import gql from 'graphql-tag'
+import { Mutation } from '@apollo/react-components'
 import Toast from 'react-native-simple-toast';
 
 import { Button, Block, Input, Text } from "../components";
@@ -14,20 +16,69 @@ interface Props {
   navigation?: any
 }
 
+export const ADD_USER = gql`
+  mutation Enregistrement($nom: String!, $prenom: String!, $numero: String!) {
+    enregistrement (nom: $nom, prenom: $prenom, numero: $numero) {
+      token,
+      user {
+        nom
+      }
+    }
+  }
+`
+
 export class Verification extends Component<Props> {
   state = {
     id: '',
     token: '',
     status: '',
+    data: '',
     loading: false,
+    CodeSent: false,
     showTerms: false,
-    CodeSent: false
+    mutateDataError: null
   };
 
-  handleVerification() {
+  mutateData = ({nom, prenom, numero}) => {
+    this.setState({ loading: true, mutateDataError: null}, () => {
+      // TODO Change this Ip address
+      fetch('http://10.53.18.97:4000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: ADD_USER,
+          variables: { nom, prenom, numero }
+        }),
+      }).then( response => response.json())
+      .then(responseAsJson => {
+        if (responseAsJson.error) {
+          this.setState({
+            loading: false,
+            error: responseAsJson.errors[0],
+            data: responseAsJson.data,
+          })
+        } else {
+          this.setState({
+            loading: false,
+            error: null,
+            data: responseAsJson.data,
+          })
+        }
+      })
+      .catch(error => {
+        this.setState({loading: false, error, data: null})
+        return new Error('User adding failed')
+      })
+    })
+  }
+
+  handleVerification({ nom, prenom, numero }) {
     Keyboard.dismiss()
     this.setState({ loading: true })
     this.setState({ loading: false })
+    // TODO Change this Ip address
     fetch('http://10.53.18.97:4000/api/v1/register-step2', {
       method: 'POST',
       headers: {
@@ -44,6 +95,8 @@ export class Verification extends Component<Props> {
          // TODO add a case when the token sent is invalid
         if (this.state.status !== 'verified')
          return Toast.show('Verifiez votre code')
+
+         if (this.state.status === 'verified') { this.mutateData({ nom, prenom, numero }) }
       }))
       .catch((error) => {
         return new Error('Verification failed')
@@ -70,7 +123,7 @@ export class Verification extends Component<Props> {
 
   render() {
     const { loading, CodeSent } = this.state;
-    const { numero } = this.props.route.params
+    const { nom, prenom, numero } = this.props.route.params
     setTimeout(() => { if (!CodeSent) { this.sendRequest(numero) }}, 500)
     return (
       <KeyboardAvoidingView style={styles.login} behavior="padding">
@@ -79,24 +132,24 @@ export class Verification extends Component<Props> {
             {this.props.route.params.parent}
           </Text>
           <Block padding={[60, 0]}>
-            <Text style={{ fontFamily: 'josefinRegular', fontSize: 16}}>Un message vient d’etre envoyé au <Text bold>{this.props.route.params.number}.</Text></Text>
+            <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>Un message vient d’etre envoyé au <Text bold>{this.props.route.params.number}.</Text></Text>
             <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>Entrez le code de vérification en dessous:</Text>
             <Input
               phone
               onChangeText={text => this.setState({ token: text })}
             />
-            <Button gradient onPress={() => this.handleVerification()}>
+            <Button gradient onPress={() => this.handleVerification({ nom, prenom, numero })}>
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
                   <Text bold white center>
                     Vérifier
-                </Text>
+                  </Text>
                 )}
             </Button>
           </Block>
         </Block>
-        {(this.state.status === 'verified') && this.props.navigation.navigate('PrincipalView')}
+        {(this.state.status === 'verified') && !this.state.loading && this.props.navigation.navigate('PrincipalView')}
       </KeyboardAvoidingView>
     )
   }

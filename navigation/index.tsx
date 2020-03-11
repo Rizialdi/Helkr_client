@@ -98,9 +98,9 @@ const MyMainStack = () => {
           fontSize: 10,
         },
     }}>
-      {/* <MainStack.Screen name="Screen" component={Screen} options={{ headerShown: false }} />  */}
+      {/* <MainStack.Screen name="Screen" component={Screen} options={{ headerShown: false }} /> */}
       <MainStack.Screen name="Enregistrement" component={Enregistrement} options={{ headerShown: false }} />
-      <MainStack.Screen name="Identification" component={Identification} options={{ headerShown: false }} />
+      {/* <MainStack.Screen name="Identification" component={Identification} options={{ headerShown: false }} /> */}
       <MainStack.Screen name="Verification" component={Verification} options={{ headerShown: false }} />
       <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
       {/* <MainStack.Screen name="DetailCategory" component={DetailCategory} options={{ headerShown: true }} /> */}
