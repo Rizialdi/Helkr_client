@@ -9,6 +9,7 @@ import {
   ScrollView,
   View
 } from "react-native";
+import gql from 'graphql-tag'
 import Toast from 'react-native-simple-toast';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import ValidationComponent from 'react-native-form-validator';
@@ -17,6 +18,14 @@ const { width, height } = Dimensions.get('screen')
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
+
+const QueryUser = gql`
+  query user($numero: String!) {
+    user (numero: $numero) {
+      id
+    }
+}
+`
 
 class Form extends ValidationComponent {
   state = {
@@ -210,10 +219,7 @@ class Form extends ValidationComponent {
   }
 
   handleLogin() {
-    const { navigation } = this.props;
-    const { numero } = this.state;
-    const errors = [];
-
+    const { numero } = this.state
     Keyboard.dismiss();
     this.setState({ loading: true });
     // check with backend API or with some static data
@@ -225,11 +231,35 @@ class Form extends ValidationComponent {
 
     setTimeout(() => this.setState({ loading: false, errorMessage: false }), 500)
 
-    if (this.isFormValid()) { (() => this.setState({ showConfirmation: true }))() }
+    if (this.isFormValid()) {
+      (() => {
+        //validate with some backend API
+        fetch('http://10.53.18.97:4000', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query: QueryUser,
+            variables: { numero }
+          }),
+        }).then(response => response.json())
+          .then(responseAsJson => {
+            // if numero alreay exist in the database
+            if (responseAsJson.errors) {
+              this.setState({ loading: false })
+              Toast.show("Aucun compte n'est rattaché a ce numéro")}
+            else {
+              this.setState({ loading: false, showConfirmation: true })
+            }
+          })
+          .catch(error => { throw new Error('Unable to check user existence') })
+      })()
+    }
   }
 
   render() {
-    const { loading, errors } = this.state;
+    const { loading } = this.state;
     const hasErrors = key => (this.isFieldInError(key) ? styles.hasErrors : null);
 
     return (
