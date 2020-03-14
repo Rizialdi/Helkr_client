@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-remote-svg/SvgImage.js b/node_modules/react-native-remote-svg/SvgImage.js
+index c49f77f..c1bac97 100644
+--- a/node_modules/react-native-remote-svg/SvgImage.js
++++ b/node_modules/react-native-remote-svg/SvgImage.js
+@@ -37,7 +37,7 @@ class SvgImage extends Component {
+   componentDidMount() {
+     this.doFetch(this.props);
+   }
+-  componentWillReceiveProps(nextProps) {
++  UNSAFE_componentWillReceiveProps(nextProps) {
+     const prevUri = this.props.source && this.props.source.uri;
+     const nextUri = nextProps.source && nextProps.source.uri;
+ 
