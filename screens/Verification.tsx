@@ -3,7 +3,8 @@ import { View,
   KeyboardAvoidingView, 
   StyleSheet, 
   ActivityIndicator,
-  Keyboard } from 'react-native'
+  Keyboard,
+  AsyncStorage } from 'react-native'
 import gql from 'graphql-tag'
 import { Mutation } from '@apollo/react-components'
 import Toast from 'react-native-simple-toast';
@@ -39,6 +40,17 @@ export class Verification extends Component<Props> {
     mutateDataError: null
   };
 
+
+  storeCredentials = ({ token, user }) => {
+    (async () => {
+      try {
+        await AsyncStorage.clear()
+        await AsyncStorage.multiSet([['token', token], ['nom', user.nom]])
+      } catch (error) {
+        throw new Error('Credentials creation failed')
+      }
+    })()
+  }
   mutateData = ({nom, prenom, numero}) => {
     this.setState({ loading: true, mutateDataError: null}, () => {
       // TODO Change this Ip address
@@ -64,7 +76,7 @@ export class Verification extends Component<Props> {
             loading: false,
             error: null,
             data: responseAsJson.data,
-          })
+          }, () => this.storeCredentials(this.state.data.enregistrement))
         }
       })
       .catch(error => {

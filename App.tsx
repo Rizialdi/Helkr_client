@@ -20,8 +20,7 @@ const cache = new InMemoryCache();
 
 persistCache({
   cache,
-  storage: AsyncStorage,
-  trigger: 'background'
+  storage: AsyncStorage
 });
 
 const link = new HttpLink({

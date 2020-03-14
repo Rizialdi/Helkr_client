@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react'
+import { AsyncStorage, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,7 +13,6 @@ import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
 import Publier from '../screens/Publier';
 import DetailCategory from '../screens/DetailCategory'
-import BienvenueFirst from '../screens/BienvenueFirst';
 import Identification from '../screens/Identification';
 import Enregistrement from '../screens/Enregistrement';
 import Verification from '../screens/Verification';
@@ -25,7 +25,7 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator();
 const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
-      initialRouteName="Postuler"
+      initialRouteName="Accueil"
       activeColor={theme.colors.primary}
       shifting={true}
       barStyle={{ backgroundColor: 'rgba(196, 196, 196, 0.1)', height: 60 }}
@@ -85,7 +85,7 @@ const createBottomTabs = () => {
   )
 }
 
-const MyMainStack = () => {
+const MyMainStack = ({token}) => {
   return (
     <MainStack.Navigator
       initialRouteName='Screen'
@@ -95,23 +95,47 @@ const MyMainStack = () => {
         headerTitleStyle: {
           color: "black",
           alignSelf: "center",
-          fontSize: 10,
+          fontSize: 20,
         },
     }}>
-      {/* <MainStack.Screen name="Screen" component={Screen} options={{ headerShown: false }} /> */}
-      <MainStack.Screen name="Enregistrement" component={Enregistrement} options={{ headerShown: false }} />
-      {/* <MainStack.Screen name="Identification" component={Identification} options={{ headerShown: false }} /> */}
-      <MainStack.Screen name="Verification" component={Verification} options={{ headerShown: false }} />
-      <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
-      {/* <MainStack.Screen name="DetailCategory" component={DetailCategory} options={{ headerShown: true }} /> */}
-    </MainStack.Navigator>
+      { token ? (
+        <>
+          <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
+          <MainStack.Screen name="DetailCategory" component={DetailCategory} options={({ route }) => ({ headerShown: true, title: route.params.category.name })} />
+        </>
+      ):(    
+        <>
+          <MainStack.Screen name="Screen" component={Screen} options={{ headerShown: false }} />
+          <MainStack.Screen name="Enregistrement" component={Enregistrement} options={{ headerShown: false }} />
+          <MainStack.Screen name="Identification" component={Identification} options={{ headerShown: false }} />
+          <MainStack.Screen name="Verification" component={Verification} options={{ headerShown: false }} />
+          <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
+          <MainStack.Screen name="DetailCategory" component={DetailCategory} options={({ route }) => ({ headerShown: true, title: route.params.category.name })} />
+        </>
+      )}
+     </MainStack.Navigator>
   )
 }
 
 export default () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [token, setToken] = useState(null)
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await AsyncStorage.getItem('token');
+        setToken(token)
+        setTimeout(() => setIsLoading(false), 1000)
+      } catch (error) {
+        throw new Error('Unable to load Credentials')
+      }
+    })()
+  }, [])
+
+  if (isLoading) return <Text>Splash screen</Text>
   return (
     <NavigationContainer>
-      <MyMainStack />
+      <MyMainStack token={token}/>
     </NavigationContainer>
   )
 }

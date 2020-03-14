@@ -1,6 +1,11 @@
 import React, { Component, useState, useEffect } from 'react'
 import { Card, Badge, Block, Text } from "../components";
-import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View, TextInput } from 'react-native'
+import { Dimensions,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View, TextInput,
+  AsyncStorage } from 'react-native'
 import { theme, mocks } from "../constants";
 import Image from 'react-native-remote-svg'
 const { width } = Dimensions.get("window");
@@ -8,11 +13,23 @@ const { width } = Dimensions.get("window");
 export default function Accueil({ navigation }){
     const [categories, setCategories] = useState([])
     const [inputText, setInputText] = useState('')
-
-    useEffect(() => setCategories(mocks.accueil))
+    const [username, setUsername]= useState(null)
 
     const handleInput = () => setInputText('')
-    
+    const retrieve = async () => {
+      try {
+        const username = await AsyncStorage.getItem('nom');
+        username ? setUsername(username) : setUsername(null)
+      } catch (error) {
+        throw new Error('Unable to load Credentials') 
+      }
+    }
+
+  useEffect(() => {
+    setCategories(mocks.accueil)
+    retrieve()
+  })
+
     return (
       <Block style={{backgroundColor: '#FFFFFF'}}>
         <ScrollView
@@ -20,9 +37,7 @@ export default function Accueil({ navigation }){
           style={{ paddingVertical: theme.sizes.base * 2 }}
         >
           <Text left style={{
-            fontFamily: 'josefinLight', marginHorizontal: 23, marginVertical: 20 }}>bonjour <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }} >
-             Elodie
-          </Text></Text>
+            fontFamily: 'josefinLight', marginHorizontal: 23, marginVertical: 20 }}>Salut {username && <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }} >{username}</Text>}</Text>
           <Text style={{ fontFamily: 'josefinRegular', fontSize: 16, marginHorizontal: 23, marginBottom: 20  }}>Quels services recherchez-vous ?</Text>
           <View style={{
             flexDirection: 'row', flex: 1, marginBottom: 0, overflow: 'hidden',
