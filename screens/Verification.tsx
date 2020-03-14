@@ -77,7 +77,6 @@ export class Verification extends Component<Props> {
   handleVerification({ nom, prenom, numero }) {
     Keyboard.dismiss()
     this.setState({ loading: true })
-    this.setState({ loading: false })
     // TODO Change this Ip address
     fetch('http://10.53.18.97:4000/api/v1/register-step2', {
       method: 'POST',
@@ -93,10 +92,15 @@ export class Verification extends Component<Props> {
       .then(res => this.setState({ status: res.status },
        () => {
          // TODO add a case when the token sent is invalid
-        if (this.state.status !== 'verified')
-         return Toast.show('Verifiez votre code')
-
-         if (this.state.status === 'verified') { this.mutateData({ nom, prenom, numero }) }
+        if (this.state.status !== 'verified') {
+          Toast.show('Code de validation erroné')
+          setTimeout(() => this.props.navigation.navigate('Enregistrement'), 3000)
+        }
+         
+        if (this.state.status === 'verified') {
+          this.mutateData({ nom, prenom, numero })
+          this.state.loading && this.props.navigation.navigate('PrincipalView')
+         }
       }))
       .catch((error) => {
         return new Error('Verification failed')
@@ -149,7 +153,6 @@ export class Verification extends Component<Props> {
             </Button>
           </Block>
         </Block>
-        {(this.state.status === 'verified') && !this.state.loading && this.props.navigation.navigate('PrincipalView')}
       </KeyboardAvoidingView>
     )
   }
