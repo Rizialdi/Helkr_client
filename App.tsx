@@ -15,6 +15,8 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import Navigation from "./navigation";
 import {Block} from './components'
 
+import { IP_ADDRESS } from "./config"
+
 // TODO change the ip address before production
 const cache = new InMemoryCache();
 
@@ -24,7 +26,7 @@ persistCache({
 });
 
 const link = new HttpLink({
-  uri: 'http://10.53.18.97:4000'
+  uri: `http://${IP_ADDRESS}:4000`
 });
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({

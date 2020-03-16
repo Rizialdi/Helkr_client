@@ -18,6 +18,8 @@ import ValidationComponent from 'react-native-form-validator';
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
+import { IP_ADDRESS } from "../config"
+
 const { width, height } = Dimensions.get('screen')
 
 const QueryUser = gql`
@@ -246,7 +248,7 @@ class Form extends ValidationComponent {
 
     if (this.isFormValid()) { (() => {
       //validate with some backend API
-      fetch('http://10.53.18.97:4000', {
+      fetch(`http://${IP_ADDRESS}:4000`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

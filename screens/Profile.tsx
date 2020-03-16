@@ -14,7 +14,7 @@ export default function Profile(){
         </View>
         <View style={styles.header}>
           <View style={{flex: 0.3, alignItems: 'center'}}>
-            <TouchableOpacity style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: 'yellow', overflow: 'hidden', margin: 'auto' }}>
+            <TouchableOpacity style={{ width: 100, height: 100, borderRadius: 50, overflow: 'hidden', margin: 'auto' }}>
               <Image
                 source={profile.image}
                 resizeMode='cover'
@@ -29,7 +29,7 @@ export default function Profile(){
             <Text style={styles.tags}>{profile.tags}</Text>
           </View>
         </View>
-        <View style={{flex: 0.7, backgroundColor: 'yellow'}}>
+        <View style={{flex: 0.7, paddingLeft: 20}}>
           <Text>A completer</Text>
         </View>
       </View>
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 0.25,
     marginHorizontal: 20,
-    backgroundColor: 'red'
   },
   username: {
     fontFamily: 'josefinBold',

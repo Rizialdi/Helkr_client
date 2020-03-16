@@ -8,6 +8,7 @@ import {theme} from '../constants'
 import Image from 'react-native-remote-svg';
 
 import Accueil from '../screens/Accueil';
+import BienvenueFirst from '../screens/BienvenueFirst'
 import Discussions from '../screens/Discussions';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
@@ -125,14 +126,14 @@ export default () => {
       try {
         const token = await AsyncStorage.getItem('token');
         setToken(token)
-        setTimeout(() => setIsLoading(false), 1000)
+        setTimeout(() => setIsLoading(false), 2000)
       } catch (error) {
         throw new Error('Unable to load Credentials')
       }
     })()
   }, [])
 
-  if (isLoading) return <Text>Splash screen</Text>
+  if (isLoading) return <BienvenueFirst />
   return (
     <NavigationContainer>
       <MyMainStack token={token}/>

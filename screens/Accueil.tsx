@@ -13,13 +13,13 @@ const { width } = Dimensions.get("window");
 export default function Accueil({ navigation }){
     const [categories, setCategories] = useState([])
     const [inputText, setInputText] = useState('')
-    const [username, setUsername]= useState(null)
+    const [username, setUsername]= useState('')
 
     const handleInput = () => setInputText('')
     const retrieve = async () => {
       try {
-        const username = await AsyncStorage.getItem('nom');
-        username ? setUsername(username) : setUsername(null)
+        const username = await AsyncStorage.getItem('prenom');
+        username ? setUsername(username) : setUsername('')
       } catch (error) {
         throw new Error('Unable to load Credentials') 
       }

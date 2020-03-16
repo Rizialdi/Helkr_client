@@ -11,6 +11,7 @@ import Toast from 'react-native-simple-toast';
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
+import { IP_ADDRESS } from "../config"
 
 interface Props {
   route?: any,
@@ -45,7 +46,7 @@ export class Verification extends Component<Props> {
     (async () => {
       try {
         await AsyncStorage.clear()
-        await AsyncStorage.multiSet([['token', token], ['nom', user.nom]])
+        await AsyncStorage.multiSet([['token', token], ['prenom', user.prenom]])
       } catch (error) {
         throw new Error('Credentials creation failed')
       }
@@ -54,7 +55,7 @@ export class Verification extends Component<Props> {
   mutateData = ({nom, prenom, numero}) => {
     this.setState({ loading: true, mutateDataError: null}, () => {
       // TODO Change this Ip address
-      fetch('http://10.53.18.97:4000', {
+      fetch(`http://${IP_ADDRESS}:4000`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +91,7 @@ export class Verification extends Component<Props> {
     Keyboard.dismiss()
     this.setState({ loading: true })
     // TODO Change this Ip address
-    fetch('http://10.53.18.97:4000/api/v1/register-step2', {
+    fetch(`http://${IP_ADDRESS}:4000/api/v1/register-step2`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -120,7 +121,7 @@ export class Verification extends Component<Props> {
   }
 
   sendRequest = async (numero) => {
-    fetch('http://10.53.18.97:4000/api/v1/register-step1', {
+    fetch(`http://${IP_ADDRESS}:4000/api/v1/register-step1`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
