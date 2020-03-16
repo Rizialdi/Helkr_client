@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { View, 
+import {
   KeyboardAvoidingView, 
   StyleSheet, 
   ActivityIndicator,
   Keyboard,
   AsyncStorage } from 'react-native'
 import gql from 'graphql-tag'
-import { Mutation } from '@apollo/react-components'
 import Toast from 'react-native-simple-toast';
 
 import { Button, Block, Input, Text } from "../components";
@@ -23,7 +22,7 @@ export const ADD_USER = gql`
     enregistrement (nom: $nom, prenom: $prenom, numero: $numero) {
       token,
       user {
-        nom
+        prenom
       }
     }
   }
@@ -77,7 +76,9 @@ export class Verification extends Component<Props> {
             loading: false,
             error: null,
             data: responseAsJson.data,
-          }, () => this.storeCredentials(this.state.data.enregistrement))
+          }, () => {
+              this.storeCredentials(this.state.data.enregistrement)
+          })
         }
       })
       .catch(error => {

@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Dimensions, Text, FlatList, SafeAreaView, Image, TouchableOpacity } from 'react-native'
 import { theme, mocks } from "../constants";
 

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   ActivityIndicator,
   Keyboard,
@@ -8,8 +8,8 @@ import {
   ScrollView,
   View,
   Dimensions,
-
 } from "react-native";
+
 import gql from 'graphql-tag'
 import Toast from 'react-native-simple-toast';
 import AwesomeAlert from 'react-native-awesome-alerts';
