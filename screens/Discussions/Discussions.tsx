@@ -1,18 +1,34 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Dimensions, Text, FlatList, SafeAreaView, Image, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Dimensions, Text, FlatList, SafeAreaView, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { theme, mocks } from "../../constants";
-import navigation from '../../navigation';
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const { width } = Dimensions.get('screen')
 
-function Item({ name, message, image, navigation }) {
+const DATA = gql`
+  { 
+    recipientChannels {
+    users {
+      id
+      nom
+      prenom
+      avatar
+    }
+    channelIds
+    lastMessages
+  }
+}
+`
+
+function Item({ name, message, image, channelId, navigation }) {
   return (
     <>
-      <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Discussion')}>
+      <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('Discussion', { channelId, name })}>
         <View style={{ flex: 0.25 }}>
           <TouchableOpacity style={{ width: 70, height: 70, borderRadius: 50, overflow: 'hidden', margin: 'auto' }}>
             <Image
-              source={image}
+              source={image || require('../../assets/images/default-user-image.png')}
               resizeMode='cover'
               style={{ width: '100%', height: '100%' }}
             />
@@ -34,20 +50,52 @@ export default function Discussion({ navigation }) {
   useEffect(() => setDiscussions(mocks.discussions))
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <View style={{ marginTop: 40, marginBottom: 20, marginHorizontal: theme.sizes.base * 2 }}>
-          <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-            Discussions
-            </Text>
-        </View>
-        <FlatList
-          data={discussions}
-          renderItem={({ item }) => <Item name={item.name} message={item.message} image={item.image} navigation={navigation} />}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-    </View>
+    <Query query={DATA}>
+      {({ loading, data }) => {
+        if (loading) return <ActivityIndicator size='large' color='black' />
+
+        if (data) {
+          const users = data.recipientChannels.users
+          const lastMessages = data.recipientChannels.lastMessages
+          const channelIds = data.recipientChannels.channelIds
+          for (var i = 0; i < users.length; i++) {
+            users[i]['message'] = JSON.parse(lastMessages)[i]['text']
+            users[i]['channelId'] = channelIds[i]
+          }
+
+          return (
+            <View style={styles.container}>
+              <SafeAreaView>
+                <View style={{ marginTop: 40, marginBottom: 20, marginHorizontal: theme.sizes.base * 2 }}>
+                  <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
+                    Discussions
+                </Text>
+                </View>
+                <FlatList
+                  data={users}
+                  renderItem={({ item }) =>
+                    <Item name={item.prenom + ' ' + item.nom.charAt(0) + '.'}
+                      message={item.message} image={item.avatar}
+                      navigation={navigation} channelId={item.channelId} />}
+                  keyExtractor={item => item.id}
+                />
+              </SafeAreaView>
+            </View>
+          )
+        }
+
+        return (
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <SafeAreaView>
+              <Text style={{ paddingBottom: 20 }}>Une erreur est survenue au chargement des messages.</Text>
+              <Text style={{ paddingBottom: 50, fontWeight: 'bold' }}>Vérifier votre connexion internet.</Text>
+              <ActivityIndicator size='large' color='black' />
+            </SafeAreaView>
+          </View>
+        )
+      }}
+    </Query>
+
   )
 }
 

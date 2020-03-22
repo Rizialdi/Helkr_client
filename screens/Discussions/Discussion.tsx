@@ -1,7 +1,9 @@
 import { AppLoading, Asset, Linking } from 'expo'
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Platform } from 'react-native'
+import { StyleSheet, View, Text, Platform, ActivityIndicator } from 'react-native'
 import { Bubble, GiftedChat, SystemMessage } from 'react-native-gifted-chat'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 
 import CustomActions from './components/CustomActions'
 import CustomView from './components/CustomView'
@@ -24,6 +26,21 @@ const otherUser = {
   avatar: 'https://facebook.github.io/react/img/logo_og.png',
 }
 
+const DATA = gql`
+  query queryMessages($id: String!){
+    channel(id: $id) {
+    messages {
+      id
+      text
+      createdAt
+      sentBy {
+        id
+        nom
+      }
+    }
+  }
+  }
+`
 export default class App extends Component {
   state = {
     inverted: false,
@@ -199,39 +216,50 @@ export default class App extends Component {
     if (!this.state.appIsReady) {
       return <AppLoading />
     }
+
+    const id = this.props.route.params.channelId
+    const { name } = this.props.route.params
     return (
-      <View
-        style={styles.container}
-        accessible
-        accessibilityLabel='main'
-        testID='main'
-      >
-        <NavBar nom={'Elephant'} navigation={this.props.navigation} />
-        <GiftedChat
-          messages={this.state.messages}
-          onSend={this.onSend}
-          locale={this.state.locale}
-          loadEarlier={this.state.loadEarlier}
-          onLoadEarlier={this.onLoadEarlier}
-          isLoadingEarlier={this.state.isLoadingEarlier}
-          parsePatterns={this.parsePatterns}
-          user={user}
-          scrollToBottom
-          onLongPressAvatar={user => alert(JSON.stringify(user))}
-          onPressAvatar={() => alert('short press')}
-          onQuickReply={this.onQuickReply}
-          keyboardShouldPersistTaps='never'
-          renderActions={this.renderCustomActions}
-          placeholder={this.state.placeHolder}
-          renderBubble={this.renderBubble}
-          renderSystemMessage={this.renderSystemMessage}
-          renderCustomView={this.renderCustomView}
-          quickReplyStyle={{ borderRadius: 2 }}
-          renderQuickReplySend={this.renderQuickReplySend}
-          inverted={Platform.OS !== 'web'}
-          timeTextStyle={{ left: { color: 'red' }, right: { color: 'yellow' } }}
-        />
-      </View>
+      <Query query={DATA} variables={{ id }} >
+        {({ loading, data }) => {
+          if (loading) return <ActivityIndicator size='large' color='black' />
+
+          return (
+            <View
+              style={styles.container}
+              accessible
+              accessibilityLabel='main'
+              testID='main'
+            >
+              <NavBar nom={name} navigation={this.props.navigation} />
+              <GiftedChat
+                messages={this.state.messages}
+                onSend={this.onSend}
+                locale={this.state.locale}
+                loadEarlier={this.state.loadEarlier}
+                onLoadEarlier={this.onLoadEarlier}
+                isLoadingEarlier={this.state.isLoadingEarlier}
+                parsePatterns={this.parsePatterns}
+                user={user}
+                scrollToBottom
+                onLongPressAvatar={user => alert(JSON.stringify(user))}
+                onPressAvatar={() => alert('short press')}
+                onQuickReply={this.onQuickReply}
+                keyboardShouldPersistTaps='never'
+                renderActions={this.renderCustomActions}
+                placeholder={this.state.placeHolder}
+                renderBubble={this.renderBubble}
+                renderSystemMessage={this.renderSystemMessage}
+                renderCustomView={this.renderCustomView}
+                quickReplyStyle={{ borderRadius: 2 }}
+                renderQuickReplySend={this.renderQuickReplySend}
+                inverted={Platform.OS !== 'web'}
+                timeTextStyle={{ left: { color: 'red' }, right: { color: 'yellow' } }}
+              />
+            </View>
+          )
+        }}
+      </Query >
     )
   }
 }
