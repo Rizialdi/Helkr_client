@@ -4,12 +4,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {theme} from '../constants'
+import { theme } from '../constants'
 import Image from 'react-native-remote-svg';
 
 import Accueil from '../screens/Accueil';
 import BienvenueFirst from '../screens/BienvenueFirst'
-import Discussions from '../screens/Discussions';
+import Discussions from '../screens/Discussions/Discussions';
+import Discussion from '../screens/Discussions/Discussion'
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
 import Publier from '../screens/Publier';
@@ -68,7 +69,7 @@ const createBottomTabs = () => {
               source={require('../assets/icons/chat.svg')}
               style={{ width: 24, height: 24 }}
             />
-           ),
+          ),
         }}
       />
       <MaterialBottomTabs.Screen name="Profile" component={Profile}
@@ -78,7 +79,7 @@ const createBottomTabs = () => {
             <Image
               source={require('../assets/icons/profile.svg')}
               style={{ width: 24, height: 24 }}
-            />  
+            />
           ),
         }}
       />
@@ -86,7 +87,7 @@ const createBottomTabs = () => {
   )
 }
 
-const MyMainStack = ({token}) => {
+const MyMainStack = ({ token }) => {
   return (
     <MainStack.Navigator
       initialRouteName='Screen'
@@ -98,23 +99,25 @@ const MyMainStack = ({token}) => {
           alignSelf: "center",
           fontSize: 20,
         },
-    }}>
-      { token ? (
+      }}>
+      {token ? (
         <>
           <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
           <MainStack.Screen name="DetailCategory" component={DetailCategory} options={({ route }) => ({ headerShown: true, title: route.params.category.name })} />
+          <MainStack.Screen name="Discussion" component={Discussion} options={({ route }) => ({ headerShown: false, title: "" })} />
         </>
-      ):(    
-        <>
-          <MainStack.Screen name="Screen" component={Screen} options={{ headerShown: false }} />
-          <MainStack.Screen name="Enregistrement" component={Enregistrement} options={{ headerShown: false }} />
-          <MainStack.Screen name="Identification" component={Identification} options={{ headerShown: false }} />
-          <MainStack.Screen name="Verification" component={Verification} options={{ headerShown: false }} />
-          <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
-          <MainStack.Screen name="DetailCategory" component={DetailCategory} options={({ route }) => ({ headerShown: true, title: route.params.category.name })} />
-        </>
-      )}
-     </MainStack.Navigator>
+      ) : (
+          <>
+            {/* <MainStack.Screen name="Screen" component={Screen} options={{ headerShown: false }} />
+            <MainStack.Screen name="Enregistrement" component={Enregistrement} options={{ headerShown: false }} />
+            <MainStack.Screen name="Identification" component={Identification} options={{ headerShown: false }} />
+            <MainStack.Screen name="Verification" component={Verification} options={{ headerShown: false }} /> */}
+            <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
+            <MainStack.Screen name="Discussion" component={Discussion} options={({ route }) => ({ headerShown: false, title: "" })} />
+            <MainStack.Screen name="DetailCategory" component={DetailCategory} options={({ route }) => ({ headerShown: true, title: route.params.category.name })} />
+          </>
+        )}
+    </MainStack.Navigator>
   )
 }
 
@@ -136,7 +139,7 @@ export default () => {
   if (isLoading) return <BienvenueFirst />
   return (
     <NavigationContainer>
-      <MyMainStack token={token}/>
+      <MyMainStack token={token} />
     </NavigationContainer>
   )
 }
