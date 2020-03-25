@@ -1,6 +1,6 @@
 import { AppLoading, Asset, Linking } from 'expo'
 import React, { Component } from 'react'
-import { StyleSheet, View, Text, Platform, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, Text, Platform, ActivityIndicator, AsyncStorage } from 'react-native'
 import { Bubble, GiftedChat, SystemMessage } from 'react-native-gifted-chat'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -15,14 +15,9 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
 })
 
-const user = {
-  _id: 1,
-  name: 'Developer',
-}
-
 const otherUser = {
-  _id: 2,
-  name: 'React Native',
+  id: 2,
+  prenom: 'React Native',
   avatar: 'https://facebook.github.io/react/img/logo_og.png',
 }
 
@@ -35,7 +30,7 @@ const DATA = gql`
       createdAt
       sentBy {
         id
-        nom
+        prenom
       }
     }
   }
@@ -212,6 +207,17 @@ export default class App extends Component {
 
   renderQuickReplySend = () => <Text>{' custom send =>'}</Text>
 
+  formatting = (data) => {
+    const newData = JSON.stringify(data).replace(/id/g, '_id').replace(/sentBy/g, 'user')
+    return JSON.parse(newData)
+  }
+
+  getUser = () => {
+    const id = '5e7710e0be07770007331386' // await AsyncStorage.getItem('id') || 
+    const prenom = 'abou' //await AsyncStorage.getItem('prenom') || 
+    return { _id: id, prenom: prenom }
+  }
+
   render() {
     if (!this.state.appIsReady) {
       return <AppLoading />
@@ -224,6 +230,7 @@ export default class App extends Component {
         {({ loading, data }) => {
           if (loading) return <ActivityIndicator size='large' color='black' />
 
+          const user = this.getUser()
           return (
             <View
               style={styles.container}
@@ -233,7 +240,7 @@ export default class App extends Component {
             >
               <NavBar nom={name} navigation={this.props.navigation} />
               <GiftedChat
-                messages={this.state.messages}
+                messages={this.formatting(data.channel.messages)}
                 onSend={this.onSend}
                 locale={this.state.locale}
                 loadEarlier={this.state.loadEarlier}

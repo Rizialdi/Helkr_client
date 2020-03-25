@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import {
-  KeyboardAvoidingView, 
-  StyleSheet, 
+  KeyboardAvoidingView,
+  StyleSheet,
   ActivityIndicator,
   Keyboard,
-  AsyncStorage } from 'react-native'
+  AsyncStorage
+} from 'react-native'
 import gql from 'graphql-tag'
 import Toast from 'react-native-simple-toast';
 
@@ -45,14 +46,14 @@ export class Verification extends Component<Props> {
     (async () => {
       try {
         await AsyncStorage.clear()
-        await AsyncStorage.multiSet([['token', token], ['prenom', user.prenom]])
+        await AsyncStorage.multiSet([['token', token], ['prenom', user.prenom], ['id', user.id]])
       } catch (error) {
         throw new Error('Credentials creation failed')
       }
     })()
   }
-  mutateData = ({nom, prenom, numero}) => {
-    this.setState({ loading: true, mutateDataError: null}, () => {
+  mutateData = ({ nom, prenom, numero }) => {
+    this.setState({ loading: true, mutateDataError: null }, () => {
       // TODO Change this Ip address
       fetch(`http://${IP_ADDRESS}:4000`, {
         method: 'POST',
@@ -63,28 +64,28 @@ export class Verification extends Component<Props> {
           query: ADD_USER,
           variables: { nom, prenom, numero }
         }),
-      }).then( response => response.json())
-      .then(responseAsJson => {
-        if (responseAsJson.error) {
-          this.setState({
-            loading: false,
-            error: responseAsJson.errors[0],
-            data: responseAsJson.data,
-          })
-        } else {
-          this.setState({
-            loading: false,
-            error: null,
-            data: responseAsJson.data,
-          }, () => {
+      }).then(response => response.json())
+        .then(responseAsJson => {
+          if (responseAsJson.error) {
+            this.setState({
+              loading: false,
+              error: responseAsJson.errors[0],
+              data: responseAsJson.data,
+            })
+          } else {
+            this.setState({
+              loading: false,
+              error: null,
+              data: responseAsJson.data,
+            }, () => {
               this.storeCredentials(this.state.data.enregistrement)
-          })
-        }
-      })
-      .catch(error => {
-        this.setState({loading: false, error, data: null})
-        return new Error('User adding failed')
-      })
+            })
+          }
+        })
+        .catch(error => {
+          this.setState({ loading: false, error, data: null })
+          return new Error('User adding failed')
+        })
     })
   }
 
@@ -97,25 +98,25 @@ export class Verification extends Component<Props> {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
       body: JSON.stringify({
         id: this.state.id,
         token: this.state.token
       })
     }).then(res => res.json())
       .then(res => this.setState({ status: res.status },
-       () => {
-         // TODO add a case when the token sent is invalid
-        if (this.state.status !== 'verified') {
-          Toast.show('Code de validation erroné')
-          setTimeout(() => this.props.navigation.navigate('Enregistrement'), 3000)
-        }
-         
-        if (this.state.status === 'verified') {
-          this.mutateData({ nom, prenom, numero })
-          this.state.loading && this.props.navigation.navigate('PrincipalView')
-         }
-      }))
+        () => {
+          // TODO add a case when the token sent is invalid
+          if (this.state.status !== 'verified') {
+            Toast.show('Code de validation erroné')
+            setTimeout(() => this.props.navigation.navigate('Enregistrement'), 3000)
+          }
+
+          if (this.state.status === 'verified') {
+            this.mutateData({ nom, prenom, numero })
+            this.state.loading && this.props.navigation.navigate('PrincipalView')
+          }
+        }))
       .catch((error) => {
         return new Error('Verification failed')
       });
@@ -132,17 +133,17 @@ export class Verification extends Component<Props> {
         numero: numero
       })
     }).then(res => res.json())
-      .then(res => this.setState({ id : res.id}))
+      .then(res => this.setState({ id: res.id }))
       .catch((error) => {
         return new Error('Message not sent')
       });
-    this.setState({ CodeSent: true})
+    this.setState({ CodeSent: true })
   }
 
   render() {
     const { loading, CodeSent } = this.state;
     const { nom, prenom, numero } = this.props.route.params
-    setTimeout(() => { if (!CodeSent) { this.sendRequest(numero) }}, 500)
+    setTimeout(() => { if (!CodeSent) { this.sendRequest(numero) } }, 500)
     return (
       <KeyboardAvoidingView style={styles.login} behavior="padding">
         <Block padding={[40, theme.sizes.base * 2]}>

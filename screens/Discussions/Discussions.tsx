@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Dimensions, Text, FlatList, SafeAreaView, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { theme, mocks } from "../../constants";
+import { theme } from "../../constants";
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -44,10 +44,6 @@ function Item({ name, message, image, channelId, navigation }) {
 }
 
 export default function Discussion({ navigation }) {
-
-  const [discussions, setDiscussions] = useState([])
-
-  useEffect(() => setDiscussions(mocks.discussions))
 
   return (
     <Query query={DATA}>
