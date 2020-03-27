@@ -15,12 +15,6 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
 })
 
-const otherUser = {
-  id: 2,
-  prenom: 'React Native',
-  avatar: 'https://facebook.github.io/react/img/logo_og.png',
-}
-
 const DATA = gql`
   query queryMessages($id: String!){
     channel(id: $id) {
@@ -91,6 +85,7 @@ export default class App extends Component {
   }
 
   onSend = (messages = []) => {
+    console.log('pressed', messages)
     const step = this.state.step + 1
     this.setState((previousState: any) => {
       const sentMessages = [{ ...messages[0], sent: true, received: true }]
@@ -180,31 +175,6 @@ export default class App extends Component {
     )
   }
 
-  onQuickReply = replies => {
-    const createdAt = new Date()
-    if (replies.length === 1) {
-      this.onSend([
-        {
-          createdAt,
-          _id: Math.round(Math.random() * 1000000),
-          text: replies[0].title,
-          user,
-        },
-      ])
-    } else if (replies.length > 1) {
-      this.onSend([
-        {
-          createdAt,
-          _id: Math.round(Math.random() * 1000000),
-          text: replies.map(reply => reply.title).join(', '),
-          user,
-        },
-      ])
-    } else {
-      console.warn('replies param is not set correctly')
-    }
-  }
-
   renderQuickReplySend = () => <Text>{' custom send =>'}</Text>
 
   formatting = (data) => {
@@ -213,9 +183,9 @@ export default class App extends Component {
   }
 
   getUser = () => {
-    const id = '5e7710e0be07770007331386' // await AsyncStorage.getItem('id') || 
-    const prenom = 'abou' //await AsyncStorage.getItem('prenom') || 
-    return { _id: id, prenom: prenom }
+    const id = '5e7dfde324aa9a0007929a6b' // await AsyncStorage.getItem('id') || 
+    const prenom = 'Abou' //await AsyncStorage.getItem('prenom') || 
+    return { _id: id }
   }
 
   render() {
@@ -251,7 +221,6 @@ export default class App extends Component {
                 scrollToBottom
                 onLongPressAvatar={user => alert(JSON.stringify(user))}
                 onPressAvatar={() => alert('short press')}
-                onQuickReply={this.onQuickReply}
                 keyboardShouldPersistTaps='never'
                 renderActions={this.renderCustomActions}
                 placeholder={this.state.placeHolder}

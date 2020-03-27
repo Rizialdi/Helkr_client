@@ -52,6 +52,7 @@ export default function Discussion({ navigation }) {
 
         if (data) {
           const users = data.recipientChannels.users
+          const areChats = data.recipientChannels.users.length === 0 ? false : true
           const lastMessages = data.recipientChannels.lastMessages
           const channelIds = data.recipientChannels.channelIds
           for (var i = 0; i < users.length; i++) {
@@ -67,14 +68,15 @@ export default function Discussion({ navigation }) {
                     Discussions
                 </Text>
                 </View>
-                <FlatList
+                {areChats && <FlatList
                   data={users}
                   renderItem={({ item }) =>
                     <Item name={item.prenom + ' ' + item.nom.charAt(0) + '.'}
                       message={item.message} image={item.avatar}
                       navigation={navigation} channelId={item.channelId} />}
                   keyExtractor={item => item.id}
-                />
+                />}
+                {!areChats && <Text>Aucune discussion actuellement</Text>}
               </SafeAreaView>
             </View>
           )
