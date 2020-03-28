@@ -2,7 +2,7 @@ import { AppLoading, Asset, Linking } from 'expo'
 import React, { Component } from 'react'
 import { StyleSheet, View, Text, Platform, ActivityIndicator, AsyncStorage } from 'react-native'
 import { Bubble, GiftedChat, SystemMessage } from 'react-native-gifted-chat'
-import { Query } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import CustomActions from './components/CustomActions'
@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
   container: { flex: 1 },
 })
 
-const DATA = gql`
-  query queryMessages($id: String!){
+const allMessages = gql`
+  query allMessages($id: String!){
     channel(id: $id) {
     messages {
       id
@@ -24,13 +24,18 @@ const DATA = gql`
       createdAt
       sentBy {
         id
-        prenom
       }
     }
   }
   }
 `
-export default class App extends Component {
+const createMessage = gql`
+  mutation createMessage($channelId: String, $recipient: String, $text: String!) {
+  createMessage(channelId: $channelId, recipient: $recipient, text: $text)
+} 
+`
+
+class App extends Component {
   state = {
     inverted: false,
     step: 0,
@@ -54,6 +59,42 @@ export default class App extends Component {
       appIsReady: true,
       isTyping: false,
     })
+
+    this.createMessageSubscription = this.props.allMessagesQuery.subscribeToMore({
+      document: gql`
+        subscription ($channelId: String!) {
+          newMessage(channelId: $channelId) {
+              id
+              text
+              userId
+              createdAt
+              channelId
+          }
+        }
+      `,
+      variables: { channelId: this.props.route.params.channelId },
+      updateQuery: (previousState, { subscriptionData }) => {
+        const { data } = subscriptionData
+        const newMessage = this.formattingSubscription(data)
+
+        const messages = previousState.channel.messages.concat(newMessage)
+
+        const newAllMessages = [
+          newMessage,
+          ...previousState.channel.messages
+        ]
+
+        return {
+          ...previousState,
+          channel: {
+            ...previousState.channel,
+            messages: newAllMessages
+          }
+        }
+      },
+      onError: (err) => console.error(err),
+    })
+
   }
 
   componentWillUnmount() {
@@ -85,19 +126,29 @@ export default class App extends Component {
   }
 
   onSend = (messages = []) => {
-    console.log('pressed', messages)
-    const step = this.state.step + 1
-    this.setState((previousState: any) => {
-      const sentMessages = [{ ...messages[0], sent: true, received: true }]
-      return {
-        messages: GiftedChat.append(
-          previousState.messages,
-          sentMessages,
-          Platform.OS !== 'web',
-        ),
-        step,
+    this.props.createMessageMutation({
+      variables: {
+        channelId: this.props.route.params.channelId,
+        recipient: '',
+        text: messages[0].text
       }
     })
+    // const step = this.state.step + 1
+    // this.setState((previousState: any) => {
+    //   const sentMessages = [{ ...messages[0], sent: true, received: true }]
+    //   return {
+    //     messages: GiftedChat.append(
+    //       previousState.messages,
+    //       sentMessages,
+    //       Platform.OS !== 'web',
+    //     ),
+    //     step,
+    //   }
+    // })
+    //const createMessage = gql`
+    // mutation createMessage($channelId: String, $recipient: String, $text: String!) {
+    //   createMessage(channelId: $channelId, recipient: $recipient, text: $text)
+    // }
     // for demo purpose
     // setTimeout(() => this.botSend(step), Math.round(Math.random() * 1000))
   }
@@ -182,8 +233,16 @@ export default class App extends Component {
     return JSON.parse(newData)
   }
 
+  formattingSubscription = (data) => {
+    const newData = data.newMessage
+    newData.sentBy = { __typename: "User", id: data.newMessage.userId }
+
+    delete newData.channelId
+    delete newData.userId
+    return newData
+  }
   getUser = () => {
-    const id = '5e7dfde324aa9a0007929a6b' // await AsyncStorage.getItem('id') || 
+    const id = '5e7710e0be07770007331386' // await AsyncStorage.getItem('id') || 
     const prenom = 'Abou' //await AsyncStorage.getItem('prenom') || 
     return { _id: id }
   }
@@ -192,50 +251,59 @@ export default class App extends Component {
     if (!this.state.appIsReady) {
       return <AppLoading />
     }
+    // const { data: { loading, allMessagesQuery } } = this.props
 
-    const id = this.props.route.params.channelId
+    // const id = this.props.route.params.channelId
     const { name } = this.props.route.params
-    return (
-      <Query query={DATA} variables={{ id }} >
-        {({ loading, data }) => {
-          if (loading) return <ActivityIndicator size='large' color='black' />
+    const user = this.getUser()
+    var messages = []
+    if (this.props.allMessagesQuery.channel) {
+      messages = this.props.allMessagesQuery.channel.messages
+    }
 
-          const user = this.getUser()
-          return (
-            <View
-              style={styles.container}
-              accessible
-              accessibilityLabel='main'
-              testID='main'
-            >
-              <NavBar nom={name} navigation={this.props.navigation} />
-              <GiftedChat
-                messages={this.formatting(data.channel.messages)}
-                onSend={this.onSend}
-                locale={this.state.locale}
-                loadEarlier={this.state.loadEarlier}
-                onLoadEarlier={this.onLoadEarlier}
-                isLoadingEarlier={this.state.isLoadingEarlier}
-                parsePatterns={this.parsePatterns}
-                user={user}
-                scrollToBottom
-                onLongPressAvatar={user => alert(JSON.stringify(user))}
-                onPressAvatar={() => alert('short press')}
-                keyboardShouldPersistTaps='never'
-                renderActions={this.renderCustomActions}
-                placeholder={this.state.placeHolder}
-                renderBubble={this.renderBubble}
-                renderSystemMessage={this.renderSystemMessage}
-                renderCustomView={this.renderCustomView}
-                quickReplyStyle={{ borderRadius: 2 }}
-                renderQuickReplySend={this.renderQuickReplySend}
-                inverted={Platform.OS !== 'web'}
-                timeTextStyle={{ left: { color: 'red' }, right: { color: 'yellow' } }}
-              />
-            </View>
-          )
-        }}
-      </Query >
+    return (
+      <View
+        style={styles.container}
+        accessible
+        accessibilityLabel='main'
+        testID='main'
+      >
+        <NavBar nom={name} navigation={this.props.navigation} />
+        {messages && <GiftedChat
+          messages={this.formatting(messages || [])}
+          onSend={this.onSend}
+          locale={this.state.locale}
+          loadEarlier={this.state.loadEarlier}
+          onLoadEarlier={this.onLoadEarlier}
+          isLoadingEarlier={this.state.isLoadingEarlier}
+          parsePatterns={this.parsePatterns}
+          user={user}
+          scrollToBottom
+          onLongPressAvatar={user => alert(JSON.stringify(user))}
+          onPressAvatar={() => alert('short press')}
+          keyboardShouldPersistTaps='never'
+          renderActions={this.renderCustomActions}
+          placeholder={this.state.placeHolder}
+          renderBubble={this.renderBubble}
+          renderSystemMessage={this.renderSystemMessage}
+          renderCustomView={this.renderCustomView}
+          quickReplyStyle={{ borderRadius: 2 }}
+          renderQuickReplySend={this.renderQuickReplySend}
+          inverted={Platform.OS !== 'web'}
+          timeTextStyle={{ left: { color: 'red' }, right: { color: 'yellow' } }}
+        />}
+      </View>
+
     )
   }
 }
+
+export default graphql(allMessages, {
+  name: 'allMessagesQuery', options: props => ({
+    fetchPolicy: 'cache-and-network',
+    variables: {
+      id: props.route.params.channelId
+    }
+  })
+})
+  (graphql(createMessage, { name: 'createMessageMutation' })(App))

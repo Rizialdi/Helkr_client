@@ -46,7 +46,7 @@ function Item({ name, message, image, channelId, navigation }) {
 export default function Discussion({ navigation }) {
 
   return (
-    <Query query={DATA}>
+    <Query query={DATA} pollInterval={500}>
       {({ loading, data }) => {
         if (loading) return <ActivityIndicator size='large' color='black' />
 
@@ -125,3 +125,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
   }
 })
+
+
