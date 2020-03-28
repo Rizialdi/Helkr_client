@@ -45,7 +45,6 @@ class App extends Component {
     isLoadingEarlier: false,
     appIsReady: false,
     isTyping: false,
-    locale: 'Fr',
     placeHolder: 'Ecrivez votre message'
   }
 
@@ -133,24 +132,6 @@ class App extends Component {
         text: messages[0].text
       }
     })
-    // const step = this.state.step + 1
-    // this.setState((previousState: any) => {
-    //   const sentMessages = [{ ...messages[0], sent: true, received: true }]
-    //   return {
-    //     messages: GiftedChat.append(
-    //       previousState.messages,
-    //       sentMessages,
-    //       Platform.OS !== 'web',
-    //     ),
-    //     step,
-    //   }
-    // })
-    //const createMessage = gql`
-    // mutation createMessage($channelId: String, $recipient: String, $text: String!) {
-    //   createMessage(channelId: $channelId, recipient: $recipient, text: $text)
-    // }
-    // for demo purpose
-    // setTimeout(() => this.botSend(step), Math.round(Math.random() * 1000))
   }
 
   parsePatterns = (_linkStyle: any) => {
@@ -265,14 +246,11 @@ class App extends Component {
       <View
         style={styles.container}
         accessible
-        accessibilityLabel='main'
-        testID='main'
       >
         <NavBar nom={name} navigation={this.props.navigation} />
         {messages && <GiftedChat
           messages={this.formatting(messages || [])}
           onSend={this.onSend}
-          locale={this.state.locale}
           loadEarlier={this.state.loadEarlier}
           onLoadEarlier={this.onLoadEarlier}
           isLoadingEarlier={this.state.isLoadingEarlier}
