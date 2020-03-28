@@ -10,6 +10,7 @@ import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
 import { persistCache } from 'apollo-cache-persist';
+import { setContext } from 'apollo-link-context';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { AsyncStorage } from 'react-native';
 import { HttpLink } from 'apollo-link-http';
@@ -41,6 +42,19 @@ const wsLink = new WebSocketLink({
   }
 });
 
+// TODO change token
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTc3MTBlMGJlMDc3NzAwMDczMzEzODYiLCJpYXQiOjE1ODUzOTQ5NzZ9.C7oLhp8sN02qeC1D4axvJ63h1I8rV_beyHE1R5HX1fI" // localStorage.getItem('token');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
+
 // using the ability to split links, you can send data to each link
 // depending on what kind of operation is being sent
 const link = split(
@@ -52,8 +66,8 @@ const link = split(
       definition.operation === 'subscription'
     );
   },
-  wsLink,
-  httpLink,
+  authLink.concat(wsLink),
+  authLink.concat(httpLink),
 );
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
