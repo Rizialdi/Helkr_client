@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { AppLoading } from "expo";
+import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
-import { Asset } from "expo-asset";
+import { Asset } from 'expo-asset';
 
 import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
@@ -16,10 +16,10 @@ import { AsyncStorage } from 'react-native';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 
-import Navigation from "./navigation";
-import { Block } from './components'
+import Navigation from './navigation';
+import { Block } from './components';
 
-import { IP_ADDRESS } from "./config"
+import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
 
 // TODO change the ip address before production
 const cache = new InMemoryCache();
@@ -31,12 +31,12 @@ persistCache({
 
 // Create an http link:
 const httpLink = new HttpLink({
-  uri: `http://${IP_ADDRESS}:4000`
+  uri: `http://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: `ws://${IP_ADDRESS}:4000`,
+  uri: `ws://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`,
   options: {
     reconnect: true
   }
@@ -45,14 +45,14 @@ const wsLink = new WebSocketLink({
 // TODO change token
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZTc3MTBlMGJlMDc3NzAwMDczMzEzODYiLCJpYXQiOjE1ODUzOTQ5NzZ9.C7oLhp8sN02qeC1D4axvJ63h1I8rV_beyHE1R5HX1fI" // localStorage.getItem('token');
+  const token = localStorage.getItem('token');
   // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      authorization: token ? `Bearer ${token}` : ''
     }
-  }
+  };
 });
 
 // using the ability to split links, you can send data to each link
@@ -67,7 +67,7 @@ const link = split(
     );
   },
   authLink.concat(wsLink),
-  authLink.concat(httpLink),
+  authLink.concat(httpLink)
 );
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
@@ -93,19 +93,18 @@ export default class App extends React.Component<Props> {
   };
 
   handleResourcesAsync = async () => {
-
     await Font.loadAsync({
-      'josefinBold': require('./assets/fonts/JosefinSans-Bold.ttf'),
-      'josefinLight': require('./assets/fonts/JosefinSans-Light.ttf'),
-      'josefinRegular': require('./assets/fonts/JosefinSans-Regular.ttf'),
-      'josefinSemiBold': require('./assets/fonts/JosefinSans-SemiBold.ttf'),
-      'rockSalt': require('./assets/fonts/RockSalt-Regular.ttf'),
-      'serifRegular': require('./assets/fonts/SourceSerifPro-Regular.ttf'),
-      'serifBold': require('./assets/fonts/SourceSerifPro-Bold.ttf'),
-      'serifSemiBold': require('./assets/fonts/SourceSerifPro-SemiBold.ttf'),
+      josefinBold: require('./assets/fonts/JosefinSans-Bold.ttf'),
+      josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
+      josefinRegular: require('./assets/fonts/JosefinSans-Regular.ttf'),
+      josefinSemiBold: require('./assets/fonts/JosefinSans-SemiBold.ttf'),
+      rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
+      serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
+      serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
+      serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf')
     });
 
-    const cacheImages = images.map(image => {
+    const cacheImages = images.map((image) => {
       return Asset.fromModule(image).downloadAsync();
     });
 
@@ -118,7 +117,7 @@ export default class App extends React.Component<Props> {
         <AppLoading
           // @ts-ignore
           startAsync={this.handleResourcesAsync}
-          onError={error => console.warn(error)}
+          onError={(error) => console.warn(error)}
           onFinish={() => this.setState({ isLoadingComplete: true })}
         />
       );
@@ -139,6 +138,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

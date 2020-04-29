@@ -1,0 +1,39 @@
+diff --git a/node_modules/react-native-form-validator/index.js b/node_modules/react-native-form-validator/index.d.ts
+similarity index 90%
+rename from node_modules/react-native-form-validator/index.js
+rename to node_modules/react-native-form-validator/index.d.ts
+index 86128b7..27c91f3 100644
+--- a/node_modules/react-native-form-validator/index.js
++++ b/node_modules/react-native-form-validator/index.d.ts
+@@ -2,12 +2,12 @@
+ 
+ import PropTypes from 'prop-types';
+ import { Component } from 'react';
+-import defaultMessages from './defaultMessages';
+-import defaultRules from './defaultRules';
++import defaultMessages from 'react-native-form-validator/defaultMessages';
++import defaultRules from 'react-native-form-validator/defaultRules';
+ 
+-export default class ValidationComponent extends Component {
++export default class ValidationComponent extends Component<Props>{
+ 
+-  constructor(props) {
++  constructor(props: Props) {
+       super(props);
+       // array to store error on each fields
+       // ex:
+@@ -133,9 +133,8 @@ export default class ValidationComponent extends Component {
+   }
+ }
+ 
+-// PropTypes for component
+-ValidationComponent.propTypes = {
+-  deviceLocale: PropTypes.string, // Used for language locale
+-  rules: PropTypes.object, // rules for validations
+-  messages : PropTypes.object // messages for validation errors
++type Props = {
++  deviceLocale: string, 
++  rules: object, 
++  messages : object 
+ }
+\ No newline at end of file

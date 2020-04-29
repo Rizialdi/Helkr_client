@@ -16,3 +16,4 @@ yarn.lock
 .DS_Store
 !**/.eslintrc*
 package-lock.json
+*.lock*
