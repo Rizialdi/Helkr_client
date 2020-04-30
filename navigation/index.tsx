@@ -148,9 +148,24 @@ const MyMainStack = ({ token }) => {
             component={Verification}
             options={{ headerShown: false }}
           />
-          {/* <MainStack.Screen name="PrincipalView" children={createBottomTabs} options={{ headerShown: false }} />
-            <MainStack.Screen name="Discussion" component={Discussion} options={({ route }) => ({ headerShown: false, title: "" })} />
-            <MainStack.Screen name="DetailCategory" component={DetailCategory} options={({ route }) => ({ headerShown: true, title: route.params.category.name })} /> */}
+          <MainStack.Screen
+            name="PrincipalView"
+            children={createBottomTabs}
+            options={{ headerShown: false }}
+          />
+          <MainStack.Screen
+            name="Discussion"
+            component={Discussion}
+            options={({ route }) => ({ headerShown: false, title: '' })}
+          />
+          <MainStack.Screen
+            name="DetailCategory"
+            component={DetailCategory}
+            options={({ route }) => ({
+              headerShown: true,
+              title: route.params.category.name
+            })}
+          />
         </>
       )}
     </MainStack.Navigator>
