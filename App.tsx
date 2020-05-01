@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, AsyncStorage } from 'react-native';
 
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font';
@@ -12,7 +12,6 @@ import { ApolloClient } from 'apollo-client';
 import { persistCache } from 'apollo-cache-persist';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { AsyncStorage } from 'react-native';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 
@@ -31,11 +30,13 @@ persistCache({
 
 // Create an http link:
 const httpLink = new HttpLink({
+  //TODO https
   uri: `http://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`
 });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
+  //TODO: wss
   uri: `ws://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`,
   options: {
     reconnect: true
@@ -43,9 +44,9 @@ const wsLink = new WebSocketLink({
 });
 
 // TODO change token
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = localStorage.getItem('token');
+  const token = await AsyncStorage.getItem('token');
   // return the headers to the context so httpLink can read them
   return {
     headers: {

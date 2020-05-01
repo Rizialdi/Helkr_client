@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import Image from 'react-native-remote-svg';
 import { AsyncStorage, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { theme } from '../constants';
-import Image from 'react-native-remote-svg';
 
+import { theme } from '../constants';
+
+import Screen from '../screens/Screen';
 import Accueil from '../screens/Accueil';
-import BienvenueFirst from '../screens/BienvenueFirst';
-import Discussions from '../screens/Discussions/Discussions';
-import Discussion from '../screens/Discussions/Discussion';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
 import Publier from '../screens/Publier';
+import Verification from '../screens/Verification';
 import DetailCategory from '../screens/DetailCategory';
 import Identification from '../screens/Identification';
 import Enregistrement from '../screens/Enregistrement';
-import Verification from '../screens/Verification';
-
-import Screen from '../screens/Screen';
+import BienvenueFirst from '../screens/BienvenueFirst';
+import Discussions from '../screens/Discussions/Discussions';
+import Discussion from '../screens/Discussions/Discussion';
 
 const MainStack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -115,7 +115,7 @@ const MyMainStack = ({ token }) => {
           <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
-            options={({ route }) => ({
+            options={({ route }: route) => ({
               headerShown: true,
               title: route.params.category.name
             })}
@@ -161,7 +161,7 @@ const MyMainStack = ({ token }) => {
           <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
-            options={({ route }) => ({
+            options={({ route }: route) => ({
               headerShown: true,
               title: route.params.category.name
             })}
@@ -193,4 +193,10 @@ export default () => {
       <MyMainStack token={token} />
     </NavigationContainer>
   );
+};
+
+type route = {
+  route: {
+    params;
+  };
 };

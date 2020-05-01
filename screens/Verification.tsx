@@ -154,7 +154,6 @@ export class Verification extends Component<Props, State> {
               data: responseAsJson.data
             });
           } else {
-            console.log('darta', responseAsJson);
             this.setState(
               {
                 loading: false,
