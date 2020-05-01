@@ -1,4 +1,3 @@
-import Image from 'react-native-remote-svg';
 import { AsyncStorage, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -45,12 +44,7 @@ const createBottomTabs = () => {
         component={Postuler}
         options={{
           tabBarLabel: 'Postuler',
-          tabBarIcon: () => (
-            <Image
-              source={require('../assets/icons/choice.svg')}
-              style={{ width: 30, height: 30 }}
-            />
-          )
+          tabBarIcon: () => <Icon name="tagso" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
@@ -66,12 +60,7 @@ const createBottomTabs = () => {
         component={Discussions}
         options={{
           tabBarLabel: 'Discussions',
-          tabBarIcon: () => (
-            <Image
-              source={require('../assets/icons/chat.svg')}
-              style={{ width: 24, height: 24 }}
-            />
-          )
+          tabBarIcon: () => <Icon name="message1" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
@@ -79,12 +68,7 @@ const createBottomTabs = () => {
         component={Profile}
         options={{
           tabBarLabel: 'Profil',
-          tabBarIcon: () => (
-            <Image
-              source={require('../assets/icons/profile.svg')}
-              style={{ width: 24, height: 24 }}
-            />
-          )
+          tabBarIcon: () => <Icon name="user" size={24} color="black" />
         }}
       />
     </MaterialBottomTabs.Navigator>

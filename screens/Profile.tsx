@@ -1,85 +1,270 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  AsyncStorage
+} from 'react-native';
 import { theme, mocks } from '../constants';
+import Icon from 'react-native-vector-icons/Octicons';
 
 interface Profile {
-  image;
-  username;
-  address;
-  count;
-  tags;
+  username: string;
+  address: string;
+  stars: number;
+  count: number;
+  image: any;
+  tags: string[];
+  description: string;
+  avis: { name: string; tag: string; stars: number; evaluation: string }[];
+  id: string;
 }
-export default function Profile() {
-  const [profile, setProfile] = useState<Profile>();
+
+export default function Profile({ navigation }) {
+  const [profile, setProfile] = useState<Profile>(mocks.profile);
   useEffect(() => setProfile(mocks.profile));
+  const id = profile.id;
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          marginTop: 40,
-          marginBottom: 20,
-          marginHorizontal: theme.sizes.base * 2
-        }}
-      >
-        <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>Profil</Text>
-      </View>
-      <View style={styles.header}>
-        <View style={{ flex: 0.3, alignItems: 'center' }}>
-          <TouchableOpacity
-            style={{
-              width: 100,
-              height: 100,
-              borderRadius: 50,
-              overflow: 'hidden',
-              margin: 'auto'
-            }}
-          >
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TouchableOpacity
+          style={styles.titleBar}
+          onPress={() => navigation.navigate('Reglages', { profile })}
+        >
+          <Icon name="kebab-vertical" size={24} color="#52575D" />
+        </TouchableOpacity>
+
+        <View style={{ alignSelf: 'center' }}>
+          <TouchableOpacity style={styles.profileImage}>
             <Image
               source={profile.image}
+              style={styles.image}
               resizeMode="cover"
-              style={{ width: '100%', height: '100%' }}
-            />
+            ></Image>
           </TouchableOpacity>
+          <View style={styles.dm}>
+            <Icon name="verified" size={18} color="#DFD8C8" />
+          </View>
+          <View style={styles.verified}>
+            <Icon name="briefcase" size={30} color="#DFD8C8" />
+          </View>
         </View>
-        <View style={{ flex: 0.75, alignSelf: 'flex-start', paddingLeft: 10 }}>
-          <Text style={styles.username}>{profile.username}</Text>
-          <Text style={styles.address}>{profile.address}</Text>
-          <Text style={styles.count}>({profile.count} commentaires)</Text>
-          <Text style={styles.tags}>{profile.tags}</Text>
+
+        <View style={styles.infoContainer}>
+          <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>
+            {profile.username}
+          </Text>
+          <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>
+            {profile.address}
+          </Text>
         </View>
-      </View>
-      <View style={{ flex: 0.7, paddingLeft: 20 }}>
-        <Text>A completer</Text>
-      </View>
-    </View>
+
+        <View style={styles.statsContainer}>
+          <View style={styles.statsBox}>
+            <Text style={[styles.text, { fontSize: 24 }]}>483</Text>
+            <Text style={[styles.text, styles.subText]}>Accomplies</Text>
+          </View>
+          <View
+            style={[
+              styles.statsBox,
+              {
+                borderColor: '#DFD8C8',
+                borderLeftWidth: 1,
+                borderRightWidth: 1
+              }
+            ]}
+          >
+            <Text style={[styles.text, { fontSize: 24 }]}>45,844</Text>
+            <Text style={[styles.text, styles.subText]}>Proposées</Text>
+          </View>
+          <View style={styles.statsBox}>
+            <Text style={[styles.text, { fontSize: 24 }]}>3.5/5</Text>
+            <Text style={[styles.text, styles.subText]}>Moyenne</Text>
+          </View>
+        </View>
+        <View style={styles.delimiter}></View>
+        <View style={[styles.description]}>
+          <Text
+            style={[
+              styles.text,
+              { fontWeight: '300', fontSize: 24, paddingLeft: 20 }
+            ]}
+          >
+            Description
+          </Text>
+          <Text style={[styles.text, styles.subText2]}>
+            {profile.description}
+          </Text>
+        </View>
+        <View style={styles.delimiter}></View>
+        <TouchableOpacity
+          style={styles.lineStars}
+          onPress={() => navigation.navigate('Avis', { id })}
+        >
+          <View style={{ flexDirection: 'row' }}>
+            <Icon name="star" size={25} color="#52575D" />
+            <Text
+              style={[
+                styles.text,
+                { paddingLeft: 20, fontSize: theme.sizes.base * 1.2 }
+              ]}
+            >
+              3.5/5
+            </Text>
+          </View>
+          <Icon name="chevron-right" size={24} color="#52575D" />
+        </TouchableOpacity>
+        <View style={styles.delimiter}></View>
+        <View style={[styles.description]}>
+          <Text
+            style={[
+              styles.text,
+              { fontWeight: '300', fontSize: 24, paddingLeft: 20 }
+            ]}
+          >
+            Tags
+          </Text>
+          <Text style={[styles.text, styles.subText2]}>{profile.tags}</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start'
+    backgroundColor: '#FFF'
   },
-  header: {
+  text: {
+    fontFamily: 'HelveticaNeue',
+    color: '#52575D'
+  },
+  image: {
+    flex: 1,
+    height: '100%',
+    width: '100%'
+  },
+  titleBar: {
     flexDirection: 'row',
-    flex: 0.25,
-    marginHorizontal: 20
+    justifyContent: 'flex-end',
+    marginTop: 24,
+    marginHorizontal: 16
   },
-  username: {
-    fontFamily: 'josefinBold',
-    fontSize: 20
+  subText: {
+    fontSize: 12,
+    color: '#AEB5BC',
+    textTransform: 'uppercase',
+    fontWeight: '500'
   },
-  address: {
-    fontFamily: 'josefinRegular',
-    fontSize: 16
+  subText2: {
+    fontSize: theme.sizes.body,
+    color: '#AEB5BC',
+    fontWeight: '500',
+    textAlign: 'justify',
+    paddingHorizontal: 20,
+    marginTop: 10
   },
-  count: {
-    fontFamily: 'josefinLight',
-    fontSize: 14
+  profileImage: {
+    width: 180,
+    height: 180,
+    borderRadius: 100,
+    overflow: 'hidden'
   },
-  tags: {
-    fontFamily: 'josefinRegular',
-    fontSize: 14
+  dm: {
+    backgroundColor: '#41444B',
+    position: 'absolute',
+    top: 20,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  verified: {
+    backgroundColor: 'green',
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  infoContainer: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: 16
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 32
+  },
+  statsBox: {
+    alignItems: 'center',
+    flex: 1
+  },
+  mediaImageContainer: {
+    width: 180,
+    height: 200,
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginHorizontal: 10
+  },
+  mediaCount: {
+    backgroundColor: '#41444B',
+    position: 'absolute',
+    top: '50%',
+    marginTop: -50,
+    marginLeft: 30,
+    width: 100,
+    height: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 12,
+    shadowColor: 'rgba(0, 0, 0, 0.38)',
+    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 20,
+    shadowOpacity: 1
+  },
+  recent: {
+    marginLeft: 78,
+    marginTop: 32,
+    marginBottom: 6,
+    fontSize: 10
+  },
+  recentItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 16
+  },
+  activityIndicator: {
+    backgroundColor: '#CABFAB',
+    padding: 4,
+    height: 12,
+    width: 12,
+    borderRadius: 6,
+    marginTop: 3,
+    marginRight: 20
+  },
+  description: {
+    marginTop: 10
+  },
+  delimiter: {
+    borderTopColor: '#DFD8C8',
+    borderTopWidth: 0.5,
+    marginTop: 25
+  },
+  lineStars: {
+    flexDirection: 'row',
+    marginTop: 25,
+    justifyContent: 'space-between',
+    marginHorizontal: 16
   }
 });
