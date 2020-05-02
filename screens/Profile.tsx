@@ -6,8 +6,7 @@ import {
   SafeAreaView,
   Image,
   ScrollView,
-  TouchableOpacity,
-  AsyncStorage
+  TouchableOpacity
 } from 'react-native';
 import { theme, mocks } from '../constants';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -33,9 +32,9 @@ export default function Profile({ navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           style={styles.titleBar}
-          onPress={() => navigation.navigate('Reglages', { profile })}
+          onPress={() => navigation.navigate('Reglages')}
         >
-          <Icon name="kebab-vertical" size={24} color="#52575D" />
+          <Icon name="gear" size={24} color="#52575D" />
         </TouchableOpacity>
 
         <View style={{ alignSelf: 'center' }}>
@@ -103,7 +102,7 @@ export default function Profile({ navigation }) {
         <View style={styles.delimiter}></View>
         <TouchableOpacity
           style={styles.lineStars}
-          onPress={() => navigation.navigate('Avis', { id })}
+          onPress={() => navigation.navigate('Avis')}
         >
           <View style={{ flexDirection: 'row' }}>
             <Icon name="star" size={25} color="#52575D" />
@@ -113,7 +112,7 @@ export default function Profile({ navigation }) {
                 { paddingLeft: 20, fontSize: theme.sizes.base * 1.2 }
               ]}
             >
-              3.5/5
+              3.5/5 - 8 avis
             </Text>
           </View>
           <Icon name="chevron-right" size={24} color="#52575D" />

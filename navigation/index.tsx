@@ -12,6 +12,8 @@ import Accueil from '../screens/Accueil';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
 import Publier from '../screens/Publier';
+import Reglages from '../screens/Reglages';
+import Avis from '../screens/Avis';
 import Verification from '../screens/Verification';
 import DetailCategory from '../screens/DetailCategory';
 import Identification from '../screens/Identification';
@@ -109,6 +111,16 @@ const MyMainStack = ({ token }) => {
             component={Discussion}
             options={({ route }) => ({ headerShown: false, title: '' })}
           />
+          <MainStack.Screen
+            name="Reglages"
+            component={Reglages}
+            options={({ route }) => ({ headerShown: true, title: '' })}
+          />
+          <MainStack.Screen
+            name="Avis"
+            component={Avis}
+            options={({ route }) => ({ headerShown: true, title: '' })}
+          />
         </>
       ) : (
         <>
@@ -149,6 +161,16 @@ const MyMainStack = ({ token }) => {
               headerShown: true,
               title: route.params.category.name
             })}
+          />
+          <MainStack.Screen
+            name="Reglages"
+            component={Reglages}
+            options={({ route }) => ({ headerShown: true, title: '' })}
+          />
+          <MainStack.Screen
+            name="Avis"
+            component={Avis}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
         </>
       )}
