@@ -10,7 +10,7 @@ import { theme } from '../constants';
 import Screen from '../screens/Screen';
 import Accueil from '../screens/Accueil';
 import Postuler from '../screens/Postuler';
-import Profile from '../screens/Profile';
+import Profile from '../screens/Profile/Profile';
 import Publier from '../screens/Publier';
 import Reglages from '../screens/Reglages';
 import Avis from '../screens/Avis';
