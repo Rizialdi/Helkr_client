@@ -3,18 +3,28 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 
-export default ({ image, username, address }) => (
+export default ({
+  image,
+  username,
+  address,
+  verified = false,
+  pro = false
+}) => (
   <>
     <View style={{ alignSelf: 'center' }}>
       <TouchableOpacity style={styles.profileImage}>
         <Image source={image} style={styles.image} resizeMode="cover"></Image>
       </TouchableOpacity>
-      <View style={styles.dm}>
-        <Icon name="verified" size={18} color="#DFD8C8" />
-      </View>
-      <View style={styles.verified}>
-        <Icon name="briefcase" size={30} color="#DFD8C8" />
-      </View>
+      {verified && (
+        <View style={styles.dm}>
+          <Icon name="verified" size={18} color="#DFD8DF" />
+        </View>
+      )}
+      {pro && (
+        <View style={styles.verified}>
+          <Icon name="briefcase" size={30} color="#DFD8C8" />
+        </View>
+      )}
     </View>
     <View style={styles.infoContainer}>
       <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>
@@ -39,7 +49,7 @@ const styles = StyleSheet.create({
   },
 
   dm: {
-    backgroundColor: '#41444B',
+    backgroundColor: 'green',
     position: 'absolute',
     top: 20,
     width: 40,

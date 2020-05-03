@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  Image
 } from 'react-native';
 import {
   Tag,
@@ -43,6 +44,19 @@ const STATS = gql`
   }
 `;
 
+const INFO = gql`
+  query userById($id: String!) {
+    userById(id: $id) {
+      nom
+      prenom
+      avatar
+      address
+      verified
+      description
+      professional
+    }
+  }
+`;
 export default function Profile({ navigation }) {
   const [profile, setProfile] = useState<Profile>(mocks.profile);
   const [id, setId] = useState('');
@@ -59,13 +73,44 @@ export default function Profile({ navigation }) {
   }, []);
 
   const {
-    data: { getUserStats = { done: 0, proposed: 0, average: 0 } } = {}
+    data: {
+      getUserStats: { done, proposed, average } = {
+        done: 0,
+        proposed: 0,
+        average: 0
+      }
+    } = {}
   } = useQuery(STATS, {
     variables: { id }
   });
 
+  const {
+    data: {
+      userById: {
+        nom,
+        tags,
+        prenom,
+        avatar,
+        address,
+        description,
+        verified,
+        professional
+      } = {
+        nom: 'John',
+        prenom: 'Doe',
+        tags: [],
+        avatar: null,
+        address: '',
+        description: '_',
+        verified: false,
+        professional: false
+      }
+    } = {}
+  } = useQuery(INFO, {
+    variables: { id }
+  });
+
   useEffect(() => setProfile(mocks.profile));
-  console.log('id', getUserStats);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -77,23 +122,28 @@ export default function Profile({ navigation }) {
         </TouchableOpacity>
 
         <ProfilContainer
-          image={profile.image}
-          username={profile.username}
-          address={profile.address}
+          image={
+            avatar || require('../../assets/images/default-user-image.png')
+          }
+          username={
+            prenom.replace(/^./, prenom[0].toUpperCase()) +
+            ' ' +
+            nom.charAt(0) +
+            '.'
+          }
+          address={address}
+          verified={verified}
+          pro={professional}
         />
-        <StatsContainer
-          done={getUserStats.done}
-          proposed={getUserStats.proposed}
-          average={getUserStats.average}
-        />
+        <StatsContainer done={done} proposed={proposed} average={average} />
         <View style={styles.delimiter}></View>
-        <Description description={profile.description} />
+        <Description description={description} />
         <View style={styles.delimiter}></View>
         <TouchableOpacity
           style={styles.lineStars}
           onPress={() => navigation.navigate('Avis')}
         >
-          <AvgContainer average={4} done={8} />
+          <AvgContainer average={average} done={done} />
           <Icon name="chevron-right" size={24} color="#52575D" />
         </TouchableOpacity>
         <View style={styles.delimiter}></View>
@@ -106,7 +156,7 @@ export default function Profile({ navigation }) {
           >
             Tags
           </Text>
-          <Tag tags={profile.tags} />
+          <Tag tags={tags} />
         </View>
       </ScrollView>
     </SafeAreaView>
