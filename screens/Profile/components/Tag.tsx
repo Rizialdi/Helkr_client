@@ -2,7 +2,7 @@ import React from 'react';
 import { theme } from '../../../constants';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default ({ tags }) => (
+export default ({ tags = ['_'] }) => (
   <>
     <Text style={[styles.text, styles.subText2]}>{tags}</Text>
   </>

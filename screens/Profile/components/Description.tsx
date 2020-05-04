@@ -12,7 +12,7 @@ export default ({ description }) => (
     >
       Description
     </Text>
-    <Text style={[styles.text, styles.subText2]}>{description}</Text>
+    <Text style={[styles.text, styles.subText2]}>{description || '_'}</Text>
   </View>
 );
 

@@ -31,7 +31,7 @@ export default ({
         {username}
       </Text>
       <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>
-        {address}
+        {address || '_'}
       </Text>
     </View>
   </>

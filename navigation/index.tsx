@@ -98,7 +98,7 @@ const MyMainStack = ({ token }) => {
             children={createBottomTabs}
             options={{ headerShown: false }}
           />
-          <MainStack.Screen
+          {/* <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
             options={({ route }: route) => ({
@@ -115,7 +115,7 @@ const MyMainStack = ({ token }) => {
             name="Reglages"
             component={Reglages}
             options={({ route }) => ({ headerShown: true, title: '' })}
-          />
+          /> */}
           <MainStack.Screen
             name="Avis"
             component={Avis}
@@ -193,7 +193,7 @@ export default () => {
     })();
   }, []);
 
-  if (isLoading) return <BienvenueFirst />;
+  // if (isLoading) return <BienvenueFirst />;
   return (
     <NavigationContainer>
       <MyMainStack token={token} />

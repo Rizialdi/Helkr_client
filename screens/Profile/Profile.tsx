@@ -6,9 +6,10 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  AsyncStorage,
-  Image
+  AsyncStorage
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Octicons';
+
 import {
   Tag,
   Description,
@@ -16,23 +17,9 @@ import {
   StatsContainer,
   ProfilContainer
 } from './components';
-import { mocks } from '../../constants';
-import Icon from 'react-native-vector-icons/Octicons';
 
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-
-interface Profile {
-  username: string;
-  address: string;
-  stars: number;
-  count: number;
-  image: any;
-  tags: string[];
-  description: string;
-  avis: { name: string; tag: string; stars: number; evaluation: string }[];
-  id: string;
-}
 
 const STATS = gql`
   query getUserStats($id: String!) {
@@ -58,7 +45,6 @@ const INFO = gql`
   }
 `;
 export default function Profile({ navigation }) {
-  const [profile, setProfile] = useState<Profile>(mocks.profile);
   const [id, setId] = useState('');
 
   useEffect(() => {
@@ -71,7 +57,6 @@ export default function Profile({ navigation }) {
       }
     })();
   }, []);
-
   const {
     data: {
       getUserStats: { done, proposed, average } = {
@@ -81,7 +66,8 @@ export default function Profile({ navigation }) {
       }
     } = {}
   } = useQuery(STATS, {
-    variables: { id }
+    variables: { id },
+    pollInterval: 1000 * 3600 * 24
   });
 
   const {
@@ -98,19 +84,19 @@ export default function Profile({ navigation }) {
       } = {
         nom: 'John',
         prenom: 'Doe',
-        tags: [],
+        tags: ['_'],
         avatar: null,
-        address: '',
+        address: '_',
         description: '_',
         verified: false,
         professional: false
       }
     } = {}
   } = useQuery(INFO, {
-    variables: { id }
+    variables: { id },
+    pollInterval: 1000 * 3600 * 24
   });
 
-  useEffect(() => setProfile(mocks.profile));
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
