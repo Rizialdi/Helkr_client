@@ -7,16 +7,16 @@ import {
   ScrollView,
   TouchableOpacity,
   AsyncStorage,
-  Platform
+  Platform,
+  KeyboardAvoidingView
 } from 'react-native';
 import { ReactNativeFile } from 'apollo-upload-client';
-
-import { Tag, Description, ProfilContainer } from './components';
-
 import { useApolloClient, useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+
 import { theme } from '../../constants';
-import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../../config';
+import { Tag, Description, ProfilContainer } from './components';
+
 const INFO = gql`
   query userById($id: String!) {
     userById(id: $id) {
@@ -37,9 +37,22 @@ const SINGLE_UPLOAD_MUTATION = gql`
   }
 `;
 
+const DESCRIPTION_MUTATION = gql`
+  mutation descriptionUpdate($text: String!) {
+    descriptionUpdate(text: $text)
+  }
+`;
+
+const ADDRESS_MUTATION = gql`
+  mutation addressUpdate($text: String!) {
+    addressUpdate(text: $text)
+  }
+`;
 export default function Profile({ navigation, route: { params } }) {
   const [Id, setId] = useState('');
   const [image, setImage] = useState(null);
+  const [descriptionParent, setDescriptionParent] = useState(null);
+  const [addressParent, setAddressParent] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -69,7 +82,7 @@ export default function Profile({ navigation, route: { params } }) {
         prenom: 'Doe',
         tags: ['_'],
         avatar: null,
-        address: '_',
+        address: '',
         description: '_',
         verified: false,
         professional: false
@@ -77,11 +90,15 @@ export default function Profile({ navigation, route: { params } }) {
     } = {}
   } = useQuery(INFO, {
     variables: { id },
-    pollInterval: 1000 * 36 * 24
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000
   });
 
   const apolloClient = useApolloClient();
   const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
+  const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
+  const [addressMutation] = useMutation(ADDRESS_MUTATION);
 
   const getName = (chaine) =>
     String(chaine).split('/')[String(chaine).split('/').length - 1];
@@ -97,29 +114,14 @@ export default function Profile({ navigation, route: { params } }) {
         })
       : null;
 
-  console.log(pictureUrl);
   const save = () => {
-    // try {
-    //   pictureUrl ? onChangeImage(data) : null;
-    // } catch (error) {
-    //   console.log('erreur', error);
-    // }
-
-    fetch(`http://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        query: SINGLE_UPLOAD_MUTATION,
-        variables: { file: pictureUrl }
-      })
-    })
-      .then((response) => response.json())
-      .then((responseAsJson) => console.log(responseAsJson))
-      .catch((error) => {
-        throw new Error('Unable existence');
-      });
+    try {
+      pictureUrl ? onChangeImage(pictureUrl) : null;
+      descriptionParent ? onChangeDescription(descriptionParent) : null;
+      addressParent ? onChangeAddress(addressParent) : null;
+    } catch (error) {
+      throw new Error(error);
+    }
   };
 
   const onChangeImage = (file) => {
@@ -127,65 +129,94 @@ export default function Profile({ navigation, route: { params } }) {
       .then(() => {
         apolloClient.resetStore();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        throw new Error(err);
+      });
   };
+
+  const onChangeDescription = (text) => {
+    descriptionMutation({ variables: { text } })
+      .then(() => {
+        apolloClient.resetStore();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
+
+  const onChangeAddress = (text) => {
+    addressMutation({ variables: { text } })
+      .then(() => {
+        apolloClient.resetStore();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {(!params || !params.id) && (
-          <TouchableOpacity style={styles.titleBar} onPress={() => save()}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: theme.colors.primary,
-                textDecorationLine: 'underline'
-              }}
-            >
-              Sauvegarder
-            </Text>
-          </TouchableOpacity>
-        )}
-        <TouchableOpacity>
-          <ProfilContainer
-            image={
-              image
-                ? { uri: image }
-                : avatar ||
-                  require('../../assets/images/default-user-image.png')
-            }
-            username={
-              prenom.replace(/^./, prenom[0].toUpperCase()) +
-              ' ' +
-              nom.charAt(0) +
-              '.'
-            }
-            address={address}
-            verified={verified}
-            pro={professional}
-            parentCallback={setImage}
-          />
-        </TouchableOpacity>
-        <View style={styles.delimiter}></View>
-        <Description description={description} />
-        <View style={styles.delimiter}></View>
-        <View>
-          <Text
-            style={[
-              styles.text,
-              {
-                fontWeight: '300',
-                fontSize: 24,
-                paddingLeft: 20,
-                paddingBottom: 10
+      <KeyboardAvoidingView enabled={true} behavior="position">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {(!params || !params.id) && (
+            <TouchableOpacity style={styles.titleBar} onPress={() => save()}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: theme.colors.primary
+                }}
+              >
+                Sauvegarder
+              </Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity>
+            <ProfilContainer
+              image={
+                image
+                  ? { uri: image }
+                  : avatar
+                  ? { uri: avatar }
+                  : require('../../assets/images/default-user-image.png')
               }
-            ]}
-          >
-            Tags
-          </Text>
-          <Tag tags={tags} />
-        </View>
-      </ScrollView>
+              username={
+                prenom.replace(/^./, prenom[0].toUpperCase()) +
+                ' ' +
+                nom.charAt(0) +
+                '.'
+              }
+              address={address}
+              verified={verified}
+              pro={professional}
+              parentAddressCallback={setAddressParent}
+              parentCallback={setImage}
+            />
+          </TouchableOpacity>
+          <View style={styles.delimiter}></View>
+          <Description
+            description={description}
+            parentCallback={setDescriptionParent}
+          />
+          <View style={styles.delimiter}></View>
+          <View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontWeight: '300',
+                  fontSize: 24,
+                  paddingLeft: 20,
+                  paddingBottom: 10
+                }
+              ]}
+            >
+              Tags
+            </Text>
+            <Tag tags={tags} />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

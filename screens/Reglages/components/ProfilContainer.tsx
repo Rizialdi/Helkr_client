@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  TextInput
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -12,9 +18,11 @@ export default ({
   address,
   verified = false,
   pro = false,
-  parentCallback
+  parentCallback,
+  parentAddressCallback
 }) => {
   const [imagePicked, setImagePicked] = useState(null);
+  const [text, setText] = useState('');
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -25,6 +33,11 @@ export default ({
         );
       }
     }
+  };
+
+  const onChange = (text) => {
+    setText(text);
+    parentAddressCallback(text);
   };
 
   const pickImage = async () => {
@@ -79,9 +92,16 @@ export default ({
         <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>
           {username}
         </Text>
-        <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>
-          {address || '_'}
-        </Text>
+
+        <TextInput
+          style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}
+          maxLength={30}
+          placeholder={
+            text == '' && address == '' ? 'Ajouter une addresse.' : text
+          }
+          value={text ? text : address ? address : ''}
+          onChangeText={(text) => onChange(text)}
+        />
       </View>
     </>
   );

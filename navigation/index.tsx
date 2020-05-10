@@ -121,6 +121,11 @@ const MyMainStack = ({ token }) => {
             component={Avis}
             options={({ route }) => ({ headerShown: true, title: '' })}
           />
+          <MainStack.Screen
+            name="ProfilesNavigation"
+            component={Profile}
+            options={({ route }) => ({ headerShown: true, title: '' })}
+          />
         </>
       ) : (
         <>
@@ -170,6 +175,11 @@ const MyMainStack = ({ token }) => {
           <MainStack.Screen
             name="Avis"
             component={Avis}
+            options={({ route }) => ({ headerShown: true, title: '' })}
+          />
+          <MainStack.Screen
+            name="ProfilesNavigation"
+            component={Profile}
             options={({ route }) => ({ headerShown: true, title: '' })}
           />
         </>

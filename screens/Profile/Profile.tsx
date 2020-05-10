@@ -44,8 +44,8 @@ const INFO = gql`
     }
   }
 `;
-export default function Profile({ navigation }) {
-  const [id, setId] = useState('');
+export default function Profile({ navigation, route: { params } }) {
+  const [Id, setId] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -57,6 +57,9 @@ export default function Profile({ navigation }) {
       }
     })();
   }, []);
+
+  const id = params && params.id ? params.id : Id;
+
   const {
     data: {
       getUserStats: { done, proposed, average } = {
@@ -67,6 +70,8 @@ export default function Profile({ navigation }) {
     } = {}
   } = useQuery(STATS, {
     variables: { id },
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
     pollInterval: 1000 * 3600 * 24
   });
 
@@ -94,22 +99,27 @@ export default function Profile({ navigation }) {
     } = {}
   } = useQuery(INFO, {
     variables: { id },
-    pollInterval: 1000 * 3600 * 24
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000
   });
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <TouchableOpacity
-          style={styles.titleBar}
-          onPress={() => navigation.navigate('Reglages')}
-        >
-          <Icon name="gear" size={24} color="#52575D" />
-        </TouchableOpacity>
-
+        {params && params.id ? null : (
+          <TouchableOpacity
+            style={styles.titleBar}
+            onPress={() => navigation.navigate('Reglages')}
+          >
+            <Icon name="gear" size={24} color="#52575D" />
+          </TouchableOpacity>
+        )}
         <ProfilContainer
           image={
-            avatar || require('../../assets/images/default-user-image.png')
+            avatar
+              ? { uri: avatar }
+              : require('../../assets/images/default-user-image.png')
           }
           username={
             prenom.replace(/^./, prenom[0].toUpperCase()) +
@@ -127,7 +137,11 @@ export default function Profile({ navigation }) {
         <View style={styles.delimiter}></View>
         <TouchableOpacity
           style={styles.lineStars}
-          onPress={() => navigation.navigate('Avis')}
+          onPress={() =>
+            navigation.navigate('Avis', {
+              id: id
+            })
+          }
         >
           <AvgContainer average={average} done={done} />
           <Icon name="chevron-right" size={24} color="#52575D" />
@@ -137,7 +151,11 @@ export default function Profile({ navigation }) {
           <Text
             style={[
               styles.text,
-              { fontWeight: '300', fontSize: 24, paddingLeft: 20 }
+              {
+                fontWeight: '300',
+                fontSize: 24,
+                paddingLeft: 20
+              }
             ]}
           >
             Tags

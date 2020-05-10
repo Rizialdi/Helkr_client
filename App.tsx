@@ -12,7 +12,7 @@ import { ApolloClient } from 'apollo-client';
 import { persistCache } from 'apollo-cache-persist';
 import { setContext } from 'apollo-link-context';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
+import { createHttpLink } from 'apollo-link-http';
 import { ApolloProvider } from '@apollo/react-hooks';
 
 import Navigation from './navigation';
@@ -29,9 +29,12 @@ persistCache({
 });
 
 // Create an http link:
-const httpLink = new HttpLink({
+const httpLink = createHttpLink({
   //TODO https
-  uri: `http://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`
+  uri: `http://${WEB_SERVER_ADDRESS}:${WEB_SERVER_PORT}`,
+  fetchOptions: {
+    reconnect: true
+  }
 });
 
 // Create a WebSocket link:
@@ -47,6 +50,7 @@ const wsLink = new WebSocketLink({
 const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = await AsyncStorage.getItem('token');
+
   // return the headers to the context so httpLink can read them
   return {
     headers: {
@@ -118,7 +122,9 @@ export default class App extends React.Component<Props> {
         <AppLoading
           // @ts-ignore
           startAsync={this.handleResourcesAsync}
-          onError={(error) => console.warn(error)}
+          onError={(error) => {
+            throw error;
+          }}
           onFinish={() => this.setState({ isLoadingComplete: true })}
         />
       );

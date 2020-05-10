@@ -120,7 +120,9 @@ class App extends Component<ChildProps<Props, State>, {}> {
             }
           };
         },
-        onError: (err) => console.error(err)
+        onError: (err) => {
+          throw new Error(err);
+        }
       }
     );
   }

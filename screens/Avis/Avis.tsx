@@ -50,10 +50,12 @@ export default ({ navigation, route: { params } }) => {
   const {
     loading,
     error,
-    data: { getAvisUser }
+    data: { getAvisUser = null }
   } = useQuery(AVIS, {
     variables: { userId },
-    pollInterval: 1000
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000 * 3600 * 24
   });
 
   return (
@@ -69,45 +71,51 @@ export default ({ navigation, route: { params } }) => {
           </View>
         ) : (
           <View style={styles.container}>
-            {getAvisUser.map(
-              (
-                {
-                  score,
-                  comment,
-                  createdAt,
-                  scorer: { id, nom, prenom, avatar }
-                },
-                key
-              ) => {
-                const username =
-                  prenom.replace(/^./, prenom[0].toUpperCase()) +
-                  ' ' +
-                  nom.charAt(0) +
-                  '.';
-                return (
-                  <TouchableOpacity
-                    style={{ width: width }}
-                    key={key}
-                    onPress={() =>
-                      navigation.navigate('Profile', {
-                        id: id
-                      })
-                    }
-                  >
-                    <ListCard
-                      avatar={avatar}
-                      scorer={username}
-                      score={score}
-                      comment={comment}
-                      createdAt={createdAt}
-                    />
-                  </TouchableOpacity>
-                );
-              }
+            {getAvisUser ? (
+              getAvisUser.map(
+                (
+                  {
+                    score,
+                    comment,
+                    createdAt,
+                    scorer: { id, nom, prenom, avatar }
+                  },
+                  key
+                ) => {
+                  const username =
+                    prenom.replace(/^./, prenom[0].toUpperCase()) +
+                    ' ' +
+                    nom.charAt(0) +
+                    '.';
+                  return (
+                    <TouchableOpacity
+                      style={{ width: width }}
+                      key={key}
+                      onPress={() =>
+                        navigation.navigate('ProfilesNavigation', {
+                          id: id
+                        })
+                      }
+                    >
+                      <ListCard
+                        avatar={avatar}
+                        scorer={username}
+                        score={score}
+                        comment={comment}
+                        createdAt={createdAt}
+                      />
+                    </TouchableOpacity>
+                  );
+                }
+              )
+            ) : (
+              <Text style={{ marginTop: 25 }}>
+                Vous n'avez aucun avis pour le moment.
+              </Text>
             )}
             {error && (
               <Text style={{ marginTop: 25 }}>
-                Une erreur sur le réseau s'est produitr
+                Une erreur sur le réseau s'est produite
               </Text>
             )}
           </View>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { theme } from '../../../constants';
 
 const mark: string[] = [
   'A éviter',
@@ -41,14 +42,16 @@ export default ({
       <Text style={{ fontSize: 16, fontWeight: '500' }}>{scorer}</Text>
       <Image
         source={
-          avatar || require('../../../assets/images/default-user-image.png')
+          avatar
+            ? { uri: avatar }
+            : require('../../../assets/images/default-user-image.png')
         }
         style={styles.image}
         resizeMode="cover"
       />
     </View>
 
-    <View style={{ marginLeft: 30 }}>
+    <View style={{ marginHorizontal: 30 }}>
       <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 10 }}>
         {mark[score]}
       </Text>
@@ -70,7 +73,11 @@ const styles = StyleSheet.create({
 
   image: {
     height: 45,
-    width: 45
+    width: 45,
+    borderRadius: 50,
+    borderWidth: 1,
+    overflow: 'hidden',
+    borderColor: theme.colors.secondary
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
