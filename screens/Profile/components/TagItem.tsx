@@ -1,13 +1,10 @@
 import React from 'react';
 import { theme } from '../../../constants';
 import { Text, View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
 
 export default ({ tag = '' }) => (
   <View
     style={{
-      display: 'flex',
-      flexDirection: 'row',
       alignItems: 'center',
       padding: 10,
       borderRadius: 5,
@@ -24,6 +21,5 @@ export default ({ tag = '' }) => (
     >
       {tag}
     </Text>
-    <Icon name="close" size={15} color="black" />
   </View>
 );

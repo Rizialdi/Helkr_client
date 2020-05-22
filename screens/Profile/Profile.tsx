@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+  AsyncStorage,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  AsyncStorage
+  View,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 
 import {
-  Tag,
-  Description,
   AvgContainer,
+  Description,
+  ProfilContainer,
   StatsContainer,
-  ProfilContainer
+  Tag
 } from './components';
-
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 const STATS = gql`
   query getUserStats($id: String!) {
@@ -35,6 +35,7 @@ const INFO = gql`
   query userById($id: String!) {
     userById(id: $id) {
       nom
+      tags
       prenom
       avatar
       address
@@ -96,17 +97,39 @@ export default function Profile({ navigation, route: { params } }) {
         verified: false,
         professional: false
       }
-    } = {}
+    } = {},
+    refetch,
+    loading
   } = useQuery(INFO, {
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network',
-    pollInterval: 1000
+    pollInterval: 100 * 3600 * 24
   });
+
+  useEffect(() => {
+    params && params.updatedSettings
+      ? (() => {
+          refetch ? refetch() : null;
+        })()
+      : null;
+  }, [params]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      {loading && (
+        <View
+          style={{
+            zIndex: 99,
+            position: 'absolute',
+            top: '50%',
+            marginHorizontal: '50%'
+          }}
+        >
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )}
+      <ScrollView showsVerticalScrollIndicator={true}>
         {params && params.id ? null : (
           <TouchableOpacity
             style={styles.titleBar}
@@ -169,7 +192,9 @@ export default function Profile({ navigation, route: { params } }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
     backgroundColor: '#FFF'
   },
   text: {

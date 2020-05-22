@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
+import { ReactNativeFile } from 'apollo-upload-client';
+import gql from 'graphql-tag';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+  AsyncStorage,
+  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  AsyncStorage,
-  Platform,
-  KeyboardAvoidingView
+  View
 } from 'react-native';
-import { ReactNativeFile } from 'apollo-upload-client';
-import { useApolloClient, useQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import { theme } from '../../constants';
-import { Tag, Description, ProfilContainer } from './components';
+import { Description, ProfilContainer, Tag } from './components';
 
 const INFO = gql`
   query userById($id: String!) {
     userById(id: $id) {
       nom
+      tags
       prenom
       avatar
       address
@@ -48,11 +48,29 @@ const ADDRESS_MUTATION = gql`
     addressUpdate(text: $text)
   }
 `;
+
+const TAGS_MUTATION = gql`
+  mutation tagsUpdate($tags: [String!]!) {
+    tagsUpdate(tags: $tags)
+  }
+`;
+
 export default function Profile({ navigation, route: { params } }) {
   const [Id, setId] = useState('');
+  let updatedSettings: boolean = false;
   const [image, setImage] = useState(null);
-  const [descriptionParent, setDescriptionParent] = useState(null);
-  const [addressParent, setAddressParent] = useState(null);
+  const [addressParent, setAddressParent] = useState<string>('');
+  const [descriptionParent, setDescriptionParent] = useState<string>('');
+  // TODO solve not setTags allowed
+  const [tagList, setTags] = useState<Array<string>>([]);
+  const apolloClient = useApolloClient();
+  const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
+  const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
+  const [addressMutation] = useMutation(ADDRESS_MUTATION);
+  const [tagsMutation] = useMutation(TAGS_MUTATION);
+
+  const getName = (chaine) =>
+    String(chaine).split('/')[String(chaine).split('/').length - 1];
 
   useEffect(() => {
     (async () => {
@@ -64,7 +82,6 @@ export default function Profile({ navigation, route: { params } }) {
       }
     })();
   }, []);
-
   const id = Id;
   const {
     data: {
@@ -80,7 +97,7 @@ export default function Profile({ navigation, route: { params } }) {
       } = {
         nom: 'John',
         prenom: 'Doe',
-        tags: ['_'],
+        tags: [],
         avatar: null,
         address: '',
         description: '_',
@@ -91,21 +108,12 @@ export default function Profile({ navigation, route: { params } }) {
   } = useQuery(INFO, {
     variables: { id },
     errorPolicy: 'ignore',
-    fetchPolicy: 'cache-and-network',
-    pollInterval: 1000
+    fetchPolicy: 'cache-and-network'
   });
-
-  const apolloClient = useApolloClient();
-  const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
-  const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
-  const [addressMutation] = useMutation(ADDRESS_MUTATION);
-
-  const getName = (chaine) =>
-    String(chaine).split('/')[String(chaine).split('/').length - 1];
 
   const type = image ? `image/${String(image.uri).split('.')[1]}` : '';
 
-  let pictureUrl =
+  let pictureUrl: string =
     image && image.base64
       ? new ReactNativeFile({
           uri: `data:${type};base64,${image.base64}`,
@@ -114,11 +122,28 @@ export default function Profile({ navigation, route: { params } }) {
         })
       : null;
 
+  const [isModified, setIsModified] = useState(null);
+
+  useEffect(() => {
+    setIsModified(
+      image ||
+        !(address.toLowerCase() === addressParent.toLowerCase()) ||
+        !(description.toLowerCase() === descriptionParent.toLowerCase()) ||
+        !(JSON.stringify(tagList.sort()) === JSON.stringify(tags.sort()))
+    );
+  }, [image, addressParent, descriptionParent, tagList]);
+
   const save = () => {
     try {
+      isModified ? (updatedSettings = true) : null;
       pictureUrl ? onChangeImage(pictureUrl) : null;
       descriptionParent ? onChangeDescription(descriptionParent) : null;
       addressParent ? onChangeAddress(addressParent) : null;
+
+      tagList ? onChangeTags(tagList) : null;
+      setTimeout(() => {
+        navigation.navigate('Profile', { updatedSettings });
+      }, 100);
     } catch (error) {
       throw new Error(error);
     }
@@ -154,17 +179,39 @@ export default function Profile({ navigation, route: { params } }) {
       });
   };
 
+  const onChangeTags = (array) => {
+    tagsMutation({ variables: { tags: array } })
+      .then(() => {
+        apolloClient.resetStore();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView enabled={true} behavior="position">
         <ScrollView showsVerticalScrollIndicator={false}>
-          {(!params || !params.id) && (
+          {isModified ? (
             <TouchableOpacity style={styles.titleBar} onPress={() => save()}>
               <Text
                 style={{
                   fontWeight: 'bold',
                   fontSize: 16,
                   color: theme.colors.primary
+                }}
+              >
+                Sauvegarder
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.titleBar}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  color: theme.colors.gray
                 }}
               >
                 Sauvegarder
@@ -207,13 +254,13 @@ export default function Profile({ navigation, route: { params } }) {
                   fontWeight: '300',
                   fontSize: 24,
                   paddingLeft: 20,
-                  paddingBottom: 10
+                  paddingTop: 10
                 }
               ]}
             >
               Tags
             </Text>
-            <Tag tags={tags} />
+            <Tag tags={tags} parentCallback={setTags} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -22,7 +22,11 @@ export default ({
   parentAddressCallback
 }) => {
   const [imagePicked, setImagePicked] = useState(null);
-  const [text, setText] = useState('');
+  const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    onChange(address);
+  }, [address]);
 
   const getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -94,12 +98,13 @@ export default ({
         </Text>
 
         <TextInput
-          style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}
+          style={[
+            styles.text,
+            { color: '#AEB5BC', fontSize: 14, width: '100%' }
+          ]}
           maxLength={30}
-          placeholder={
-            text == '' && address == '' ? 'Ajouter une addresse.' : text
-          }
-          value={text ? text : address ? address : ''}
+          placeholder={text ? text : 'Ajouter une addresse.'}
+          value={text ? text : ''}
           onChangeText={(text) => onChange(text)}
         />
       </View>

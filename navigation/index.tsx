@@ -30,8 +30,10 @@ const createBottomTabs = () => {
     <MaterialBottomTabs.Navigator
       initialRouteName="Accueil"
       activeColor={theme.colors.primary}
+      sceneAnimationEnabled={true}
+      backBehavior={'initialRoute'}
       shifting={true}
-      barStyle={{ backgroundColor: 'rgba(196, 196, 196, 0.1)', height: 60 }}
+      barStyle={{ backgroundColor: theme.colors.white, height: 50 }}
     >
       <MaterialBottomTabs.Screen
         name="Publier"

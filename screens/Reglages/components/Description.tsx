@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import { theme } from '../../../constants';
+
 export default ({ description, parentCallback }) => {
-  const [text, setText] = useState(null);
+  const [text, setText] = useState<string>('');
+
+  useEffect(() => {
+    onChange(description);
+  }, [description]);
 
   const onChange = (text) => {
     setText(text);
@@ -21,11 +26,11 @@ export default ({ description, parentCallback }) => {
           Description
         </Text>
         <TextInput
-          placeholder={description ? '' : 'Ajouter une bio.'}
+          placeholder={text ? text : 'Ajouter une bio.'}
           style={[styles.text, styles.subText2]}
           maxLength={300}
           multiline={true}
-          value={text ? text : description ? description : ''}
+          value={text ? text : ''}
           onChangeText={(text) => onChange(text)}
         />
       </View>

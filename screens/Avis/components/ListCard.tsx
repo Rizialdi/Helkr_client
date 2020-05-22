@@ -75,9 +75,9 @@ const styles = StyleSheet.create({
     height: 45,
     width: 45,
     borderRadius: 50,
-    borderWidth: 1,
+    borderWidth: 2,
     overflow: 'hidden',
-    borderColor: theme.colors.secondary
+    borderColor: theme.colors.primary
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
