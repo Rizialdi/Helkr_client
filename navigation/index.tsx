@@ -15,6 +15,7 @@ import Publier from '../screens/Publier';
 import Reglages from '../screens/Reglages';
 import Avis from '../screens/Avis';
 import Verification from '../screens/Verification';
+import Verification2 from '../screens/Verification2';
 import DetailCategory from '../screens/DetailCategory';
 import Identification from '../screens/Identification';
 import Enregistrement from '../screens/Enregistrement';
@@ -96,6 +97,11 @@ const MyMainStack = ({ token }) => {
       {token ? (
         <>
           <MainStack.Screen
+            name="Verification2"
+            component={Verification2}
+            options={{ headerShown: false }}
+          />
+          {/* <MainStack.Screen
             name="PrincipalView"
             children={createBottomTabs}
             options={{ headerShown: false }}
@@ -127,7 +133,7 @@ const MyMainStack = ({ token }) => {
             name="ProfilesNavigation"
             component={Profile}
             options={({ route }) => ({ headerShown: true, title: '' })}
-          />
+          /> */}
         </>
       ) : (
         <>

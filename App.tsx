@@ -1,24 +1,26 @@
-import React from 'react';
-import { StyleSheet, AsyncStorage } from 'react-native';
-
-import { AppLoading } from 'expo';
-import * as Font from 'expo-font';
-import { Asset } from 'expo-asset';
-
+import { ApolloProvider } from '@apollo/react-hooks';
+import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import { persistCache } from 'apollo-cache-persist';
+import { ApolloClient } from 'apollo-client';
 import { split } from 'apollo-link';
+import { setContext } from 'apollo-link-context';
+import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
-import { ApolloClient } from 'apollo-client';
-import { persistCache } from 'apollo-cache-persist';
-import { setContext } from 'apollo-link-context';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
-import { createHttpLink } from 'apollo-link-http';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { AppLoading } from 'expo';
+import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
+import React, { SFC, useState, useMemo } from 'react';
+import { AsyncStorage } from 'react-native';
 
-import Navigation from './navigation';
-import { Block } from './components';
+import {
+  UserContext,
+  userContextInterface,
+  providerInterface
+} from './userContext';
 
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
+import Navigation from './navigation';
 
 // TODO change the ip address before production
 const cache = new InMemoryCache();
@@ -80,62 +82,73 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   link
 });
 
-// import all images
-const images = [
-  require('./assets/images/anais.jpg'),
-  require('./assets/images/benoit.jpg'),
-  require('./assets/images/roland.jpg'),
-  require('./assets/images/thierry.jpg')
+// import all icons
+const icons = [
+  require('./assets/icons/house.svg'),
+  require('./assets/icons/student.svg'),
+  require('./assets/icons/phone1.svg'),
+  require('./assets/icons/phone1-1.svg'),
+  require('./assets/icons/phone1-2.svg'),
+  require('./assets/icons/reglages.svg'),
+  require('./assets/icons/marksymbol.svg'),
+  require('./assets/images/default-user-image.png')
 ];
 
 interface Props {
   skipLoadingScreen?: boolean;
 }
 
-export default class App extends React.Component<Props> {
-  state = {
-    isLoadingComplete: false
-  };
+const handleResourcesAsync = async () => {
+  await Font.loadAsync({
+    josefinBold: require('./assets/fonts/JosefinSans-Bold.ttf'),
+    josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
+    josefinRegular: require('./assets/fonts/JosefinSans-Regular.ttf'),
+    josefinSemiBold: require('./assets/fonts/JosefinSans-SemiBold.ttf'),
+    rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
+    serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
+    serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
+    serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf')
+  });
 
-  handleResourcesAsync = async () => {
-    await Font.loadAsync({
-      josefinBold: require('./assets/fonts/JosefinSans-Bold.ttf'),
-      josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
-      josefinRegular: require('./assets/fonts/JosefinSans-Regular.ttf'),
-      josefinSemiBold: require('./assets/fonts/JosefinSans-SemiBold.ttf'),
-      rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
-      serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
-      serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
-      serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf')
-    });
+  const cacheIcons = icons.map((icon) => {
+    return Asset.fromModule(icon).downloadAsync();
+  });
 
-    const cacheImages = images.map((image) => {
-      return Asset.fromModule(image).downloadAsync();
-    });
+  return Promise.all(cacheIcons);
+};
 
-    return Promise.all(cacheImages);
-  };
+const App: SFC<Props> = ({ skipLoadingScreen }) => {
+  const [user, setUser] = useState<userContextInterface>(null);
+  const [isLoadingComplete, setIsLoadingComplete] = useState<boolean>(false);
 
-  render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          // @ts-ignore
-          startAsync={this.handleResourcesAsync}
-          onError={(error) => {
-            throw error;
-          }}
-          onFinish={() => this.setState({ isLoadingComplete: true })}
-        />
-      );
-    }
+  const value = useMemo(
+    () => ({
+      user,
+      setUser
+    }),
+    [user, setUser]
+  );
 
+  if (!isLoadingComplete && !skipLoadingScreen) {
     return (
-      <ApolloProvider client={client}>
-        <Block>
-          <Navigation />
-        </Block>
-      </ApolloProvider>
+      <AppLoading
+        // @ts-ignore
+        startAsync={handleResourcesAsync}
+        onError={(error) => {
+          throw error;
+        }}
+        onFinish={() => setIsLoadingComplete(true)}
+      />
     );
   }
-}
+
+  return (
+    <ApolloProvider client={client}>
+      <UserContext.Provider value={value as providerInterface}>
+        <Navigation />
+      </UserContext.Provider>
+    </ApolloProvider>
+  );
+};
+
+export default App;
