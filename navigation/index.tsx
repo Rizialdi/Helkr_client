@@ -1,5 +1,5 @@
 import { AsyncStorage, Text } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,13 +15,14 @@ import Publier from '../screens/Publier';
 import Reglages from '../screens/Reglages';
 import Avis from '../screens/Avis';
 import Verification from '../screens/Verification';
-import Verification2 from '../screens/Verification2';
 import DetailCategory from '../screens/DetailCategory';
 import Identification from '../screens/Identification';
 import Enregistrement from '../screens/Enregistrement';
 import BienvenueFirst from '../screens/BienvenueFirst';
 import Discussions from '../screens/Discussions/Discussions';
 import Discussion from '../screens/Discussions/Discussion';
+
+import { UserContext } from '../userContext';
 
 const MainStack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -97,11 +98,6 @@ const MyMainStack = ({ token }) => {
       {token ? (
         <>
           <MainStack.Screen
-            name="Verification2"
-            component={Verification2}
-            options={{ headerShown: false }}
-          />
-          {/* <MainStack.Screen
             name="PrincipalView"
             children={createBottomTabs}
             options={{ headerShown: false }}
@@ -133,7 +129,7 @@ const MyMainStack = ({ token }) => {
             name="ProfilesNavigation"
             component={Profile}
             options={({ route }) => ({ headerShown: true, title: '' })}
-          /> */}
+          />
         </>
       ) : (
         <>
@@ -197,12 +193,13 @@ const MyMainStack = ({ token }) => {
 };
 
 export default () => {
+  const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState<string>(null);
   useEffect(() => {
     (async () => {
+      console.log(user);
       try {
-        const token = await AsyncStorage.getItem('token');
         setToken(token);
         setTimeout(() => setIsLoading(false), 2000);
       } catch (error) {
