@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  AsyncStorage,
-  Dimensions,
-  ScrollView,
-  SafeAreaView,
-  ActivityIndicator
-} from 'react-native';
-import { ListCard } from './components';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import React from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { useStoreState } from '../../models';
+import { ListCard } from './components';
+
 const { width } = Dimensions.get('window');
+
 const AVIS = gql`
   query getAvisUser($userId: String!) {
     getAvisUser(userId: $userId) {
@@ -32,26 +34,13 @@ const AVIS = gql`
 `;
 
 export default ({ navigation, route: { params } }) => {
-  const [Id, setId] = useState('');
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const id = await AsyncStorage.getItem('id');
-        setId(id);
-      } catch (error) {
-        throw new Error('Unable to load Credentials');
-      }
-    })();
-  }, []);
+  const {
+    user: { id: Id }
+  } = useStoreState((state) => state.User);
 
   const userId = params && params.id ? params.id : Id;
-
-  const {
-    loading,
-    error,
-    data: { getAvisUser = null }
-  } = useQuery(AVIS, {
+  console.log(userId);
+  const { loading, error, data } = useQuery(AVIS, {
     variables: { userId },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network',
@@ -71,8 +60,8 @@ export default ({ navigation, route: { params } }) => {
           </View>
         ) : (
           <View style={styles.container}>
-            {getAvisUser ? (
-              getAvisUser.map(
+            {data && data.getAvisUser ? (
+              data.getAvisUser.map(
                 (
                   {
                     score,

@@ -1,4 +1,4 @@
-import { useApolloClient, useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery } from '@apollo/react-hooks';
 import { ReactNativeFile } from 'apollo-upload-client';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
@@ -63,7 +63,6 @@ export default function Profile({ navigation, route: { params } }) {
   const [descriptionParent, setDescriptionParent] = useState<string>('');
   // TODO solve not setTags allowed
   const [tagList, setTags] = useState<Array<string>>([]);
-  const apolloClient = useApolloClient();
   const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
   const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
   const [addressMutation] = useMutation(ADDRESS_MUTATION);
@@ -150,43 +149,19 @@ export default function Profile({ navigation, route: { params } }) {
   };
 
   const onChangeImage = (file) => {
-    uploadFileMutation({ variables: { file } })
-      .then(() => {
-        apolloClient.resetStore();
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    uploadFileMutation({ variables: { file } });
   };
 
   const onChangeDescription = (text) => {
-    descriptionMutation({ variables: { text } })
-      .then(() => {
-        apolloClient.resetStore();
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    descriptionMutation({ variables: { text } });
   };
 
   const onChangeAddress = (text) => {
-    addressMutation({ variables: { text } })
-      .then(() => {
-        apolloClient.resetStore();
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    addressMutation({ variables: { text } });
   };
 
   const onChangeTags = (array) => {
-    tagsMutation({ variables: { tags: array } })
-      .then(() => {
-        apolloClient.resetStore();
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    tagsMutation({ variables: { tags: array } });
   };
 
   return (

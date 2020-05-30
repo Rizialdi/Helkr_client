@@ -68,9 +68,9 @@ function Item({ name, message, image, channelId, navigation }) {
 
 export default function Discussion({ navigation }) {
   return (
-    <Query query={DATA} pollInterval={100} fetchPolicy={'cache-and-network'}>
+    <Query query={DATA} pollInterval={1000} fetchPolicy={'cache-and-network'}>
       {({ loading, data }) => {
-        if (loading) return <ActivityIndicator size="large" color="black" />;
+        //if (loading) return <ActivityIndicator size="large" color="black" />;
 
         if (data) {
           const users = data.recipientChannels.users;

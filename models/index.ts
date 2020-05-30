@@ -1,8 +1,24 @@
-import { createStore } from 'easy-peasy';
-// import Offering from './Offering';
-import Preferences from './Preferences';
-import User from './User';
+import { createStore, createTypedHooks } from 'easy-peasy';
 
-const store = createStore({ Preferences, User });
+import Preferences, { PreferencesModel } from './Preferences';
+import User, { UserModel } from './User';
+
+// import Offering from './Offering';
+interface StoreModel {
+  Preferences: PreferencesModel;
+  User: UserModel;
+}
+
+const model: StoreModel = {
+  Preferences,
+  User
+};
+
+const typedHooks = createTypedHooks<StoreModel>();
+const store = createStore(model);
+
+export const useStoreActions = typedHooks.useStoreActions;
+export const useStoreDispatch = typedHooks.useStoreDispatch;
+export const useStoreState = typedHooks.useStoreState;
 
 export default store;

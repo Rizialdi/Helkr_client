@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Badge, Block, Text } from '../components';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
-  View,
   TextInput,
-  AsyncStorage
+  TouchableOpacity,
+  View
 } from 'react-native';
-import { theme, mocks } from '../constants';
 import Image from 'react-native-remote-svg';
 import Icon from 'react-native-vector-icons/AntDesign';
+
+import { Badge, Block, Card, Text } from '../components';
+import { mocks, theme } from '../constants';
+import { useStoreState } from '../models';
+
 const { width } = Dimensions.get('window');
 
 export default function Accueil({ navigation }) {
@@ -19,19 +21,13 @@ export default function Accueil({ navigation }) {
   const [inputText, setInputText] = useState('');
   const [username, setUsername] = useState('');
 
+  const { user } = useStoreState((state) => state.User);
+
   const handleInput = () => setInputText('');
-  const retrieve = async () => {
-    try {
-      const username = await AsyncStorage.getItem('prenom');
-      username ? setUsername(username) : setUsername('');
-    } catch (error) {
-      throw new Error('Unable to load Credentials');
-    }
-  };
 
   useEffect(() => {
     setCategories(mocks.accueil);
-    retrieve();
+    user && user.prenom && setUsername(user.prenom);
   });
 
   return (

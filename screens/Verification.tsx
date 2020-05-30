@@ -1,5 +1,5 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { useStoreActions } from 'easy-peasy';
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
+import { useStoreActions } from '../models';
 import gql from 'graphql-tag';
 import React, { SFC, useEffect, useRef, useState } from 'react';
 import {
@@ -30,9 +30,7 @@ const Verification: SFC<Props> = ({
   const [token, setToken] = useState<string>('');
 
   const [addUserMutation] = useMutation(ADD_USER);
-  const { client } = useQuery(QUERY_USER_INFO, {
-    skip: true
-  });
+  const client = useApolloClient();
 
   const handle_step_one = async (numero) => {
     setLoading(true);
@@ -121,7 +119,6 @@ const Verification: SFC<Props> = ({
     }
   };
 
-  //@ts-ignore
   const { setUser } = useStoreActions((actions) => actions.User);
 
   //TODO Test this function
@@ -130,9 +127,9 @@ const Verification: SFC<Props> = ({
       try {
         await AsyncStorage.clear();
         await AsyncStorage.multiSet([
+          ['id', id],
           ['token', token],
-          ['prenom', prenom],
-          ['id', id]
+          ['prenom', prenom]
         ]);
       } catch (error) {
         throw new Error('Credentials creation failed');

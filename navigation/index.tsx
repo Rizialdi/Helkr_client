@@ -1,7 +1,7 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useStoreActions, useStoreState } from 'easy-peasy';
+import { useStoreActions, useStoreState } from '../models';
 import React, { useEffect, useState } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -191,7 +191,6 @@ const MyMainStack = ({ token }) => {
 
 export default () => {
   const user = useStoreState((state) => state.User.user);
-  //@ts-ignore
   const { loadUser } = useStoreActions((actions) => actions.User);
 
   const [isLoading, setIsLoading] = useState(true);
