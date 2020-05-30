@@ -6,16 +6,5 @@ import Input from './Input';
 import Switch from './Switch';
 import Text from './Text';
 import Badge from './Badge';
-import TermsOfServices from './TermsOfServices';
 
-export {
-  Badge,
-  Block,
-  Button,
-  Card,
-  Divider,
-  Input,
-  Switch,
-  Text,
-  TermsOfServices
-};
+export { Badge, Block, Button, Card, Divider, Input, Switch, Text };
