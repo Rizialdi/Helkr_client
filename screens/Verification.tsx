@@ -1,17 +1,18 @@
-import React, { useRef, useState, useEffect, useContext, SFC } from 'react';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useStoreActions } from 'easy-peasy';
+import gql from 'graphql-tag';
+import React, { SFC, useEffect, useRef, useState } from 'react';
 import {
-  KeyboardAvoidingView,
-  StyleSheet,
   ActivityIndicator,
+  AsyncStorage,
   Keyboard,
-  AsyncStorage
+  KeyboardAvoidingView,
+  StyleSheet
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
-import gql from 'graphql-tag';
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Button, Block, Input, Text } from '../components';
+
+import { Block, Button, Input, Text } from '../components';
 import { theme } from '../constants';
-import { UserContext } from '../userContext';
 
 const Verification: SFC<Props> = ({
   navigation,
@@ -119,8 +120,11 @@ const Verification: SFC<Props> = ({
       setLoading(false);
     }
   };
-  const { setUser } = useContext(UserContext);
 
+  //@ts-ignore
+  const { setUser } = useStoreActions((actions) => actions.User);
+
+  //TODO Test this function
   const storeCredentials = ({ token, user: { id, prenom } }) => {
     (async () => {
       try {

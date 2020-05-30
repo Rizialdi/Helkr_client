@@ -1,28 +1,25 @@
-import { AsyncStorage, Text } from 'react-native';
-import React, { useState, useEffect, useContext } from 'react';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import React, { useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import { theme } from '../constants';
-
-import Screen from '../screens/Screen';
 import Accueil from '../screens/Accueil';
+import Avis from '../screens/Avis';
+import BienvenueFirst from '../screens/BienvenueFirst';
+import DetailCategory from '../screens/DetailCategory';
+import Discussion from '../screens/Discussions/Discussion';
+import Discussions from '../screens/Discussions/Discussions';
+import Enregistrement from '../screens/Enregistrement';
+import Identification from '../screens/Identification';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile/Profile';
 import Publier from '../screens/Publier';
 import Reglages from '../screens/Reglages';
-import Avis from '../screens/Avis';
+import Screen from '../screens/Screen';
 import Verification from '../screens/Verification';
-import DetailCategory from '../screens/DetailCategory';
-import Identification from '../screens/Identification';
-import Enregistrement from '../screens/Enregistrement';
-import BienvenueFirst from '../screens/BienvenueFirst';
-import Discussions from '../screens/Discussions/Discussions';
-import Discussion from '../screens/Discussions/Discussion';
-
-import { UserContext } from '../userContext';
 
 const MainStack = createStackNavigator();
 const MaterialBottomTabs = createMaterialBottomTabNavigator();
@@ -193,25 +190,21 @@ const MyMainStack = ({ token }) => {
 };
 
 export default () => {
-  const { user } = useContext(UserContext);
+  const user = useStoreState((state) => state.User.user);
+  //@ts-ignore
+  const { loadUser } = useStoreActions((actions) => actions.User);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [token, setToken] = useState<string>(null);
+
   useEffect(() => {
-    (async () => {
-      console.log(user);
-      try {
-        setToken(token);
-        setTimeout(() => setIsLoading(false), 2000);
-      } catch (error) {
-        throw new Error('Unable to load Credentials');
-      }
-    })();
+    loadUser();
+    setTimeout(() => setIsLoading(false), 2000);
   }, []);
 
   if (isLoading) return <BienvenueFirst />;
   return (
     <NavigationContainer>
-      <MyMainStack token={token} />
+      <MyMainStack token={user && user.token ? user.token : null} />
     </NavigationContainer>
   );
 };

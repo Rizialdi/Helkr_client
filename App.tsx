@@ -7,19 +7,15 @@ import { setContext } from 'apollo-link-context';
 import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import { StoreProvider } from 'easy-peasy';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
-import React, { SFC, useState, useMemo } from 'react';
+import React, { SFC, useState } from 'react';
 import { AsyncStorage } from 'react-native';
 
-import {
-  UserContext,
-  userContextInterface,
-  providerInterface
-} from './userContext';
-
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
+import store from './models';
 import Navigation from './navigation';
 
 // TODO change the ip address before production
@@ -118,17 +114,7 @@ const handleResourcesAsync = async () => {
 };
 
 const App: SFC<Props> = ({ skipLoadingScreen }) => {
-  const [user, setUser] = useState<userContextInterface>(null);
   const [isLoadingComplete, setIsLoadingComplete] = useState<boolean>(false);
-
-  const value = useMemo(
-    () => ({
-      user,
-      setUser
-    }),
-    [user, setUser]
-  );
-
   if (!isLoadingComplete && !skipLoadingScreen) {
     return (
       <AppLoading
@@ -144,9 +130,9 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
 
   return (
     <ApolloProvider client={client}>
-      <UserContext.Provider value={value as providerInterface}>
+      <StoreProvider store={store}>
         <Navigation />
-      </UserContext.Provider>
+      </StoreProvider>
     </ApolloProvider>
   );
 };
