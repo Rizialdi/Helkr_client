@@ -1,9 +1,9 @@
 import React from 'react';
-
-import { StyleSheet, Text, View } from 'react-native';
-import { theme } from '../../../constants';
-
+import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
+
+import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
 
 export default ({ average, done }) => (
   <View style={{ flexDirection: 'row' }}>

@@ -1,6 +1,8 @@
 import React from 'react';
+import { View } from 'react-native';
+
 import { theme } from '../../../constants';
-import { Text, View } from 'react-native';
+import { Text } from '../../shareComponents';
 
 export default ({ tag = '' }) => (
   <View

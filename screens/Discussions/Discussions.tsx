@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
   Dimensions,
-  Text,
   FlatList,
   SafeAreaView,
   Image,
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-import { theme } from '../../constants';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { Layout, Text } from '../shareComponents';
 
 const { width } = Dimensions.get('screen');
 
@@ -84,45 +83,32 @@ export default function Discussion({ navigation }) {
           }
 
           return (
-            <View style={styles.container}>
-              <SafeAreaView>
-                <View
-                  style={{
-                    marginTop: 40,
-                    marginBottom: 20,
-                    marginHorizontal: theme.sizes.base * 2
-                  }}
-                >
-                  <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-                    Discussions
-                  </Text>
-                </View>
-                {areChats && (
-                  <FlatList
-                    data={users}
-                    renderItem={({ item }) => (
-                      <Item
-                        name={
-                          item.prenom.replace(
-                            /^./,
-                            item.prenom[0].toUpperCase()
-                          ) +
-                          ' ' +
-                          item.nom.charAt(0) +
-                          '.'
-                        }
-                        message={item.message}
-                        image={item.avatar}
-                        navigation={navigation}
-                        channelId={item.channelId}
-                      />
-                    )}
-                    keyExtractor={(item) => item.id}
-                  />
-                )}
-                {!areChats && <Text>Aucune discussion actuellement</Text>}
-              </SafeAreaView>
-            </View>
+            <Layout title={'Discussions'}>
+              {areChats && (
+                <FlatList
+                  data={users}
+                  renderItem={({ item }) => (
+                    <Item
+                      name={
+                        item.prenom.replace(
+                          /^./,
+                          item.prenom[0].toUpperCase()
+                        ) +
+                        ' ' +
+                        item.nom.charAt(0) +
+                        '.'
+                      }
+                      message={item.message}
+                      image={item.avatar}
+                      navigation={navigation}
+                      channelId={item.channelId}
+                    />
+                  )}
+                  keyExtractor={(item) => item.id}
+                />
+              )}
+              {!areChats && <Text>Aucune discussion actuellement</Text>}
+            </Layout>
           );
         }
 

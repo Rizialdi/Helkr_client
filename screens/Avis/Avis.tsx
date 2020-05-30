@@ -7,12 +7,12 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   View
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useStoreState } from '../../models';
+import { Text } from '../shareComponents';
 import { ListCard } from './components';
 
 const { width } = Dimensions.get('window');

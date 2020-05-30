@@ -8,12 +8,12 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View
 } from 'react-native';
 
 import { theme } from '../../constants';
+import { Text } from '../shareComponents';
 import { Description, ProfilContainer, Tag } from './components';
 
 const INFO = gql`

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from '../components';
+import { Text } from './shareComponents';
 import { StyleSheet, Dimensions, View } from 'react-native';
 import Image from 'react-native-remote-svg';
 

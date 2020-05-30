@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
 
 const mark: string[] = [
   'A éviter',

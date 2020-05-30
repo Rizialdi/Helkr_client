@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
 import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
 
 export default ({ description, parentCallback }) => {
   const [text, setText] = useState<string>('');

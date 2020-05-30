@@ -1,7 +1,9 @@
 import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { StyleSheet, Text, View } from 'react-native';
 import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
+
 export default ({ description }) => (
   <View style={[styles.description]}>
     <Text

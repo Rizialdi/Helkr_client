@@ -10,7 +10,8 @@ import {
 import Image from 'react-native-remote-svg';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { Badge, Block, Card, Text } from '../components';
+import { Badge, Block, Card } from '../components';
+import { Text } from './shareComponents';
 import { mocks, theme } from '../constants';
 import { useStoreState } from '../models';
 
@@ -37,7 +38,6 @@ export default function Accueil({ navigation }) {
         style={{ paddingVertical: theme.sizes.base * 2 }}
       >
         <Text
-          left
           style={{
             fontFamily: 'josefinLight',
             marginHorizontal: 23,

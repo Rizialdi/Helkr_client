@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-import TagItem from './TagItem';
 import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
+import TagItem from './TagItem';
 
 const tagList = [
   'Boulanger',

@@ -1,5 +1,7 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import React, { Component } from 'react';
+import { StyleSheet, View } from 'react-native';
+
+import { Text } from './shareComponents';
 
 export class Publier extends Component {
   render() {
@@ -7,7 +9,7 @@ export class Publier extends Component {
       <View style={styles.container}>
         <Text> Publier </Text>
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -16,5 +18,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   }
-})
-export default Publier
+});
+export default Publier;

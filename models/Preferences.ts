@@ -4,6 +4,8 @@ interface themeInterface {
   accent: string;
   primary: string;
   secondary: string;
+  background: string;
+  defaultTextColor: string;
   tertiary: string;
   black: string;
   white: string;
@@ -11,10 +13,12 @@ interface themeInterface {
   gray2: string;
 }
 
-const defaultTheme: themeInterface = {
+const lightTheme: themeInterface = {
   accent: '#F3534A',
   primary: '#0094FF',
   secondary: '#2BDA8E',
+  background: '#FFFFFF',
+  defaultTextColor: '#000',
   tertiary: '#FFE358',
   black: '#323643',
   white: '#FFFFFF',
@@ -26,24 +30,25 @@ const darkTheme: themeInterface = {
   accent: '#9DA3B4',
   primary: '#9DA3B4',
   secondary: '#9DA3B4',
+  background: '#000',
+  defaultTextColor: '#FFFFFF',
   tertiary: '#9DA3B4',
   black: '#323643',
-  white: '#FFFFFF',
+  white: '#000',
   gray: '#9DA3B4',
   gray2: '#C5CCD6'
 };
 
 export interface PreferencesModel {
-  theme: themeInterface;
-  changeTheme: Action<PreferencesModel, { theme } | null>;
+  themeColors: themeInterface;
+  changeTheme: Action<PreferencesModel, { themeColors }>;
 }
 
 const preferences: PreferencesModel = {
-  theme: defaultTheme,
-
+  themeColors: lightTheme,
   // actions
   changeTheme: action((state, payload) => {
-    state.theme = payload.theme;
+    state.themeColors = payload.themeColors;
   })
 };
 

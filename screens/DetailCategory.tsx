@@ -1,16 +1,23 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, FlatList, SafeAreaView, Dimensions } from 'react-native'
+import React, { Component } from 'react';
+import {
+  View,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  Dimensions
+} from 'react-native';
+import { Text } from './shareComponents';
 
 interface Props {
-  route?: any,
-  navigation?: any
+  route?: any;
+  navigation?: any;
 }
 
-const { width } = Dimensions.get('screen')
+const { width } = Dimensions.get('screen');
 function Item({ title }) {
   return (
     <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
+      <Text regular>{title}</Text>
     </View>
   );
 }
@@ -23,18 +30,18 @@ export class DetailCategory extends Component<Props> {
   };
 
   render() {
-    const { category } = this.props.route.params
+    const { category } = this.props.route.params;
     return (
       <View style={styles.container}>
         <SafeAreaView>
-        <FlatList
-          data={category.tag}
-          renderItem={({ item }) => <Item title={item} />}
-          keyExtractor={item => item}
-        />
-       </SafeAreaView>
+          <FlatList
+            data={category.tag}
+            renderItem={({ item }) => <Item title={item} />}
+            keyExtractor={(item) => item}
+          />
+        </SafeAreaView>
       </View>
-    )
+    );
   }
 }
 
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    marginTop: 10,
+    marginTop: 10
   },
   item: {
     padding: 15,
@@ -55,8 +62,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'josefinRegular',
-    fontSize: 20,
-  },
-})
+    fontSize: 20
+  }
+});
 
-export default DetailCategory
+export default DetailCategory;

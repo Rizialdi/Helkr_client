@@ -1,16 +1,26 @@
-import React from 'react'
-import { MaterialIcons } from '@expo/vector-icons'
-import { Text, Platform, SafeAreaView, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons';
+import React from 'react';
+import {
+  Platform,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native';
+
+import { Text } from '../../shareComponents';
 
 export default function NavBarCustom(props) {
   if (Platform.OS === 'web') {
-    return null
+    return null;
   }
   return (
     <SafeAreaView>
       <View style={styles.container}>
-        <View style={styles.arrow} >
-          <TouchableOpacity onPress={() => props.navigation.navigate('Discussions')}>
+        <View style={styles.arrow}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('Discussions')}
+          >
             <MaterialIcons name="arrow-back" size={30} color="black" />
           </TouchableOpacity>
         </View>
@@ -18,24 +28,24 @@ export default function NavBarCustom(props) {
           <Text>{props.nom}</Text>
         </View>
       </View>
-    </SafeAreaView >
-  )
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     height: 50
   },
   arrow: {
     flex: 0.2,
-    alignItems: "center"
+    alignItems: 'center'
   },
   name: {
     flex: 0.8,
-    alignItems: "flex-start",
-    marginLeft: 20,
+    alignItems: 'flex-start',
+    marginLeft: 20
   }
-})
+});

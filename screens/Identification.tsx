@@ -1,23 +1,25 @@
+import gql from 'graphql-tag';
 import React from 'react';
 import {
   ActivityIndicator,
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
-  StyleSheet,
-  Dimensions,
   Modal,
+  StyleSheet,
   View
 } from 'react-native';
-import gql from 'graphql-tag';
-import Toast from 'react-native-easy-toast';
 import AwesomeAlert from 'react-native-awesome-alerts';
+import Toast from 'react-native-easy-toast';
 import ValidationComponent from 'react-native-form-validator';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { Block, Button, Input } from '../components';
+import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../config';
+import { theme } from '../constants';
+import { TermsOfServices, Text } from './shareComponents';
 
 const { width, height } = Dimensions.get('screen');
-
-import { Button, Block, Input, Text, TermsOfServices } from '../components';
-import { theme } from '../constants';
-import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../config';
 
 const QueryUser = gql`
   query user($numero: String!) {
@@ -193,28 +195,31 @@ class Form extends ValidationComponent {
                 </Text>
               )}
             </Button>
-            <Text
-              caption
-              style={{
-                paddingTop: 15,
-                fontFamily: 'josefinLight',
-                fontSize: 12,
-                textAlign: 'center'
-              }}
+            <TouchableOpacity
               onPress={() => this.setState({ showTerms: true })}
             >
-              Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez.
-              Apprenez plus sur nos{' '}
               <Text
                 caption
                 style={{
-                  textDecorationLine: 'underline',
-                  color: theme.colors.primary
+                  paddingTop: 15,
+                  fontFamily: 'josefinLight',
+                  fontSize: 12,
+                  textAlign: 'center'
                 }}
               >
-                politiques
+                Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez.
+                Apprenez plus sur nos{' '}
+                <Text
+                  caption
+                  style={{
+                    textDecorationLine: 'underline',
+                    color: theme.colors.primary
+                  }}
+                >
+                  politiques
+                </Text>
               </Text>
-            </Text>
+            </TouchableOpacity>
           </Block>
           {this.renderTermsService()}
           {this.state.showConfirmation && this.renderConfirmation()}

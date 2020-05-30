@@ -1,5 +1,4 @@
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
-import { useStoreActions } from '../models';
+import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { SFC, useEffect, useRef, useState } from 'react';
 import {
@@ -11,8 +10,10 @@ import {
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
 
-import { Block, Button, Input, Text } from '../components';
+import { Block, Button, Input } from '../components';
 import { theme } from '../constants';
+import { useStoreActions } from '../models';
+import { Text } from './shareComponents';
 
 const Verification: SFC<Props> = ({
   navigation,

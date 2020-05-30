@@ -1,9 +1,11 @@
 import { AppLoading, Linking } from 'expo';
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, Platform, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Platform, AsyncStorage } from 'react-native';
 import { Bubble, GiftedChat, SystemMessage } from 'react-native-gifted-chat';
 import { graphql, ChildProps } from 'react-apollo';
 import gql from 'graphql-tag';
+
+import { Text } from '../shareComponents';
 
 import CustomActions from './components/CustomActions';
 import CustomView from './components/CustomView';

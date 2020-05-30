@@ -1,7 +1,9 @@
 import React from 'react';
-import { theme } from '../../../constants';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+
+import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
 
 export default ({ tag = '' }) => (
   <View

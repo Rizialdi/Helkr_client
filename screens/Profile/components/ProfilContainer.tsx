@@ -1,7 +1,8 @@
 import React from 'react';
-
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
+
+import { Text } from '../../shareComponents';
 
 export default ({
   image,

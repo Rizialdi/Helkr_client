@@ -2,17 +2,17 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   AsyncStorage,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
-  View,
-  ActivityIndicator
+  View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 
+import { Text } from '../shareComponents';
 import {
   AvgContainer,
   Description,

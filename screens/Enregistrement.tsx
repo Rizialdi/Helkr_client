@@ -14,10 +14,12 @@ import Toast from 'react-native-easy-toast';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import ValidationComponent from 'react-native-form-validator';
 
-import { Button, Block, Input, Text, TermsOfServices } from '../components';
+import { Button, Block, Input } from '../components';
+import { Text, TermsOfServices } from './shareComponents';
 import { theme } from '../constants';
 
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../config';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -102,28 +104,31 @@ class Form extends ValidationComponent {
                   </Text>
                 </Text>
               </Button>
-              <Text
-                caption
-                style={{
-                  paddingTop: 15,
-                  fontFamily: 'josefinLight',
-                  fontSize: 12,
-                  textAlign: 'center'
-                }}
+              <TouchableOpacity
                 onPress={() => this.setState({ showTerms: true })}
               >
-                Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez.
-                Apprenez plus sur nos{' '}
                 <Text
                   caption
                   style={{
-                    textDecorationLine: 'underline',
-                    color: theme.colors.primary
+                    paddingTop: 15,
+                    fontFamily: 'josefinLight',
+                    fontSize: 12,
+                    textAlign: 'center'
                   }}
                 >
-                  politiques
+                  Vous devez être agé(e) d’au moins 16 ans pour vous
+                  enregistrez. Apprenez plus sur nos{' '}
+                  <Text
+                    caption
+                    style={{
+                      textDecorationLine: 'underline',
+                      color: theme.colors.primary
+                    }}
+                  >
+                    politiques
+                  </Text>
                 </Text>
-              </Text>
+              </TouchableOpacity>
             </Block>
           </Block>
           {this.renderTermsService()}

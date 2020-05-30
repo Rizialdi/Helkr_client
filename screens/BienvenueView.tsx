@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Dimensions, StyleSheet } from 'react-native';
+import { View, Dimensions, StyleSheet } from 'react-native';
+import { Text } from './shareComponents';
 import Image from 'react-native-remote-svg';
 const { width, height } = Dimensions.get('window');
 
