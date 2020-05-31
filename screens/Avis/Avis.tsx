@@ -39,7 +39,6 @@ export default ({ navigation, route: { params } }) => {
   } = useStoreState((state) => state.User);
 
   const userId = params && params.id ? params.id : Id;
-  console.log(userId);
   const { loading, error, data } = useQuery(AVIS, {
     variables: { userId },
     errorPolicy: 'ignore',

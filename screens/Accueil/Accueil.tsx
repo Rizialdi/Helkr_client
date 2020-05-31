@@ -10,10 +10,10 @@ import {
 import Image from 'react-native-remote-svg';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { Badge, Block, Card } from '../components';
-import { Text } from './shareComponents';
-import { mocks, theme } from '../constants';
-import { useStoreState } from '../models';
+import { Badge, Block, Card } from '../../components';
+import { Text } from '../shareComponents';
+import { mocks, theme } from '../../constants';
+import { useStoreState } from '../../models';
 
 const { width } = Dimensions.get('window');
 
@@ -126,7 +126,7 @@ export default function Accueil({ navigation }) {
             onPress={() => handleInput()}
           >
             <Image
-              source={require('../assets/icons/reglages.svg')}
+              source={require('../../assets/icons/reglages.svg')}
               style={{ width: 20, height: 20 }}
             />
           </TouchableOpacity>

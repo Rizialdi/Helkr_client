@@ -98,7 +98,7 @@ export default function Profile({ navigation, route: { params } }) {
         professional: false
       }
     } = {},
-    refetch,
+    //refetch,
     loading
   } = useQuery(INFO, {
     variables: { id },
@@ -107,13 +107,14 @@ export default function Profile({ navigation, route: { params } }) {
     pollInterval: 100 * 3600 * 24
   });
 
-  useEffect(() => {
-    params && params.updatedSettings
-      ? (() => {
-          refetch ? refetch() : null;
-        })()
-      : null;
-  }, [params]);
+  // useEffect(() => {
+  //   params && params.updatedSettings
+  //     ? (() => {
+  //         // TODO thereis an issue with refetch in the docs
+  //         refetch ? refetch() : null;
+  //       })()
+  //     : null;
+  // }, [params]);
 
   return (
     <SafeAreaView style={styles.container}>

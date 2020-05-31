@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@apollo/react-hooks';
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
 import { ReactNativeFile } from 'apollo-upload-client';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
@@ -16,47 +16,9 @@ import { theme } from '../../constants';
 import { Text } from '../shareComponents';
 import { Description, ProfilContainer, Tag } from './components';
 
-const INFO = gql`
-  query userById($id: String!) {
-    userById(id: $id) {
-      nom
-      tags
-      prenom
-      avatar
-      address
-      verified
-      description
-      professional
-    }
-  }
-`;
-
-const SINGLE_UPLOAD_MUTATION = gql`
-  mutation avatarUpload($file: Upload!) {
-    avatarUpload(file: $file)
-  }
-`;
-
-const DESCRIPTION_MUTATION = gql`
-  mutation descriptionUpdate($text: String!) {
-    descriptionUpdate(text: $text)
-  }
-`;
-
-const ADDRESS_MUTATION = gql`
-  mutation addressUpdate($text: String!) {
-    addressUpdate(text: $text)
-  }
-`;
-
-const TAGS_MUTATION = gql`
-  mutation tagsUpdate($tags: [String!]!) {
-    tagsUpdate(tags: $tags)
-  }
-`;
-
 export default function Profile({ navigation, route: { params } }) {
   const [Id, setId] = useState('');
+  const apolloClient = useApolloClient();
   let updatedSettings: boolean = false;
   const [image, setImage] = useState(null);
   const [addressParent, setAddressParent] = useState<string>('');
@@ -67,9 +29,6 @@ export default function Profile({ navigation, route: { params } }) {
   const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
   const [addressMutation] = useMutation(ADDRESS_MUTATION);
   const [tagsMutation] = useMutation(TAGS_MUTATION);
-
-  const getName = (chaine) =>
-    String(chaine).split('/')[String(chaine).split('/').length - 1];
 
   useEffect(() => {
     (async () => {
@@ -134,34 +93,58 @@ export default function Profile({ navigation, route: { params } }) {
 
   const save = () => {
     try {
-      isModified ? (updatedSettings = true) : null;
-      pictureUrl ? onChangeImage(pictureUrl) : null;
-      descriptionParent ? onChangeDescription(descriptionParent) : null;
-      addressParent ? onChangeAddress(addressParent) : null;
+      isModified && (updatedSettings = true);
+      pictureUrl && onChangeImage(pictureUrl);
+      descriptionParent && onChangeDescription(descriptionParent);
+      addressParent && onChangeAddress(addressParent);
+      tagList && onChangeTags(tagList);
 
-      tagList ? onChangeTags(tagList) : null;
       setTimeout(() => {
         navigation.navigate('Profile', { updatedSettings });
-      }, 100);
+      }, 1000);
     } catch (error) {
       throw new Error(error);
     }
   };
 
   const onChangeImage = (file) => {
-    uploadFileMutation({ variables: { file } });
+    uploadFileMutation({ variables: { file } })
+      .then(() => {
+        apolloClient.reFetchObservableQueries();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   };
 
   const onChangeDescription = (text) => {
-    descriptionMutation({ variables: { text } });
+    descriptionMutation({ variables: { text } })
+      .then(() => {
+        apolloClient.reFetchObservableQueries();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   };
 
   const onChangeAddress = (text) => {
-    addressMutation({ variables: { text } });
+    addressMutation({ variables: { text } })
+      .then(() => {
+        apolloClient.reFetchObservableQueries();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   };
 
   const onChangeTags = (array) => {
-    tagsMutation({ variables: { tags: array } });
+    tagsMutation({ variables: { tags: array } })
+      .then(() => {
+        apolloClient.reFetchObservableQueries();
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   };
 
   return (
@@ -270,3 +253,45 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   }
 });
+
+const INFO = gql`
+  query userById($id: String!) {
+    userById(id: $id) {
+      nom
+      tags
+      prenom
+      avatar
+      address
+      verified
+      description
+      professional
+    }
+  }
+`;
+
+const SINGLE_UPLOAD_MUTATION = gql`
+  mutation avatarUpload($file: Upload!) {
+    avatarUpload(file: $file)
+  }
+`;
+
+const DESCRIPTION_MUTATION = gql`
+  mutation descriptionUpdate($text: String!) {
+    descriptionUpdate(text: $text)
+  }
+`;
+
+const ADDRESS_MUTATION = gql`
+  mutation addressUpdate($text: String!) {
+    addressUpdate(text: $text)
+  }
+`;
+
+const TAGS_MUTATION = gql`
+  mutation tagsUpdate($tags: [String!]!) {
+    tagsUpdate(tags: $tags)
+  }
+`;
+
+const getName = (chaine) =>
+  String(chaine).split('/')[String(chaine).split('/').length - 1];

@@ -16,7 +16,7 @@ interface Props {
   caption?;
   small?;
   size?;
-  transform?;
+  transform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase';
   align?;
   // styling
   regular?;
@@ -27,7 +27,7 @@ interface Props {
   light?;
   center?;
   right?;
-  spacing?; // letter-spacing
+  spacing?: number; // letter-spacing
   height?; // line-height
   // colors
   color?;
@@ -107,14 +107,30 @@ const CustomText: SFC<Props> = ({
     color && styles[color],
     color && !styles[color] && { color },
     // color shortcuts
-    accent && themeColors.accent,
-    primary && themeColors.primary,
-    secondary && themeColors.secondary,
-    tertiary && themeColors.tertiary,
-    black && themeColors.black,
-    white && themeColors.white,
-    gray && themeColors.gray,
-    gray2 && themeColors.gray2,
+    accent && {
+      color: themeColors.accent
+    },
+    primary && {
+      color: themeColors.primary
+    },
+    secondary && {
+      color: themeColors.secondary
+    },
+    tertiary && {
+      color: themeColors.tertiary
+    },
+    black && {
+      color: themeColors.black
+    },
+    white && {
+      color: themeColors.white
+    },
+    gray && {
+      color: themeColors.gray
+    },
+    gray2 && {
+      color: themeColors.gray2
+    },
     style // rewrite predefined styles
   ];
 
