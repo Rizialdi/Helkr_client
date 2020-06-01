@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SFC } from 'react';
 import {
   KeyboardAvoidingView,
   SafeAreaView,
@@ -11,7 +11,12 @@ import Text from './Text';
 import { theme } from '../../constants';
 import { useStoreState } from '../../models';
 
-export default ({ title, children }) => {
+interface Props {
+  title?: string;
+  children: JSX.Element;
+}
+
+const Layout: SFC<Props> = ({ title, children }) => {
   const { themeColors } = useStoreState((state) => state.Preferences);
 
   return (
@@ -19,17 +24,19 @@ export default ({ title, children }) => {
       style={{ ...styles.container, backgroundColor: themeColors.background }}
     >
       <KeyboardAvoidingView enabled={true} behavior="position">
-        <View
-          style={{
-            marginTop: 40,
-            marginBottom: 20,
-            marginHorizontal: theme.sizes.base * 2
-          }}
-        >
-          <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-            {title}
-          </Text>
-        </View>
+        {title && (
+          <View
+            style={{
+              marginTop: 40,
+              marginBottom: 20,
+              marginHorizontal: theme.sizes.base * 2
+            }}
+          >
+            <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
+              {title}
+            </Text>
+          </View>
+        )}
         <View>{children}</View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -46,3 +53,5 @@ const styles = StyleSheet.create({
     color: '#52575D'
   }
 });
+
+export default Layout;

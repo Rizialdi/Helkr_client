@@ -3,6 +3,7 @@ import MenuItem from './MenuItem';
 import { View } from 'react-native';
 
 interface Props {
+  categoryItem: string;
   children: JSX.Element[];
 }
 
@@ -27,7 +28,6 @@ class MultiStepMenu extends Component<Props, State> {
   };
 
   _onChangeValue = (name: string, value: string) => {
-    console.log(name, value);
     this.setState((prevState) => ({
       values: { ...prevState.values, [name]: value }
     }));
@@ -38,7 +38,7 @@ class MultiStepMenu extends Component<Props, State> {
   };
 
   render() {
-    const { children } = this.props;
+    const { children, categoryItem } = this.props;
     return (
       <View>
         {React.Children.map(children, (child, idx) => {
@@ -51,6 +51,7 @@ class MultiStepMenu extends Component<Props, State> {
               onSubmit: this._onSubmit,
               nextStep: this._nextStep,
               prevStep: this._prevStep,
+              categoryItem: categoryItem,
               onChangeValue: this._onChangeValue
             });
           }

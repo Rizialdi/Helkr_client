@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, { Component, SFC } from 'react';
+import { View, Dimensions } from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -7,23 +7,37 @@ import RadioForm, {
 } from 'react-native-simple-radio-button';
 
 import { Text } from '../../shareComponents';
+
+import { useStoreState } from '../../../models';
+
 interface Props {
-  radio_props: Array<{ label: string; value: string }>;
   name: string;
-  onChange: (a: string, b: string) => void;
-  values: { ItemLabel: string };
-  onSelected: (a: boolean) => void;
+  values?: { ItemLabel: string };
+  isLast: boolean;
+  radio_props?: Array<{ label: string; value: string }>;
+  nextStep?: () => void;
+  onSelected?: (a: boolean) => void;
+  onChange?: (a: string, b: string) => void;
 }
 
-export default class CustomRadioForm extends Component<Props> {
-  render() {
-    const { radio_props, onChange, values, name, onSelected } = this.props;
-    values && values[name] && onSelected(true);
-    return (
-      <View>
-        <Text center semibold transform="capitalize">
-          {name}
-        </Text>
+const CustomRadioForm: SFC<Props> = ({
+  name,
+  values,
+  isLast,
+  nextStep,
+  onChange,
+  onSelected,
+  radio_props
+}) => {
+  values && values[name] && onSelected(true);
+
+  const { themeColors } = useStoreState((state) => state.Preferences);
+  return (
+    <View style={{ marginTop: 20 }}>
+      <Text center title light transform="capitalize">
+        {name}
+      </Text>
+      <View style={{ marginTop: 20 }}>
         <RadioForm animation={true}>
           {/* To create radio buttons, loop through your array of options */}
           {radio_props.map((obj, i) => (
@@ -38,18 +52,24 @@ export default class CustomRadioForm extends Component<Props> {
                 onPress={() => {
                   onSelected(true);
                   onChange(name, obj.value);
+                  !isLast && setTimeout(() => nextStep(), 100);
                 }}
                 borderWidth={1}
-                buttonInnerColor={'#e74c3c'}
+                buttonInnerColor={themeColors.primary}
                 buttonOuterColor={
                   values && values[name] && obj.value === values[name]
-                    ? '#2196f3'
-                    : '#000'
+                    ? themeColors.primary
+                    : themeColors.defaultTextColor
                 }
-                buttonSize={40}
-                buttonOuterSize={80}
-                buttonStyle={{}}
-                buttonWrapStyle={{ marginLeft: 10 }}
+                buttonSize={15}
+                buttonOuterSize={20}
+                buttonStyle={{ marginLeft: 10 }}
+                buttonWrapStyle={{
+                  marginTop: 20,
+                  flex: 0.2,
+                  borderBottomWidth: 1,
+                  borderBottomColor: themeColors.gray2
+                }}
               />
               <RadioButtonLabel
                 obj={obj}
@@ -58,14 +78,26 @@ export default class CustomRadioForm extends Component<Props> {
                 onPress={() => {
                   onSelected(true);
                   onChange(name, obj.value);
+                  !isLast && setTimeout(() => nextStep(), 100);
                 }}
-                labelStyle={{ fontSize: 20, color: '#2ecc71' }}
-                labelWrapStyle={{}}
+                labelStyle={{
+                  fontSize: 20,
+                  color: themeColors.defaultTextColor
+                }}
+                labelWrapStyle={{
+                  flex: 0.8,
+                  borderBottomWidth: 1,
+                  borderBottomColor: themeColors.gray2,
+                  padding: 20,
+                  paddingLeft: 0
+                }}
               />
             </RadioButton>
           ))}
         </RadioForm>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
+
+export default CustomRadioForm;

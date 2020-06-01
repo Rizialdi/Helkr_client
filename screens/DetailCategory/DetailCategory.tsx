@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Text } from '../shareComponents';
+import { Text, Layout } from '../shareComponents';
 import { MultiStepMenu, RadioForm } from './components/';
 
 interface Props {
@@ -29,11 +29,6 @@ const Item = ({ title }) => {
     </View>
   );
 };
-
-const radio_props = [
-  { label: 'param1', value: 0 },
-  { label: 'param2', value: 1 }
-];
 
 const Dummy = {
   foyer: [
@@ -57,17 +52,22 @@ const Dummy = {
 const DetailCategory: SFC<Props> = ({ route, navigation }) => {
   const { category } = route.params;
   const [openModal, setOpenModal] = useState<boolean>(false);
-
+  const [categoryItem, setCategoryItem] = useState<string>('');
   const close = () => {
     setOpenModal(false);
   };
   return (
-    <View style={styles.container}>
+    <Layout>
       <SafeAreaView>
         <FlatList
           data={category.tag}
           renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => setOpenModal(true)}>
+            <TouchableOpacity
+              onPress={() => {
+                setOpenModal(true);
+                setCategoryItem(item);
+              }}
+            >
               <Item title={item} />
             </TouchableOpacity>
           )}
@@ -79,18 +79,16 @@ const DetailCategory: SFC<Props> = ({ route, navigation }) => {
           presentationStyle="overFullScreen"
           visible={openModal}
         >
-          <Text center> Ajouter une offre </Text>
-          <MultiStepMenu>
+          <MultiStepMenu categoryItem={categoryItem}>
             {Object.keys(Dummy).map((item, idx) => (
-              <MultiStepMenu.Item key={idx}>
+              <MultiStepMenu.Item key={idx} openModal={setOpenModal}>
                 <RadioForm name={item} radio_props={Dummy[item]} />
               </MultiStepMenu.Item>
             ))}
           </MultiStepMenu>
-          <Button title="Apui moi" onPress={() => setOpenModal(false)} />
         </Modal>
       </SafeAreaView>
-    </View>
+    </Layout>
   );
 };
 
