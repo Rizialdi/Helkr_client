@@ -1,15 +1,23 @@
 import React, { SFC, useState } from 'react';
 
-import { View, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  KeyboardAvoidingView
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { Text } from '../../shareComponents';
 import { useStoreState } from '../../../models';
 
+const { height } = Dimensions.get('screen');
 interface Props {
   children: JSX.Element;
-  values: string;
+  values: object;
   categoryItem: string;
   currentIndex: number;
   totalChildren: number;
@@ -17,7 +25,7 @@ interface Props {
   onSubmit: () => void;
   nextStep: () => void;
   prevStep: () => void;
-  onChangeValue: () => void;
+  onChangeValue: (a: string, b: string) => void;
   onSelected: () => void;
   openModal: (boolean) => void;
 }
@@ -27,7 +35,7 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
 
   const { themeColors } = useStoreState((state) => state.Preferences);
   return (
-    <View>
+    <KeyboardAvoidingView behavior={'padding'}>
       <View style={styles.titleBar}>
         <TouchableOpacity
           disabled={props.currentIndex === 0}
@@ -69,15 +77,21 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
         isLast: props.isLast
       })}
       {!props.isLast ? null : (
-        <Button
-          title="Soumettre"
-          disabled={!selected}
-          onPress={() => {
-            props.onSubmit(), props.openModal(false);
+        <View
+          style={{
+            marginVertical: height / 4
           }}
-        />
+        >
+          <Button
+            title="Soumettre"
+            disabled={!selected}
+            onPress={() => {
+              props.onSubmit(), props.openModal(false);
+            }}
+          />
+        </View>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

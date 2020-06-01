@@ -30,37 +30,16 @@ const Item = ({ title }) => {
   );
 };
 
-const Dummy = {
-  foyer: [
-    { label: 'foyer1', value: 'foyer 1' },
-    { label: 'foyer2', value: 'foyer2' }
-  ],
-  assiette: [
-    { label: 'assiette1', value: 'assiette1' },
-    { label: 'assiette2', value: 'assiette2' }
-  ],
-  tomate: [
-    { label: 'tomate1', value: 'tomate1' },
-    { label: 'tomate2', value: 'tomate2' }
-  ],
-  marmite: [
-    { label: 'bool', value: 'bool' },
-    { label: 'bool', value: 'bbol' }
-  ]
-};
-
 const DetailCategory: SFC<Props> = ({ route, navigation }) => {
   const { category } = route.params;
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [categoryItem, setCategoryItem] = useState<string>('');
-  const close = () => {
-    setOpenModal(false);
-  };
+
   return (
     <Layout>
       <SafeAreaView>
         <FlatList
-          data={category.tag}
+          data={Object.keys(category.tag)}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
@@ -80,11 +59,15 @@ const DetailCategory: SFC<Props> = ({ route, navigation }) => {
           visible={openModal}
         >
           <MultiStepMenu categoryItem={categoryItem}>
-            {Object.keys(Dummy).map((item, idx) => (
-              <MultiStepMenu.Item key={idx} openModal={setOpenModal}>
-                <RadioForm name={item} radio_props={Dummy[item]} />
-              </MultiStepMenu.Item>
-            ))}
+            {categoryItem &&
+              Object.keys(category.tag[categoryItem]).map((item, idx) => (
+                <MultiStepMenu.Item key={idx} openModal={setOpenModal}>
+                  <RadioForm
+                    name={item}
+                    radio_props={category.tag[categoryItem][item]}
+                  />
+                </MultiStepMenu.Item>
+              ))}
           </MultiStepMenu>
         </Modal>
       </SafeAreaView>

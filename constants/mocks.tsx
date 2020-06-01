@@ -2,50 +2,307 @@ const accueil = [
   {
     id: 'Maison',
     name: 'Maison',
-    tag: ['Réparation', ' néttoyage'],
+    tag: {
+      Réparation: {
+        foyer: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ],
+        foyer2: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette2: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate2: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite2: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      },
+      Néttoyage: {
+        Utilite: [
+          { label: 'balai 1', value: 'balai 1' },
+          { label: 'serpiere 2', value: 'serpiere 2' }
+        ],
+        frequence: [
+          { label: '1 fois par semaine', value: '1 fois par semaine' },
+          { label: '4 fois par semaine', value: '4 fois par semaine' }
+        ],
+        description: [
+          { label: 'description 1', value: 'description 1' },
+          { label: 'description 2', value: 'description 2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      }
+    },
     image: require('../assets/icons/house.svg')
   },
   {
     id: 'Cours',
     name: 'Cours',
-    tag: ['Cours de francais', ' mathématique'],
+    tag: {
+      'Cours de francais': {
+        foyer: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      },
+      Mathématique: {
+        Utilite: [
+          { label: 'balai 1', value: 'balai 1' },
+          { label: 'serpiere 2', value: 'serpiere 2' }
+        ],
+        frequence: [
+          { label: '1 fois par semaine', value: '1 fois par semaine' },
+          { label: '4 fois par semaine', value: '4 fois par semaine' }
+        ],
+        description: [
+          { label: 'description 1', value: 'description 1' },
+          { label: 'description 2', value: 'description 2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      }
+    },
     image: require('../assets/icons/student.svg')
   },
   {
     id: 'Maison2',
-    name: 'Maison',
-    tag: ['Réparation', ' néttoyage'],
+    name: 'Maison2',
+    tag: {
+      Réparation: {
+        foyer: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ],
+        foyer2: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette2: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate2: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite2: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      },
+      Néttoyage: {
+        Utilite: [
+          { label: 'balai 1', value: 'balai 1' },
+          { label: 'serpiere 2', value: 'serpiere 2' }
+        ],
+        frequence: [
+          { label: '1 fois par semaine', value: '1 fois par semaine' },
+          { label: '4 fois par semaine', value: '4 fois par semaine' }
+        ],
+        description: [
+          { label: 'description 1', value: 'description 1' },
+          { label: 'description 2', value: 'description 2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      }
+    },
     image: require('../assets/icons/house.svg')
   },
   {
     id: 'Cours2',
-    name: 'Cours',
-    tag: ['Cours de francais', ' mathématique'],
-    image: require('../assets/icons/house.svg')
+    name: 'Cours2',
+    tag: {
+      'Cours de francais': {
+        foyer: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      },
+      Mathématique: {
+        Utilite: [
+          { label: 'balai 1', value: 'balai 1' },
+          { label: 'serpiere 2', value: 'serpiere 2' }
+        ],
+        frequence: [
+          { label: '1 fois par semaine', value: '1 fois par semaine' },
+          { label: '4 fois par semaine', value: '4 fois par semaine' }
+        ],
+        description: [
+          { label: 'description 1', value: 'description 1' },
+          { label: 'description 2', value: 'description 2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      }
+    },
+    image: require('../assets/icons/student.svg')
   },
   {
     id: 'Maison3',
-    name: 'Maison',
-    tag: ['Réparation', ' néttoyage'],
+    name: 'Maison3',
+    tag: {
+      Réparation: {
+        foyer: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ],
+        foyer2: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette2: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate2: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite2: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      },
+      Néttoyage: {
+        Utilite: [
+          { label: 'balai 1', value: 'balai 1' },
+          { label: 'serpiere 2', value: 'serpiere 2' }
+        ],
+        frequence: [
+          { label: '1 fois par semaine', value: '1 fois par semaine' },
+          { label: '4 fois par semaine', value: '4 fois par semaine' }
+        ],
+        description: [
+          { label: 'description 1', value: 'description 1' },
+          { label: 'description 2', value: 'description 2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      }
+    },
     image: require('../assets/icons/house.svg')
   },
   {
     id: 'Cours3',
-    name: 'Cours',
-    tag: ['Cours de francais', ' mathématique'],
-    image: require('../assets/icons/student.svg')
-  },
-  ,
-  {
-    id: 'Maison4',
-    name: 'Maison',
-    tag: ['Réparation', ' néttoyage'],
-    image: require('../assets/icons/house.svg')
-  },
-  {
-    id: 'Cours4',
-    name: 'Cours',
-    tag: ['Cours de francais', ' mathématique'],
+    name: 'Cours3',
+    tag: {
+      'Cours de francais': {
+        foyer: [
+          { label: 'foyer1', value: 'foyer 1' },
+          { label: 'foyer2', value: 'foyer2' }
+        ],
+        assiette: [
+          { label: 'assiette1', value: 'assiette1' },
+          { label: 'assiette2', value: 'assiette2' }
+        ],
+        tomate: [
+          { label: 'tomate1', value: 'tomate1' },
+          { label: 'tomate2', value: 'tomate2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      },
+      Mathématique: {
+        Utilite: [
+          { label: 'balai 1', value: 'balai 1' },
+          { label: 'serpiere 2', value: 'serpiere 2' }
+        ],
+        frequence: [
+          { label: '1 fois par semaine', value: '1 fois par semaine' },
+          { label: '4 fois par semaine', value: '4 fois par semaine' }
+        ],
+        description: [
+          { label: 'description 1', value: 'description 1' },
+          { label: 'description 2', value: 'description 2' }
+        ],
+        marmite: [
+          { label: 'bool', value: 'bool' },
+          { label: 'bool', value: 'bbol' }
+        ]
+      }
+    },
     image: require('../assets/icons/student.svg')
   }
 ];

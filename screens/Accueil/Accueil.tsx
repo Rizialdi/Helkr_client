@@ -125,17 +125,14 @@ export default function Accueil({ navigation }) {
             }}
             onPress={() => handleInput()}
           >
-            <Image
-              source={require('../../assets/icons/reglages.svg')}
-              style={{ width: 20, height: 20 }}
-            />
+            <Icon name="ellipsis1" size={16} color="black" />
           </TouchableOpacity>
         </View>
         <Block flex={false} row space="between" style={styles.categories}>
           {categories
             .filter(
               (category) =>
-                `${category.name} ${category.tag}`
+                `${category.name} ${Object.keys(category.tag)}`
                   .toUpperCase()
                   .indexOf(inputText.toUpperCase()) >= 0
             )
@@ -161,7 +158,7 @@ export default function Accueil({ navigation }) {
                     {category.name}
                   </Text>
                   <Text gray caption>
-                    {category.tag}
+                    {Object.keys(category.tag)}
                   </Text>
                 </Card>
               </TouchableOpacity>
