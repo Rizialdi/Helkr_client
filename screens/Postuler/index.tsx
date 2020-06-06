@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Text } from './shareComponents';
+import { Text } from '../shareComponents';
 
 const INFO = gql`
   query {
