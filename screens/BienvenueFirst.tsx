@@ -15,7 +15,7 @@ export class BienvenueFirst extends Component<Props> {
       <View style={styles.container}>
         <View style={{ flex: 0.4, justifyContent: 'flex-end' }}>
           <Text size={48} style={{ fontFamily: 'rockSalt' }}>
-            Yoko
+            Helkr
           </Text>
         </View>
         <View style={{ flex: 0.6, alignContent: 'center' }}>
