@@ -1,21 +1,48 @@
-import React, { SFC, useState, Component } from 'react';
-import MenuItem from './MenuItem';
+import gql from 'graphql-tag';
+import React, { Component, Dispatch } from 'react';
+import {
+  ChildProps,
+  ExecutionResult,
+  graphql,
+  MutationFunctionOptions
+} from 'react-apollo';
 import { View } from 'react-native';
 
+import MenuItem from './MenuItem';
+
 interface Props {
+  categoryName: string;
   categoryItem: string;
   children: JSX.Element[];
+  addOffering: (
+    options?: MutationFunctionOptions<any, Record<string, any>>
+  ) => Promise<ExecutionResult<any>>;
 }
 
 interface State {
   step: number;
-  values: object | null;
+  values: { offeringDescription: string } | null;
 }
 
-class MultiStepMenu extends Component<Props, State> {
-  static Item = (props) => <MenuItem {...props} />;
+const ADD_OFFERING = gql`
+  mutation addOffering(
+    $type: String!
+    $category: String!
+    $description: String!
+    $details: String!
+  ) {
+    addOffering(
+      type: $type
+      category: $category
+      description: $description
+      details: $details
+    )
+  }
+`;
 
-  state = {
+class MultiStepMenu extends Component<ChildProps<Props, State>, {}> {
+  static Item = (props) => <MenuItem {...props} />;
+  state: State = {
     step: 0,
     values: null
   };
@@ -28,13 +55,30 @@ class MultiStepMenu extends Component<Props, State> {
   };
 
   _onChangeValue = (name: string, value: string) => {
-    this.setState((prevState) => ({
+    this.setState((prevState: { values: any }) => ({
       values: { ...prevState.values, [name]: value }
     }));
   };
 
   _onSubmit = () => {
-    console.log(this.state.values);
+    const { categoryName, categoryItem, addOffering } = this.props;
+    const { values } = this.state;
+    try {
+      addOffering({
+        variables: {
+          type: categoryItem,
+          category: categoryName,
+          description: values.offeringDescription,
+          details: JSON.stringify(values)
+        }
+      })
+        .then(() => {})
+        .catch((error) => {
+          throw new Error(`Ajout offre impossible, ${error}`);
+        });
+    } catch (error) {
+      throw new Error(`Ajout offre impossible, ${error}`);
+    }
   };
 
   render() {
@@ -62,4 +106,4 @@ class MultiStepMenu extends Component<Props, State> {
   }
 }
 
-export default MultiStepMenu;
+export default graphql(ADD_OFFERING, { name: 'addOffering' })(MultiStepMenu);

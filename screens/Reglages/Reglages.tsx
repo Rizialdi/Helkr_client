@@ -85,9 +85,9 @@ export default function Profile({ navigation, route: { params } }) {
   useEffect(() => {
     setIsModified(
       image ||
-        !(address.toLowerCase() === addressParent.toLowerCase()) ||
-        !(description.toLowerCase() === descriptionParent.toLowerCase()) ||
-        !(JSON.stringify(tagList.sort()) === JSON.stringify(tags.sort()))
+        !(address?.toLowerCase() === addressParent?.toLowerCase()) ||
+        !(description?.toLowerCase() === descriptionParent?.toLowerCase()) ||
+        !(JSON.stringify(tagList?.sort()) === JSON.stringify(tags?.sort()))
     );
   }, [image, addressParent, descriptionParent, tagList]);
 

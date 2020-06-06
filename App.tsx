@@ -6,6 +6,7 @@ import { split } from 'apollo-link';
 import { setContext } from 'apollo-link-context';
 import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
+import { onError } from 'apollo-link-error';
 import { getMainDefinition } from 'apollo-utilities';
 import { StoreProvider } from 'easy-peasy';
 import { AppLoading } from 'expo';
@@ -44,7 +45,10 @@ const wsLink = new WebSocketLink({
   }
 });
 
-// TODO change token
+const errorLink = onError(({ graphQLErrors }) => {
+  if (graphQLErrors) graphQLErrors.map(({ message }) => console.log(message));
+});
+
 const authLink = setContext(async (_, { headers }) => {
   // get the authentication token from local storage if it exists
   const token = await AsyncStorage.getItem('token');
@@ -69,8 +73,8 @@ const link = split(
       definition.operation === 'subscription'
     );
   },
-  authLink.concat(wsLink),
-  authLink.concat(httpLink)
+  errorLink.concat(authLink).concat(wsLink),
+  errorLink.concat(authLink).concat(httpLink)
 );
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({

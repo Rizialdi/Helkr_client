@@ -161,6 +161,7 @@ export default function Profile({ navigation, route: { params } }) {
         <View style={styles.delimiter}></View>
         <TouchableOpacity
           style={styles.lineStars}
+          disabled={done === 0}
           onPress={() =>
             navigation.navigate('Avis', {
               id: id
@@ -168,7 +169,7 @@ export default function Profile({ navigation, route: { params } }) {
           }
         >
           <AvgContainer average={average} done={done} />
-          <Icon name="chevron-right" size={24} color="#52575D" />
+          {done > 0 && <Icon name="chevron-right" size={24} color="#52575D" />}
         </TouchableOpacity>
         <View style={styles.delimiter}></View>
         <View>

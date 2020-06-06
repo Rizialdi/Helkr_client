@@ -9,7 +9,6 @@ import {
   Button
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
 import { Text, Layout } from '../shareComponents';
 import { MultiStepMenu, RadioForm } from './components/';
 
@@ -34,7 +33,6 @@ const DetailCategory: SFC<Props> = ({ route, navigation }) => {
   const { category } = route.params;
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [categoryItem, setCategoryItem] = useState<string>('');
-
   return (
     <Layout>
       <SafeAreaView>
@@ -58,7 +56,11 @@ const DetailCategory: SFC<Props> = ({ route, navigation }) => {
           presentationStyle="overFullScreen"
           visible={openModal}
         >
-          <MultiStepMenu categoryItem={categoryItem}>
+          {/* //TODO arranger ces erreurs */}
+          <MultiStepMenu
+            categoryItem={categoryItem}
+            categoryName={category.name}
+          >
             {categoryItem &&
               Object.keys(category.tag[categoryItem]).map((item, idx) => (
                 <MultiStepMenu.Item key={idx} openModal={setOpenModal}>
