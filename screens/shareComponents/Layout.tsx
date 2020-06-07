@@ -45,8 +45,7 @@ const Layout: SFC<Props> = ({ title, children }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#FFF'
+    flex: 1
   },
   text: {
     fontFamily: 'HelveticaNeue',
