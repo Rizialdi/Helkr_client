@@ -5,13 +5,16 @@ import {
   StyleSheet,
   RefreshControl,
   View,
-  ActivityIndicator
+  ActivityIndicator,
+  Modal
 } from 'react-native';
 import { useStoreState } from '../../models';
 import { Text, Block, Layout } from '../shareComponents';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-import { ListItem } from './components';
+import Icon from 'react-native-vector-icons/AntDesign';
+
+import { ListItem, ModalItem } from './components';
 const OFFERINGS = gql`
   query {
     incompleteOfferings {
@@ -36,28 +39,23 @@ const OFFERINGS_SUBSCRIPTION = gql`
   }
 `;
 const Postuler = () => {
-  // const { data, loading, error } = useQuery(INFO);
-  const {
-    data: dataOffering,
-    loading: loadingOffering,
-    error: errorOffering,
-    refetch
-  } = useQuery(OFFERINGS, {
-    fetchPolicy: 'cache-and-network'
-  });
   const [stateData, setStateData] = useState(null);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [selectedOffering, setSelectedOffering] = useState<string>(null);
   const [activeTab, setActiveTab] = useState<string>(null);
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const tabs = ['Offres', 'Postulées'];
   const { themeColors } = useStoreState((state) => state.Preferences);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    if (refetch) {
-      refetch().then(() => setRefreshing(false));
-    }
-  }, [refreshing]);
+  const {
+    data: dataOffering,
+    loading: loadingOffering,
+    error: errorOffering,
+    refetch
+  } = useQuery(OFFERINGS, {
+    fetchPolicy: 'cache-first'
+  });
 
   const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
     OFFERINGS_SUBSCRIPTION,
@@ -67,7 +65,15 @@ const Postuler = () => {
     }
   );
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    if (refetch) {
+      refetch()?.then(() => setRefreshing(false));
+    }
+  }, [refreshing]);
+
   useEffect(() => {
+    setSelectedOffering('');
     setActiveTab('Offres');
   }, []);
 
@@ -144,12 +150,40 @@ const Postuler = () => {
           >
             {activeTab === tabs[0] && loadingTabOne && <ActivityIndicator />}
             {activeTab === tabs[0] &&
-              stateData?.incompleteOfferings?.map((offering) => (
-                <TouchableOpacity key={offering.id}>
-                  <ListItem offering={offering} />
-                </TouchableOpacity>
-              ))}
+              stateData?.incompleteOfferings?.map((offering) => {
+                const { id } = offering;
+                return (
+                  <TouchableOpacity
+                    key={id}
+                    onPress={() => {
+                      setSelectedOffering(id);
+                      setOpenModal(true);
+                      console.log(selectedOffering);
+                    }}
+                  >
+                    <ListItem offering={offering} />
+                  </TouchableOpacity>
+                );
+              })}
           </ScrollView>
+          <Modal
+            animationType="slide"
+            hardwareAccelerated={true}
+            presentationStyle="overFullScreen"
+            visible={openModal}
+          >
+            <Block padding={[20, 0]}>
+              <TouchableOpacity
+                onPress={() => {
+                  setOpenModal(false);
+                  setSelectedOffering('');
+                }}
+              >
+                <Icon name="close" size={24} color={themeColors.black} />
+              </TouchableOpacity>
+              {selectedOffering && <ModalItem id={selectedOffering} />}
+            </Block>
+          </Modal>
         </View>
       </>
     </Layout>

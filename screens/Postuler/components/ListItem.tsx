@@ -3,7 +3,6 @@ import { StyleSheet, View } from 'react-native';
 
 import { theme } from '../../../constants';
 import { Text, Block } from '../../shareComponents';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import TagItem from './TagItem';
 
 const formatDate = (timestamp: string = '15886987435') => {

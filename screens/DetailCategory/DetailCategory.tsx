@@ -5,8 +5,7 @@ import {
   FlatList,
   SafeAreaView,
   Dimensions,
-  Modal,
-  Button
+  Modal
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text, Layout } from '../shareComponents';
@@ -29,7 +28,7 @@ const Item = ({ title }) => {
   );
 };
 
-const DetailCategory: SFC<Props> = ({ route, navigation }) => {
+const DetailCategory: SFC<Props> = ({ route }) => {
   const { category } = route.params;
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [categoryItem, setCategoryItem] = useState<string>('');

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import React, { Component, Dispatch } from 'react';
+import React, { Component } from 'react';
 import {
   ChildProps,
   ExecutionResult,

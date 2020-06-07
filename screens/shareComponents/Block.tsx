@@ -16,11 +16,11 @@ interface Props {
   shadow?;
   color?;
   space?;
-  margin?: number;
+  margin?: number | number[];
   animated?;
   wrap?;
   style?;
-  padding?: number;
+  padding?: number | number[];
 }
 
 const Block: SFC<Props> = ({
