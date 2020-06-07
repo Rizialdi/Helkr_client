@@ -1,21 +1,17 @@
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import React, { useState, useEffect } from 'react';
-import {
-  StyleSheet,
-  RefreshControl,
-  View,
-  FlatList,
-  ActivityIndicator,
-  Modal
-} from 'react-native';
-import { useStoreState } from '../../models';
-import { Text, Block, Layout } from '../shareComponents';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Modal, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
 import Icon from 'react-native-vector-icons/AntDesign';
 
+import { useStoreState } from '../../models';
+import { Block, Layout, Text } from '../shareComponents';
 import { ListItem, ModalItem } from './components';
+
+//TODO implement infinite scroll when Issue resolved
+// cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
+
 const OFFERINGS = gql`
   query incompleteOfferings($filters: [String!]) {
     incompleteOfferings(filters: $filters) {
@@ -48,6 +44,7 @@ const Postuler = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const tabs = ['Offres', 'Postulées'];
   const { themeColors } = useStoreState((state) => state.Preferences);
+  const { tags } = useStoreState((state) => state.Offering);
 
   const {
     data: dataOffering,
@@ -55,8 +52,8 @@ const Postuler = () => {
     error: errorOffering,
     refetch
   } = useQuery(OFFERINGS, {
-    fetchPolicy: 'cache-first',
-    variables: { filters: ['Réparateur', 'Ménage'] }
+    fetchPolicy: 'cache-and-network',
+    variables: { filters: tags }
   });
 
   const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
@@ -80,12 +77,19 @@ const Postuler = () => {
   }, []);
 
   useEffect(() => {
+    setLoadingTabOne(true);
+    if (refetch) {
+      refetch()?.then(() => setLoadingTabOne(false));
+    }
+  }, [tags]);
+
+  useEffect(() => {
     setLoadingTabOne(loadingOffering);
   }, [loadingOffering]);
 
   useEffect(() => {
-    if (dataOffering && !errorOffering) {
-      setStateData(dataOffering);
+    if (!errorOffering) {
+      setStateData(dataOffering || '');
     }
   }, [dataOffering, loadingOffering]);
 
@@ -168,7 +172,11 @@ const Postuler = () => {
                 );
               }) */}
           {activeTab === tabs[0] && loadingTabOne && <ActivityIndicator />}
-          {activeTab === tabs[0] && (
+          {/* TODO make sur not data appears when stateData empty */}
+          {activeTab === tabs[0] && !stateData?.incompleteOfferings && (
+            <Text>Not data baby</Text>
+          )}
+          {activeTab === tabs[0] && stateData?.incompleteOfferings && (
             <FlatList
               refreshing={refreshing}
               onRefresh={onRefresh}
@@ -176,7 +184,7 @@ const Postuler = () => {
               onEndReachedThreshold={0}
               pagingEnabled={true}
               alwaysBounceVertical={true}
-              ListFooterComponent={() => <ActivityIndicator size="small" />}
+              //ListFooterComponent={() => <ActivityIndicator size="small" />}
               keyExtractor={(item) => item.id}
               data={stateData?.incompleteOfferings}
               renderItem={({ index, item }) => {

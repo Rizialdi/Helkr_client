@@ -12,8 +12,8 @@ const tagList = [
   'Epicier',
   'Garagiste',
   'Ménagère',
-  'Poissonier',
-  'Reparateur'
+  'Réparation',
+  'Ménage'
 ];
 export default ({ tags = ['_'], parentCallback }) => {
   const [selected, setSelected] = useState<string>();

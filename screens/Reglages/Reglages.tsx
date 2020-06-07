@@ -15,6 +15,7 @@ import {
 import { theme } from '../../constants';
 import { Text } from '../shareComponents';
 import { Description, ProfilContainer, Tag } from './components';
+import { useStoreActions } from '../../models';
 
 export default function Profile({ navigation, route: { params } }) {
   const [Id, setId] = useState('');
@@ -24,11 +25,12 @@ export default function Profile({ navigation, route: { params } }) {
   const [addressParent, setAddressParent] = useState<string>('');
   const [descriptionParent, setDescriptionParent] = useState<string>('');
   // TODO solve not setTags allowed
-  const [tagList, setTags] = useState<Array<string>>([]);
+  const [tagList, SetTags] = useState<Array<string>>([]);
   const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
   const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
   const [addressMutation] = useMutation(ADDRESS_MUTATION);
   const [tagsMutation] = useMutation(TAGS_MUTATION);
+  const { setTags } = useStoreActions((actions) => actions.Offering);
 
   useEffect(() => {
     (async () => {
@@ -140,6 +142,7 @@ export default function Profile({ navigation, route: { params } }) {
   const onChangeTags = (array) => {
     tagsMutation({ variables: { tags: array } })
       .then(() => {
+        setTags(array);
         apolloClient.reFetchObservableQueries();
       })
       .catch((err) => {
@@ -218,7 +221,7 @@ export default function Profile({ navigation, route: { params } }) {
             >
               Tags
             </Text>
-            <Tag tags={tags} parentCallback={setTags} />
+            <Tag tags={tags} parentCallback={SetTags} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
