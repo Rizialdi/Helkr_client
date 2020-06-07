@@ -5,19 +5,20 @@ import {
   StyleSheet,
   RefreshControl,
   View,
+  FlatList,
   ActivityIndicator,
   Modal
 } from 'react-native';
 import { useStoreState } from '../../models';
 import { Text, Block, Layout } from '../shareComponents';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { ListItem, ModalItem } from './components';
 const OFFERINGS = gql`
-  query {
-    incompleteOfferings {
+  query incompleteOfferings($filters: [String!]) {
+    incompleteOfferings(filters: $filters) {
       id
       type
       category
@@ -54,13 +55,14 @@ const Postuler = () => {
     error: errorOffering,
     refetch
   } = useQuery(OFFERINGS, {
-    fetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-first',
+    variables: { filters: ['Réparateur', 'Ménage'] }
   });
 
   const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
     OFFERINGS_SUBSCRIPTION,
     {
-      variables: { tags: ['Ménage', 'Réparateur'] },
+      variables: { tags: ['Ménage', 'Réparateur', 'Réparation'] },
       shouldResubscribe: true
     }
   );
@@ -140,17 +142,17 @@ const Postuler = () => {
         >
           {tabs.map((tab) => renderTab(tab))}
         </Block>
-        <View style={{ marginBottom: 100 }}>
-          <ScrollView
+        <Block flex={false}>
+          {/* <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
             pagingEnabled={true}
             alwaysBounceVertical={true}
           >
-            {activeTab === tabs[0] && loadingTabOne && <ActivityIndicator />}
-            {activeTab === tabs[0] &&
-              stateData?.incompleteOfferings?.map((offering) => {
+            
+
+            {/* stateData?.incompleteOfferings?.map((offering) => {
                 const { id } = offering;
                 return (
                   <TouchableOpacity
@@ -164,8 +166,36 @@ const Postuler = () => {
                     <ListItem offering={offering} />
                   </TouchableOpacity>
                 );
-              })}
-          </ScrollView>
+              }) */}
+          {activeTab === tabs[0] && loadingTabOne && <ActivityIndicator />}
+          {activeTab === tabs[0] && (
+            <FlatList
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              onEndReached={() => console.log('salut')}
+              onEndReachedThreshold={0}
+              pagingEnabled={true}
+              alwaysBounceVertical={true}
+              ListFooterComponent={() => <ActivityIndicator size="small" />}
+              keyExtractor={(item) => item.id}
+              data={stateData?.incompleteOfferings}
+              renderItem={({ index, item }) => {
+                const { id } = item;
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      setSelectedOffering(id);
+                      setOpenModal(true);
+                      console.log(selectedOffering);
+                    }}
+                  >
+                    <ListItem offering={item} />
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          )}
           <Modal
             animationType="slide"
             hardwareAccelerated={true}
@@ -184,7 +214,7 @@ const Postuler = () => {
               {selectedOffering && <ModalItem id={selectedOffering} />}
             </Block>
           </Modal>
-        </View>
+        </Block>
       </>
     </Layout>
   );
