@@ -122,7 +122,7 @@ const Verification: SFC<Props> = ({
 
   const { setUser } = useStoreActions((actions) => actions.User);
 
-  //TODO Test this function
+  //TODO Test this function -> seems to work. Test if fail case (wrong password)
   const storeCredentials = ({ token, user: { id, prenom } }) => {
     (async () => {
       try {

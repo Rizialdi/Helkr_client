@@ -59,7 +59,7 @@ const Postuler = () => {
   const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
     OFFERINGS_SUBSCRIPTION,
     {
-      variables: { tags: ['Ménage', 'Réparateur', 'Réparation'] },
+      variables: { tags },
       shouldResubscribe: true
     }
   );
@@ -147,30 +147,6 @@ const Postuler = () => {
           {tabs.map((tab) => renderTab(tab))}
         </Block>
         <Block flex={false}>
-          {/* <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            pagingEnabled={true}
-            alwaysBounceVertical={true}
-          >
-            
-
-            {/* stateData?.incompleteOfferings?.map((offering) => {
-                const { id } = offering;
-                return (
-                  <TouchableOpacity
-                    key={id}
-                    onPress={() => {
-                      setSelectedOffering(id);
-                      setOpenModal(true);
-                      console.log(selectedOffering);
-                    }}
-                  >
-                    <ListItem offering={offering} />
-                  </TouchableOpacity>
-                );
-              }) */}
           {activeTab === tabs[0] && loadingTabOne && <ActivityIndicator />}
           {/* TODO make sur not data appears when stateData empty */}
           {activeTab === tabs[0] && !stateData?.incompleteOfferings && (

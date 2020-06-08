@@ -9,13 +9,13 @@ export interface OfferingModel {
   setTags: Action<OfferingModel, string[] | null>;
 }
 
-const storedOrFetchedData = async (): Promise<string[]> => {
+const storedOrFetchedData = async (): Promise<string[] | null> => {
   try {
     const tags = await AsyncStorage.getItem('tags');
-    if (!tags) return [''];
-    return [tags];
+    if (!tags) return null;
+    return JSON.parse(tags);
   } catch (error) {
-    console.log(error);
+    throw new Error('Error loading tags');
   }
 };
 

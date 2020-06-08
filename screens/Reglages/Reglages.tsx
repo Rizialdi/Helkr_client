@@ -120,34 +120,44 @@ export default function Profile({ navigation, route: { params } }) {
   };
 
   const onChangeDescription = (text) => {
-    descriptionMutation({ variables: { text } })
-      .then(() => {
+    try {
+      descriptionMutation({ variables: { text } }).then(() => {
         apolloClient.reFetchObservableQueries();
-      })
-      .catch((err) => {
-        throw new Error(err);
       });
+    } catch (error) {
+      throw new Error('Mutation failed');
+    }
   };
 
   const onChangeAddress = (text) => {
-    addressMutation({ variables: { text } })
-      .then(() => {
+    try {
+      addressMutation({ variables: { text } }).then(() => {
         apolloClient.reFetchObservableQueries();
-      })
-      .catch((err) => {
-        throw new Error(err);
       });
+    } catch (error) {
+      throw new Error('Mutation failed');
+    }
+  };
+
+  const storeTags = async (array) => {
+    setTags(array);
+    (async () => {
+      try {
+        await AsyncStorage.setItem('tags', JSON.stringify(array));
+      } catch (error) {
+        throw new Error('tags storage failed');
+      }
+    })();
   };
 
   const onChangeTags = (array) => {
-    tagsMutation({ variables: { tags: array } })
-      .then(() => {
-        setTags(array);
-        apolloClient.reFetchObservableQueries();
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
+    try {
+      tagsMutation({ variables: { tags: array } })
+        .then(() => apolloClient.reFetchObservableQueries())
+        .then(() => storeTags(array));
+    } catch (error) {
+      throw new Error('tags storage failed');
+    }
   };
 
   return (

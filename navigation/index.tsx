@@ -191,12 +191,16 @@ const MyMainStack = ({ token }) => {
 
 export default () => {
   const user = useStoreState((state) => state.User.user);
-  const { loadUser } = useStoreActions((actions) => actions.User);
+  const {
+    User: { loadUser },
+    Offering: { loadTags }
+  } = useStoreActions((actions) => actions);
 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadUser();
+    loadTags();
     setTimeout(() => setIsLoading(false), 2000);
   }, []);
 
