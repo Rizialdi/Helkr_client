@@ -1,10 +1,5 @@
 import React, { useState, SFC } from 'react';
-import {
-  ChildProps,
-  ExecutionResult,
-  graphql,
-  MutationFunctionOptions
-} from 'react-apollo';
+import { graphql, useMutation } from 'react-apollo';
 import { ActivityIndicator } from 'react-native';
 import gql from 'graphql-tag';
 
@@ -34,15 +29,26 @@ const GET_OFFERING = gql`
   }
 `;
 
+const APPLY_TO_OFFERING = gql`
+  mutation candidateToOffering($id: String!) {
+    candidateToOffering(id: $id) {
+      success
+    }
+  }
+`;
+
 const ModalItem: SFC<Props> = ({
   offeringById: { called, loading, offeringById }
 }) => {
+  const [applyTo, { data }] = useMutation(APPLY_TO_OFFERING);
+
   return (
     <Layout title={'Details'}>
       {loading && !called ? (
         <ActivityIndicator size={'large'} />
       ) : (
         <Block flex={false}>
+          {console.log(data?.candidateToOffering?.success)}
           <Block flex={false} row middle space={'around'}>
             <TagItem tag={offeringById?.type} type />
             <TagItem tag={offeringById?.category} category />
@@ -55,7 +61,10 @@ const ModalItem: SFC<Props> = ({
             {offeringById?.details}
           </Text>
           <Block margin={[20, 20]}>
-            <Button secondary>
+            <Button
+              secondary
+              onPress={() => applyTo({ variables: { id: offeringById?.id } })}
+            >
               <Text bold center>
                 Postuler
               </Text>

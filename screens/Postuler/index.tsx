@@ -156,7 +156,7 @@ const Postuler = () => {
             <FlatList
               refreshing={refreshing}
               onRefresh={onRefresh}
-              onEndReached={() => console.log('salut')}
+              // onEndReached={() => console.log('salut')}
               onEndReachedThreshold={0}
               pagingEnabled={true}
               alwaysBounceVertical={true}

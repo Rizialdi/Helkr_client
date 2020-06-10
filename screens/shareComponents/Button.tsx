@@ -16,6 +16,7 @@ interface Props {
   white?;
   gray?;
   vertical?;
+  onPress?: () => void;
 }
 
 const Button: SFC<Props> = ({
