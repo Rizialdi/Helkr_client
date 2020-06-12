@@ -1,5 +1,10 @@
-import React, { useState, SFC } from 'react';
-import { graphql, useMutation } from 'react-apollo';
+import React, { useRef, SFC } from 'react';
+import {
+  graphql,
+  useMutation,
+  useApolloClient,
+  ChildProps
+} from 'react-apollo';
 import { ActivityIndicator } from 'react-native';
 import gql from 'graphql-tag';
 
@@ -8,6 +13,7 @@ import TagItem from './TagItem';
 
 interface Props {
   id: string;
+  modalOpening: () => void;
   offeringById: any;
 }
 
@@ -37,18 +43,23 @@ const APPLY_TO_OFFERING = gql`
   }
 `;
 
-const ModalItem: SFC<Props> = ({
+const ModalItem: SFC<ChildProps<Props, {}, any>> = ({
   offeringById: { called, loading, offeringById }
 }) => {
-  const [applyTo, { data }] = useMutation(APPLY_TO_OFFERING);
+  const [applyTo] = useMutation(APPLY_TO_OFFERING);
+  const client = useApolloClient();
 
+  const toastRef = useRef(null);
+  const applySuccess = () => {
+    client.reFetchObservableQueries();
+  };
   return (
     <Layout title={'Details'}>
       {loading && !called ? (
         <ActivityIndicator size={'large'} />
       ) : (
         <Block flex={false}>
-          {console.log(data?.candidateToOffering?.success)}
+          {/* {console.log(data?.candidateToOffering?.success)} */}
           <Block flex={false} row middle space={'around'}>
             <TagItem tag={offeringById?.type} type />
             <TagItem tag={offeringById?.category} category />
@@ -63,7 +74,19 @@ const ModalItem: SFC<Props> = ({
           <Block margin={[20, 20]}>
             <Button
               secondary
-              onPress={() => applyTo({ variables: { id: offeringById?.id } })}
+              onPress={() =>
+                applyTo({ variables: { id: offeringById?.id } })
+                  .then(({ data }) => data?.candidateToOffering)
+                  .then((data) => {
+                    try {
+                      if (data?.success) {
+                        client.reFetchObservableQueries();
+                      }
+                    } catch (error) {
+                      throw new Error(`Impossible de Candidater ${error}`);
+                    }
+                  })
+              }
             >
               <Text bold center>
                 Postuler
