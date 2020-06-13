@@ -15,8 +15,8 @@ import Discussions from '../screens/Discussions/Discussions';
 import Enregistrement from '../screens/Enregistrement';
 import Identification from '../screens/Identification';
 import Postuler from '../screens/Postuler';
+import Manage from '../screens/Manage';
 import Profile from '../screens/Profile/Profile';
-import Publier from '../screens/Publier';
 import Reglages from '../screens/Reglages';
 import Screen from '../screens/Screen';
 import Verification from '../screens/Verification';
@@ -35,10 +35,10 @@ const createBottomTabs = () => {
       barStyle={{ backgroundColor: theme.colors.white, height: 50 }}
     >
       <MaterialBottomTabs.Screen
-        name="Publier"
-        component={Publier}
+        name="Gerer"
+        component={Manage}
         options={{
-          tabBarLabel: 'Publier',
+          tabBarLabel: 'Gerer',
           tabBarIcon: () => <Icon name="pluscircleo" size={24} color="black" />
         }}
       />

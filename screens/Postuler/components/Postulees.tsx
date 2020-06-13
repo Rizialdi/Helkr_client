@@ -1,4 +1,8 @@
-import { useQuery } from '@apollo/react-hooks';
+import {
+  useQuery,
+  useSubscription,
+  useApolloClient
+} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Modal } from 'react-native';
@@ -7,6 +11,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { Block, Text } from '../../shareComponents';
 import ListItem from './ListItemApplied';
 import ModalItem from './ModalItem';
+import { useStoreState } from '../../../models';
 
 const APPLIEDTO = gql`
   query isCandidateTo {
@@ -21,17 +26,15 @@ const APPLIEDTO = gql`
   }
 `;
 
-// const APPLIEDTO_SUBSCRIPTION = gql`
-//   subscription onOfferingAdded($tags: [String!]) {
-//     newOffering(tags: $tags) {
-//       id
-//       type
-//       category
-//       description
-//       createdAt
-//     }
-//   }
-// `;
+const APPLIEDTO_SUBSCRIPTION = gql`
+  subscription onOfferingAdded($userId: String!) {
+    updateAppliedTo(userId: $userId) {
+      id
+      status
+    }
+  }
+`;
+
 const Postulees = () => {
   const [stateData, setStateData] = useState(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -39,17 +42,19 @@ const Postulees = () => {
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const { user } = useStoreState((state) => state.User);
+
   const { data, loading, error, refetch } = useQuery(APPLIEDTO, {
     fetchPolicy: 'cache-and-network'
   });
 
-  //   const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
-  //     OFFERINGS_SUBSCRIPTION,
-  //     {
-  //       variables: { tags },
-  //       shouldResubscribe: true
-  //     }
-  //   );
+  const { data: dataUpdate, error: errorUpdate } = useSubscription(
+    APPLIEDTO_SUBSCRIPTION,
+    {
+      variables: { userId: user.id },
+      shouldResubscribe: true
+    }
+  );
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -72,23 +77,28 @@ const Postulees = () => {
       setStateData(data || '');
     }
   }, [data, loading]);
+  const client = useApolloClient();
+  useEffect(() => {
+    if (dataUpdate && dataUpdate?.updateAppliedTo && !errorUpdate) {
+      const updatedStatus = stateData?.isCandidateTo
+        .filter((offering) => offering.id === dataUpdate?.updateAppliedTo?.id)
+        .map((offering) => {
+          return { ...offering, status: dataUpdate?.updateAppliedTo?.status };
+        });
 
-  //   useEffect(() => {
-  //     if (dataNewOffering && dataNewOffering?.newOffering && !errorNewOffering) {
-  //       setStateData({
-  //         incompleteOfferings: [
-  //           dataNewOffering?.newOffering,
-  //           ...stateData.incompleteOfferings
-  //         ]
-  //       });
-  //     }
-  //   }, [dataNewOffering]);
+      const newArray = stateData?.isCandidateTo.filter(
+        (offering) => !(offering.id === dataUpdate?.updateAppliedTo?.id)
+      );
+      setStateData({
+        isCandidateTo: updatedStatus.concat(newArray)
+      });
+    }
+  }, [dataUpdate]);
 
   return (
     <>
       {loadingTabTwo && <ActivityIndicator />}
       {/* TODO make sur not data appears when stateData empty */}
-      {console.log(stateData)}
       {!stateData?.isCandidateTo && <Text>Vous n'avez aucune candidature</Text>}
       {
         <FlatList

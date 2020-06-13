@@ -59,7 +59,6 @@ const ModalItem: SFC<ChildProps<Props, {}, any>> = ({
         <ActivityIndicator size={'large'} />
       ) : (
         <Block flex={false}>
-          {/* {console.log(data?.candidateToOffering?.success)} */}
           <Block flex={false} row middle space={'around'}>
             <TagItem tag={offeringById?.type} type />
             <TagItem tag={offeringById?.category} category />
