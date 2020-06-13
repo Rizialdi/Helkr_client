@@ -5,14 +5,17 @@ import { theme } from '../../../constants';
 import { Text, Block } from '../../shareComponents';
 import { TagItem } from '../../shareComponents';
 
-const formatDate = (timestamp: string = '15886987435') => {
-  const date = new Date(parseInt(timestamp));
-  return date.getMonth() + ' ' + date.getFullYear();
-};
-export default ({ offering }) => {
-  const { category, type, description, createdAt } = offering;
+import { formatDate } from '../../../utils';
+
+export default ({ appliedTo }) => {
+  const { type, status, category, createdAt, description } = appliedTo;
   return (
     <Block flex={false} style={styles.container}>
+      <Block padding={10} style={{ marginHorizontal: 20 }}>
+        <Text h3 transform={'capitalize'}>
+          {status}
+        </Text>
+      </Block>
       <Block flex={false} row middle space={'around'}>
         <TagItem tag={type} type />
         <TagItem tag={category} category />

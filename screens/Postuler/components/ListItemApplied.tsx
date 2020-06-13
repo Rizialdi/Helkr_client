@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { theme } from '../../../constants';
 import { Text, Block } from '../../shareComponents';
-import TagItem from './TagItem';
+import { TagItem } from '../../shareComponents';
 
 const formatDate = (timestamp: string = '15886987435') => {
   const date = new Date(parseInt(timestamp));

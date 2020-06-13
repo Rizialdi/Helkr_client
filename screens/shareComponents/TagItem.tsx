@@ -1,7 +1,7 @@
 import React, { SFC } from 'react';
 import { View, StyleSheet } from 'react-native';
 
-import { Text } from '../../shareComponents';
+import Text from './Text';
 
 interface Props {
   tag: string;

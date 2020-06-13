@@ -1,7 +1,7 @@
 import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal, StyleSheet } from 'react-native';
+import { ActivityIndicator, FlatList, Modal } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/AntDesign';
 
