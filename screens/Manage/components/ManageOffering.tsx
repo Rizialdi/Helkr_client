@@ -1,12 +1,9 @@
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { ActivityIndicator } from 'react-native';
 
-import { Block, Text } from '../../shareComponents';
-import ListItemOffering from './ListItemOffering';
+import { CustomListView } from '../../shareComponents';
 import ModalItem from './ModalItem';
 
 const MY_OFFERINGS = gql`
@@ -35,8 +32,6 @@ const MY_OFFERINGS = gql`
 
 const ManageOffering = () => {
   const [stateData, setStateData] = useState(null);
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [selectedOffering, setSelectedOffering] = useState<string>(null);
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -56,10 +51,6 @@ const ManageOffering = () => {
   }, [refreshing]);
 
   useEffect(() => {
-    setSelectedOffering('');
-  }, []);
-
-  useEffect(() => {
     setLoadingTabOne(loading);
   }, [loading]);
 
@@ -72,55 +63,13 @@ const ManageOffering = () => {
   return (
     <>
       {loadingTabOne && <ActivityIndicator />}
-      {/* TODO make sur not data appears when stateData empty */}
-      {!stateData?.myIncompleteOffering && (
-        <Text>Vous n'avez actuellement aucune demande</Text>
-      )}
-
-      <FlatList
+      <CustomListView
+        data={stateData?.myIncompleteOffering}
+        emptyMessage={"Vous n'avez aucune offre actuellement"}
+        modalItem={<ModalItem />}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        // onEndReached={() => console.log('salut')}
-        onEndReachedThreshold={0}
-        pagingEnabled={true}
-        alwaysBounceVertical={true}
-        //ListFooterComponent={() => <ActivityIndicator size="small" />}
-        keyExtractor={(item) => item.id}
-        data={stateData?.myIncompleteOffering}
-        renderItem={({ index, item }) => {
-          const { id } = item;
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setSelectedOffering(id);
-                setOpenModal(true);
-              }}
-            >
-              <ListItemOffering offering={item} />
-            </TouchableOpacity>
-          );
-        }}
       />
-
-      <Modal
-        animationType="slide"
-        hardwareAccelerated={true}
-        presentationStyle="overFullScreen"
-        visible={openModal}
-      >
-        <Block padding={[20, 0]}>
-          <TouchableOpacity
-            onPress={() => {
-              setOpenModal(false);
-              setSelectedOffering('');
-            }}
-          >
-            <Icon name="close" size={24} />
-          </TouchableOpacity>
-          {selectedOffering && <ModalItem id={selectedOffering} />}
-        </Block>
-      </Modal>
     </>
   );
 };

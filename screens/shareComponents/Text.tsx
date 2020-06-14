@@ -40,6 +40,10 @@ interface Props {
   gray?;
   gray2?;
   style?;
+  /**
+   Horizontal margin on a Text element*/
+  horizontal?: number;
+  vertical?: number;
 }
 const CustomText: SFC<Props> = ({
   h1,
@@ -63,6 +67,8 @@ const CustomText: SFC<Props> = ({
   right,
   spacing, // letter-spacing
   height, // line-height
+  horizontal,
+  vertical,
   // colors
   color,
   accent,
@@ -93,6 +99,8 @@ const CustomText: SFC<Props> = ({
     small && styles.small,
     size && { fontSize: size },
     transform && { textTransform: transform },
+    horizontal && { marginHorizontal: horizontal },
+    vertical && { marginVertical: vertical },
     align && { textAlign: align },
     height && { lineHeight: height },
     spacing && { letterSpacing: spacing },

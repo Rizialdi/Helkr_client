@@ -12,7 +12,7 @@ import { Text, Layout, Block, Button } from '../../shareComponents';
 import { TagItem } from '../../shareComponents';
 
 interface Props {
-  id: string;
+  id?: string;
   modalOpening: () => void;
   offeringById: any;
 }

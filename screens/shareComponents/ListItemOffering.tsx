@@ -1,22 +1,21 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-import { theme } from '../../../constants';
-import { Text, Block } from '../../shareComponents';
-import { TagItem } from '../../shareComponents';
+import { formatDate } from '../../utils';
+import Block from './Block';
+import TagItem from './TagItem';
+import Text from './Text';
 
-const formatDate = (timestamp: string = '15886987435') => {
-  const date = new Date(parseInt(timestamp));
-  return date.getMonth() + ' ' + date.getFullYear();
-};
 export default ({ offering }) => {
   const { category, type, description, createdAt } = offering;
   return (
     <Block flex={false} style={styles.container}>
+      {offering?.status && <TagItem tag={offering?.status} status />}
       <Block flex={false} row middle space={'around'}>
         <TagItem tag={type} type />
         <TagItem tag={category} category />
         <TagItem tag={formatDate(createdAt)} date />
+        {console.log(createdAt)}
       </Block>
       <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
         {description}
@@ -40,15 +39,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 30
-  },
-
-  image: {
-    height: 45,
-    width: 45,
-    borderRadius: 50,
-    borderWidth: 2,
-    overflow: 'hidden',
-    borderColor: theme.colors.primary
   },
   delimiter: {
     borderTopColor: '#DFD8C8',

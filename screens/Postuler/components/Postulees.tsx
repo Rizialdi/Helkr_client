@@ -1,17 +1,11 @@
-import {
-  useQuery,
-  useSubscription,
-  useApolloClient
-} from '@apollo/react-hooks';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Modal } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { Block, Text } from '../../shareComponents';
-import ListItem from './ListItemApplied';
-import ModalItem from './ModalItem';
+import { ActivityIndicator } from 'react-native';
+
 import { useStoreState } from '../../../models';
+import { CustomListView } from '../../shareComponents';
+import ModalItem from './ModalItem';
 
 const APPLIEDTO = gql`
   query isCandidateTo {
@@ -37,8 +31,6 @@ const APPLIEDTO_SUBSCRIPTION = gql`
 
 const Postulees = () => {
   const [stateData, setStateData] = useState(null);
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [selectedOffering, setSelectedOffering] = useState<string>(null);
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
@@ -65,10 +57,6 @@ const Postulees = () => {
   }, [refreshing]);
 
   useEffect(() => {
-    setSelectedOffering('');
-  }, []);
-
-  useEffect(() => {
     setLoadingTabTwo(loading);
   }, [loading]);
 
@@ -77,7 +65,7 @@ const Postulees = () => {
       setStateData(data || '');
     }
   }, [data, loading]);
-  const client = useApolloClient();
+
   useEffect(() => {
     if (dataUpdate && dataUpdate?.updateAppliedTo && !errorUpdate) {
       const updatedStatus = stateData?.isCandidateTo
@@ -98,53 +86,13 @@ const Postulees = () => {
   return (
     <>
       {loadingTabTwo && <ActivityIndicator />}
-      {/* TODO make sur not data appears when stateData empty */}
-      {!stateData?.isCandidateTo && <Text>Vous n'avez aucune candidature</Text>}
-      {
-        <FlatList
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          // onEndReached={() => console.log('salut')}
-          onEndReachedThreshold={0}
-          pagingEnabled={true}
-          alwaysBounceVertical={true}
-          //ListFooterComponent={() => <ActivityIndicator size="small" />}
-          keyExtractor={(item) => item.id}
-          data={stateData?.isCandidateTo}
-          renderItem={({ index, item }) => {
-            const { id } = item;
-            return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  setSelectedOffering(id);
-                  setOpenModal(true);
-                }}
-              >
-                <ListItem appliedTo={item} />
-              </TouchableOpacity>
-            );
-          }}
-        />
-      }
-      <Modal
-        animationType="slide"
-        hardwareAccelerated={true}
-        presentationStyle="overFullScreen"
-        visible={openModal}
-      >
-        <Block padding={[20, 0]}>
-          <TouchableOpacity
-            onPress={() => {
-              setOpenModal(false);
-              setSelectedOffering('');
-            }}
-          >
-            <Icon name="close" size={24} />
-          </TouchableOpacity>
-          {selectedOffering && <ModalItem id={selectedOffering} />}
-        </Block>
-      </Modal>
+      <CustomListView
+        data={stateData?.isCandidateTo}
+        emptyMessage={"Vous n'avez aucune candidature"}
+        modalItem={<ModalItem />}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+      />
     </>
   );
 };
