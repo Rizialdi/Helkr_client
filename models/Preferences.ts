@@ -41,7 +41,7 @@ const darkTheme: themeInterface = {
 
 export interface PreferencesModel {
   themeColors: themeInterface;
-  changeTheme: Action<PreferencesModel, { themeColors }>;
+  changeTheme: Action<PreferencesModel, { themeColors: themeInterface }>;
 }
 
 const preferences: PreferencesModel = {

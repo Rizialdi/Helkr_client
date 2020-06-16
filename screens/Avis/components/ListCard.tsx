@@ -3,7 +3,15 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { theme } from '../../../constants';
 import { Text } from '../../shareComponents';
+import { formatDateAvis } from '../../../utils';
 
+interface Mark {
+  scorer: string;
+  score: number;
+  comment: string;
+  createdAt: string;
+  avatar: string | undefined;
+}
 const mark: string[] = [
   'A éviter',
   'Décevant',
@@ -13,32 +21,13 @@ const mark: string[] = [
   'Parfait'
 ];
 
-const yearMonths: string[] = [
-  'jan.',
-  'fev.',
-  'mar.',
-  'avr.',
-  'mai',
-  'jui.',
-  'juil.',
-  'aou.',
-  'sep.',
-  'oct.',
-  'nov.',
-  'dec.'
-];
-
-const formatDate = (timestamp: string = '15886987435') => {
-  const date = new Date(parseInt(timestamp));
-  return yearMonths[date.getMonth()] + ' ' + date.getFullYear();
-};
 export default ({
   scorer = 'John D.',
   score = 0,
   comment = 'Agreable',
   createdAt = Date.now().toString(),
-  avatar = null
-}) => (
+  avatar = ''
+}: Mark) => (
   <TouchableOpacity style={styles.container}>
     <View style={styles.mainLine}>
       <Text style={{ fontSize: 16, fontWeight: '500' }}>{scorer}</Text>
@@ -58,7 +47,7 @@ export default ({
         {mark[score]}
       </Text>
       <Text style={{ fontSize: 14, marginBottom: 10 }}>{comment}</Text>
-      <Text style={{ fontSize: 10 }}>{formatDate(createdAt)}</Text>
+      <Text style={{ fontSize: 10 }}>{formatDateAvis(createdAt)}</Text>
     </View>
     <View style={styles.delimiter}></View>
   </TouchableOpacity>

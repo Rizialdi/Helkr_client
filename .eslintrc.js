@@ -12,12 +12,13 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'no-shadow': 'warn',
-    '@typescript-eslint/explicit-member-accessibility': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/indent': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/array-type': 'off',
-    '@typescript-eslint/no-object-literal-type-assertion': 'off'
+    '@typescript-eslint/explicit-member-accessibility': 'warn',
+    '@typescript-eslint/explicit-function-return-type': 'warn',
+    '@typescript-eslint/indent': 'warn',
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-non-null-assertion': 'warn',
+    '@typescript-eslint/array-type': 'warn',
+    '@typescript-eslint/no-object-literal-type-assertion': 'warn',
+    "@typescript-eslint/no-explicit-any": "warn"
   }
 };

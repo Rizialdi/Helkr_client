@@ -1,5 +1,5 @@
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useStoreActions, useStoreState } from '../models';
 import React, { useEffect, useState } from 'react';
@@ -21,8 +21,31 @@ import Reglages from '../screens/Reglages';
 import Screen from '../screens/Screen';
 import Verification from '../screens/Verification';
 
-const MainStack = createStackNavigator();
-const MaterialBottomTabs = createMaterialBottomTabNavigator();
+type MainStackParamList = {
+  DetailCategory: { category: { name: string } };
+  Discussion: undefined;
+  Reglages: undefined;
+  Avis: undefined;
+  ProfilesNavigation: undefined;
+  Enregistrement: undefined;
+  Identification: undefined;
+  Verification: undefined;
+  Screen: undefined;
+  PrincipalView: BottomStackParamList;
+};
+
+type BottomStackParamList = {
+  Accueil: undefined;
+  Gerer: undefined;
+  Postuler: undefined;
+  Discussions: undefined;
+  Profile: undefined;
+};
+
+const MainStack = createStackNavigator<MainStackParamList>();
+const MaterialBottomTabs = createMaterialBottomTabNavigator<
+  BottomStackParamList
+>();
 
 const createBottomTabs = () => {
   return (
@@ -78,7 +101,7 @@ const createBottomTabs = () => {
   );
 };
 
-const MyMainStack = ({ token }) => {
+const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
   return (
     <MainStack.Navigator
       initialRouteName="Screen"
@@ -102,9 +125,9 @@ const MyMainStack = ({ token }) => {
           <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
-            options={({ route }: route) => ({
+            options={({ route }) => ({
               headerShown: true,
-              title: route.params.category.name
+              title: route?.params?.category?.name
             })}
           />
           <MainStack.Screen
@@ -163,9 +186,9 @@ const MyMainStack = ({ token }) => {
           <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
-            options={({ route }: route) => ({
+            options={({ route }): { headerShown: boolean; title: string } => ({
               headerShown: true,
-              title: route.params.category.name
+              title: route?.params?.category.name
             })}
           />
           <MainStack.Screen
@@ -213,7 +236,10 @@ export default () => {
 };
 
 type route = {
-  route: {
-    params;
-  };
+  params: { category: { name: string } };
 };
+
+interface Props {
+  route: RouteProp<Record<string, object | undefined>, 'DetailCategory'>;
+  navigation: any;
+}

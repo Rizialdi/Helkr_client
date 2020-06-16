@@ -2,15 +2,15 @@ import { Action, action, Thunk, thunk } from 'easy-peasy';
 import { AsyncStorage } from 'react-native';
 
 interface userContextInterface {
-  id: string;
-  token: string;
-  prenom: string;
+  id?: string;
+  token?: string;
+  prenom?: string;
 }
 
 export interface UserModel {
-  user: userContextInterface | null;
+  user: userContextInterface;
   loadUser: Thunk<UserModel>;
-  setUser: Action<UserModel, { id; token; prenom } | null>;
+  setUser: Action<UserModel, { id: string; token: string; prenom: string }>;
 }
 
 const storedData = async () => {
@@ -27,7 +27,7 @@ const storedData = async () => {
 };
 
 const user: UserModel = {
-  user: null,
+  user: {},
   //thunk
   loadUser: thunk(async (actions) => {
     const data = await storedData();

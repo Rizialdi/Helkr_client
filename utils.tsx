@@ -1,3 +1,18 @@
+const yearMonths: string[] = [
+  'jan.',
+  'fev.',
+  'mar.',
+  'avr.',
+  'mai',
+  'jui.',
+  'juil.',
+  'aou.',
+  'sep.',
+  'oct.',
+  'nov.',
+  'dec.'
+];
+
 export const formatDate = (timestamp: string = '15886987435') => {
   const difference = Date.now() / 1000 - parseInt(timestamp) / 1000;
   // Calculate the number of days
@@ -21,4 +36,9 @@ export const formatDate = (timestamp: string = '15886987435') => {
       : 'dep. ' + days + ' jrs ';
 
   return elapsedTime;
+};
+
+export const formatDateAvis = (timestamp: string = '15886987435') => {
+  const date = new Date(parseInt(timestamp));
+  return yearMonths[date.getMonth()] + ' ' + date.getFullYear();
 };

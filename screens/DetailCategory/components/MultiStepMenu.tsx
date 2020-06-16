@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import React, { Component } from 'react';
+import React, { Component, ComponentType } from 'react';
 import {
   ChildProps,
   ExecutionResult,
@@ -18,7 +18,7 @@ interface Props {
     options?: MutationFunctionOptions<any, Record<string, any>>
   ) => Promise<ExecutionResult<any>>;
 }
-
+// todo values object ? array ?
 interface State {
   step: number;
   values: { offeringDescription: string } | null;
@@ -39,9 +39,10 @@ const ADD_OFFERING = gql`
     )
   }
 `;
+// ChildProps<Props, State>, {}
 
-class MultiStepMenu extends Component<ChildProps<Props, State>, {}> {
-  static Item = (props) => <MenuItem {...props} />;
+class MultiStepMenu extends Component<Partial<Props>> {
+  static Item = (props: any) => <MenuItem {...props} />;
   state: State = {
     step: 0,
     values: null
@@ -68,7 +69,7 @@ class MultiStepMenu extends Component<ChildProps<Props, State>, {}> {
         variables: {
           type: categoryItem,
           category: categoryName,
-          description: values.offeringDescription,
+          description: values?.offeringDescription,
           details: JSON.stringify(values)
         }
       })

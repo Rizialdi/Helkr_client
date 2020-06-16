@@ -6,13 +6,13 @@ type tagsInterface = string[];
 export interface OfferingModel {
   tags: tagsInterface;
   loadTags: Thunk<OfferingModel>;
-  setTags: Action<OfferingModel, string[] | null>;
+  setTags: Action<OfferingModel, string[]>;
 }
 
-const storedOrFetchedData = async (): Promise<string[] | null> => {
+const storedOrFetchedData = async (): Promise<string[]> => {
   try {
     const tags = await AsyncStorage.getItem('tags');
-    if (!tags) return null;
+    if (!tags) return [];
     return JSON.parse(tags);
   } catch (error) {
     throw new Error('Error loading tags');
@@ -20,7 +20,7 @@ const storedOrFetchedData = async (): Promise<string[] | null> => {
 };
 
 const offering: OfferingModel = {
-  tags: null,
+  tags: [],
   loadTags: thunk(async (actions) => {
     const data = await storedOrFetchedData();
     actions.setTags(data);

@@ -27,7 +27,7 @@ interface Props {
   prevStep: () => void;
   onChangeValue: (a: string, b: string) => void;
   onSelected: () => void;
-  openModal: (boolean) => void;
+  openModal: (a: boolean) => void;
 }
 const MenuItem: SFC<Props> = ({ children, ...props }) => {
   const width = (props.currentIndex / props.totalChildren) * 100;
