@@ -1,18 +1,18 @@
-import { AppLoading, Linking } from 'expo';
-import React, { Component } from 'react';
-import { StyleSheet, View, Platform, AsyncStorage } from 'react-native';
-import { Bubble, GiftedChat, SystemMessage } from 'react-native-gifted-chat';
-import { graphql, ChildProps } from 'react-apollo';
-import gql from 'graphql-tag';
+import { AppLoading, Linking } from "expo";
+import React, { Component } from "react";
+import { StyleSheet, View, Platform, AsyncStorage } from "react-native";
+import { Bubble, GiftedChat, SystemMessage } from "react-native-gifted-chat";
+import { graphql, ChildProps } from "react-apollo";
+import gql from "graphql-tag";
 
-import { Text } from '../shareComponents';
+import { Text } from "../shareComponents";
 
-import CustomActions from './components/CustomActions';
-import CustomView from './components/CustomView';
-import NavBar from './components/NavBar';
+import CustomActions from "./components/CustomActions";
+import CustomView from "./components/CustomView";
+import NavBar from "./components/NavBar";
 
 const styles = StyleSheet.create({
-  container: { flex: 1 }
+  container: { flex: 1 },
 });
 
 const allMessages = gql`
@@ -42,7 +42,7 @@ const createMessage = gql`
 interface Props {
   route: { params: { channelId: string; name: string } };
   allMessagesQuery?: any;
-  createMessageMutation: ({ variables: variables }) => void;
+  createMessageMutation: (a: object) => void;
   navigation: { navigate: () => void };
 }
 
@@ -70,12 +70,12 @@ class App extends Component<ChildProps<Props, State>, {}> {
     step: 0,
     messages: [{}],
     loadEarlier: true,
-    typingText: null,
+    typingText: "",
     isLoadingEarlier: false,
     appIsReady: false,
     isTyping: false,
-    placeHolder: 'Ecrivez votre message',
-    user: { _id: null }
+    placeHolder: "Ecrivez votre message",
+    user: { _id: "" },
   };
 
   _isMounted = false;
@@ -88,7 +88,7 @@ class App extends Component<ChildProps<Props, State>, {}> {
     });
     this.setState({
       appIsReady: true,
-      isTyping: false
+      isTyping: false,
     });
     //@ts-ignore
     this.createMessageSubscription = this.props.allMessagesQuery.subscribeToMore(
@@ -105,26 +105,26 @@ class App extends Component<ChildProps<Props, State>, {}> {
           }
         `,
         variables: { channelId: this.props.route.params.channelId },
-        updateQuery: (previousState, { subscriptionData }) => {
+        updateQuery: (previousState: any, { subscriptionData }: any) => {
           const { data } = subscriptionData;
           const newMessage = this.formattingSubscription(data);
 
           const newAllMessages = [
             newMessage,
-            ...previousState.channel.messages
+            ...previousState.channel.messages,
           ];
 
           return {
             ...previousState,
             channel: {
               ...previousState.channel,
-              messages: newAllMessages
-            }
+              messages: newAllMessages,
+            },
           };
         },
-        onError: (err) => {
+        onError: (err: string) => {
           throw new Error(err);
-        }
+        },
       }
     );
   }
@@ -133,13 +133,13 @@ class App extends Component<ChildProps<Props, State>, {}> {
     this._isMounted = false;
   }
 
-  onSend = (messages = []) => {
+  onSend = (messages: Array<{ text: string }>) => {
     this.props.createMessageMutation({
       variables: {
         channelId: this.props.route.params.channelId,
-        recipient: '',
-        text: messages[0].text
-      }
+        recipient: "",
+        text: messages[0].text,
+      },
     });
   };
 
@@ -147,13 +147,13 @@ class App extends Component<ChildProps<Props, State>, {}> {
     return [
       {
         pattern: /#(\w+)/,
-        style: { textDecorationLine: 'underline', color: 'darkorange' },
-        onPress: () => Linking.openURL(`http://google.com`)
-      }
+        style: { textDecorationLine: "underline", color: "darkorange" },
+        onPress: () => Linking.openURL(`http://google.com`),
+      },
     ];
   };
 
-  renderCustomView(props) {
+  renderCustomView(props: any) {
     return <CustomView {...props} />;
   }
 
@@ -164,19 +164,19 @@ class App extends Component<ChildProps<Props, State>, {}> {
       ...message,
       user,
       createdAt,
-      _id: Math.round(Math.random() * 1000000)
+      _id: Math.round(Math.random() * 1000000),
     }));
     this.onSend(messagesToUpload);
   };
 
   setIsTyping = () => {
     this.setState({
-      isTyping: !this.state.isTyping
+      isTyping: !this.state.isTyping,
     });
   };
 
-  renderCustomActions = (props) =>
-    Platform.OS === 'web' ? null : (
+  renderCustomActions = (props: any) =>
+    Platform.OS === "web" ? null : (
       <CustomActions {...props} onSend={this.onSendFromUser} />
     );
 
@@ -184,40 +184,40 @@ class App extends Component<ChildProps<Props, State>, {}> {
     return <Bubble {...props} />;
   };
 
-  renderSystemMessage = (props) => {
+  renderSystemMessage = (props: any) => {
     return (
       <SystemMessage
         {...props}
         containerStyle={{
-          marginBottom: 15
+          marginBottom: 15,
         }}
         textStyle={{
-          fontSize: 14
+          fontSize: 14,
         }}
       />
     );
   };
 
-  renderQuickReplySend = () => <Text>{' custom send =>'}</Text>;
+  renderQuickReplySend = () => <Text>{" custom send =>"}</Text>;
 
   formatting = (data: [{}]) => {
     const newData = data.map((obj) => {
       Object.keys(obj).forEach((key) => {
-        if (key === 'createdAt') {
+        if (key === "createdAt") {
           obj[key] = parseInt(obj[key]);
         }
       });
       return obj;
     });
     const newDataStr = JSON.stringify(newData)
-      .replace(/id/g, '_id')
-      .replace(/sentBy/g, 'user');
+      .replace(/id/g, "_id")
+      .replace(/sentBy/g, "user");
     return JSON.parse(newDataStr);
   };
 
   formattingSubscription = (data) => {
     const newData = data.newMessage;
-    newData.sentBy = { __typename: 'User', id: data.newMessage.userId };
+    newData.sentBy = { __typename: "User", id: data.newMessage.userId };
 
     delete newData.channelId;
     delete newData.userId;
@@ -225,10 +225,10 @@ class App extends Component<ChildProps<Props, State>, {}> {
   };
   getUser = async () => {
     try {
-      const id = await AsyncStorage.getItem('id');
+      const id = await AsyncStorage.getItem("id");
       if (id !== null) return { _id: id };
     } catch (error) {
-      throw new Error('Unable to get id');
+      throw new Error("Unable to get id");
     }
   };
 
@@ -258,7 +258,7 @@ class App extends Component<ChildProps<Props, State>, {}> {
             user={this.state.user}
             scrollToBottom
             onLongPressAvatar={(user) => alert(JSON.stringify(user))}
-            onPressAvatar={() => alert('short press')}
+            onPressAvatar={() => alert("short press")}
             keyboardShouldPersistTaps="never"
             renderActions={this.renderCustomActions}
             placeholder={this.state.placeHolder}
@@ -267,10 +267,10 @@ class App extends Component<ChildProps<Props, State>, {}> {
             renderCustomView={this.renderCustomView}
             quickReplyStyle={{ borderRadius: 2 }}
             renderQuickReplySend={this.renderQuickReplySend}
-            inverted={Platform.OS !== 'web'}
+            inverted={Platform.OS !== "web"}
             timeTextStyle={{
-              left: { color: 'red' },
-              right: { color: 'yellow' }
+              left: { color: "red" },
+              right: { color: "yellow" },
             }}
           />
         )}
@@ -280,11 +280,11 @@ class App extends Component<ChildProps<Props, State>, {}> {
 }
 
 export default graphql(allMessages, {
-  name: 'allMessagesQuery',
+  name: "allMessagesQuery",
   options: (props: { route?: { params: { channelId: string } } }) => ({
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: "cache-and-network",
     variables: {
-      id: props.route.params.channelId
-    }
-  })
-})(graphql(createMessage, { name: 'createMessageMutation' })(App));
+      id: props?.route?.params.channelId,
+    },
+  }),
+})(graphql(createMessage, { name: "createMessageMutation" })(App));

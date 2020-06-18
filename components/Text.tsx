@@ -1,10 +1,10 @@
 // just copy this code from the driving repo :)
-import React from "react";
+import React, { SFC } from "react";
 import { Text, StyleSheet, StyleProp, TextStyle } from "react-native";
 
-import { useStoreState } from "../../models";
+import { useStoreState } from "../models";
 
-import { theme } from "../../constants";
+import { theme } from "../constants";
 
 interface Props {
   h1?: boolean;
@@ -12,7 +12,7 @@ interface Props {
   h3?: boolean;
   title?: boolean;
   body?: boolean;
-  children?: string | number | JSX.Element;
+  children?: string;
   caption?: boolean;
   small?: boolean;
   size?: any;
@@ -42,9 +42,11 @@ interface Props {
   /**
    Horizontal margin on a Text element*/
   horizontal?: any;
+  /**
+   Vertical margin on a Text element*/
   vertical?: any;
 }
-const CustomText: React.FC<Props> = ({
+const CustomText: SFC<Props> = ({
   h1,
   h2,
   h3,

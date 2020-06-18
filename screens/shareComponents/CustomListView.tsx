@@ -1,13 +1,13 @@
-import React, { FC, useState } from 'react';
-import Text from './Text';
-import Block from './Block';
-import { FlatList, Modal } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import ListItemOffering from './ListItemOffering';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { useStoreState } from '../../models';
+import React, { FC, useState } from "react";
+import Text from "./Text";
+import Block from "./Block";
+import { FlatList, Modal } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import ListItemOffering from "./ListItemOffering";
+import Icon from "react-native-vector-icons/AntDesign";
+import { useStoreState } from "../../models";
 
-interface dataContent {
+export interface dataContent {
   id: string;
   type: string;
   description: string;
@@ -17,7 +17,7 @@ interface dataContent {
 }
 
 interface Props {
-  data: [dataContent];
+  data?: dataContent[];
   onRefresh: () => void;
   emptyMessage: string;
   modalItem: JSX.Element;
@@ -28,16 +28,16 @@ const CustomListView: FC<Props> = ({
   onRefresh,
   emptyMessage,
   modalItem,
-  refreshing
+  refreshing,
 }) => {
-  const [selectedOffering, setSelectedOffering] = useState<string>(null);
+  const [selectedOffering, setSelectedOffering] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const { themeColors } = useStoreState((state) => state.Preferences);
 
   return (
     <Block flex={false}>
-      {!(data?.length > 0) && (
+      {!data?.length && (
         <Text horizontal={30} medium vertical={30}>
           {emptyMessage}
         </Text>
@@ -77,7 +77,7 @@ const CustomListView: FC<Props> = ({
           <TouchableOpacity
             onPress={() => {
               setOpenModal(false);
-              setSelectedOffering('');
+              setSelectedOffering("");
             }}
           >
             <Icon name="close" size={24} color={themeColors.black} />

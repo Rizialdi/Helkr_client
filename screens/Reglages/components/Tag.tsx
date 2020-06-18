@@ -1,34 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import RNPickerSelect from "react-native-picker-select";
 
-import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
-import TagItem from './TagItem';
+import { theme } from "../../../constants";
+import { Text } from "../../shareComponents";
+import TagItem from "./TagItem";
 
 const tagList = [
-  'Boulanger',
-  'Chauffeur',
-  'Epicier',
-  'Garagiste',
-  'Ménagère',
-  'Réparation',
-  'Ménage'
+  "Boulanger",
+  "Chauffeur",
+  "Epicier",
+  "Garagiste",
+  "Ménagère",
+  "Réparation",
+  "Ménage",
 ];
-export default ({ tags = ['_'], parentCallback }) => {
+
+interface Props {
+  tags?: string[];
+  parentCallback: (a: string[]) => void;
+}
+
+export default ({ tags = ["_"], parentCallback }: Props) => {
   const [selected, setSelected] = useState<string>();
   const [concatedList, setConcatedList] = useState<Array<string>>(tags);
 
-  const onChange = (item) => {
+  const onChange = (item: string[]) => {
     setConcatedList(item);
     parentCallback(item);
   };
 
-  const onAdd = (item) => {
+  const onAdd = (item: string) => {
     onChange([...concatedList, item]);
   };
 
-  const onRemove = (item) => {
+  const onRemove = (item: string) => {
     onChange(concatedList.filter((elm) => elm != item));
   };
 
@@ -65,13 +71,13 @@ export default ({ tags = ['_'], parentCallback }) => {
           <RNPickerSelect
             value={selected}
             placeholder={{
-              label: 'Ajouter des tags ...',
-              value: '',
-              color: theme.colors.gray
+              label: "Ajouter des tags ...",
+              value: "",
+              color: theme.colors.gray,
             }}
             disabled={concatedList.length >= 5}
             onValueChange={(value) => setSelected(value)}
-            doneText={'Ajouter'}
+            doneText={"Ajouter"}
             onDonePress={() => (selected ? onAdd(selected) : null)}
             items={filterList}
           />
@@ -84,10 +90,10 @@ export default ({ tags = ['_'], parentCallback }) => {
 const styles = StyleSheet.create({
   tags: {
     marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: 20
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginHorizontal: 20,
   },
-  selector: { marginLeft: 20 }
+  selector: { marginLeft: 20 },
 });

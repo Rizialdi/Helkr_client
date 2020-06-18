@@ -1,7 +1,7 @@
 import React, { Component, SFC } from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useStoreState } from "../../models";
+import { useStoreState } from "../models";
 interface Props {
   style?: object;
   opacity?: number;
@@ -85,8 +85,6 @@ const Button: SFC<Props> = ({
   );
 };
 
-export default Button;
-
 const styles = StyleSheet.create({
   button: {
     borderRadius: 6,
@@ -100,3 +98,5 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
   },
 });
+
+export default Button;

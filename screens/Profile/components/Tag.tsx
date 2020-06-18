@@ -1,12 +1,15 @@
-import React from 'react';
-import { theme } from '../../../constants';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import TagItem from './TagItem';
+import TagItem from "./TagItem";
 
-export default ({ tags = ['_'] }) => (
+interface Props {
+  tags?: string[];
+}
+
+export default ({ tags }: Props) => (
   <View style={styles.tags}>
-    {tags.map((item, key) => (
+    {tags?.map((item, key) => (
       <TagItem key={key} tag={item} />
     ))}
   </View>
@@ -15,9 +18,9 @@ export default ({ tags = ['_'] }) => (
 const styles = StyleSheet.create({
   tags: {
     marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginHorizontal: 20
-  }
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginHorizontal: 20,
+  },
 });

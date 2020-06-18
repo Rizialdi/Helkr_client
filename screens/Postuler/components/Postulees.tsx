@@ -1,11 +1,11 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { useQuery, useSubscription } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator } from "react-native";
 
-import { useStoreState } from '../../../models';
-import { CustomListView } from '../../shareComponents';
-import ModalItem from './ModalItem';
+import { useStoreState } from "../../../models";
+import { CustomListView, dataContent } from "../../shareComponents";
+import ModalItem from "./ModalItem";
 
 const APPLIEDTO = gql`
   query isCandidateTo {
@@ -30,21 +30,23 @@ const APPLIEDTO_SUBSCRIPTION = gql`
 `;
 
 const Postulees = () => {
-  const [stateData, setStateData] = useState(null);
+  const [stateData, setStateData] = useState<{
+    isCandidateTo?: dataContent[];
+  }>();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const { user } = useStoreState((state) => state.User);
 
   const { data, loading, error, refetch } = useQuery(APPLIEDTO, {
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: "cache-and-network",
   });
 
   const { data: dataUpdate, error: errorUpdate } = useSubscription(
     APPLIEDTO_SUBSCRIPTION,
     {
       variables: { userId: user.id },
-      shouldResubscribe: true
+      shouldResubscribe: true,
     }
   );
 
@@ -62,13 +64,17 @@ const Postulees = () => {
 
   useEffect(() => {
     if (!error) {
-      setStateData(data || '');
+      setStateData(data || "");
     }
   }, [data, loading]);
 
   useEffect(() => {
-    if (dataUpdate && dataUpdate?.updateAppliedTo && !errorUpdate) {
-      const updatedStatus = stateData?.isCandidateTo
+    if (
+      stateData?.isCandidateTo &&
+      dataUpdate?.updateAppliedTo &&
+      !errorUpdate
+    ) {
+      const updatedStatus: dataContent[] = stateData?.isCandidateTo
         .filter((offering) => offering.id === dataUpdate?.updateAppliedTo?.id)
         .map((offering) => {
           return { ...offering, status: dataUpdate?.updateAppliedTo?.status };
@@ -78,7 +84,7 @@ const Postulees = () => {
         (offering) => !(offering.id === dataUpdate?.updateAppliedTo?.id)
       );
       setStateData({
-        isCandidateTo: updatedStatus.concat(newArray)
+        isCandidateTo: updatedStatus.concat(newArray),
       });
     }
   }, [dataUpdate]);

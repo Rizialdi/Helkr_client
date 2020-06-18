@@ -1,9 +1,15 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from "react";
+import { StyleSheet, View } from "react-native";
 
-import { Text } from '../../shareComponents';
+import { Text } from "../../shareComponents";
 
-export default ({ done, proposed, average }) => (
+interface Props {
+  done: number;
+  proposed: number;
+  average: number;
+}
+
+export default ({ done, proposed, average }: Props) => (
   <View style={styles.statsContainer}>
     <View style={styles.statsBox}>
       <Text style={[styles.text, { fontSize: 24 }]}>{done}</Text>
@@ -13,10 +19,10 @@ export default ({ done, proposed, average }) => (
       style={[
         styles.statsBox,
         {
-          borderColor: '#DFD8C8',
+          borderColor: "#DFD8C8",
           borderLeftWidth: 1,
-          borderRightWidth: 1
-        }
+          borderRightWidth: 1,
+        },
       ]}
     >
       <Text style={[styles.text, { fontSize: 24 }]}>{proposed}</Text>
@@ -31,22 +37,22 @@ export default ({ done, proposed, average }) => (
 
 const styles = StyleSheet.create({
   statsContainer: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    marginTop: 32
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 32,
   },
   statsBox: {
-    alignItems: 'center',
-    flex: 1
+    alignItems: "center",
+    flex: 1,
   },
   subText: {
     fontSize: 12,
-    color: '#AEB5BC',
-    textTransform: 'uppercase',
-    fontWeight: '500'
+    color: "#AEB5BC",
+    textTransform: "uppercase",
+    fontWeight: "500",
   },
   text: {
-    fontFamily: 'HelveticaNeue',
-    color: '#52575D'
-  }
+    fontFamily: "HelveticaNeue",
+    color: "#52575D",
+  },
 });

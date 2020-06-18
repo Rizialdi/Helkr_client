@@ -1,27 +1,33 @@
-import React from 'react';
-import { View } from 'react-native';
+import React from "react";
+import { View } from "react-native";
 
-import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { theme } from "../../../constants";
+import { Text } from "../../shareComponents";
 
-export default ({ tag = '' }) => (
+interface Props {
+  tag?: string;
+}
+
+export default ({ tag }: Props) => (
   <View
     style={{
-      alignItems: 'center',
+      alignItems: "center",
       padding: 10,
       borderRadius: 5,
       margin: 5,
-      backgroundColor: 'rgba(175, 158, 123, 0.1)'
+      backgroundColor: "rgba(175, 158, 123, 0.1)",
     }}
   >
-    <Text
-      style={{
-        fontFamily: 'HelveticaNeue',
-        fontSize: theme.sizes.body * 1.1,
-        marginRight: 5
-      }}
-    >
-      {tag}
-    </Text>
+    {tag && (
+      <Text
+        style={{
+          fontFamily: "HelveticaNeue",
+          fontSize: theme.sizes.body * 1.1,
+          marginRight: 5,
+        }}
+      >
+        {tag}
+      </Text>
+    )}
   </View>
 );

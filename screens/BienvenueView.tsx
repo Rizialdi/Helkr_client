@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, FC } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
 import { Text } from './shareComponents';
+//@ts-ignore
 import Image from 'react-native-remote-svg';
 const { width, height } = Dimensions.get('window');
 
 interface Props {
-  source?: any;
-  textP?: any;
-  textS?: any;
+  style?: object
+  source?: NodeRequire
+  textP?: string;
+  textS?: string;
 }
 
-class BienvenueView extends Component<Props> {
-  render() {
-    const { source, textP, textS } = this.props;
+const BienvenueView:FC<Props> = ({ source, textP, textS }) => {
     return (
       <View style={styles.container}>
         <View
@@ -48,7 +48,7 @@ class BienvenueView extends Component<Props> {
       </View>
     );
   }
-}
+
 
 const styles = StyleSheet.create({
   container: {

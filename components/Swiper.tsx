@@ -4,22 +4,26 @@
  * pagination indicators and a ButtonIntro to swipe through screens
  * or to get out of the flow when the last screen is reached
  */
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   AppRegistry,
   Dimensions, // Detects screen dimensions
   Platform, // Detects platform running the app
   ScrollView, // Handles navigation between screens
   StyleSheet, // CSS-like styles
-  View // Container component
-} from 'react-native';
+  View, // Container component
+} from "react-native";
 
 // Detect screen width and height
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
-import ButtonIntro from './ButtonIntro';
+import ButtonIntro from "./ButtonIntro";
 
-export default class OnboardingScreens extends Component {
+interface Props {
+  internals: object;
+}
+
+export default class OnboardingScreens extends Component<Props, {}> {
   // Props for ScrollView component
   static defaultProps = {
     // Arrange screens horizontally
@@ -38,7 +42,7 @@ export default class OnboardingScreens extends Component {
     // Do not adjust content behind nav-, tab- or toolbars automatically
     automaticallyAdjustContentInsets: false,
     // Fisrt is screen is active
-    index: 0
+    index: 0,
   };
 
   state = this.initState(this.props);
@@ -46,7 +50,7 @@ export default class OnboardingScreens extends Component {
   /**
    * Initialize the state
    */
-  initState(props) {
+  initState(props: any) {
     // Get the total number of slides passed as children
     const total = props.children ? props.children.length || 1 : 0,
       // Current index
@@ -59,14 +63,14 @@ export default class OnboardingScreens extends Component {
       index,
       offset,
       width,
-      height
+      height,
     };
 
     // Component internals as a class property,
     // and not state to avoid component re-renders when updated
     this.internals = {
       isScrolling: false,
-      offset
+      offset,
     };
 
     return state;
@@ -104,7 +108,7 @@ export default class OnboardingScreens extends Component {
    */
   onScrollEndDrag = (e) => {
     const {
-        contentOffset: { x: newOffset }
+        contentOffset: { x: newOffset },
       } = e.nativeEvent,
       { children } = this.props,
       { index } = this.state,
@@ -143,7 +147,7 @@ export default class OnboardingScreens extends Component {
     this.internals.offset = offset;
     // Update index in the state
     this.setState({
-      index
+      index,
     });
   };
 
@@ -168,12 +172,12 @@ export default class OnboardingScreens extends Component {
     this.internals.isScrolling = true;
 
     // Trigger onScrollEnd manually on android
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       setImmediate(() => {
         this.onScrollEnd({
           nativeEvent: {
-            position: diff
-          }
+            position: diff,
+          },
         });
       });
     }
@@ -253,7 +257,7 @@ export default class OnboardingScreens extends Component {
           // TODO: Add a handler that would send a user to your app after onboarding is complete
           <ButtonIntro
             text="S'inscrire"
-            onPress={() => this.props.navigation.navigate('Enregistrement')}
+            onPress={() => this.props.navigation.navigate("Enregistrement")}
           />
         ) : (
           // Or this one otherwise
@@ -273,11 +277,11 @@ export default class OnboardingScreens extends Component {
         <View style={{ flex: 0.9 }}>{this.renderScrollView(children)}</View>
         {/* Render pagination */}
         <View style={styles.bottomStack}>
-          <View style={{ flex: 0.5, alignSelf: 'center' }}>
+          <View style={{ flex: 0.5, alignSelf: "center" }}>
             {this.renderPagination()}
           </View>
           {/* Render Continue or Done button */}
-          <View style={{ flex: 0.5, alignItems: 'center' }}>
+          <View style={{ flex: 0.5, alignItems: "center" }}>
             {this.renderButton()}
           </View>
         </View>
@@ -290,57 +294,57 @@ const styles = StyleSheet.create({
   // Set width and height to the screen size
   fullScreen: {
     flex: 1,
-    width: width
+    width: width,
   },
   // Main container
   container: {
-    backgroundColor: 'transparent',
-    position: 'relative'
+    backgroundColor: "transparent",
+    position: "relative",
   },
   // Slide
   slide: {
-    backgroundColor: 'transparent'
+    backgroundColor: "transparent",
   },
 
   // bottomStack
   bottomStack: {
     flex: 0.1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopColor: 'rgba(196, 196, 196, 1)',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderTopColor: "rgba(196, 196, 196, 1)",
     borderTopWidth: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 10
+    backgroundColor: "white",
+    paddingHorizontal: 10,
   },
   // Pagination indicators
   pagination: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'transparent'
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: "transparent",
   },
   // Pagination dot
   dot: {
-    backgroundColor: 'rgba(157, 163, 180, 0.4)',
+    backgroundColor: "rgba(157, 163, 180, 0.4)",
     width: 8,
     height: 8,
     borderRadius: 4,
     marginLeft: 3,
     marginRight: 3,
     marginTop: 3,
-    marginBottom: 3
+    marginBottom: 3,
   },
   // Active dot
   activeDot: {
-    backgroundColor: 'rgba(0, 148, 255, 1)'
+    backgroundColor: "rgba(0, 148, 255, 1)",
   },
   // ButtonIntro wrapper
   buttonWrapper: {
-    backgroundColor: 'transparent',
-    flexDirection: 'column',
+    backgroundColor: "transparent",
+    flexDirection: "column",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

@@ -18,13 +18,14 @@ import { AsyncStorage } from 'react-native';
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
 import store from './models';
 import Navigation from './navigation';
+import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 
 // TODO change the ip address before production
 const cache = new InMemoryCache();
 
 persistCache({
   cache,
-  storage: AsyncStorage
+  storage: AsyncStorage as PersistentStorage<PersistedData<NormalizedCacheObject>>,
 });
 
 // Create an http link:

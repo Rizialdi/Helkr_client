@@ -1,18 +1,20 @@
-import React, { Component, SFC } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import React, { SFC } from "react";
+import { View, TextInput, StyleSheet } from "react-native";
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
-  RadioButtonLabel
-} from 'react-native-simple-radio-button';
+  RadioButtonLabel,
+  //@ts-ignore
+} from "react-native-simple-radio-button";
 
-import { Text } from '../../shareComponents';
+import { Text } from "../../shareComponents";
 
-import { useStoreState } from '../../../models';
+import { useStoreState } from "../../../models";
 
-interface valuesInterface {
-  offeringDescription?: string;
-}
+type valuesInterface = {
+  name: string;
+  offeringDescription?: Array<object> | undefined;
+};
 
 interface Props {
   name: string;
@@ -31,41 +33,41 @@ const CustomRadioForm: SFC<Props> = ({
   nextStep,
   onChange,
   onSelected,
-  radio_props
+  radio_props,
 }) => {
-  values && values[name] && onSelected(true);
-  values?.offeringDescription?.length > 0
-    ? onSelected(true)
-    : onSelected(false);
+  values && values.name && onSelected && onSelected(true);
+  values?.offeringDescription?.length
+    ? onSelected && onSelected(true)
+    : onSelected && onSelected(false);
 
   const { themeColors } = useStoreState((state) => state.Preferences);
   return (
     <View style={{ marginTop: 20 }}>
       <Text center title light transform="capitalize">
-        {!isLast ? name : 'Ajouter une description ?'}
+        {!isLast ? name : "Ajouter une description ?"}
       </Text>
       <View style={{ marginTop: 20 }}>
         {!isLast ? (
           <RadioForm animation={true}>
             {/* To create radio buttons, loop through your array of options */}
-            {radio_props.map((obj, i) => (
+            {radio_props?.map((obj, i) => (
               <RadioButton labelHorizontal={true} key={i}>
                 {/*  You can set RadioButtonLabel before RadioButtonInput */}
                 <RadioButtonInput
                   obj={obj}
                   index={i}
                   isSelected={
-                    values && values[name] && obj.value === values[name]
+                    values && values.name && obj.value === values.name
                   }
                   onPress={() => {
-                    onSelected(true);
-                    onChange(name, obj.value);
-                    setTimeout(() => nextStep(), 100);
+                    onSelected && onSelected(true);
+                    onChange && onChange(name, obj.value);
+                    setTimeout(() => nextStep && nextStep(), 100);
                   }}
                   borderWidth={1}
                   buttonInnerColor={themeColors.primary}
                   buttonOuterColor={
-                    values && values[name] && obj.value === values[name]
+                    values && values.name && obj.value === values.name
                       ? themeColors.primary
                       : themeColors.defaultTextColor
                   }
@@ -76,7 +78,7 @@ const CustomRadioForm: SFC<Props> = ({
                     marginTop: 20,
                     flex: 0.2,
                     borderBottomWidth: 1,
-                    borderBottomColor: themeColors.gray2
+                    borderBottomColor: themeColors.gray2,
                   }}
                 />
                 <RadioButtonLabel
@@ -84,20 +86,20 @@ const CustomRadioForm: SFC<Props> = ({
                   index={i}
                   labelHorizontal={true}
                   onPress={() => {
-                    onSelected(true);
-                    onChange(name, obj.value);
-                    setTimeout(() => nextStep(), 100);
+                    onSelected && onSelected(true);
+                    onChange && onChange(name, obj.value);
+                    setTimeout(() => nextStep && nextStep(), 100);
                   }}
                   labelStyle={{
                     fontSize: 20,
-                    color: themeColors.defaultTextColor
+                    color: themeColors.defaultTextColor,
                   }}
                   labelWrapStyle={{
                     flex: 0.8,
                     borderBottomWidth: 1,
                     borderBottomColor: themeColors.gray2,
                     padding: 20,
-                    paddingLeft: 0
+                    paddingLeft: 0,
                   }}
                 />
               </RadioButton>
@@ -106,14 +108,18 @@ const CustomRadioForm: SFC<Props> = ({
         ) : (
           <>
             <TextInput
-              placeholder={'Ajouter un descriptif ?'}
+              placeholder={"Ajouter un descriptif ?"}
               style={[styles.text, styles.subText2]}
               maxLength={200}
               multiline={true}
               value={
-                values.offeringDescription ? values.offeringDescription : ''
+                values?.offeringDescription
+                  ? JSON.stringify(values?.offeringDescription)
+                  : ""
               }
-              onChangeText={(text) => onChange('offeringDescription', text)}
+              onChangeText={(text) =>
+                onChange && onChange("offeringDescription", text)
+              }
             />
           </>
         )}
@@ -124,18 +130,18 @@ const CustomRadioForm: SFC<Props> = ({
 
 const styles = StyleSheet.create({
   text: {
-    fontFamily: 'HelveticaNeue',
-    color: '#52575D'
+    fontFamily: "HelveticaNeue",
+    color: "#52575D",
   },
 
   subText2: {
     fontSize: 14,
-    color: '#AEB5BC',
-    fontWeight: '500',
-    textAlign: 'justify',
+    color: "#AEB5BC",
+    fontWeight: "500",
+    textAlign: "justify",
     paddingHorizontal: 20,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
 
 export default CustomRadioForm;

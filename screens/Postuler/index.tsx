@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { useStoreState } from '../../models';
-import { Block, Layout, Text } from '../shareComponents';
-import { Offres, Postulees } from './components';
+import { useStoreState } from "../../models";
+import { Block, Layout, Text } from "../shareComponents";
+import { Offres, Postulees } from "./components";
 
 //TODO implement infinite scroll when Issue resolved
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
 
 const Postuler = () => {
-  const tabs = ['Offres', 'Postulées'];
-  const [activeTab, setActiveTab] = useState<string>(null);
+  const tabs = ["Offres", "Postulées"];
+  const [activeTab, setActiveTab] = useState<string>("");
   const { themeColors } = useStoreState((state) => state.Preferences);
 
   useEffect(() => {
-    setActiveTab('Offres');
+    setActiveTab("Offres");
   }, []);
 
-  const renderTab = (tab) => {
+  const renderTab = (tab: string) => {
     const isActive = activeTab == tab;
     return (
       <TouchableOpacity
@@ -29,9 +29,9 @@ const Postuler = () => {
           isActive
             ? {
                 borderBottomColor: themeColors.secondary,
-                borderBottomWidth: 2
+                borderBottomWidth: 2,
               }
-            : null
+            : null,
         ]}
       >
         <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -42,7 +42,7 @@ const Postuler = () => {
   };
 
   return (
-    <Layout title={'Naviguer'}>
+    <Layout title={"Naviguer"}>
       <>
         <Block
           flex={false}
@@ -50,12 +50,12 @@ const Postuler = () => {
           middle
           shadow
           animated
-          space={'around'}
+          space={"around"}
           style={{
             borderBottomColor: themeColors.gray2,
             borderBottomWidth: StyleSheet.hairlineWidth,
             marginVertical: 10,
-            marginHorizontal: 20
+            marginHorizontal: 20,
           }}
         >
           {tabs.map((tab) => renderTab(tab))}
@@ -72,14 +72,14 @@ const Postuler = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   tab: {
     marginRight: 14,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
 });
 
 export default Postuler;

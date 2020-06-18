@@ -19,6 +19,9 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'warn',
     '@typescript-eslint/array-type': 'warn',
     '@typescript-eslint/no-object-literal-type-assertion': 'warn',
-    "@typescript-eslint/no-explicit-any": "warn"
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/strict-null-checks": "warn"
   }
 };
+
+  

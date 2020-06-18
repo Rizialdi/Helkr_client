@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   ScrollView,
@@ -6,38 +6,40 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Route
-} from 'react-native';
-import Image from 'react-native-remote-svg';
-import Icon from 'react-native-vector-icons/AntDesign';
+  Route,
+} from "react-native";
+//@ts-ignore
+import Image from "react-native-remote-svg";
+import Icon from "react-native-vector-icons/AntDesign";
 
-import { Badge, Block, Card } from '../../components';
-import { Text } from '../shareComponents';
-import { mocks, theme } from '../../constants';
-import { useStoreState } from '../../models';
+import { Badge, Block, Card } from "../../components";
+import { Text } from "../shareComponents";
+import { mocks, theme } from "../../constants";
+import { useStoreState } from "../../models";
 
-interface categories {
+interface categorie {
   id: string;
-
   tag: object;
   name: string;
   image: NodeRequire;
 }
 
+type categories = Array<categorie>;
+
 interface Props {
   navigation: Route;
 }
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 export default function Accueil({ navigation }: Props) {
-  const [categories, setCategories] = useState<Array<categories> | undefined>();
-  const [inputText, setInputText] = useState('');
-  const [username, setUsername] = useState('');
+  const [categories, setCategories] = useState<categories | null>();
+  const [inputText, setInputText] = useState<string>("");
+  const [username, setUsername] = useState<string>("");
 
   const { user } = useStoreState((state) => state.User);
 
-  const handleInput = () => setInputText('');
+  const handleInput = () => setInputText("");
 
   useEffect(() => {
     setCategories(mocks.accueil);
@@ -45,60 +47,64 @@ export default function Accueil({ navigation }: Props) {
   });
 
   return (
-    <Block style={{ backgroundColor: '#FFFFFF' }}>
+    <Block style={{ backgroundColor: "#FFFFFF" }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ paddingVertical: theme.sizes.base * 2 }}
       >
         <Text
           style={{
-            fontFamily: 'josefinLight',
+            fontFamily: "josefinLight",
             marginHorizontal: 23,
-            marginVertical: 20
+            marginVertical: 20,
           }}
         >
-          Salut{' '}
-          {username && (
-            <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>
-              {username}
-            </Text>
-          )}
+          <>
+            Salut{" "}
+            {username ? (
+              <Text style={{ fontFamily: "josefinRegular", fontSize: 16 }}>
+                {username}
+              </Text>
+            ) : (
+              ""
+            )}
+          </>
         </Text>
         <Text
           style={{
-            fontFamily: 'josefinRegular',
+            fontFamily: "josefinRegular",
             fontSize: 16,
             marginHorizontal: 23,
-            marginBottom: 20
+            marginBottom: 20,
           }}
         >
           Quels services recherchez-vous ?
         </Text>
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             flex: 1,
             marginBottom: 0,
-            overflow: 'hidden',
-            justifyContent: 'center',
-            alignItems: 'center',
-            alignContent: 'space-between',
+            overflow: "hidden",
+            justifyContent: "center",
+            alignItems: "center",
+            alignContent: "space-between",
             marginHorizontal: 23,
             marginVertical: 10,
-            height: 40
+            height: 40,
           }}
         >
           <Block
             style={{
               flex: 0.9,
-              alignItems: 'center',
-              backgroundColor: 'rgba(238, 240, 246, 0.5)',
+              alignItems: "center",
+              backgroundColor: "rgba(238, 240, 246, 0.5)",
               borderRadius: 7,
-              marginHorizontal: 5
+              marginHorizontal: 5,
             }}
           >
             <View
-              style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}
+              style={{ flexDirection: "row", flex: 1, alignItems: "center" }}
             >
               <TextInput
                 style={{ flex: 0.9, marginLeft: 10, ...styles.input }}
@@ -110,11 +116,11 @@ export default function Accueil({ navigation }: Props) {
                   flex: 0.1,
                   padding: 7,
                   borderRadius: 8,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                  marginRight: 5
+                  justifyContent: "center",
+                  alignItems: "center",
+                  alignContent: "center",
+                  alignSelf: "center",
+                  marginRight: 5,
                 }}
                 onPress={() => handleInput()}
               >
@@ -130,11 +136,11 @@ export default function Accueil({ navigation }: Props) {
             style={{
               flex: 0.1,
               padding: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'rgba(238, 240, 246, 0.5)',
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "rgba(238, 240, 246, 0.5)",
               borderRadius: 7,
-              marginLeft: 5
+              marginLeft: 5,
             }}
             onPress={() => handleInput()}
           >
@@ -153,11 +159,11 @@ export default function Accueil({ navigation }: Props) {
               <TouchableOpacity
                 key={category.id}
                 onPress={() =>
-                  navigation.navigate('DetailCategory', { category })
+                  navigation.navigate("DetailCategory", { category })
                 }
               >
                 <Card center middle shadow style={styles.category}>
-                  <Badge margin={[0, 0, 15]} size={70} color="#8febc3">
+                  <Badge margin={[0, 0, 15]} size={70} white>
                     <Image
                       source={category.image}
                       style={{ width: 0, height: 40 }}
@@ -166,12 +172,12 @@ export default function Accueil({ navigation }: Props) {
                   <Text
                     medium
                     height={20}
-                    style={{ fontFamily: 'josefinRegular', fontSize: 18 }}
+                    style={{ fontFamily: "josefinRegular", fontSize: 18 }}
                   >
                     {category.name}
                   </Text>
                   <Text gray caption>
-                    {Object.keys(category.tag)}
+                    {JSON.stringify(Object.keys(category.tag))}
                   </Text>
                 </Card>
               </TouchableOpacity>
@@ -184,18 +190,18 @@ export default function Accueil({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   input: {
-    backgroundColor: 'rgba(238, 240, 246, 0)'
+    backgroundColor: "rgba(238, 240, 246, 0)",
   },
   categories: {
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     marginTop: 20,
     paddingHorizontal: theme.sizes.base * 1.5,
-    marginBottom: theme.sizes.base * 3.5
+    marginBottom: theme.sizes.base * 3.5,
   },
   category: {
     // this should be dynamic based on screen width
     minWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
     maxWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
-    maxHeight: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2
-  }
+    maxHeight: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
+  },
 });

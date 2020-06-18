@@ -1,29 +1,25 @@
-import React, { Component } from "react";
+import React from "react";
 import { StyleSheet } from "react-native";
 
 import Block from "./Block";
 import { theme } from "../constants";
 
-export default class Divider extends Component {
-  render() {
-    const { color, style, ...props } = this.props;
-    const dividerStyles = [styles.divider, style];
-
-    return (
-      <Block
-        color={color || theme.colors.gray2}
-        style={dividerStyles}
-        {...props}
-      />
-    );
-  }
+interface Props {
+  style?: object;
 }
 
-export const styles = StyleSheet.create({
+const Divider: React.FC<Props> = ({ style, ...props }) => {
+  const dividerStyles = [styles.divider, style];
+  return <Block gray style={dividerStyles} {...props} />;
+};
+
+const styles = StyleSheet.create({
   divider: {
     height: 0,
     margin: theme.sizes.base * 2,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
-  }
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
 });
+
+export default Divider;
