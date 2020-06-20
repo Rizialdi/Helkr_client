@@ -1,12 +1,13 @@
 import { useApolloClient, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import React, { SFC, useEffect, useRef, useState } from 'react';
+import React, { SFC, useRef, useState, useMemo } from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
   Keyboard,
   KeyboardAvoidingView,
-  StyleSheet
+  StyleSheet,
+  TextInput
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
 
@@ -24,16 +25,16 @@ const Verification: SFC<Props> = ({
   const toastEl = useRef(null);
   const [Id, setId] = useState<string>('');
   const [status, setStatus] = useState<string>('');
-  const [Data, setData] = useState<userData>(null);
+  const [Data, setData] = useState<userData | null>(null);
   const [Loading, setLoading] = useState<boolean>(false);
   const [codeSent, setCodeSent] = useState<boolean>(false);
-  const [Error, setError] = useState(null);
+  const [Error, setError] = useState<string | null>(null);
   const [token, setToken] = useState<string>('');
 
   const [addUserMutation] = useMutation(ADD_USER);
   const client = useApolloClient();
 
-  const handle_step_one = async numero => {
+  const handle_step_one = async (numero: string) => {
     setLoading(true);
     setCodeSent(true);
 
@@ -56,7 +57,7 @@ const Verification: SFC<Props> = ({
     }
   };
 
-  const handle_step_two = async (id, token) => {
+  const handle_step_two = async (id: string, token: string) => {
     setLoading(true);
     try {
       const {
@@ -76,7 +77,7 @@ const Verification: SFC<Props> = ({
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     handle_step_one(numero);
   }, []);
 
@@ -122,8 +123,15 @@ const Verification: SFC<Props> = ({
 
   const { setUser } = useStoreActions(actions => actions.User);
 
+  interface StoreCredentialsProps {
+    token: string;
+    user: { id: string; prenom: string };
+  }
   //TODO Test this function -> seems to work. Test if fail case (wrong password)
-  const storeCredentials = ({ token, user: { id, prenom } }) => {
+  const storeCredentials = ({
+    token,
+    user: { id, prenom }
+  }: StoreCredentialsProps) => {
     (async () => {
       try {
         await AsyncStorage.clear();
@@ -133,7 +141,7 @@ const Verification: SFC<Props> = ({
           ['prenom', prenom]
         ]);
       } catch (error) {
-        throw new Error('Credentials creation failed');
+        throw error;
       }
     })();
     setUser({ id, prenom, token });
@@ -163,7 +171,7 @@ const Verification: SFC<Props> = ({
     setLoading(false);
   };
 
-  useEffect(() => {
+  useMemo(() => {
     Data && !Loading && storeCredentials(Data);
   }, [Data, Loading]);
 
@@ -178,7 +186,7 @@ const Verification: SFC<Props> = ({
             Un message vient d’etre envoyé au <Text bold>{numero}</Text>
           </Text>
           <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>
-            Entrez le code de vérification en dessous: error {Error}
+            Entrez le code de vérification en dessous:
           </Text>
           <Input phone onChangeText={text => setToken(text)} />
           <Button gradient onPress={() => handleVerification()}>
@@ -191,7 +199,8 @@ const Verification: SFC<Props> = ({
             )}
           </Button>
         </Block>
-        {Error && toastEl.current.show(Error)}
+        {/* @ts-ignore */}
+        {Error && toastEl?.current?.show(Error)}
         <Toast ref={toastEl} />
       </Block>
     </KeyboardAvoidingView>

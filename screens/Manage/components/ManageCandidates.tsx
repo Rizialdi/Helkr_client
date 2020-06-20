@@ -38,7 +38,7 @@ const ManageCandidates = () => {
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const { data, loading: loading, error: error, refetch } = useQuery(
+  const { data, loading: loading, error: error, client } = useQuery(
     MY_INCOMPLETE_OFFERINGS_CANDIDATES,
     {
       fetchPolicy: 'cache-and-network'
@@ -47,10 +47,7 @@ const ManageCandidates = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    if (refetch) {
-      //@ts-ignore
-      refetch()?.then(() => setRefreshing(false));
-    }
+    client.reFetchObservableQueries().then(() => setRefreshing(false));
   }, [refreshing]);
 
   useEffect(() => {

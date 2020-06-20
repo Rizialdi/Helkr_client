@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Dimensions,
   ScrollView,
@@ -41,10 +41,10 @@ export default function Accueil({ navigation }: Props) {
 
   const handleInput = () => setInputText('');
 
-  useEffect(() => {
+  useMemo(() => {
     setCategories(mocks.accueil);
     user && user.prenom && setUsername(user.prenom);
-  });
+  }, []);
 
   return (
     <Block style={{ backgroundColor: '#FFFFFF' }}>
@@ -52,19 +52,18 @@ export default function Accueil({ navigation }: Props) {
         showsVerticalScrollIndicator={false}
         style={{ paddingVertical: theme.sizes.base * 2 }}>
         <Text
+          bold
           style={{
             fontFamily: 'josefinLight',
             marginHorizontal: 23,
             marginVertical: 20
           }}>
           <>
-            Salut{' '}
-            {username ? (
+            Bonjour{' '}
+            {username && (
               <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>
                 {username}
               </Text>
-            ) : (
-              ''
             )}
           </>
         </Text>

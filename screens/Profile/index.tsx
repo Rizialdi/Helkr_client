@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -49,7 +49,7 @@ const INFO = gql`
 export default function Profile({ navigation, route: { params } }: any) {
   const [Id, setId] = useState<string | null>('');
 
-  useEffect(() => {
+  useMemo(() => {
     (async () => {
       try {
         const id: string | null = await AsyncStorage.getItem('id');

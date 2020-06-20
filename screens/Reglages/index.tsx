@@ -2,7 +2,7 @@ import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
 //@ts-ignore
 import { ReactNativeFile } from 'apollo-upload-client';
 import gql from 'graphql-tag';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   AsyncStorage,
   KeyboardAvoidingView,
@@ -35,7 +35,7 @@ export default function Profile({ navigation, route: { params } }: any) {
   const [tagsMutation] = useMutation(TAGS_MUTATION);
   const { setTags } = useStoreActions(actions => actions.Offering);
 
-  useEffect(() => {
+  useMemo(() => {
     (async () => {
       try {
         const id = await AsyncStorage.getItem('id');

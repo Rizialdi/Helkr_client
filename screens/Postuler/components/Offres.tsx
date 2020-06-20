@@ -15,7 +15,7 @@ const Offres = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const { tags } = useStoreState(state => state.Offering);
 
-  const { data, loading, error, refetch } = useQuery(OFFERINGS, {
+  const { data, loading, error, client } = useQuery(OFFERINGS, {
     fetchPolicy: 'cache-and-network',
     variables: { filters: tags }
   });
@@ -30,18 +30,12 @@ const Offres = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    if (refetch) {
-      //@ts-ignore
-      refetch()?.then(() => setRefreshing(false));
-    }
+    client.reFetchObservableQueries().then(() => setRefreshing(false));
   }, [refreshing]);
 
   useEffect(() => {
     setLoadingTabOne(true);
-    if (refetch) {
-      //@ts-ignore
-      refetch()?.then(() => setLoadingTabOne(false));
-    }
+    client.reFetchObservableQueries().then(() => setLoadingTabOne(false));
   }, [tags]);
 
   useEffect(() => {

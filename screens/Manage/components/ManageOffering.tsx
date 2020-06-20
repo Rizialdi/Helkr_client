@@ -37,7 +37,7 @@ const ManageOffering = () => {
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const { data, loading: loading, error: error, refetch } = useQuery(
+  const { data, loading: loading, error: error, client } = useQuery(
     MY_OFFERINGS,
     {
       fetchPolicy: 'cache-and-network'
@@ -46,9 +46,7 @@ const ManageOffering = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    if (refetch) {
-      refetch().then(() => setRefreshing(false));
-    }
+    client.reFetchObservableQueries().then(() => setRefreshing(false));
   }, [refreshing]);
 
   useEffect(() => {

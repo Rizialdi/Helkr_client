@@ -12,7 +12,7 @@ interface Props {
   h3?: boolean;
   title?: boolean;
   body?: boolean;
-  children?: string | number | JSX.Element;
+  children?: string | number | JSX.Element | (string | JSX.Element | null)[];
   caption?: boolean;
   small?: boolean;
   size?: any;

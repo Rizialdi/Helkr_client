@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 import * as Icon from '@expo/vector-icons';
 
 import Text from './Text';
@@ -7,14 +7,14 @@ import Block from './Block';
 import Button from './Button';
 import { theme } from '../constants';
 
-interface Props {
+interface Props extends TextInputProps {
   email?: boolean;
   phone?: boolean;
   number?: boolean;
   secure?: boolean;
   label?: string;
-  rightStyle: object;
-  onRightPress: () => void;
+  rightStyle?: object;
+  onRightPress?: () => void;
   rightLabel?: JSX.Element;
   error?: boolean;
   style?: object;

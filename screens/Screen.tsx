@@ -1,4 +1,4 @@
-import React, { Component, FC, useState, useEffect } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import Swiper from '../components/Swiper';
 import BienvenueFirst from './BienvenueFirst';
@@ -17,7 +17,7 @@ interface Props {}
 const Screen: FC<Props> = () => {
   const [illustrations, setIllustration] = useState<illustrations | null>(null);
 
-  useEffect(() => {
+  useMemo(() => {
     setIllustration(mocks.illustrations);
   }, []);
 

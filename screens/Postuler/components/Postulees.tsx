@@ -38,7 +38,7 @@ const Postulees = () => {
 
   const { user } = useStoreState(state => state.User);
 
-  const { data, loading, error, refetch } = useQuery(APPLIEDTO, {
+  const { data, loading, error, client } = useQuery(APPLIEDTO, {
     fetchPolicy: 'cache-and-network'
   });
 
@@ -52,10 +52,7 @@ const Postulees = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    if (refetch) {
-      //@ts-ignore
-      refetch()?.then(() => setRefreshing(false));
-    }
+    client.reFetchObservableQueries().then(() => setRefreshing(false));
   }, [refreshing]);
 
   useEffect(() => {
