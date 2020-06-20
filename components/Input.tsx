@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, TextInput } from "react-native";
-import * as Icon from "@expo/vector-icons";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
+import * as Icon from '@expo/vector-icons';
 
-import Text from "./Text";
-import Block from "./Block";
-import Button from "./Button";
-import { theme } from "../constants";
+import Text from './Text';
+import Block from './Block';
+import Button from './Button';
+import { theme } from '../constants';
 
 interface Props {
   email?: boolean;
@@ -57,15 +57,14 @@ const Input: React.FC<Props> = ({
     return (
       <Button
         style={styles.toggle}
-        onPress={() => setToggleSecure(!toggleSecure)}
-      >
+        onPress={() => setToggleSecure(!toggleSecure)}>
         {rightLabel ? (
           rightLabel
         ) : (
           <Icon.Ionicons
             color={theme.colors.gray}
             size={theme.sizes.font * 1.35}
-            name={!toggleSecure ? "md-eye" : "md-eye-off"}
+            name={!toggleSecure ? 'md-eye' : 'md-eye-off'}
           />
         )}
       </Button>
@@ -78,8 +77,7 @@ const Input: React.FC<Props> = ({
     return (
       <Button
         style={[styles.toggle, rightStyle]}
-        onPress={() => onRightPress && onRightPress()}
-      >
+        onPress={() => onRightPress && onRightPress()}>
         {rightLabel}
       </Button>
     );
@@ -90,16 +88,16 @@ const Input: React.FC<Props> = ({
   const inputStyles = [
     styles.input,
     error && { borderColor: theme.colors.accent },
-    style,
+    style
   ];
 
   const inputType = email
-    ? "email-address"
+    ? 'email-address'
     : number
-    ? "numeric"
+    ? 'numeric'
     : phone
-    ? "phone-pad"
-    : "default";
+    ? 'phone-pad'
+    : 'default';
 
   return (
     <Block flex={false} margin={[theme.sizes.base, 0]}>
@@ -124,18 +122,18 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.black,
     borderRadius: theme.sizes.radius,
     fontSize: theme.sizes.font,
-    fontWeight: "500",
+    fontWeight: '500',
     color: theme.colors.black,
-    height: theme.sizes.base * 2.5,
+    height: theme.sizes.base * 2.5
   },
   toggle: {
-    position: "absolute",
-    alignItems: "flex-end",
+    position: 'absolute',
+    alignItems: 'flex-end',
     width: theme.sizes.base * 2,
     height: theme.sizes.base * 2,
     top: theme.sizes.base,
-    right: 0,
-  },
+    right: 0
+  }
 });
 
 export default Input;

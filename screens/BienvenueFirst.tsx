@@ -31,8 +31,7 @@ export class BienvenueFirst extends Component<Props> {
               fontFamily: 'josefinRegular',
               fontSize: 16
             }}
-            semibold
-          >
+            semibold>
             Toujours trouver la personne qui vous convient
           </Text>
         </View>

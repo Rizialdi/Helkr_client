@@ -17,12 +17,11 @@ interface Props {
 }
 
 const Layout: SFC<Props> = ({ title, children }) => {
-  const { themeColors } = useStoreState((state) => state.Preferences);
+  const { themeColors } = useStoreState(state => state.Preferences);
 
   return (
     <SafeAreaView
-      style={{ ...styles.container, backgroundColor: themeColors.background }}
-    >
+      style={{ ...styles.container, backgroundColor: themeColors.background }}>
       <KeyboardAvoidingView enabled={true} behavior="position">
         {title && (
           <View
@@ -30,8 +29,7 @@ const Layout: SFC<Props> = ({ title, children }) => {
               marginTop: 40,
               marginBottom: 20,
               marginHorizontal: theme.sizes.base * 2
-            }}
-          >
+            }}>
             <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
               {title}
             </Text>

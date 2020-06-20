@@ -6,7 +6,16 @@ import Block from './Block';
 import TagItem from './TagItem';
 import Text from './Text';
 
-export default ({ offering }) => {
+interface Props {
+  offering: {
+    category: string;
+    type: string;
+    description: string;
+    createdAt: string;
+    status?: string;
+  };
+}
+export default ({ offering }: Props) => {
   const { category, type, description, createdAt } = offering;
   return (
     <Block flex={false} style={styles.container}>
@@ -15,7 +24,6 @@ export default ({ offering }) => {
         <TagItem tag={type} type />
         <TagItem tag={category} category />
         <TagItem tag={formatDate(createdAt)} date />
-        {console.log(createdAt)}
       </Block>
       <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
         {description}

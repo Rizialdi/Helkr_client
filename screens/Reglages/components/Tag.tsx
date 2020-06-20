@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
-import { theme } from "../../../constants";
-import { Text } from "../../shareComponents";
-import TagItem from "./TagItem";
+import { theme } from '../../../constants';
+import { Text } from '../../shareComponents';
+import TagItem from './TagItem';
 
 const tagList = [
-  "Boulanger",
-  "Chauffeur",
-  "Epicier",
-  "Garagiste",
-  "Ménagère",
-  "Réparation",
-  "Ménage",
+  'Boulanger',
+  'Chauffeur',
+  'Epicier',
+  'Garagiste',
+  'Ménagère',
+  'Réparation',
+  'Ménage'
 ];
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
   parentCallback: (a: string[]) => void;
 }
 
-export default ({ tags = ["_"], parentCallback }: Props) => {
+export default ({ tags = ['_'], parentCallback }: Props) => {
   const [selected, setSelected] = useState<string>();
   const [concatedList, setConcatedList] = useState<Array<string>>(tags);
 
@@ -35,12 +35,12 @@ export default ({ tags = ["_"], parentCallback }: Props) => {
   };
 
   const onRemove = (item: string) => {
-    onChange(concatedList.filter((elm) => elm != item));
+    onChange(concatedList.filter(elm => elm != item));
   };
 
   let filterList = tagList
-    .filter((x) => !concatedList.includes(x))
-    .map((item) => {
+    .filter(x => !concatedList.includes(x))
+    .map(item => {
       return { label: item, value: item };
     });
 
@@ -49,8 +49,8 @@ export default ({ tags = ["_"], parentCallback }: Props) => {
   }, [tags]);
   useEffect(() => {
     filterList = tagList
-      .filter((x) => !concatedList.includes(x))
-      .map((item) => {
+      .filter(x => !concatedList.includes(x))
+      .map(item => {
         return { label: item, value: item };
       });
   }, [concatedList]);
@@ -71,13 +71,13 @@ export default ({ tags = ["_"], parentCallback }: Props) => {
           <RNPickerSelect
             value={selected}
             placeholder={{
-              label: "Ajouter des tags ...",
-              value: "",
-              color: theme.colors.gray,
+              label: 'Ajouter des tags ...',
+              value: '',
+              color: theme.colors.gray
             }}
             disabled={concatedList.length >= 5}
-            onValueChange={(value) => setSelected(value)}
-            doneText={"Ajouter"}
+            onValueChange={value => setSelected(value)}
+            doneText={'Ajouter'}
             onDonePress={() => (selected ? onAdd(selected) : null)}
             items={filterList}
           />
@@ -90,10 +90,10 @@ export default ({ tags = ["_"], parentCallback }: Props) => {
 const styles = StyleSheet.create({
   tags: {
     marginTop: 10,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginHorizontal: 20,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: 20
   },
-  selector: { marginLeft: 20 },
+  selector: { marginLeft: 20 }
 });

@@ -1,7 +1,7 @@
-import React, { Component, SFC } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { useStoreState } from "../models";
+import React, { Component, SFC } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useStoreState } from '../models';
 interface Props {
   style?: object;
   opacity?: number;
@@ -33,7 +33,7 @@ const Button: SFC<Props> = ({
   vertical,
   ...props
 }) => {
-  const { themeColors } = useStoreState((state) => state.Preferences);
+  const { themeColors } = useStoreState(state => state.Preferences);
 
   const startColor = themeColors.primary,
     endColor = themeColors.secondary,
@@ -46,7 +46,7 @@ const Button: SFC<Props> = ({
     styles.button,
     shadow &&
       styles.shadow && {
-        shadowColor: themeColors.black,
+        shadowColor: themeColors.black
       },
     accent && { backgroundColor: themeColors.accent },
     primary && { backgroundColor: themeColors.primary },
@@ -55,7 +55,7 @@ const Button: SFC<Props> = ({
     black && { backgroundColor: themeColors.black },
     white && { backgroundColor: themeColors.white },
     gray && { backgroundColor: themeColors.gray },
-    style,
+    style
   ];
 
   if (gradient) {
@@ -66,8 +66,7 @@ const Button: SFC<Props> = ({
           end={end}
           locations={locations}
           style={buttonStyles}
-          colors={[startColor, endColor]}
-        >
+          colors={[startColor, endColor]}>
           {children}
         </LinearGradient>
       </TouchableOpacity>
@@ -78,8 +77,7 @@ const Button: SFC<Props> = ({
     <TouchableOpacity
       style={buttonStyles}
       activeOpacity={opacity || 0.8}
-      {...props}
-    >
+      {...props}>
       {children}
     </TouchableOpacity>
   );
@@ -89,14 +87,14 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 6,
     height: 48,
-    justifyContent: "center",
-    marginVertical: 8,
+    justifyContent: 'center',
+    marginVertical: 8
   },
   shadow: {
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
+    shadowRadius: 10
+  }
 });
 
 export default Button;

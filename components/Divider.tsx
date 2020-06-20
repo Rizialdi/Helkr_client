@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React from 'react';
+import { StyleSheet } from 'react-native';
 
-import Block from "./Block";
-import { theme } from "../constants";
+import Block from './Block';
+import { theme } from '../constants';
 
 interface Props {
   style?: object;
@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
     height: 0,
     margin: theme.sizes.base * 2,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
+    borderBottomWidth: StyleSheet.hairlineWidth
+  }
 });
 
 export default Divider;

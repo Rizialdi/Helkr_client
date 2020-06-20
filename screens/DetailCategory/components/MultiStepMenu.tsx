@@ -1,16 +1,16 @@
-import gql from "graphql-tag";
-import React, { Component, ComponentType } from "react";
+import gql from 'graphql-tag';
+import React, { Component, ComponentType } from 'react';
 import {
   ChildProps,
   ExecutionResult,
   graphql,
   MutationFunctionOptions,
   ChildDataProps,
-  DataProps,
-} from "react-apollo";
-import { View } from "react-native";
+  DataProps
+} from 'react-apollo';
+import { View } from 'react-native';
 
-import MenuItem from "./MenuItem";
+import MenuItem from './MenuItem';
 
 // todo values object ? array ?
 interface State {
@@ -39,7 +39,7 @@ class MultiStepMenu extends Component<Props, State, any> {
   static Item = (props: any) => <MenuItem {...props} />;
   state: State = {
     step: 0,
-    values: null,
+    values: null
   };
   _nextStep = () => {
     this.setState({ step: this.state.step + 1 });
@@ -51,7 +51,7 @@ class MultiStepMenu extends Component<Props, State, any> {
 
   _onChangeValue = (name: string, value: string) => {
     this.setState((prevState: { values: any }) => ({
-      values: { ...prevState.values, [name]: value },
+      values: { ...prevState.values, [name]: value }
     }));
   };
 
@@ -65,11 +65,11 @@ class MultiStepMenu extends Component<Props, State, any> {
             type: categoryItem,
             category: categoryName,
             description: values?.offeringDescription,
-            details: JSON.stringify(values),
-          },
+            details: JSON.stringify(values)
+          }
         })
           .then(() => {})
-          .catch((error) => {
+          .catch(error => {
             throw new Error(`Ajout offre impossible, ${error}`);
           });
     } catch (error) {
@@ -92,7 +92,7 @@ class MultiStepMenu extends Component<Props, State, any> {
               nextStep: this._nextStep,
               prevStep: this._prevStep,
               categoryItem: categoryItem,
-              onChangeValue: this._onChangeValue,
+              onChangeValue: this._onChangeValue
             });
           }
           return null;
@@ -116,5 +116,5 @@ type TChildProps = ChildDataProps<{}, Props, {}>;
 
 // graphql<InputProps, Response, Variables, ChildProps>()
 export default graphql<{}, Props, {}, TChildProps>(ADD_OFFERING, {
-  name: "addOffering",
+  name: 'addOffering'
 })((MultiStepMenu as unknown) as ComponentType<DataProps<Props, {}>>);

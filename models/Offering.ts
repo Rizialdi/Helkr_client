@@ -21,7 +21,7 @@ const storedOrFetchedData = async (): Promise<string[]> => {
 
 const offering: OfferingModel = {
   tags: [],
-  loadTags: thunk(async (actions) => {
+  loadTags: thunk(async actions => {
     const data = await storedOrFetchedData();
     actions.setTags(data);
   }),

@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { Text } from "../../shareComponents";
+import { Text } from '../../shareComponents';
 
 interface Props {
   done: number;
@@ -19,12 +19,11 @@ export default ({ done, proposed, average }: Props) => (
       style={[
         styles.statsBox,
         {
-          borderColor: "#DFD8C8",
+          borderColor: '#DFD8C8',
           borderLeftWidth: 1,
-          borderRightWidth: 1,
-        },
-      ]}
-    >
+          borderRightWidth: 1
+        }
+      ]}>
       <Text style={[styles.text, { fontSize: 24 }]}>{proposed}</Text>
       <Text style={[styles.text, styles.subText]}>Proposées</Text>
     </View>
@@ -37,22 +36,22 @@ export default ({ done, proposed, average }: Props) => (
 
 const styles = StyleSheet.create({
   statsContainer: {
-    flexDirection: "row",
-    alignSelf: "center",
-    marginTop: 32,
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: 32
   },
   statsBox: {
-    alignItems: "center",
-    flex: 1,
+    alignItems: 'center',
+    flex: 1
   },
   subText: {
     fontSize: 12,
-    color: "#AEB5BC",
-    textTransform: "uppercase",
-    fontWeight: "500",
+    color: '#AEB5BC',
+    textTransform: 'uppercase',
+    fontWeight: '500'
   },
   text: {
-    fontFamily: "HelveticaNeue",
-    color: "#52575D",
-  },
+    fontFamily: 'HelveticaNeue',
+    color: '#52575D'
+  }
 });

@@ -1,6 +1,6 @@
-import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-import React, { useEffect, useState } from "react";
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -8,19 +8,19 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
-} from "react-native";
-import Icon from "react-native-vector-icons/Octicons";
+  View
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Octicons';
 
-import { makePseudoName } from "../../utils";
-import { Text } from "../shareComponents";
+import { makePseudoName } from '../../utils';
+import { Text } from '../shareComponents';
 import {
   AvgContainer,
   Description,
   ProfilContainer,
   StatsContainer,
-  Tag,
-} from "./components";
+  Tag
+} from './components';
 
 const STATS = gql`
   query getUserStats($id: String!) {
@@ -47,15 +47,15 @@ const INFO = gql`
   }
 `;
 export default function Profile({ navigation, route: { params } }: any) {
-  const [Id, setId] = useState<string | null>("");
+  const [Id, setId] = useState<string | null>('');
 
   useEffect(() => {
     (async () => {
       try {
-        const id: string | null = await AsyncStorage.getItem("id");
+        const id: string | null = await AsyncStorage.getItem('id');
         setId(id);
       } catch (error) {
-        throw new Error("Unable to load Credentials");
+        throw new Error('Unable to load Credentials');
       }
     })();
   }, []);
@@ -67,14 +67,14 @@ export default function Profile({ navigation, route: { params } }: any) {
       getUserStats: { done, proposed, average } = {
         done: 0,
         proposed: 0,
-        average: 0,
-      },
-    } = {},
+        average: 0
+      }
+    } = {}
   } = useQuery(STATS, {
     variables: { id },
-    errorPolicy: "ignore",
-    fetchPolicy: "cache-and-network",
-    pollInterval: 1000 * 3600 * 24,
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000 * 3600 * 24
   });
 
   const {
@@ -87,24 +87,24 @@ export default function Profile({ navigation, route: { params } }: any) {
         address,
         description,
         verified,
-        professional,
+        professional
       } = {
-        nom: "John",
-        prenom: "Doe",
-        tags: ["_"],
+        nom: 'John',
+        prenom: 'Doe',
+        tags: ['_'],
         avatar: null,
-        address: "_",
-        description: "_",
+        address: '_',
+        description: '_',
         verified: false,
-        professional: false,
-      },
+        professional: false
+      }
     } = {},
-    loading,
+    loading
   } = useQuery(INFO, {
     variables: { id },
-    errorPolicy: "ignore",
-    fetchPolicy: "cache-and-network",
-    pollInterval: 100 * 3600 * 24,
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 100 * 3600 * 24
   });
 
   return (
@@ -113,11 +113,10 @@ export default function Profile({ navigation, route: { params } }: any) {
         <View
           style={{
             zIndex: 99,
-            position: "absolute",
-            top: "50%",
-            marginHorizontal: "50%",
-          }}
-        >
+            position: 'absolute',
+            top: '50%',
+            marginHorizontal: '50%'
+          }}>
           <ActivityIndicator size="large" color="black" />
         </View>
       )}
@@ -125,8 +124,7 @@ export default function Profile({ navigation, route: { params } }: any) {
         {params && params.id ? null : (
           <TouchableOpacity
             style={styles.titleBar}
-            onPress={() => navigation.navigate("Reglages")}
-          >
+            onPress={() => navigation.navigate('Reglages')}>
             <Icon name="gear" size={24} color="#52575D" />
           </TouchableOpacity>
         )}
@@ -134,7 +132,7 @@ export default function Profile({ navigation, route: { params } }: any) {
           image={
             avatar
               ? { uri: avatar }
-              : require("../../assets/images/default-user-image.png")
+              : require('../../assets/images/default-user-image.png')
           }
           username={makePseudoName(nom, prenom)}
           address={address}
@@ -149,11 +147,10 @@ export default function Profile({ navigation, route: { params } }: any) {
           style={styles.lineStars}
           disabled={done === 0}
           onPress={() =>
-            navigation.navigate("Avis", {
-              id: id,
+            navigation.navigate('Avis', {
+              id: id
             })
-          }
-        >
+          }>
           <AvgContainer average={average} done={done} />
           {done > 0 && <Icon name="chevron-right" size={24} color="#52575D" />}
         </TouchableOpacity>
@@ -163,12 +160,11 @@ export default function Profile({ navigation, route: { params } }: any) {
             style={[
               styles.text,
               {
-                fontWeight: "300",
+                fontWeight: '300',
                 fontSize: 24,
-                paddingLeft: 20,
-              },
-            ]}
-          >
+                paddingLeft: 20
+              }
+            ]}>
             Tags
           </Text>
           <Tag tags={tags} />
@@ -180,30 +176,30 @@ export default function Profile({ navigation, route: { params } }: any) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#FFF",
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#FFF'
   },
   text: {
-    fontFamily: "HelveticaNeue",
-    color: "#52575D",
+    fontFamily: 'HelveticaNeue',
+    color: '#52575D'
   },
   titleBar: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginTop: 24,
-    marginHorizontal: 16,
+    marginHorizontal: 16
   },
   delimiter: {
-    borderTopColor: "#DFD8C8",
+    borderTopColor: '#DFD8C8',
     borderTopWidth: 0.5,
-    marginTop: 25,
+    marginTop: 25
   },
   lineStars: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 25,
-    justifyContent: "space-between",
-    marginHorizontal: 16,
-  },
+    justifyContent: 'space-between',
+    marginHorizontal: 16
+  }
 });

@@ -1,17 +1,17 @@
-import React, { useRef, SFC, ComponentType } from "react";
+import React, { useRef, SFC, ComponentType } from 'react';
 import {
   graphql,
   useMutation,
   useApolloClient,
   ChildProps,
   ChildDataProps,
-  DataProps,
-} from "react-apollo";
-import { ActivityIndicator } from "react-native";
-import gql from "graphql-tag";
+  DataProps
+} from 'react-apollo';
+import { ActivityIndicator } from 'react-native';
+import gql from 'graphql-tag';
 
-import { Text, Layout, Block, Button } from "../../shareComponents";
-import { TagItem } from "../../shareComponents";
+import { Text, Layout, Block, Button } from '../../shareComponents';
+import { TagItem } from '../../shareComponents';
 
 interface Props {
   id?: string;
@@ -19,9 +19,9 @@ interface Props {
   offeringById: any;
 }
 
-const formatDate = (timestamp: string = "15886987435") => {
+const formatDate = (timestamp: string = '15886987435') => {
   const date = new Date(parseInt(timestamp));
-  return date.getMonth() + " " + date.getFullYear();
+  return date.getMonth() + ' ' + date.getFullYear();
 };
 
 const GET_OFFERING = gql`
@@ -46,7 +46,7 @@ const APPLY_TO_OFFERING = gql`
 `;
 
 const ModalItem: SFC<ChildProps<Props, {}, any>> = ({
-  offeringById: { called, loading, offeringById },
+  offeringById: { called, loading, offeringById }
 }) => {
   const [applyTo] = useMutation(APPLY_TO_OFFERING);
   const client = useApolloClient();
@@ -56,12 +56,12 @@ const ModalItem: SFC<ChildProps<Props, {}, any>> = ({
     client.reFetchObservableQueries();
   };
   return (
-    <Layout title={"Details"}>
+    <Layout title={'Details'}>
       {loading && !called ? (
-        <ActivityIndicator size={"large"} />
+        <ActivityIndicator size={'large'} />
       ) : (
         <Block flex={false}>
-          <Block flex={false} row middle space={"around"}>
+          <Block flex={false} row middle space={'around'}>
             <TagItem tag={offeringById?.type} type />
             <TagItem tag={offeringById?.category} category />
             <TagItem tag={formatDate(offeringById?.createdAt)} date />
@@ -78,7 +78,7 @@ const ModalItem: SFC<ChildProps<Props, {}, any>> = ({
               onPress={() =>
                 applyTo({ variables: { id: offeringById?.id } })
                   .then(({ data }) => data?.candidateToOffering)
-                  .then((data) => {
+                  .then(data => {
                     try {
                       if (data?.success) {
                         client.reFetchObservableQueries();
@@ -87,8 +87,7 @@ const ModalItem: SFC<ChildProps<Props, {}, any>> = ({
                       throw new Error(`Impossible de Candidater ${error}`);
                     }
                   })
-              }
-            >
+              }>
               <Text bold center>
                 Postuler
               </Text>
@@ -107,11 +106,11 @@ interface Props {
 type TChildProps = ChildDataProps<{}, Props, {}>;
 
 export default graphql<{}, Props, {}, TChildProps>(GET_OFFERING, {
-  name: "offeringById",
+  name: 'offeringById',
   options: (props: { id?: string }) => ({
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: 'cache-and-network',
     variables: {
-      id: props?.id || "",
-    },
-  }),
+      id: props?.id || ''
+    }
+  })
 })((ModalItem as unknown) as ComponentType<DataProps<Props, {}>>);

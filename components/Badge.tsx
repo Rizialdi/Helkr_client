@@ -1,8 +1,8 @@
-import React, { Component, FC } from "react";
-import { StyleSheet, StyleProp, ViewStyle, Animated } from "react-native";
+import React, { Component, FC } from 'react';
+import { StyleSheet, StyleProp, ViewStyle, Animated } from 'react-native';
 
-import Block, { BlockProps } from "./Block";
-import { theme } from "../constants";
+import Block, { BlockProps } from './Block';
+import { theme } from '../constants';
 
 interface Props extends BlockProps {
   children: JSX.Element;
@@ -20,9 +20,9 @@ const Badge: FC<Props> = ({ children, style, size, ...props }) => {
     size && {
       height: size,
       width: size,
-      borderRadius: size,
+      borderRadius: size
     },
-    style,
+    style
   ]);
 
   return (
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   badge: {
     height: theme.sizes.base,
     width: theme.sizes.base,
-    borderRadius: theme.sizes.border,
-  },
+    borderRadius: theme.sizes.border
+  }
 });
 
 export default Badge;

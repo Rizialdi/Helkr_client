@@ -9,8 +9,7 @@ const TermsOfServices = () => (
       caption={true}
       gray
       height={24}
-      style={{ marginBottom: theme.sizes.base }}
-    >
+      style={{ marginBottom: theme.sizes.base }}>
       1. Your use of the Service is at your sole risk. The service is provided
       on an "as is" and "as available" basis.
     </Text>

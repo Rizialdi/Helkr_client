@@ -1,25 +1,25 @@
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { NavigationContainer, RouteProp } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { useStoreActions, useStoreState } from "../models";
-import React, { useEffect, useState } from "react";
-import Icon from "react-native-vector-icons/AntDesign";
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useStoreActions, useStoreState } from '../models';
+import React, { useEffect, useState } from 'react';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-import { theme } from "../constants";
-import Accueil from "../screens/Accueil";
-import Avis from "../screens/Avis";
-import BienvenueFirst from "../screens/BienvenueFirst";
-import DetailCategory from "../screens/DetailCategory";
-import Discussion from "../screens/Discussions/Discussion";
-import Discussions from "../screens/Discussions/Discussions";
-import Enregistrement from "../screens/Enregistrement";
-import Identification from "../screens/Identification";
-import Postuler from "../screens/Postuler";
-import Manage from "../screens/Manage";
-import Profile from "../screens/Profile";
-import Reglages from "../screens/Reglages";
-import Screen from "../screens/Screen";
-import Verification from "../screens/Verification";
+import { theme } from '../constants';
+import Accueil from '../screens/Accueil';
+import Avis from '../screens/Avis';
+import BienvenueFirst from '../screens/BienvenueFirst';
+import DetailCategory from '../screens/DetailCategory';
+import Discussion from '../screens/Discussions/Discussion';
+import Discussions from '../screens/Discussions/Discussions';
+import Enregistrement from '../screens/Enregistrement';
+import Identification from '../screens/Identification';
+import Postuler from '../screens/Postuler';
+import Manage from '../screens/Manage';
+import Profile from '../screens/Profile';
+import Reglages from '../screens/Reglages';
+import Screen from '../screens/Screen';
+import Verification from '../screens/Verification';
 
 type MainStackParamList = {
   DetailCategory: { category: { name: string } };
@@ -53,48 +53,47 @@ const createBottomTabs = () => {
       initialRouteName="Accueil"
       activeColor={theme.colors.primary}
       sceneAnimationEnabled={true}
-      backBehavior={"initialRoute"}
+      backBehavior={'initialRoute'}
       shifting={true}
-      barStyle={{ backgroundColor: theme.colors.white, height: 50 }}
-    >
+      barStyle={{ backgroundColor: theme.colors.white, height: 50 }}>
       <MaterialBottomTabs.Screen
         name="Gerer"
         component={Manage}
         options={{
-          tabBarLabel: "Gerer",
-          tabBarIcon: () => <Icon name="pluscircleo" size={24} color="black" />,
+          tabBarLabel: 'Gerer',
+          tabBarIcon: () => <Icon name="pluscircleo" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
         name="Postuler"
         component={Postuler}
         options={{
-          tabBarLabel: "Postuler",
-          tabBarIcon: () => <Icon name="tagso" size={24} color="black" />,
+          tabBarLabel: 'Postuler',
+          tabBarIcon: () => <Icon name="tagso" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
         name="Accueil"
         component={Accueil}
         options={{
-          tabBarLabel: "Accueil",
-          tabBarIcon: () => <Icon name="home" size={24} color="black" />,
+          tabBarLabel: 'Accueil',
+          tabBarIcon: () => <Icon name="home" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
         name="Discussions"
         component={Discussions}
         options={{
-          tabBarLabel: "Discussions",
-          tabBarIcon: () => <Icon name="message1" size={24} color="black" />,
+          tabBarLabel: 'Discussions',
+          tabBarIcon: () => <Icon name="message1" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: "Profil",
-          tabBarIcon: () => <Icon name="user" size={24} color="black" />,
+          tabBarLabel: 'Profil',
+          tabBarIcon: () => <Icon name="user" size={24} color="black" />
         }}
       />
     </MaterialBottomTabs.Navigator>
@@ -107,14 +106,13 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
       initialRouteName="Screen"
       headerMode="screen"
       screenOptions={{
-        headerTintColor: "black",
+        headerTintColor: 'black',
         headerTitleStyle: {
-          color: "black",
-          alignSelf: "center",
-          fontSize: 20,
-        },
-      }}
-    >
+          color: 'black',
+          alignSelf: 'center',
+          fontSize: 20
+        }
+      }}>
       {token ? (
         <>
           <MainStack.Screen
@@ -127,28 +125,28 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
             component={DetailCategory}
             options={({ route }) => ({
               headerShown: true,
-              title: route?.params?.category?.name,
+              title: route?.params?.category?.name
             })}
           />
           <MainStack.Screen
             name="Discussion"
             component={Discussion}
-            options={({ route }) => ({ headerShown: false, title: "" })}
+            options={({ route }) => ({ headerShown: false, title: '' })}
           />
           <MainStack.Screen
             name="Reglages"
             component={Reglages}
-            options={({ route }) => ({ headerShown: true, title: "" })}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
             name="Avis"
             component={Avis}
-            options={({ route }) => ({ headerShown: true, title: "" })}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
             name="ProfilesNavigation"
             component={Profile}
-            options={({ route }) => ({ headerShown: true, title: "" })}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
         </>
       ) : (
@@ -181,30 +179,30 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
           <MainStack.Screen
             name="Discussion"
             component={Discussion}
-            options={({ route }) => ({ headerShown: false, title: "" })}
+            options={({ route }) => ({ headerShown: false, title: '' })}
           />
           <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
             options={({ route }): { headerShown: boolean; title: string } => ({
               headerShown: true,
-              title: route?.params?.category.name,
+              title: route?.params?.category.name
             })}
           />
           <MainStack.Screen
             name="Reglages"
             component={Reglages}
-            options={({ route }) => ({ headerShown: true, title: "" })}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
             name="Avis"
             component={Avis}
-            options={({ route }) => ({ headerShown: true, title: "" })}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
             name="ProfilesNavigation"
             component={Profile}
-            options={({ route }) => ({ headerShown: true, title: "" })}
+            options={({ route }) => ({ headerShown: true, title: '' })}
           />
         </>
       )}
@@ -213,11 +211,11 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
 };
 
 export default () => {
-  const user = useStoreState((state) => state.User.user);
+  const user = useStoreState(state => state.User.user);
   const {
     User: { loadUser },
-    Offering: { loadTags },
-  } = useStoreActions((actions) => actions);
+    Offering: { loadTags }
+  } = useStoreActions(actions => actions);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -240,6 +238,6 @@ type route = {
 };
 
 interface Props {
-  route: RouteProp<Record<string, object | undefined>, "DetailCategory">;
+  route: RouteProp<Record<string, object | undefined>, 'DetailCategory'>;
   navigation: any;
 }

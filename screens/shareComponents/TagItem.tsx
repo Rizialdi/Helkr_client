@@ -23,7 +23,7 @@ const TagItem: SFC<Props> = ({
   refusée,
   ...props
 }) => {
-  const { themeColors } = useStoreState((state) => state.Preferences);
+  const { themeColors } = useStoreState(state => state.Preferences);
   const blockStyles = [
     styles.container,
     category && {
@@ -50,8 +50,7 @@ const TagItem: SFC<Props> = ({
           row
           margin={[5, 25]}
           padding={[5, 5]}
-          style={[statusStyles[tag]]}
-        >
+          style={[statusStyles[tag]]}>
           <Text medium bold transform={'capitalize'}>
             {tag}
           </Text>
@@ -63,8 +62,7 @@ const TagItem: SFC<Props> = ({
               fontFamily: 'HelveticaNeue',
               fontSize: 15,
               marginRight: 5
-            }}
-          >
+            }}>
             {tag}
           </Text>
         </View>

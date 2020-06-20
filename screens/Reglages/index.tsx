@@ -1,8 +1,8 @@
-import { useMutation, useQuery, useApolloClient } from "@apollo/react-hooks";
+import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
 //@ts-ignore
-import { ReactNativeFile } from "apollo-upload-client";
-import gql from "graphql-tag";
-import React, { useEffect, useState } from "react";
+import { ReactNativeFile } from 'apollo-upload-client';
+import gql from 'graphql-tag';
+import React, { useEffect, useState } from 'react';
 import {
   AsyncStorage,
   KeyboardAvoidingView,
@@ -10,38 +10,38 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
-} from "react-native";
+  View
+} from 'react-native';
 
-import { theme } from "../../constants";
-import { Text } from "../shareComponents";
-import { Description, ProfilContainer, Tag } from "./components";
-import { useStoreActions } from "../../models";
-import { getFileName } from "../../utils";
-import { ImagePicker } from "expo";
+import { theme } from '../../constants';
+import { Text } from '../shareComponents';
+import { Description, ProfilContainer, Tag } from './components';
+import { useStoreActions } from '../../models';
+import { getFileName } from '../../utils';
+import { ImagePicker } from 'expo';
 
 export default function Profile({ navigation, route: { params } }: any) {
-  const [Id, setId] = useState<string | null>("");
+  const [Id, setId] = useState<string | null>('');
   const apolloClient = useApolloClient();
   let updatedSettings: boolean = false;
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
-  const [addressParent, setAddressParent] = useState<string>("");
-  const [descriptionParent, setDescriptionParent] = useState<string>("");
+  const [addressParent, setAddressParent] = useState<string>('');
+  const [descriptionParent, setDescriptionParent] = useState<string>('');
   // TODO solve not setTags allowed
   const [tagList, SetTags] = useState<Array<string>>([]);
   const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
   const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
   const [addressMutation] = useMutation(ADDRESS_MUTATION);
   const [tagsMutation] = useMutation(TAGS_MUTATION);
-  const { setTags } = useStoreActions((actions) => actions.Offering);
+  const { setTags } = useStoreActions(actions => actions.Offering);
 
   useEffect(() => {
     (async () => {
       try {
-        const id = await AsyncStorage.getItem("id");
+        const id = await AsyncStorage.getItem('id');
         setId(id);
       } catch (error) {
-        throw new Error("Unable to load Credentials");
+        throw new Error('Unable to load Credentials');
       }
     })();
   }, []);
@@ -56,32 +56,32 @@ export default function Profile({ navigation, route: { params } }: any) {
         address,
         description,
         verified,
-        professional,
+        professional
       } = {
-        nom: "John",
-        prenom: "Doe",
+        nom: 'John',
+        prenom: 'Doe',
         tags: [],
         avatar: null,
-        address: "",
-        description: "_",
+        address: '',
+        description: '_',
         verified: false,
-        professional: false,
-      },
-    } = {},
+        professional: false
+      }
+    } = {}
   } = useQuery(INFO, {
     variables: { id },
-    errorPolicy: "ignore",
-    fetchPolicy: "cache-and-network",
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network'
   });
 
-  const type = image ? `image/${String(image?.uri).split(".")[1]}` : "";
+  const type = image ? `image/${String(image?.uri).split('.')[1]}` : '';
 
   let pictureUrl: string =
     image && image?.base64
       ? new ReactNativeFile({
           uri: `data:${type};base64,${image?.base64}`,
           type,
-          name: getFileName(image?.uri),
+          name: getFileName(image?.uri)
         })
       : null;
 
@@ -106,7 +106,7 @@ export default function Profile({ navigation, route: { params } }: any) {
       tagList && onChangeTags(tagList);
 
       setTimeout(() => {
-        navigation.navigate("Profile", { updatedSettings });
+        navigation.navigate('Profile', { updatedSettings });
       }, 1000);
     } catch (error) {
       throw new Error(error);
@@ -118,7 +118,7 @@ export default function Profile({ navigation, route: { params } }: any) {
       .then(() => {
         apolloClient.reFetchObservableQueries();
       })
-      .catch((err) => {
+      .catch(err => {
         throw new Error(err);
       });
   };
@@ -129,7 +129,7 @@ export default function Profile({ navigation, route: { params } }: any) {
         apolloClient.reFetchObservableQueries();
       });
     } catch (error) {
-      throw new Error("Mutation failed");
+      throw new Error('Mutation failed');
     }
   };
 
@@ -139,7 +139,7 @@ export default function Profile({ navigation, route: { params } }: any) {
         apolloClient.reFetchObservableQueries();
       });
     } catch (error) {
-      throw new Error("Mutation failed");
+      throw new Error('Mutation failed');
     }
   };
 
@@ -147,9 +147,9 @@ export default function Profile({ navigation, route: { params } }: any) {
     setTags(array);
     (async () => {
       try {
-        await AsyncStorage.setItem("tags", JSON.stringify(array));
+        await AsyncStorage.setItem('tags', JSON.stringify(array));
       } catch (error) {
-        throw new Error("tags storage failed");
+        throw new Error('tags storage failed');
       }
     })();
   };
@@ -160,7 +160,7 @@ export default function Profile({ navigation, route: { params } }: any) {
         .then(() => apolloClient.reFetchObservableQueries())
         .then(() => storeTags(array));
     } catch (error) {
-      throw new Error("tags storage failed");
+      throw new Error('tags storage failed');
     }
   };
 
@@ -172,11 +172,10 @@ export default function Profile({ navigation, route: { params } }: any) {
             <TouchableOpacity style={styles.titleBar} onPress={() => save()}>
               <Text
                 style={{
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   fontSize: 16,
-                  color: theme.colors.primary,
-                }}
-              >
+                  color: theme.colors.primary
+                }}>
                 Sauvegarder
               </Text>
             </TouchableOpacity>
@@ -184,11 +183,10 @@ export default function Profile({ navigation, route: { params } }: any) {
             <TouchableOpacity style={styles.titleBar}>
               <Text
                 style={{
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                   fontSize: 16,
-                  color: theme.colors.gray,
-                }}
-              >
+                  color: theme.colors.gray
+                }}>
                 Sauvegarder
               </Text>
             </TouchableOpacity>
@@ -200,13 +198,13 @@ export default function Profile({ navigation, route: { params } }: any) {
                   ? { uri: image }
                   : avatar
                   ? { uri: avatar }
-                  : require("../../assets/images/default-user-image.png")
+                  : require('../../assets/images/default-user-image.png')
               }
               username={
                 prenom.replace(/^./, prenom[0].toUpperCase()) +
-                " " +
+                ' ' +
                 nom.charAt(0) +
-                "."
+                '.'
               }
               address={address}
               verified={verified}
@@ -226,13 +224,12 @@ export default function Profile({ navigation, route: { params } }: any) {
               style={[
                 styles.text,
                 {
-                  fontWeight: "300",
+                  fontWeight: '300',
                   fontSize: 24,
                   paddingLeft: 20,
-                  paddingTop: 10,
-                },
-              ]}
-            >
+                  paddingTop: 10
+                }
+              ]}>
               Tags
             </Text>
             <Tag tags={tags} parentCallback={SetTags} />
@@ -246,29 +243,29 @@ export default function Profile({ navigation, route: { params } }: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF'
   },
   text: {
-    fontFamily: "HelveticaNeue",
-    color: "#52575D",
+    fontFamily: 'HelveticaNeue',
+    color: '#52575D'
   },
   titleBar: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginTop: 24,
-    marginHorizontal: 16,
+    marginHorizontal: 16
   },
   delimiter: {
-    borderTopColor: "#DFD8C8",
+    borderTopColor: '#DFD8C8',
     borderTopWidth: 0.5,
-    marginTop: 25,
+    marginTop: 25
   },
   lineStars: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 25,
-    justifyContent: "space-between",
-    marginHorizontal: 16,
-  },
+    justifyContent: 'space-between',
+    marginHorizontal: 16
+  }
 });
 
 const INFO = gql`

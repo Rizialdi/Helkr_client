@@ -1,10 +1,10 @@
-import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import { CustomListView, dataContent } from "../../shareComponents";
-import ModalItem from "./ModalItem";
+import { CustomListView, dataContent } from '../../shareComponents';
+import ModalItem from './ModalItem';
 
 const MY_OFFERINGS = gql`
   query myIncompleteOffering {
@@ -40,7 +40,7 @@ const ManageOffering = () => {
   const { data, loading: loading, error: error, refetch } = useQuery(
     MY_OFFERINGS,
     {
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network'
     }
   );
 
@@ -57,7 +57,7 @@ const ManageOffering = () => {
 
   useEffect(() => {
     if (!error) {
-      setStateData(data || "");
+      setStateData(data || '');
     }
   }, [data, loading]);
 

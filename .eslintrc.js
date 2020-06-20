@@ -12,16 +12,16 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'no-shadow': 'warn',
-    '@typescript-eslint/explicit-member-accessibility': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/indent': 'warn',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/array-type': 'warn',
-    '@typescript-eslint/no-object-literal-type-assertion': 'warn',
-    "@typescript-eslint/no-explicit-any": "warn",
-    "@typescript-eslint/strict-null-checks": "warn"
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    '@typescript-eslint/explicit-member-accessibility': 'error',
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/indent': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/no-non-null-assertion': 'error',
+    '@typescript-eslint/array-type': 'error',
+    '@typescript-eslint/no-object-literal-type-assertion': 'error',
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/strict-null-checks": "error"
   }
 };
 
-  

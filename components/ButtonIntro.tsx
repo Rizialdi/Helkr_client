@@ -1,11 +1,11 @@
-import React, { Component, FC } from "react";
+import React, { Component, FC } from 'react';
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  GestureResponderEvent,
-} from "react-native";
+  GestureResponderEvent
+} from 'react-native';
 
 interface Props {
   onPress: (event: GestureResponderEvent) => void | undefined;
@@ -24,16 +24,16 @@ const ButtonIntro: FC<Props> = ({ onPress, text }) => {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 5,
-    borderColor: "black",
+    borderColor: 'black',
     paddingHorizontal: 50,
     paddingVertical: 10,
-    backgroundColor: "rgba(0, 148, 255, 1)",
+    backgroundColor: 'rgba(0, 148, 255, 1)'
   },
   text: {
-    color: "black",
-    fontWeight: "bold",
-    fontFamily: "josefinRegular",
-  },
+    color: 'black',
+    fontWeight: 'bold',
+    fontFamily: 'josefinRegular'
+  }
 });
 
 export default ButtonIntro;

@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import TagItem from "./TagItem";
+import TagItem from './TagItem';
 
 interface Props {
   tags?: string[];
@@ -18,9 +18,9 @@ export default ({ tags }: Props) => (
 const styles = StyleSheet.create({
   tags: {
     marginTop: 10,
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginHorizontal: 20,
-  },
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: 20
+  }
 });

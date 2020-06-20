@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { useQuery, useSubscription } from "@apollo/react-hooks";
+import React, { useState, useEffect } from 'react';
+import { useQuery, useSubscription } from '@apollo/react-hooks';
 
-import { CustomListView, dataContent } from "../../shareComponents";
-import gql from "graphql-tag";
-import { ActivityIndicator } from "react-native";
-import ModalItem from "./ModalItem";
+import { CustomListView, dataContent } from '../../shareComponents';
+import gql from 'graphql-tag';
+import { ActivityIndicator } from 'react-native';
+import ModalItem from './ModalItem';
 
 const MY_INCOMPLETE_OFFERINGS_CANDIDATES = gql`
   query myIncompleteOfferingCandidates {
@@ -41,7 +41,7 @@ const ManageCandidates = () => {
   const { data, loading: loading, error: error, refetch } = useQuery(
     MY_INCOMPLETE_OFFERINGS_CANDIDATES,
     {
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network'
     }
   );
 
@@ -59,7 +59,7 @@ const ManageCandidates = () => {
 
   useEffect(() => {
     if (!error) {
-      setStateData(data || "");
+      setStateData(data || '');
     }
   }, [data, loading]);
 
@@ -69,7 +69,7 @@ const ManageCandidates = () => {
 
       <CustomListView
         data={stateData?.myIncompleteOfferingCandidates}
-        emptyMessage={"Aucun candidat à une offre actuellement"}
+        emptyMessage={'Aucun candidat à une offre actuellement'}
         modalItem={<ModalItem />}
         refreshing={refreshing}
         onRefresh={onRefresh}

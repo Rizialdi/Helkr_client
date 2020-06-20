@@ -46,7 +46,7 @@ class Form extends ValidationComponent {
     //@ts-ignore
     const { navigation } = this.props;
     const { loading } = this.state;
-    const hasErrors = (key) =>
+    const hasErrors = key =>
       this.isFieldInError(key) ? styles.hasErrors : null;
 
     return (
@@ -63,7 +63,7 @@ class Form extends ValidationComponent {
                 placeholder="Nom"
                 error={hasErrors('nom')}
                 style={[styles.input, hasErrors('nom')]}
-                onChangeText={(text) => this.setState({ nom: text })}
+                onChangeText={text => this.setState({ nom: text })}
               />
               <Input
                 ref="prenom"
@@ -71,7 +71,7 @@ class Form extends ValidationComponent {
                 placeholder="Prenom"
                 error={hasErrors('prenom')}
                 style={[styles.input, hasErrors('prenom')]}
-                onChangeText={(text) => this.setState({ prenom: text })}
+                onChangeText={text => this.setState({ prenom: text })}
               />
               <Input
                 phone
@@ -80,7 +80,7 @@ class Form extends ValidationComponent {
                 placeholder="Numero"
                 error={hasErrors('numero')}
                 style={[styles.input, hasErrors('numero')]}
-                onChangeText={(text) => this.setState({ numero: text })}
+                onChangeText={text => this.setState({ numero: text })}
               />
               <Button gradient onPress={() => this.handleLogin()}>
                 {loading ? (
@@ -96,8 +96,7 @@ class Form extends ValidationComponent {
                   gray
                   caption
                   center
-                  style={{ textDecorationLine: 'underline' }}
-                >
+                  style={{ textDecorationLine: 'underline' }}>
                   Déja inscrit(e) ?{' '}
                   <Text caption style={{ color: theme.colors.primary }}>
                     Identifiez-vous
@@ -105,8 +104,7 @@ class Form extends ValidationComponent {
                 </Text>
               </Button>
               <TouchableOpacity
-                onPress={() => this.setState({ showTerms: true })}
-              >
+                onPress={() => this.setState({ showTerms: true })}>
                 <Text
                   caption
                   style={{
@@ -114,8 +112,7 @@ class Form extends ValidationComponent {
                     fontFamily: 'josefinLight',
                     fontSize: 12,
                     textAlign: 'center'
-                  }}
-                >
+                  }}>
                   Vous devez être agé(e) d’au moins 16 ans pour vous
                   enregistrez. Apprenez plus sur nos{' '}
                   <Text
@@ -123,8 +120,7 @@ class Form extends ValidationComponent {
                     style={{
                       textDecorationLine: 'underline',
                       color: theme.colors.primary
-                    }}
-                  >
+                    }}>
                     politiques
                   </Text>
                 </Text>
@@ -147,8 +143,7 @@ class Form extends ValidationComponent {
       <Modal
         animationType="slide"
         visible={this.state.showTerms}
-        onRequestClose={() => this.setState({ showTerms: false })}
-      >
+        onRequestClose={() => this.setState({ showTerms: false })}>
         <Block padding={[20, 20]} space="between">
           <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
             Politiques de services
@@ -157,8 +152,7 @@ class Form extends ValidationComponent {
           <Block middle padding={[theme.sizes.base / 2, 0]}>
             <Button
               gradient
-              onPress={() => this.setState({ showTerms: false })}
-            >
+              onPress={() => this.setState({ showTerms: false })}>
               <Text center white>
                 Je comprends
               </Text>
@@ -185,8 +179,7 @@ class Form extends ValidationComponent {
     const { nom, prenom, numero } = this.state;
     return (
       <View
-        style={{ position: 'absolute', top: 0, height: height, width: width }}
-      >
+        style={{ position: 'absolute', top: 0, height: height, width: width }}>
         <AwesomeAlert
           show={this.state.showConfirmation}
           showProgress={true}
@@ -263,8 +256,8 @@ class Form extends ValidationComponent {
             variables: { numero }
           })
         })
-          .then((response) => response.json())
-          .then((responseAsJson) => {
+          .then(response => response.json())
+          .then(responseAsJson => {
             // if numero alreay exist in the database
             if (!responseAsJson.errors) {
               setTimeout(() => this.setState({ loading: false }), 500);
@@ -276,7 +269,7 @@ class Form extends ValidationComponent {
               this.setState({ showConfirmation: true, loading: false });
             }
           })
-          .catch((error) => {
+          .catch(error => {
             throw new Error('Unable to check user existence');
           });
       })();

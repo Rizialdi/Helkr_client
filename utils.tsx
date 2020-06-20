@@ -1,19 +1,19 @@
 const yearMonths: string[] = [
-  "jan.",
-  "fev.",
-  "mar.",
-  "avr.",
-  "mai",
-  "jui.",
-  "juil.",
-  "aou.",
-  "sep.",
-  "oct.",
-  "nov.",
-  "dec.",
+  'jan.',
+  'fev.',
+  'mar.',
+  'avr.',
+  'mai',
+  'jui.',
+  'juil.',
+  'aou.',
+  'sep.',
+  'oct.',
+  'nov.',
+  'dec.'
 ];
 
-export const formatDate = (timestamp: string = "15886987435"): string => {
+export const formatDate = (timestamp: string = '15886987435'): string => {
   const difference = Date.now() / 1000 - parseInt(timestamp) / 1000;
   // Calculate the number of days
   var days = Math.floor(difference / 86400);
@@ -30,24 +30,24 @@ export const formatDate = (timestamp: string = "15886987435"): string => {
 
   const elapsedTime =
     days > 30
-      ? " dep. " + mois + " mois "
+      ? ' dep. ' + mois + ' mois '
       : days <= 0
-      ? " auj. "
-      : "dep. " + days + " jrs ";
+      ? ' auj. '
+      : 'dep. ' + days + ' jrs ';
 
   return elapsedTime;
 };
 
-export const formatDateAvis = (timestamp: string = "15886987435"): string => {
+export const formatDateAvis = (timestamp: string = '15886987435'): string => {
   const date = new Date(parseInt(timestamp));
-  return yearMonths[date.getMonth()] + " " + date.getFullYear();
+  return yearMonths[date.getMonth()] + ' ' + date.getFullYear();
 };
 
 export const makePseudoName = (nom: string, prenom: string): string =>
-  prenom.replace(/^./, prenom[0].toUpperCase()) + " " + nom.charAt(0) + ".";
+  prenom.replace(/^./, prenom[0].toUpperCase()) + ' ' + nom.charAt(0) + '.';
 
 export const inputSanitization = (text: string) =>
-  text.replace(/^\s+|\s+$/g, "");
+  text.replace(/^\s+|\s+$/g, '');
 
 export const getFileName = (chaine: string) =>
-  String(chaine).split("/")[String(chaine).split("/").length - 1];
+  String(chaine).split('/')[String(chaine).split('/').length - 1];

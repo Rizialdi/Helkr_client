@@ -313,22 +313,29 @@ const illustrations = [
     id: 2,
     source: require('../assets/icons/phone1.svg'),
     textP: 'Formulez votre demande de services',
-    textS: 'Repondez à un simple formulaire pour preciser votre demande de services'
+    textS:
+      'Repondez à un simple formulaire pour preciser votre demande de services'
   },
   {
-    id: 3, source: require("../assets/icons/phone1-1.svg"),
+    id: 3,
+    source: require('../assets/icons/phone1-1.svg'),
     textP: 'Obtenez des suggestions de profil',
-    textS: 'Les avis d’autres utilisateurs permettent de vous faire une idée de l’agent'
+    textS:
+      'Les avis d’autres utilisateurs permettent de vous faire une idée de l’agent'
   },
   {
-    id: 4, source: require("../assets/icons/phone1-2.svg"),
-    textP: "Convenez d’un lieu de rendez-vous",
-    textS: 'Repondez à un simple formulaire pour preciser votre demande de services'
+    id: 4,
+    source: require('../assets/icons/phone1-2.svg'),
+    textP: 'Convenez d’un lieu de rendez-vous',
+    textS:
+      'Repondez à un simple formulaire pour preciser votre demande de services'
   },
   {
-    id: 5, source: require("../assets/icons/phone1-2.svg"),
-    textP: "Convenez d’un lieu de rendez-vous",
-    textS: 'Repondez à un simple formulaire pour preciser votre demande de services'
-  },
-]
+    id: 5,
+    source: require('../assets/icons/phone1-2.svg'),
+    textP: 'Convenez d’un lieu de rendez-vous',
+    textS:
+      'Repondez à un simple formulaire pour preciser votre demande de services'
+  }
+];
 export { accueil, illustrations };

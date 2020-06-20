@@ -29,7 +29,7 @@ const storedData = async () => {
 const user: UserModel = {
   user: {},
   //thunk
-  loadUser: thunk(async (actions) => {
+  loadUser: thunk(async actions => {
     const data = await storedData();
     actions.setUser(data);
   }),

@@ -1,11 +1,11 @@
-import { useQuery, useSubscription } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
+import { useQuery, useSubscription } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import { useStoreState } from "../../../models";
-import { CustomListView, dataContent } from "../../shareComponents";
-import ModalItem from "./ModalItem";
+import { useStoreState } from '../../../models';
+import { CustomListView, dataContent } from '../../shareComponents';
+import ModalItem from './ModalItem';
 
 const Offres = () => {
   const [stateData, setStateData] = useState<{
@@ -13,18 +13,18 @@ const Offres = () => {
   }>();
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const { tags } = useStoreState((state) => state.Offering);
+  const { tags } = useStoreState(state => state.Offering);
 
   const { data, loading, error, refetch } = useQuery(OFFERINGS, {
-    fetchPolicy: "cache-and-network",
-    variables: { filters: tags },
+    fetchPolicy: 'cache-and-network',
+    variables: { filters: tags }
   });
 
   const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
     OFFERINGS_SUBSCRIPTION,
     {
       variables: { tags },
-      shouldResubscribe: true,
+      shouldResubscribe: true
     }
   );
 
@@ -50,7 +50,7 @@ const Offres = () => {
 
   useEffect(() => {
     if (!error) {
-      setStateData(data || "");
+      setStateData(data || '');
     }
   }, [data, loading]);
 
@@ -64,8 +64,8 @@ const Offres = () => {
       setStateData({
         incompleteOfferings: [
           dataNewOffering?.newOffering,
-          ...stateData?.incompleteOfferings,
-        ],
+          ...stateData?.incompleteOfferings
+        ]
       });
     }
   }, [dataNewOffering]);
@@ -75,7 +75,7 @@ const Offres = () => {
       {loadingTabOne && <ActivityIndicator />}
       <CustomListView
         data={stateData?.incompleteOfferings}
-        emptyMessage={"Aucune offre disponible"}
+        emptyMessage={'Aucune offre disponible'}
         modalItem={<ModalItem />}
         refreshing={refreshing}
         onRefresh={onRefresh}

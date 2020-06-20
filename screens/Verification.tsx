@@ -33,7 +33,7 @@ const Verification: SFC<Props> = ({
   const [addUserMutation] = useMutation(ADD_USER);
   const client = useApolloClient();
 
-  const handle_step_one = async (numero) => {
+  const handle_step_one = async numero => {
     setLoading(true);
     setCodeSent(true);
 
@@ -120,7 +120,7 @@ const Verification: SFC<Props> = ({
     }
   };
 
-  const { setUser } = useStoreActions((actions) => actions.User);
+  const { setUser } = useStoreActions(actions => actions.User);
 
   //TODO Test this function -> seems to work. Test if fail case (wrong password)
   const storeCredentials = ({ token, user: { id, prenom } }) => {
@@ -180,7 +180,7 @@ const Verification: SFC<Props> = ({
           <Text style={{ fontFamily: 'josefinRegular', fontSize: 16 }}>
             Entrez le code de vérification en dessous: error {Error}
           </Text>
-          <Input phone onChangeText={(text) => setToken(text)} />
+          <Input phone onChangeText={text => setToken(text)} />
           <Button gradient onPress={() => handleVerification()}>
             {Loading ? (
               <ActivityIndicator size="small" color="white" />

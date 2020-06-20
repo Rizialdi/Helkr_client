@@ -1,10 +1,10 @@
 // just copy this code from the driving repo :)
-import React from "react";
-import { Text, StyleSheet, StyleProp, TextStyle } from "react-native";
+import React from 'react';
+import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 
-import { useStoreState } from "../../models";
+import { useStoreState } from '../../models';
 
-import { theme } from "../../constants";
+import { theme } from '../../constants';
 
 interface Props {
   h1?: boolean;
@@ -16,8 +16,8 @@ interface Props {
   caption?: boolean;
   small?: boolean;
   size?: any;
-  transform?: "none" | "capitalize" | "uppercase" | "lowercase";
-  align?: "center" | "auto" | "left" | "right" | "justify";
+  transform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase';
+  align?: 'center' | 'auto' | 'left' | 'right' | 'justify';
   // styling
   regular?: boolean;
   bold?: boolean;
@@ -81,11 +81,11 @@ const CustomText: React.FC<Props> = ({
   children,
   ...props
 }) => {
-  const { themeColors } = useStoreState((state) => state.Preferences);
+  const { themeColors } = useStoreState(state => state.Preferences);
 
   const textStyles: StyleProp<TextStyle> = [
     {
-      color: themeColors.defaultTextColor,
+      color: themeColors.defaultTextColor
     },
     styles.text,
     h1 && styles.h1,
@@ -112,30 +112,30 @@ const CustomText: React.FC<Props> = ({
     right && styles.right,
     // color shortcuts
     accent && {
-      color: themeColors.accent,
+      color: themeColors.accent
     },
     primary && {
-      color: themeColors.primary,
+      color: themeColors.primary
     },
     secondary && {
-      color: themeColors.secondary,
+      color: themeColors.secondary
     },
     tertiary && {
-      color: themeColors.tertiary,
+      color: themeColors.tertiary
     },
     black && {
-      color: themeColors.black,
+      color: themeColors.black
     },
     white && {
-      color: themeColors.white,
+      color: themeColors.white
     },
     gray && {
-      color: themeColors.gray,
+      color: themeColors.gray
     },
     gray2 && {
-      color: themeColors.gray2,
+      color: themeColors.gray2
     },
-    style, // rewrite predefined styles
+    style // rewrite predefined styles
   ];
 
   return (
@@ -148,27 +148,27 @@ const CustomText: React.FC<Props> = ({
 const styles = StyleSheet.create({
   // default style
   text: {
-    fontSize: theme.sizes.font,
+    fontSize: theme.sizes.font
   },
   // variations
   regular: {
-    fontWeight: "normal",
+    fontWeight: 'normal'
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: 'bold'
   },
   semibold: {
-    fontWeight: "500",
+    fontWeight: '500'
   },
   medium: {
-    fontWeight: "500",
+    fontWeight: '500'
   },
   light: {
-    fontWeight: "200",
+    fontWeight: '200'
   },
   // position
-  center: { textAlign: "center" },
-  right: { textAlign: "right" },
+  center: { textAlign: 'center' },
+  right: { textAlign: 'right' },
   // fonts
   h1: theme.fonts.h1,
   h2: theme.fonts.h2,
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   title: theme.fonts.title,
   body: theme.fonts.body,
   caption: theme.fonts.caption,
-  small: theme.fonts.small,
+  small: theme.fonts.small
 });
 
 export default CustomText;

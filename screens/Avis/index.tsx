@@ -1,6 +1,6 @@
-import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-import React from "react";
+import { useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React from 'react';
 import {
   ActivityIndicator,
   Dimensions,
@@ -8,15 +8,15 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Route,
-} from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+  Route
+} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useStoreState } from "../../models";
-import { Text } from "../shareComponents";
-import { ListCard } from "./components";
+import { useStoreState } from '../../models';
+import { Text } from '../shareComponents';
+import { ListCard } from './components';
 
-const { width } = Dimensions.get("window");
+const { width } = Dimensions.get('window');
 
 const AVIS = gql`
   query getAvisUser($userId: String!) {
@@ -51,14 +51,14 @@ interface Data {
 }
 
 export default ({ navigation, route: { params } }: Props) => {
-  const { user } = useStoreState((state) => state.User);
+  const { user } = useStoreState(state => state.User);
   const userId = params && params.id ? params.id : user?.id;
 
   const { loading, error, data } = useQuery(AVIS, {
     variables: { userId },
-    errorPolicy: "ignore",
-    fetchPolicy: "cache-and-network",
-    pollInterval: 1000 * 3600 * 24,
+    errorPolicy: 'ignore',
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000 * 3600 * 24
   });
 
   return (
@@ -67,9 +67,8 @@ export default ({ navigation, route: { params } }: Props) => {
         {loading ? (
           <View
             style={{
-              marginTop: width / 2,
-            }}
-          >
+              marginTop: width / 2
+            }}>
             <ActivityIndicator size="large" color="black" />
           </View>
         ) : (
@@ -81,25 +80,24 @@ export default ({ navigation, route: { params } }: Props) => {
                     score,
                     comment,
                     createdAt,
-                    scorer: { id, nom, prenom, avatar },
+                    scorer: { id, nom, prenom, avatar }
                   }: Data,
                   key: string
                 ) => {
                   const username =
                     prenom.replace(/^./, prenom[0].toUpperCase()) +
-                    " " +
+                    ' ' +
                     nom.charAt(0) +
-                    ".";
+                    '.';
                   return (
                     <TouchableOpacity
                       style={{ width: width }}
                       key={key}
                       onPress={() =>
-                        navigation.navigate("ProfilesNavigation", {
-                          id: id,
+                        navigation.navigate('ProfilesNavigation', {
+                          id: id
                         })
-                      }
-                    >
+                      }>
                       <ListCard
                         avatar={avatar}
                         scorer={username}
@@ -131,6 +129,6 @@ export default ({ navigation, route: { params } }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-  },
+    alignItems: 'center'
+  }
 });

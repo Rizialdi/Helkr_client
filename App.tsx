@@ -25,7 +25,9 @@ const cache = new InMemoryCache();
 
 persistCache({
   cache,
-  storage: AsyncStorage as PersistentStorage<PersistedData<NormalizedCacheObject>>,
+  storage: AsyncStorage as PersistentStorage<
+    PersistedData<NormalizedCacheObject>
+  >
 });
 
 // Create an http link:
@@ -111,7 +113,7 @@ const handleResourcesAsync = async () => {
     serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf')
   });
 
-  const cacheIcons = icons.map((icon) => {
+  const cacheIcons = icons.map(icon => {
     return Asset.fromModule(icon).downloadAsync();
   });
 
@@ -125,7 +127,7 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
       <AppLoading
         // @ts-ignore
         startAsync={handleResourcesAsync}
-        onError={(error) => {
+        onError={error => {
           throw error;
         }}
         onFinish={() => setIsLoadingComplete(true)}
