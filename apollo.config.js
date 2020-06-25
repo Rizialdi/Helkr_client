@@ -1,7 +1,7 @@
 module.exports = {
   client: {
-    name: 'Yoko',
-// Modifier le service. Aucune idee pour le moment
-    service: 'Yoko',
+    name: 'HelpKr',
+    // Modifier le service. Aucune idee pour le moment
+    service: 'HelpKr',
   },
 };
