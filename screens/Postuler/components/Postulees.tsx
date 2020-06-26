@@ -1,54 +1,29 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator } from 'react-native'
 
-import { useStoreState } from '../../../models';
-import { CustomListView, dataContent } from '../../shareComponents';
-import ModalItem from './ModalItem';
-
-const APPLIEDTO = gql`
-  query isCandidateTo {
-    isCandidateTo {
-      id
-      type
-      status
-      category
-      createdAt
-      description
-    }
-  }
-`;
-
-const UPDATE_ONAPPLIED_TO = gql`
-  subscription updateAppliedTo($userId: String!) {
-    updateAppliedTo(userId: $userId) {
-      id
-      status
-    }
-  }
-`;
+import ModalItem from './ModalItem'
+import { useStoreState } from '../../../models'
+import { CustomListView, dataContent } from '../../shareComponents'
+import { IsCandidateToQuery, useIsCandidateToQuery, useUpdateAppliedToSubscription } from '../../../graphql'
 
 const Postulees = () => {
-  const [stateData, setStateData] = useState<{
-    isCandidateTo?: dataContent[];
-  }>();
+  const [stateData, setStateData] = useState<IsCandidateToQuery>();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const { user } = useStoreState(state => state.User);
 
-  const { data, loading, error, client } = useQuery(APPLIEDTO, {
+  const { data, loading, error, client } = useIsCandidateToQuery({
     fetchPolicy: 'cache-and-network'
   });
 
-  const { data: dataUpdate, error: errorUpdate } = useSubscription(
-    UPDATE_ONAPPLIED_TO,
-    {
-      variables: { userId: user.id },
-      shouldResubscribe: true
-    }
-  );
+  const {
+    data: dataUpdate,
+    error: errorUpdate
+  } = useUpdateAppliedToSubscription({
+    variables: { userId: user?.id || '' },
+    shouldResubscribe: true
+  });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -60,8 +35,8 @@ const Postulees = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (!error) {
-      setStateData(data || '');
+    if (!error && data) {
+      setStateData(data);
     }
   }, [data, loading]);
 

@@ -1,32 +1,29 @@
-import { useQuery, useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator } from 'react-native'
 
-import { useStoreState } from '../../../models';
-import { CustomListView, dataContent } from '../../shareComponents';
-import ModalItem from './ModalItem';
+import ModalItem from './ModalItem'
+import { useStoreState } from '../../../models'
+import { CustomListView } from '../../shareComponents'
+import { IncompleteOfferingsQuery, useIncompleteOfferingsQuery, useOnOfferingAddedSubscription } from '../../../graphql'
 
 const Offres = () => {
-  const [stateData, setStateData] = useState<{
-    incompleteOfferings?: dataContent[];
-  }>();
+  const [stateData, setStateData] = useState<IncompleteOfferingsQuery>();
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const { tags } = useStoreState(state => state.Offering);
 
-  const { data, loading, error, client } = useQuery(OFFERINGS, {
+  const { data, loading, error, client } = useIncompleteOfferingsQuery({
     fetchPolicy: 'cache-and-network',
     variables: { filters: tags }
   });
 
-  const { data: dataNewOffering, error: errorNewOffering } = useSubscription(
-    OFFERINGS_SUBSCRIPTION,
-    {
-      variables: { tags },
-      shouldResubscribe: true
-    }
-  );
+  const {
+    data: dataNewOffering,
+    error: errorNewOffering
+  } = useOnOfferingAddedSubscription({
+    variables: { tags },
+    shouldResubscribe: true
+  });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -44,7 +41,7 @@ const Offres = () => {
 
   useEffect(() => {
     if (!error) {
-      setStateData(data || '');
+      setStateData(data);
     }
   }, [data, loading]);
 
@@ -52,12 +49,12 @@ const Offres = () => {
     if (
       dataNewOffering &&
       stateData?.incompleteOfferings &&
-      dataNewOffering?.newOffering &&
+      dataNewOffering?.onOfferingAdded &&
       !errorNewOffering
     ) {
       setStateData({
         incompleteOfferings: [
-          dataNewOffering?.newOffering,
+          dataNewOffering?.onOfferingAdded,
           ...stateData?.incompleteOfferings
         ]
       });
@@ -77,29 +74,5 @@ const Offres = () => {
     </>
   );
 };
-
-const OFFERINGS = gql`
-  query incompleteOfferings($filters: [String!]) {
-    incompleteOfferings(filters: $filters) {
-      id
-      type
-      category
-      description
-      createdAt
-    }
-  }
-`;
-
-const OFFERINGS_SUBSCRIPTION = gql`
-  subscription onOfferingAdded($tags: [String!]) {
-    newOffering(tags: $tags) {
-      id
-      type
-      category
-      description
-      createdAt
-    }
-  }
-`;
 
 export default Offres;

@@ -1,6 +1,5 @@
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import React, { useState, useMemo } from 'react';
+import Icon from 'react-native-vector-icons/Octicons'
+import React, { useMemo, useState } from 'react'
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -8,44 +7,14 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
+  View,
+} from 'react-native'
 
-import { makePseudoName } from '../../utils';
-import { Text } from '../shareComponents';
-import {
-  AvgContainer,
-  Description,
-  ProfilContainer,
-  StatsContainer,
-  Tag
-} from './components';
+import { makePseudoName } from '../../utils'
+import { Text } from '../shareComponents'
+import { AvgContainer, Description, ProfilContainer, StatsContainer, Tag } from './components'
+import { useGetUserStatsQuery, useUserByIdQuery } from '../../graphql'
 
-const STATS = gql`
-  query getUserStats($id: String!) {
-    getUserStats(id: $id) {
-      done
-      proposed
-      average
-    }
-  }
-`;
-
-const INFO = gql`
-  query userById($id: String!) {
-    userById(id: $id) {
-      nom
-      tags
-      prenom
-      avatar
-      address
-      verified
-      description
-      professional
-    }
-  }
-`;
 export default function Profile({ navigation, route: { params } }: any) {
   const [Id, setId] = useState<string | null>('');
 
@@ -70,7 +39,7 @@ export default function Profile({ navigation, route: { params } }: any) {
         average: 0
       }
     } = {}
-  } = useQuery(STATS, {
+  } = useGetUserStatsQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network',
@@ -100,7 +69,7 @@ export default function Profile({ navigation, route: { params } }: any) {
       }
     } = {},
     loading
-  } = useQuery(INFO, {
+  } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network',

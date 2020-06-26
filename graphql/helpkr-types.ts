@@ -37,8 +37,8 @@ export type AvisWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
-export type CandidiateToOfferingSuccess = {
-  __typename?: 'CandidiateToOfferingSuccess';
+export type CandidateToOfferingSuccess = {
+  __typename?: 'CandidateToOfferingSuccess';
   success: Scalars['Boolean'];
 };
 
@@ -104,7 +104,7 @@ export type Mutation = {
   addOffering: Scalars['Boolean'];
   addressUpdate: Scalars['Boolean'];
   avatarUpload: Scalars['Boolean'];
-  candidateToOffering: CandidiateToOfferingSuccess;
+  candidateToOffering: CandidateToOfferingSuccess;
   chooseCandidate: Scalars['Boolean'];
   completeOffering: Scalars['Boolean'];
   createAvis: Scalars['Boolean'];
@@ -448,8 +448,8 @@ export type CandidateToOfferingMutationVariables = Exact<{
 export type CandidateToOfferingMutation = (
   { __typename?: 'Mutation' }
   & { candidateToOffering: (
-    { __typename?: 'CandidiateToOfferingSuccess' }
-    & Pick<CandidiateToOfferingSuccess, 'success'>
+    { __typename?: 'CandidateToOfferingSuccess' }
+    & Pick<CandidateToOfferingSuccess, 'success'>
   ) }
 );
 
@@ -514,7 +514,7 @@ export type GetAvisUserQuery = (
   { __typename?: 'Query' }
   & { getAvisUser: Array<(
     { __typename?: 'avis' }
-    & Pick<Avis, 'score' | 'comment' | 'createdAt'>
+    & Pick<Avis, 'id' | 'score' | 'comment' | 'createdAt'>
     & { scorer: (
       { __typename?: 'utilisateur' }
       & ScorerFragment
@@ -873,6 +873,7 @@ export type TagsUpdateMutationOptions = ApolloReactCommon.BaseMutationOptions<Ta
 export const GetAvisUserDocument = gql`
     query getAvisUser($userId: String!) {
   getAvisUser(userId: $userId) {
+    id
     score
     comment
     createdAt

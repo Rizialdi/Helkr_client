@@ -1,11 +1,11 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 
-import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { theme } from '../../../constants'
+import { Text } from '../../shareComponents'
 
 interface Props {
-  description: string;
+  description: string | null | undefined;
 }
 
 export default ({ description }: Props) => (

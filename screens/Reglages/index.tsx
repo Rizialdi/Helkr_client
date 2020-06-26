@@ -1,8 +1,5 @@
-import { useMutation, useQuery, useApolloClient } from '@apollo/react-hooks';
-//@ts-ignore
-import { ReactNativeFile } from 'apollo-upload-client';
-import gql from 'graphql-tag';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react'
+import { useApolloClient } from '@apollo/react-hooks'
 import {
   AsyncStorage,
   KeyboardAvoidingView,
@@ -10,18 +7,26 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
-} from 'react-native';
+  View,
+} from 'react-native'
+import { ImagePicker } from 'expo'
+import { ReactNativeFile } from 'apollo-upload-client'
 
-import { theme } from '../../constants';
-import { Text } from '../shareComponents';
-import { Description, ProfilContainer, Tag } from './components';
-import { useStoreActions } from '../../models';
-import { getFileName } from '../../utils';
-import { ImagePicker } from 'expo';
+import { theme } from '../../constants'
+import { Text } from '../shareComponents'
+import { Description, ProfilContainer, Tag } from './components'
+import { useStoreActions } from '../../models'
+import { getFileName } from '../../utils'
+import {
+  useAddressUpdateMutation,
+  useAvatarUploadMutation,
+  useDescriptionUpdateMutation,
+  useTagsUpdateMutation,
+  useUserByIdQuery,
+} from '../../graphql'
 
 export default function Profile({ navigation, route: { params } }: any) {
-  const [Id, setId] = useState<string | null>('');
+  const [Id, setId] = useState<string>('');
   const apolloClient = useApolloClient();
   let updatedSettings: boolean = false;
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
@@ -29,17 +34,17 @@ export default function Profile({ navigation, route: { params } }: any) {
   const [descriptionParent, setDescriptionParent] = useState<string>('');
   // TODO solve not setTags allowed
   const [tagList, SetTags] = useState<Array<string>>([]);
-  const [uploadFileMutation] = useMutation(SINGLE_UPLOAD_MUTATION);
-  const [descriptionMutation] = useMutation(DESCRIPTION_MUTATION);
-  const [addressMutation] = useMutation(ADDRESS_MUTATION);
-  const [tagsMutation] = useMutation(TAGS_MUTATION);
+  const [uploadFileMutation] = useAvatarUploadMutation();
+  const [descriptionMutation] = useDescriptionUpdateMutation();
+  const [addressMutation] = useAddressUpdateMutation();
+  const [tagsMutation] = useTagsUpdateMutation();
   const { setTags } = useStoreActions(actions => actions.Offering);
 
   useMemo(() => {
     (async () => {
       try {
         const id = await AsyncStorage.getItem('id');
-        setId(id);
+        id && setId(id);
       } catch (error) {
         throw new Error('Unable to load Credentials');
       }
@@ -68,15 +73,14 @@ export default function Profile({ navigation, route: { params } }: any) {
         professional: false
       }
     } = {}
-  } = useQuery(INFO, {
+  } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network'
   });
-
   const type = image ? `image/${String(image?.uri).split('.')[1]}` : '';
 
-  let pictureUrl: string =
+  let pictureUrl: ReactNativeFile | null =
     image && image?.base64
       ? new ReactNativeFile({
           uri: `data:${type};base64,${image?.base64}`,
@@ -113,7 +117,7 @@ export default function Profile({ navigation, route: { params } }: any) {
     }
   };
 
-  const onChangeImage = (file: string) => {
+  const onChangeImage = (file: any) => {
     uploadFileMutation({ variables: { file } })
       .then(() => {
         apolloClient.reFetchObservableQueries();
@@ -267,42 +271,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 16
   }
 });
-
-const INFO = gql`
-  query userById($id: String!) {
-    userById(id: $id) {
-      nom
-      tags
-      prenom
-      avatar
-      address
-      verified
-      description
-      professional
-    }
-  }
-`;
-
-const SINGLE_UPLOAD_MUTATION = gql`
-  mutation avatarUpload($file: Upload!) {
-    avatarUpload(file: $file)
-  }
-`;
-
-const DESCRIPTION_MUTATION = gql`
-  mutation descriptionUpdate($text: String!) {
-    descriptionUpdate(text: $text)
-  }
-`;
-
-const ADDRESS_MUTATION = gql`
-  mutation addressUpdate($text: String!) {
-    addressUpdate(text: $text)
-  }
-`;
-
-const TAGS_MUTATION = gql`
-  mutation tagsUpdate($tags: [String!]!) {
-    tagsUpdate(tags: $tags)
-  }
-`;

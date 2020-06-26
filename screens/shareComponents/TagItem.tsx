@@ -6,7 +6,7 @@ import Block from './Block';
 import Text from './Text';
 
 interface Props {
-  tag: string;
+  tag: string | undefined;
   category?;
   date?;
   type?;

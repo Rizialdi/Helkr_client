@@ -1,4 +1,3 @@
-import gql from 'graphql-tag';
 import React, { Component, ComponentType } from 'react';
 import {
   ChildProps,
@@ -11,6 +10,7 @@ import {
 import { View } from 'react-native';
 
 import MenuItem from './MenuItem';
+import { AddOfferingDocument } from '../../../graphql';
 
 // todo values object ? array ?
 interface State {
@@ -18,21 +18,8 @@ interface State {
   values: { offeringDescription: string } | null;
 }
 
-const ADD_OFFERING = gql`
-  mutation addOffering(
-    $type: String!
-    $category: String!
-    $description: String!
-    $details: String!
-  ) {
-    addOffering(
-      type: $type
-      category: $category
-      description: $description
-      details: $details
-    )
-  }
-`;
+const ADD_OFFERING = AddOfferingDocument;
+
 // ChildProps<Props, State>, {}
 
 class MultiStepMenu extends Component<Props, State, any> {

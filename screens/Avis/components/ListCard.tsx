@@ -10,7 +10,7 @@ interface Mark {
   score: number;
   comment: string;
   createdAt: string;
-  avatar: string | undefined;
+  avatar: string | null | undefined;
 }
 const mark: string[] = [
   'A éviter',

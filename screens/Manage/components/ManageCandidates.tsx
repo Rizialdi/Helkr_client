@@ -1,49 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { useQuery, useSubscription } from '@apollo/react-hooks';
-
-import { CustomListView, dataContent } from '../../shareComponents';
-import gql from 'graphql-tag';
+import { CustomListView } from '../../shareComponents';
 import { ActivityIndicator } from 'react-native';
 import ModalItem from './ModalItem';
 
-const MY_INCOMPLETE_OFFERINGS_CANDIDATES = gql`
-  query myIncompleteOfferingWithCandidates {
-    myIncompleteOfferingWithCandidates {
-      id
-      type
-      category
-      description
-      status
-      createdAt
-    }
-  }
-`;
-
-// const OFFERINGS_SUBSCRIPTION = gql`
-//   subscription onOfferingAdded($tags: [String!]) {
-//     newOffering(tags: $tags) {
-//       id
-//       type
-//       category
-//       description
-//       createdAt
-//     }
-//   }
-// `;
+import {
+  useMyIncompleteOfferingWithCandidatesQuery,
+  MyIncompleteOfferingWithCandidatesQuery
+} from '../../../graphql';
 
 const ManageCandidates = () => {
-  const [stateData, setStateData] = useState<{
-    myIncompleteOfferingWithCandidates?: dataContent[];
-  }>();
+  const [stateData, setStateData] = useState<
+    MyIncompleteOfferingWithCandidatesQuery
+  >();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const { data, loading: loading, error: error, client } = useQuery(
-    MY_INCOMPLETE_OFFERINGS_CANDIDATES,
-    {
-      fetchPolicy: 'cache-and-network'
-    }
-  );
+  const {
+    data,
+    loading,
+    error: error,
+    client
+  } = useMyIncompleteOfferingWithCandidatesQuery({
+    fetchPolicy: 'cache-and-network'
+  });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -55,8 +34,8 @@ const ManageCandidates = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (!error) {
-      setStateData(data || '');
+    if (!error && data) {
+      setStateData(data);
     }
   }, [data, loading]);
 

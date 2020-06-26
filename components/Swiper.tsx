@@ -1,23 +1,17 @@
+import React, { Component } from 'react'
+import { // CSS-like styles
+  View, Dimensions, Platform, ScrollView, StyleSheet } from 'react-native'
+
+import ButtonIntro from './ButtonIntro'
+
 /**
  * Swiper
  * Renders a swipable set of screens passed as children,
  * pagination indicators and a ButtonIntro to swipe through screens
  * or to get out of the flow when the last screen is reached
  */
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  Dimensions, // Detects screen dimensions
-  Platform, // Detects platform running the app
-  ScrollView, // Handles navigation between screens
-  StyleSheet, // CSS-like styles
-  View // Container component
-} from 'react-native';
-
 // Detect screen width and height
 const { width, height } = Dimensions.get('window');
-
-import ButtonIntro from './ButtonIntro';
 
 interface Props {
   internals: object;
@@ -255,7 +249,7 @@ export default class OnboardingScreens extends Component<Props, {}> {
           // TODO: Add a handler that would send a user to your app after onboarding is complete
           <ButtonIntro
             text="S'inscrire"
-            onPress={() => this.props.navigation.navigate('Enregistrement')}
+            onPress={() => this.props?.navigation?.navigate('Enregistrement')}
           />
         ) : (
           // Or this one otherwise

@@ -1,5 +1,3 @@
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -15,24 +13,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import { Text } from '../shareComponents';
 import { ListCard } from './components';
+import { useGetAvisUserQuery } from '../../graphql';
+import { makePseudoName } from '../../utils';
 
 const { width } = Dimensions.get('window');
-
-const AVIS = gql`
-  query getAvisUser($userId: String!) {
-    getAvisUser(userId: $userId) {
-      score
-      comment
-      createdAt
-      scorer {
-        id
-        nom
-        prenom
-        avatar
-      }
-    }
-  }
-`;
 
 interface Props {
   navigation: Route;
@@ -40,21 +24,11 @@ interface Props {
   route: any;
 }
 
-type scorerType = { id: string; nom: string; prenom: string; avatar: string };
-
-interface Data {
-  score: number;
-  comment: string;
-  createdAt: string;
-  scorer: scorerType;
-  avatar: string | undefined;
-}
-
 export default ({ navigation, route: { params } }: Props) => {
   const { user } = useStoreState(state => state.User);
   const userId = params && params.id ? params.id : user?.id;
 
-  const { loading, error, data } = useQuery(AVIS, {
+  const { loading, error, data } = useGetAvisUserQuery({
     variables: { userId },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network',
@@ -74,41 +48,34 @@ export default ({ navigation, route: { params } }: Props) => {
         ) : (
           <View style={styles.container}>
             {data && data?.getAvisUser ? (
-              data?.getAvisUser?.map(
-                (
-                  {
-                    score,
-                    comment,
-                    createdAt,
-                    scorer: { id, nom, prenom, avatar }
-                  }: Data,
-                  key: string
-                ) => {
-                  const username =
-                    prenom.replace(/^./, prenom[0].toUpperCase()) +
-                    ' ' +
-                    nom.charAt(0) +
-                    '.';
-                  return (
-                    <TouchableOpacity
-                      style={{ width: width }}
-                      key={key}
-                      onPress={() =>
-                        navigation.navigate('ProfilesNavigation', {
-                          id: id
-                        })
-                      }>
-                      <ListCard
-                        avatar={avatar}
-                        scorer={username}
-                        score={score}
-                        comment={comment}
-                        createdAt={createdAt}
-                      />
-                    </TouchableOpacity>
-                  );
-                }
-              )
+              data?.getAvisUser?.map(avis => {
+                const {
+                  id: idAvis,
+                  score,
+                  comment,
+                  createdAt,
+                  scorer: { id, nom, prenom, avatar }
+                } = avis;
+                const username = makePseudoName(nom, prenom);
+                return (
+                  <TouchableOpacity
+                    style={{ width: width }}
+                    key={idAvis}
+                    onPress={() =>
+                      navigation.navigate('ProfilesNavigation', {
+                        id: id
+                      })
+                    }>
+                    <ListCard
+                      avatar={avatar}
+                      scorer={username}
+                      score={score}
+                      comment={comment}
+                      createdAt={createdAt}
+                    />
+                  </TouchableOpacity>
+                );
+              })
             ) : (
               <Text style={{ marginTop: 25 }}>
                 Vous n'avez aucun avis pour le moment.

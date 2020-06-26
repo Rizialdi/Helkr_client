@@ -1,11 +1,13 @@
-import React, { FC, useState } from 'react';
-import Text from './Text';
-import Block from './Block';
-import { FlatList, Modal } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import ListItemOffering from './ListItemOffering';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { useStoreState } from '../../models';
+import Icon from 'react-native-vector-icons/AntDesign'
+import React, { FC, useState } from 'react'
+import { FlatList, Modal } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+
+import Block from './Block'
+import ListItemOffering from './ListItemOffering'
+import Text from './Text'
+import { useStoreState } from '../../models'
+import { MyIncompleteOfferingQuery } from '../../graphql/helpkr-types'
 
 export interface dataContent {
   id: string;
@@ -13,11 +15,11 @@ export interface dataContent {
   description: string;
   category: string;
   createdAt: string;
-  status?: string;
+  status?: string | null | undefined;
 }
 
 interface Props {
-  data?: dataContent[];
+  data?: any;
   onRefresh: () => void;
   emptyMessage: string;
   modalItem: JSX.Element;
@@ -52,7 +54,7 @@ const CustomListView: FC<Props> = ({
         //ListFooterComponent={() => <ActivityIndicator size="small" />}
         keyExtractor={item => item.id}
         data={data}
-        renderItem={({ index, item }) => {
+        renderItem={({ item, index }) => {
           const { id } = item;
           return (
             <TouchableOpacity

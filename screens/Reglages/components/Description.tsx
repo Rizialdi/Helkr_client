@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, TextInput, View } from 'react-native'
 
-import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { theme } from '../../../constants'
+import { Text } from '../../shareComponents'
 
 interface Props {
-  description: string;
+  description: string | null | undefined;
   parentCallback: (a: string) => void;
 }
 export default ({ description, parentCallback }: Props) => {
   const [text, setText] = useState<string>('');
 
   useEffect(() => {
-    onChange(description);
+    description && onChange(description);
   }, [description]);
 
   const onChange = (text: string) => {

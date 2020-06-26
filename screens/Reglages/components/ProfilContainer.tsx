@@ -1,23 +1,16 @@
-import Constants from 'expo-constants';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-  ImageSourcePropType
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
+import * as ImagePicker from 'expo-image-picker'
+import * as Permissions from 'expo-permissions'
+import Constants from 'expo-constants'
+import Icon from 'react-native-vector-icons/Octicons'
+import React, { useEffect, useState } from 'react'
+import { Image, ImageSourcePropType, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
 
-import { Text } from '../../shareComponents';
+import { Text } from '../../shareComponents'
 
 interface Props {
   image: ImageSourcePropType;
   username: string;
-  address?: string;
+  address?: string | null;
   verified?: boolean;
   pro?: boolean;
   parentCallback: (a: ImagePicker.ImagePickerResult) => void;

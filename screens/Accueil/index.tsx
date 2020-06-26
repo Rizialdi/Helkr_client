@@ -1,22 +1,14 @@
-import React, { useState, useMemo } from 'react';
-import {
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Route
-} from 'react-native';
+import Image from 'react-native-remote-svg'
+import Icon from 'react-native-vector-icons/AntDesign'
+import React, { useMemo, useState } from 'react'
+import { Dimensions, Route, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+
+import { Badge, Block, Card } from '../../components'
+import { Text } from '../shareComponents'
+import { mocks, theme } from '../../constants'
+import { useStoreState } from '../../models'
+
 //@ts-ignore
-import Image from 'react-native-remote-svg';
-import Icon from 'react-native-vector-icons/AntDesign';
-
-import { Badge, Block, Card } from '../../components';
-import { Text } from '../shareComponents';
-import { mocks, theme } from '../../constants';
-import { useStoreState } from '../../models';
-
 interface categorie {
   id: string;
   tag: object;
