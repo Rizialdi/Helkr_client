@@ -17,3 +17,4 @@ yarn.lock
 !**/.eslintrc*
 package-lock.json
 *.lock*
+graphql/types.ts

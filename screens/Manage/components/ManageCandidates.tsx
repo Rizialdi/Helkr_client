@@ -7,8 +7,8 @@ import { ActivityIndicator } from 'react-native';
 import ModalItem from './ModalItem';
 
 const MY_INCOMPLETE_OFFERINGS_CANDIDATES = gql`
-  query myIncompleteOfferingCandidates {
-    myIncompleteOfferingCandidates {
+  query myIncompleteOfferingWithCandidates {
+    myIncompleteOfferingWithCandidates {
       id
       type
       category
@@ -33,7 +33,7 @@ const MY_INCOMPLETE_OFFERINGS_CANDIDATES = gql`
 
 const ManageCandidates = () => {
   const [stateData, setStateData] = useState<{
-    myIncompleteOfferingCandidates?: dataContent[];
+    myIncompleteOfferingWithCandidates?: dataContent[];
   }>();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -65,7 +65,7 @@ const ManageCandidates = () => {
       {loadingTabTwo && <ActivityIndicator />}
 
       <CustomListView
-        data={stateData?.myIncompleteOfferingCandidates}
+        data={stateData?.myIncompleteOfferingWithCandidates}
         emptyMessage={'Aucun candidat à une offre actuellement'}
         modalItem={<ModalItem />}
         refreshing={refreshing}

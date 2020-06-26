@@ -20,8 +20,8 @@ const APPLIEDTO = gql`
   }
 `;
 
-const APPLIEDTO_SUBSCRIPTION = gql`
-  subscription onOfferingAdded($userId: String!) {
+const UPDATE_ONAPPLIED_TO = gql`
+  subscription updateAppliedTo($userId: String!) {
     updateAppliedTo(userId: $userId) {
       id
       status
@@ -43,7 +43,7 @@ const Postulees = () => {
   });
 
   const { data: dataUpdate, error: errorUpdate } = useSubscription(
-    APPLIEDTO_SUBSCRIPTION,
+    UPDATE_ONAPPLIED_TO,
     {
       variables: { userId: user.id },
       shouldResubscribe: true

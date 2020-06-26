@@ -1,10 +1,10 @@
 # TODO Change this path to refer to a running graphql endpoint
 # TODO Ensure authentication on your api endpoint
 schema: ../server/helpkr.graphql
-documents: './screens/**/*.{tsx,ts}'
+documents: './graphql/**/*.{tsx,ts}'
 overwrite: true
 generates:
-  ./graphql/helpkr-types.tsx:
+  ./graphql/helpkr-types.ts:
     plugins:
       - add: '/* eslint-disable */'
       - typescript
