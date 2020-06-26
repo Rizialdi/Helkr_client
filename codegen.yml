@@ -1,0 +1,19 @@
+# TODO Change this path to refer to a running graphql endpoint
+# TODO Ensure authentication on your api endpoint
+schema: ../server/helpkr.graphql
+documents: './screens/**/*.{tsx,ts}'
+overwrite: true
+generates:
+  ./graphql/helpkr-types.tsx:
+    plugins:
+      - add: '/* eslint-disable */'
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    # The combined options of all provided plug-ins
+    # More information about the options below:
+    # graphql-code-generator.com/docs/plugins/typescript-react-apollo#configuration
+    config:
+      withHOC: false
+      withHooks: true
+      withComponent: false
