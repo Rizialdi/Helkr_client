@@ -1,50 +1,42 @@
-import React from 'react';
+import React, { FC } from 'react';
 import {
   View,
   StyleSheet,
   Dimensions,
   FlatList,
-  SafeAreaView,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
   ImageSourcePropType
 } from 'react-native';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import { Layout, Text } from '../shareComponents';
+
+import {
+  useAllChatsAndMessagesQuery,
+  AllChatsAndMessagesQuery
+} from '../../graphql';
+import { useStoreState } from '../../models';
+import { makePseudoName } from '../../utils';
 
 const { width } = Dimensions.get('screen');
 
-const DATA = gql`
-  {
-    recipientChannels {
-      users {
-        id
-        nom
-        prenom
-        avatar
-      }
-      channelIds
-      lastMessages
-    }
-  }
-`;
-
 interface ItemProps {
   name: string;
-  message: string;
+  lastMessage: string;
+  channel: any;
   image: ImageSourcePropType;
-  channelId: string;
-  navigation: any;
+  navigation?: any;
 }
 
-function Item({ name, message, image, channelId, navigation }: ItemProps) {
+// interface User {__typename?: string,
+//   id: string, nom: string, prenom: string, avatar: string
+// }
+
+function Item({ name, channel, lastMessage, image, navigation }: ItemProps) {
   return (
     <>
       <TouchableOpacity
         style={styles.item}
-        onPress={() => navigation.navigate('Discussion', { channelId, name })}>
+        onPress={() => navigation.navigate('Discussion', { channel })}>
         <View style={{ flex: 0.25 }}>
           <TouchableOpacity
             style={{
@@ -65,85 +57,67 @@ function Item({ name, message, image, channelId, navigation }: ItemProps) {
         </View>
         <View style={{ flex: 0.75, alignSelf: 'flex-start' }}>
           <Text style={styles.name}>{name}</Text>
-          <Text style={styles.message}>{message}</Text>
+          <Text style={styles.message}>{lastMessage}</Text>
         </View>
       </TouchableOpacity>
     </>
   );
 }
 
-export default function Discussion({ navigation }: { navigation: any }) {
+const Discussions = ({ navigation }: { navigation: any }) => {
+  const { user } = useStoreState(state => state.User);
+  let allChatUsersAndLastMessage: Array<{
+    channelId: any;
+    userFiltered: any;
+    lastMessage: any;
+  }> = [];
+  const { data, loading, error } = useAllChatsAndMessagesQuery({
+    fetchPolicy: 'cache-and-network',
+    pollInterval: 1000
+  });
+  data?.allChatsAndMessages.map(channel => {
+    const channelId = channel.id;
+    const userFiltered = channel.users.filter(item => item.id !== user.id)[0];
+    const lastMessage = channel.messages[0];
+    allChatUsersAndLastMessage.push({ channelId, userFiltered, lastMessage });
+  });
+
+  const retriveChannelData = (
+    data: AllChatsAndMessagesQuery,
+    channelId: string
+  ) => {
+    const channel = data.allChatsAndMessages.filter(
+      channel => channel.id === channelId
+    )[0];
+    return channel;
+  };
   return (
-    <Query query={DATA} pollInterval={1000} fetchPolicy={'cache-and-network'}>
-      {({
-        loading,
-        data
-      }: {
-        loading: boolean;
-        data: { recipientChannels: any };
-      }) => {
-        if (data) {
-          const users = data.recipientChannels.users;
-          const areChats =
-            data.recipientChannels.users.length === 0 ? false : true;
-          const lastMessages = data.recipientChannels.lastMessages;
-          const channelIds = data.recipientChannels.channelIds;
-          for (var i = 0; i < users.length; i++) {
-            users[i]['message'] = JSON.parse(lastMessages)[i]['text'];
-            users[i]['channelId'] = channelIds[i];
-          }
-
-          return (
-            <Layout title={'Discussions'}>
-              <>
-                {loading && <ActivityIndicator size="large" color="black" />}
-                {areChats ? (
-                  <FlatList
-                    data={users}
-                    renderItem={({ item }) => (
-                      <Item
-                        name={
-                          item.prenom.replace(
-                            /^./,
-                            item.prenom[0].toUpperCase()
-                          ) +
-                          ' ' +
-                          item.nom.charAt(0) +
-                          '.'
-                        }
-                        message={item.message}
-                        image={item.avatar}
-                        navigation={navigation}
-                        channelId={item.channelId}
-                      />
-                    )}
-                    keyExtractor={item => item.id}
-                  />
-                ) : null}
-                {!areChats && <Text>Aucune discussion actuellement</Text>}
-              </>
-            </Layout>
-          );
-        }
-
-        return (
-          <View
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <SafeAreaView>
-              <Text style={{ paddingBottom: 20 }}>
-                Une erreur est survenue au chargement des messages.
-              </Text>
-              <Text style={{ paddingBottom: 50, fontWeight: 'bold' }}>
-                Vérifier votre connexion internet.
-              </Text>
-              <ActivityIndicator size="large" color="black" />
-            </SafeAreaView>
-          </View>
-        );
-      }}
-    </Query>
+    <Layout title={'Discussions'}>
+      {data ? (
+        <FlatList
+          data={allChatUsersAndLastMessage}
+          renderItem={({ item }) => {
+            const user = item.userFiltered;
+            return (
+              <Item
+                name={makePseudoName(user.nom, user.prenom)}
+                lastMessage={item?.lastMessage?.text}
+                channel={retriveChannelData(data, item.channelId)}
+                image={user.avatar}
+                navigation={navigation}
+              />
+            );
+          }}
+          keyExtractor={item => item.channelId}
+        />
+      ) : (
+        <Text>Aucune discussion actuellement</Text>
+      )}
+    </Layout>
   );
-}
+};
+
+export default Discussions;
 
 const styles = StyleSheet.create({
   container: {

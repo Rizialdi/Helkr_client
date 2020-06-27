@@ -1,11 +1,11 @@
-// import gql from 'graphql-tag';
-// import { chat } from '../fragments';
+import gql from 'graphql-tag';
+import { chat } from '../fragments';
 
-// export default gql`
-//   query Chats {
-//     chats {
-//       ...chat
-//     }
-//   }
-//   ${chat}
-// `;
+export default gql`
+  query allChatsAndMessages {
+    allChatsAndMessages {
+      ...chat
+    }
+  }
+  ${chat}
+`;

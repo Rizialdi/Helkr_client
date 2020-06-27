@@ -1,164 +1,130 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { AppLoading, Linking } from 'expo';
-import React, { Component } from 'react';
-import { StyleSheet, View, Platform, AsyncStorage } from 'react-native';
-import { Bubble, GiftedChat, SystemMessage } from 'react-native-gifted-chat';
-import { graphql, ChildProps } from 'react-apollo';
-import gql from 'graphql-tag';
-
-import { Text } from '../shareComponents';
-
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Text, Platform } from 'react-native';
+import {
+  Bubble,
+  GiftedChat,
+  SystemMessage,
+  IMessage,
+  Send
+} from 'react-native-gifted-chat';
 import CustomActions from './components/CustomActions';
 import CustomView from './components/CustomView';
 import NavBar from './components/NavBar';
+import messagesData from './components/data/messages';
+import earlierMessages from './components/data/earlierMessages';
+import { formattingTextMessages } from '../../utils';
+import { useStoreState } from '../../models';
+import 'dayjs/locale/fr';
 
 const styles = StyleSheet.create({
   container: { flex: 1 }
 });
 
-const allMessages = gql`
-  query allMessages($id: String!) {
-    channel(id: $id) {
-      messages {
-        id
-        text
-        createdAt
-        sentBy {
-          id
-        }
-      }
+const filterBotMessages = (message: IMessage) =>
+  !message.system && message.user && message.user._id && message.user._id === 2;
+const findStep = (step: number) => (message: IMessage) => message._id === step;
+
+const otherUser = {
+  _id: 2,
+  name: 'React Native',
+  avatar: 'https://facebook.github.io/react/img/logo_og.png'
+};
+
+const Discussion = (props: any) => {
+  const [step, setStep] = useState<number>(0);
+  const [messages, setMessages] = useState<Array<any>>([]);
+  const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
+  const [loadingEarlier, setIsLoadingEarlier] = useState<boolean>(false);
+  const [appIsReady, setAppIsReady] = useState<boolean>(false);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+
+  const { user } = useStoreState(state => state.User);
+
+  useEffect(() => {
+    setIsMounted(true);
+    setAppIsReady(true);
+    setIsTyping(false);
+    props?.route?.params?.channel &&
+      setMessages(formattingTextMessages(props?.route?.params?.channel));
+  }, []);
+
+  useEffect(() => {
+    isMounted === true && setIsMounted(!isMounted);
+  }, [isMounted]);
+
+  const onLoadEarlier = () => setIsLoadingEarlier(true);
+
+  setTimeout(() => {
+    if (isMounted === true) {
+      setMessages(
+        GiftedChat.prepend(
+          messages,
+          earlierMessages() as IMessage[],
+          Platform.OS !== 'web'
+        )
+      );
+      setLoadEarlier(true);
+      setIsLoadingEarlier(false);
     }
-  }
-`;
+  }, 1500); // simulating network
 
-const createMessage = gql`
-  mutation createMessage(
-    $channelId: String
-    $recipient: String
-    $text: String!
-  ) {
-    createMessage(channelId: $channelId, recipient: $recipient, text: $text)
-  }
-`;
-interface Props {
-  route: { params: { channelId: string; name: string } };
-  allMessagesQuery?: any;
-  createMessageMutation: (a: object) => void;
-  navigation: { navigate: () => void };
-}
-
-type variables = {
-  channelId: string;
-  recipient: string;
-  text: string;
-};
-
-type State = {
-  inverted: boolean;
-  step: 0;
-  messages: [{}];
-  loadEarlier: boolean;
-  typingText: string;
-  isLoadingEarlier: boolean;
-  appIsReady: boolean;
-  isTyping: boolean;
-  placeHolder: string;
-  user: { _id: string };
-};
-class App extends Component<ChildProps<Props, State>, {}> {
-  state: State = {
-    inverted: false,
-    step: 0,
-    messages: [{}],
-    loadEarlier: true,
-    typingText: '',
-    isLoadingEarlier: false,
-    appIsReady: false,
-    isTyping: false,
-    placeHolder: 'Ecrivez votre message',
-    user: { _id: '' }
-  };
-
-  _isMounted = false;
-
-  componentDidMount() {
-    this._isMounted = true;
-    // init with only system messages
-    this.getUser().then(value => {
-      this.setState({ user: value });
-    });
-    this.setState({
-      appIsReady: true,
-      isTyping: false
-    });
-    //@ts-ignore
-    this.createMessageSubscription = this.props.allMessagesQuery.subscribeToMore(
-      {
-        document: gql`
-          subscription($channelId: String!) {
-            newMessage(channelId: $channelId) {
-              id
-              text
-              userId
-              createdAt
-              channelId
-            }
-          }
-        `,
-        variables: { channelId: this.props.route.params.channelId },
-        updateQuery: (previousState: any, { subscriptionData }: any) => {
-          const { data } = subscriptionData;
-          const newMessage = this.formattingSubscription(data);
-
-          const newAllMessages = [
-            newMessage,
-            ...previousState.channel.messages
-          ];
-
-          return {
-            ...previousState,
-            channel: {
-              ...previousState.channel,
-              messages: newAllMessages
-            }
-          };
-        },
-        onError: (err: string) => {
-          throw new Error(err);
-        }
-      }
+  let onSend = (messages: Array<any> = [{}]) => {
+    const sentMessages = [{ ...messages[0], sent: true, received: true }];
+    setMessages(
+      GiftedChat.prepend(messages, sentMessages, Platform.OS !== 'web')
     );
-  }
+    setStep(step + 1);
+  };
+  // for demo purpose
+  // setTimeout(() => this.botSend(step), Math.round(Math.random() * 1000))
 
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  onSend = (messages: Array<{ text: string }>) => {
-    this.props.createMessageMutation({
-      variables: {
-        channelId: this.props.route.params.channelId,
-        recipient: '',
-        text: messages[0].text
-      }
-    });
+  const botSend = (step = 0) => {
+    const newMessage = (messagesData as IMessage[])
+      .reverse()
+      // .filter(filterBotMessages)
+      .find(findStep(step));
+    if (newMessage) {
+      setMessages(
+        GiftedChat.prepend(messages, [newMessage], Platform.OS !== 'web')
+      );
+    }
   };
 
-  parsePatterns = (_linkStyle: any) => {
+  const parsePatterns = (_linkStyle: any) => {
     return [
       {
         pattern: /#(\w+)/,
         style: { textDecorationLine: 'underline', color: 'darkorange' },
-        onPress: () => Linking.openURL(`http://google.com`)
+        onPress: () => Linking.openURL('http://gifted.chat')
       }
     ];
   };
 
-  renderCustomView(props: any) {
+  const renderCustomView = (props: any) => {
     return <CustomView {...props} />;
-  }
+  };
 
-  onSendFromUser = (messages = []) => {
-    const user = this.state.user;
+  const onReceive = (text: string) => {
+    setMessages(
+      GiftedChat.prepend(
+        messages,
+        [
+          {
+            _id: Math.round(Math.random() * 1000000),
+            text,
+            createdAt: new Date(),
+            user: otherUser
+          }
+        ],
+        Platform.OS !== 'web'
+      )
+    );
+  };
+
+  const onSendFromUser = (messages: IMessage[] = []) => {
     const createdAt = new Date();
     const messagesToUpload = messages.map(message => ({
       ...message,
@@ -166,25 +132,23 @@ class App extends Component<ChildProps<Props, State>, {}> {
       createdAt,
       _id: Math.round(Math.random() * 1000000)
     }));
-    this.onSend(messagesToUpload);
+    onSend(messagesToUpload);
   };
 
-  setIsTyping = () => {
-    this.setState({
-      isTyping: !this.state.isTyping
-    });
+  const setIsTypingFunction = () => {
+    setIsTyping(!isTyping);
   };
 
-  renderCustomActions = (props: any) =>
+  const renderCustomActions = (props: any) =>
     Platform.OS === 'web' ? null : (
-      <CustomActions {...props} onSend={this.onSendFromUser} />
+      <CustomActions {...props} onSend={onSendFromUser} />
     );
 
-  renderBubble = (props: any) => {
+  const renderBubble = (props: any) => {
     return <Bubble {...props} />;
   };
 
-  renderSystemMessage = (props: any) => {
+  const renderSystemMessage = (props: any) => {
     return (
       <SystemMessage
         {...props}
@@ -198,93 +162,77 @@ class App extends Component<ChildProps<Props, State>, {}> {
     );
   };
 
-  renderQuickReplySend = () => <Text>{' custom send =>'}</Text>;
-
-  formatting = (data: [{}]) => {
-    const newData = data.map(obj => {
-      Object.keys(obj).forEach(key => {
-        if (key === 'createdAt') {
-          obj[key] = parseInt(obj[key]);
+  const onQuickReply = (replies: Array<{ title: string }> = []) => {
+    const createdAt = new Date();
+    if (replies.length === 1) {
+      onSend([
+        {
+          createdAt,
+          _id: Math.round(Math.random() * 1000000),
+          text: replies[0].title,
+          user
         }
-      });
-      return obj;
-    });
-    const newDataStr = JSON.stringify(newData)
-      .replace(/id/g, '_id')
-      .replace(/sentBy/g, 'user');
-    return JSON.parse(newDataStr);
-  };
-
-  formattingSubscription = data => {
-    const newData = data.newMessage;
-    newData.sentBy = { __typename: 'User', id: data.newMessage.userId };
-
-    delete newData.channelId;
-    delete newData.userId;
-    return newData;
-  };
-  getUser = async () => {
-    try {
-      const id = await AsyncStorage.getItem('id');
-      if (id !== null) return { _id: id };
-    } catch (error) {
-      throw new Error('Unable to get id');
+      ]);
+    } else if (replies.length > 1) {
+      onSend([
+        {
+          createdAt,
+          _id: Math.round(Math.random() * 1000000),
+          text: replies.map(reply => reply.title).join(', '),
+          user
+        }
+      ]);
+    } else {
+      console.warn('replies param is not set correctly');
     }
   };
 
-  render() {
-    if (!this.state.appIsReady) {
-      return <AppLoading />;
-    }
+  const renderQuickReplySend = () => <Text>{' custom send =>'}</Text>;
 
-    const { name } = this.props.route.params;
-    const user = this.getUser().then(value => {
-      return value;
-    });
-    let messages;
-    if (this.props.allMessagesQuery.channel) {
-      messages = this.props.allMessagesQuery.channel.messages;
-    }
-    return (
-      <View style={styles.container} accessible>
-        <NavBar nom={name} navigation={this.props.navigation} />
-        {messages && (
+  const renderSend = (props: Send['props']) => (
+    <Send {...props} containerStyle={{ justifyContent: 'center' }}>
+      <MaterialIcons size={30} color={'tomato'} name={'send'} />
+    </Send>
+  );
+
+  return (
+    <>
+      {!appIsReady ? (
+        <AppLoading />
+      ) : (
+        <View style={styles.container} accessible>
+          <NavBar />
           <GiftedChat
-            messages={this.formatting(messages || [{}])}
-            onSend={this.onSend}
-            loadEarlier={this.state.loadEarlier}
-            isLoadingEarlier={this.state.isLoadingEarlier}
-            parsePatterns={this.parsePatterns}
-            user={this.state.user}
+            messages={messages}
+            onSend={onSend}
+            loadEarlier={loadEarlier}
+            onLoadEarlier={onLoadEarlier}
+            isLoadingEarlier={loadingEarlier}
+            parsePatterns={parsePatterns}
+            locale={'dayjs/locale/fr'}
+            user={{ _id: user.id, name: user.token }}
             scrollToBottom
             onLongPressAvatar={user => alert(JSON.stringify(user))}
             onPressAvatar={() => alert('short press')}
+            onQuickReply={onQuickReply}
             keyboardShouldPersistTaps="never"
-            renderActions={this.renderCustomActions}
-            placeholder={this.state.placeHolder}
-            renderBubble={this.renderBubble}
-            renderSystemMessage={this.renderSystemMessage}
-            renderCustomView={this.renderCustomView}
+            renderActions={renderCustomActions}
+            renderBubble={renderBubble}
+            renderSystemMessage={renderSystemMessage}
+            renderCustomView={renderCustomView}
+            renderSend={renderSend}
             quickReplyStyle={{ borderRadius: 2 }}
-            renderQuickReplySend={this.renderQuickReplySend}
+            renderQuickReplySend={renderQuickReplySend}
             inverted={Platform.OS !== 'web'}
             timeTextStyle={{
               left: { color: 'red' },
               right: { color: 'yellow' }
             }}
           />
-        )}
-      </View>
-    );
-  }
-}
+        </View>
+      )}
+    </>
+  );
+};
 
-export default graphql(allMessages, {
-  name: 'allMessagesQuery',
-  options: (props: { route?: { params: { channelId: string } } }) => ({
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id: props?.route?.params.channelId
-    }
-  })
-})(graphql(createMessage, { name: 'createMessageMutation' })(App));
+export default Discussion;

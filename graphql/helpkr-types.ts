@@ -251,6 +251,7 @@ export type Query = {
   messages: Array<Message>;
   channel: Channel;
   channels: Array<Channel>;
+  allChatsAndMessages: Array<Channel>;
 };
 
 
@@ -428,12 +429,34 @@ export type UtilisateurWhereUniqueInput = {
 };
       export default result;
     
+export type ChatFragment = (
+  { __typename?: 'channel' }
+  & Pick<Channel, 'id' | 'createdAt'>
+  & { messages: Array<(
+    { __typename?: 'message' }
+    & MessageFragment
+  )>, users: Array<(
+    { __typename?: 'utilisateur' }
+    & UserFragment
+  )> }
+);
+
+export type MessageFragment = (
+  { __typename?: 'message' }
+  & Pick<Message, 'id' | 'text' | 'createdAt' | 'sentById'>
+);
+
 export type OfferingFragment = (
   { __typename?: 'offering' }
   & Pick<Offering, 'id' | 'type' | 'category' | 'description' | 'createdAt'>
 );
 
 export type ScorerFragment = (
+  { __typename?: 'utilisateur' }
+  & UserFragment
+);
+
+export type UserFragment = (
   { __typename?: 'utilisateur' }
   & Pick<Utilisateur, 'id' | 'nom' | 'prenom' | 'avatar'>
 );
@@ -514,6 +537,17 @@ export type TagsUpdateMutationVariables = Exact<{
 export type TagsUpdateMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'tagsUpdate'>
+);
+
+export type AllChatsAndMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllChatsAndMessagesQuery = (
+  { __typename?: 'Query' }
+  & { allChatsAndMessages: Array<(
+    { __typename?: 'channel' }
+    & ChatFragment
+  )> }
 );
 
 export type GetAvisUserQueryVariables = Exact<{
@@ -647,6 +681,35 @@ export type UpdateAppliedToSubscription = (
   ) }
 );
 
+export const MessageFragmentDoc = gql`
+    fragment message on message {
+  id
+  text
+  createdAt
+  sentById
+}
+    `;
+export const UserFragmentDoc = gql`
+    fragment user on utilisateur {
+  id
+  nom
+  prenom
+  avatar
+}
+    `;
+export const ChatFragmentDoc = gql`
+    fragment chat on channel {
+  id
+  messages {
+    ...message
+  }
+  createdAt
+  users {
+    ...user
+  }
+}
+    ${MessageFragmentDoc}
+${UserFragmentDoc}`;
 export const OfferingFragmentDoc = gql`
     fragment offering on offering {
   id
@@ -658,12 +721,9 @@ export const OfferingFragmentDoc = gql`
     `;
 export const ScorerFragmentDoc = gql`
     fragment scorer on utilisateur {
-  id
-  nom
-  prenom
-  avatar
+  ...user
 }
-    `;
+    ${UserFragmentDoc}`;
 export const AddOfferingDocument = gql`
     mutation addOffering($type: String!, $category: String!, $description: String!, $details: String!) {
   addOffering(type: $type, category: $category, description: $description, details: $details)
@@ -881,6 +941,38 @@ export function useTagsUpdateMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type TagsUpdateMutationHookResult = ReturnType<typeof useTagsUpdateMutation>;
 export type TagsUpdateMutationResult = ApolloReactCommon.MutationResult<TagsUpdateMutation>;
 export type TagsUpdateMutationOptions = ApolloReactCommon.BaseMutationOptions<TagsUpdateMutation, TagsUpdateMutationVariables>;
+export const AllChatsAndMessagesDocument = gql`
+    query allChatsAndMessages {
+  allChatsAndMessages {
+    ...chat
+  }
+}
+    ${ChatFragmentDoc}`;
+
+/**
+ * __useAllChatsAndMessagesQuery__
+ *
+ * To run a query within a React component, call `useAllChatsAndMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllChatsAndMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllChatsAndMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAllChatsAndMessagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>) {
+        return ApolloReactHooks.useQuery<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>(AllChatsAndMessagesDocument, baseOptions);
+      }
+export function useAllChatsAndMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>(AllChatsAndMessagesDocument, baseOptions);
+        }
+export type AllChatsAndMessagesQueryHookResult = ReturnType<typeof useAllChatsAndMessagesQuery>;
+export type AllChatsAndMessagesLazyQueryHookResult = ReturnType<typeof useAllChatsAndMessagesLazyQuery>;
+export type AllChatsAndMessagesQueryResult = ApolloReactCommon.QueryResult<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>;
 export const GetAvisUserDocument = gql`
     query getAvisUser($userId: String!) {
   getAvisUser(userId: $userId) {

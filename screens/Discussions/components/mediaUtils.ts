@@ -1,4 +1,5 @@
 import { Linking } from 'expo'
+import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import * as ImagePicker from 'expo-image-picker'
 
@@ -16,7 +17,7 @@ export default async function getPermissionAsync(permission) {
           text: "Let's go!",
           onPress: () => Linking.openURL('app-settings:'),
         },
-        { text: 'Nevermind', onPress: () => { }, style: 'cancel' },
+        { text: 'Nevermind', onPress: () => {}, style: 'cancel' },
       ],
       { cancelable: true },
     )
@@ -24,6 +25,15 @@ export default async function getPermissionAsync(permission) {
     return false
   }
   return true
+}
+
+export async function getLocationAsync(onSend) {
+  if (await getPermissionAsync(Permissions.LOCATION)) {
+    const location = await Location.getCurrentPositionAsync({})
+    if (location) {
+      onSend([{ location: location.coords }])
+    }
+  }
 }
 
 export async function pickImageAsync(onSend) {

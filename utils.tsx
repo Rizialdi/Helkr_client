@@ -1,3 +1,5 @@
+import { ChatFragment, UserFragment } from './graphql/helpkr-types';
+import { User } from 'react-native-gifted-chat';
 const yearMonths: string[] = [
   'jan.',
   'fev.',
@@ -51,3 +53,26 @@ export const inputSanitization = (text: string) =>
 
 export const getFileName = (chaine: string) =>
   String(chaine).split('/')[String(chaine).split('/').length - 1];
+
+interface IDictionary<TValue> {
+  [id: string]: TValue;
+}
+
+export const formattingTextMessages = (channel: ChatFragment) => {
+  let users: IDictionary<User> = {};
+
+  channel.users.map(user => {
+    users[user.id] = {
+      _id: user.id,
+      name: makePseudoName(user.nom, user.prenom),
+      avatar: user.avatar || require('./assets/images/default-user-image.png')
+    };
+  });
+
+  const newMessages = channel.messages.map(message => {
+    const { id: _id, text, createdAt, sentById } = message;
+    return { _id, text, createdAt, user: users[sentById as string] };
+  });
+
+  return newMessages;
+};

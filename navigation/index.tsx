@@ -1,25 +1,24 @@
-import Icon from 'react-native-vector-icons/AntDesign'
-import React, { useEffect, useState } from 'react'
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
-import { NavigationContainer, RouteProp } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import Icon from 'react-native-vector-icons/AntDesign';
+import React, { useEffect, useState } from 'react';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { NavigationContainer, RouteProp } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-import Accueil from '../screens/Accueil'
-import Avis from '../screens/Avis'
-import BienvenueFirst from '../screens/BienvenueFirst'
-import DetailCategory from '../screens/DetailCategory'
-import Discussion from '../screens/Discussions/Discussion'
-import Discussions from '../screens/Discussions/Discussions'
-import Enregistrement from '../screens/Enregistrement'
-import Identification from '../screens/Identification'
-import Manage from '../screens/Manage'
-import Postuler from '../screens/Postuler'
-import Profile from '../screens/Profile'
-import Reglages from '../screens/Reglages'
-import Screen from '../screens/Screen'
-import Verification from '../screens/Verification'
-import { useStoreActions, useStoreState } from '../models'
-import { theme } from '../constants'
+import Accueil from '../screens/Accueil';
+import Avis from '../screens/Avis';
+import BienvenueFirst from '../screens/BienvenueFirst';
+import DetailCategory from '../screens/DetailCategory';
+import { Discussion, Discussions } from '../screens/Discussions';
+import Enregistrement from '../screens/Enregistrement';
+import Identification from '../screens/Identification';
+import Manage from '../screens/Manage';
+import Postuler from '../screens/Postuler';
+import Profile from '../screens/Profile';
+import Reglages from '../screens/Reglages';
+import Screen from '../screens/Screen';
+import Verification from '../screens/Verification';
+import { useStoreActions, useStoreState } from '../models';
+import { theme } from '../constants';
 
 type MainStackParamList = {
   DetailCategory: { category: { name: string } };

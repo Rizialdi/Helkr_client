@@ -1,13 +1,10 @@
-// import gql from 'graphql-tag';
+import gql from 'graphql-tag';
 
-// export default gql`
-//   fragment message on message {
-//     id
-//     text
-//     createdAt
-//     channelId
-//     sentBy {
-//       id
-//     }
-//   }
-// `;
+export default gql`
+  fragment message on message {
+    id
+    text
+    createdAt
+    sentById
+  }
+`;

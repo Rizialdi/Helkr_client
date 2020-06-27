@@ -1,8 +1,8 @@
 Arguments: 
-  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add ts-node @types/ts-node -D
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add dayjs/locale/fr
 
 PATH: 
-  /home/rizialdi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/rizialdi/Android/Sdk/emulator:/home/rizialdi/Android/Sdk/emulator
+  /home/rizialdi/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/rizialdi/Android/Sdk/emulator
 
 Yarn version: 
   1.22.4
@@ -14,8 +14,8 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fts-node: Not found
-      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66987:18)
+  Error: https://registry.yarnpkg.com/dayjs%2flocale/fr: Request "https://registry.yarnpkg.com/dayjs%2flocale/fr" returned a 405
+      at Request.params.callback [as _callback] (/usr/share/yarn/lib/cli.js:66996:18)
       at Request.self.callback (/usr/share/yarn/lib/cli.js:140748:22)
       at Request.emit (events.js:315:20)
       at Request.<anonymous> (/usr/share/yarn/lib/cli.js:141720:10)
