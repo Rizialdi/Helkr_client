@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import ModalItem from './ModalItem'
-import { useStoreState } from '../../../models'
-import { CustomListView } from '../../shareComponents'
-import { IncompleteOfferingsQuery, useIncompleteOfferingsQuery, useOnOfferingAddedSubscription } from '../../../graphql'
+import ModalItem from './ModalItem';
+import { useStoreState } from '../../../models';
+import { CustomListView } from '../../shareComponents';
+import {
+  IncompleteOfferingsQuery,
+  useIncompleteOfferingsQuery,
+  useOnOfferingAddedSubscription
+} from '../../../graphql';
 
 const Offres = () => {
   const [stateData, setStateData] = useState<IncompleteOfferingsQuery>();
@@ -66,7 +70,7 @@ const Offres = () => {
       {loadingTabOne && <ActivityIndicator />}
       <CustomListView
         data={stateData?.incompleteOfferings}
-        emptyMessage={'Aucune offre disponible'}
+        emptyMessage={'Aucun tag trouvé.'}
         modalItem={<ModalItem />}
         refreshing={refreshing}
         onRefresh={onRefresh}

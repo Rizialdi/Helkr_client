@@ -1,5 +1,9 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
+import {
+  InMemoryCache,
+  NormalizedCacheObject,
+  IntrospectionFragmentMatcher
+} from 'apollo-cache-inmemory';
 import { persistCache } from 'apollo-cache-persist';
 import { ApolloClient } from 'apollo-client';
 import { split } from 'apollo-link';
@@ -19,9 +23,13 @@ import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
 import store from './models';
 import Navigation from './navigation';
 import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
+import introspectionQueryResultData from './graphql/helpkr-types';
 
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: { __schema: { types: [] } }
+});
 // TODO change the ip address before production
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({ fragmentMatcher });
 
 persistCache({
   cache,

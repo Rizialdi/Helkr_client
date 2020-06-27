@@ -36,7 +36,7 @@ const ModalItem: FC<Props> = props => {
             {data?.offeringById?.description}
           </Text>
           <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
-            {data?.offeringById?.details}
+            {JSON.stringify(data?.offeringById?.details)}
           </Text>
           <Block margin={[20, 20]}>
             <Button

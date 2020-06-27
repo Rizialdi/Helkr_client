@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { useApolloClient } from '@apollo/react-hooks'
+import React, { useEffect, useMemo, useState } from 'react';
+import { useApolloClient } from '@apollo/react-hooks';
 import {
   AsyncStorage,
   KeyboardAvoidingView,
@@ -7,28 +7,29 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
-} from 'react-native'
-import { ImagePicker } from 'expo'
-import { ReactNativeFile } from 'apollo-upload-client'
+  View
+} from 'react-native';
+import { ImagePicker } from 'expo';
+import { ReactNativeFile } from 'apollo-upload-client';
 
-import { theme } from '../../constants'
-import { Text } from '../shareComponents'
-import { Description, ProfilContainer, Tag } from './components'
-import { useStoreActions } from '../../models'
-import { getFileName } from '../../utils'
+import { theme } from '../../constants';
+import { Text } from '../shareComponents';
+import { Description, ProfilContainer, Tag } from './components';
+import { useStoreActions } from '../../models';
+import { getFileName } from '../../utils';
 import {
   useAddressUpdateMutation,
   useAvatarUploadMutation,
   useDescriptionUpdateMutation,
   useTagsUpdateMutation,
-  useUserByIdQuery,
-} from '../../graphql'
+  useUserByIdQuery
+} from '../../graphql';
 
 export default function Profile({ navigation, route: { params } }: any) {
   const [Id, setId] = useState<string>('');
   const apolloClient = useApolloClient();
   let updatedSettings: boolean = false;
+  const [disableSaveButton, setDisableSaveButton] = useState<boolean>(false);
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
   const [addressParent, setAddressParent] = useState<string>('');
   const [descriptionParent, setDescriptionParent] = useState<string>('');
@@ -103,6 +104,7 @@ export default function Profile({ navigation, route: { params } }: any) {
 
   const save = () => {
     try {
+      setDisableSaveButton(true);
       isModified && (updatedSettings = true);
       pictureUrl && onChangeImage(pictureUrl);
       descriptionParent && onChangeDescription(descriptionParent);
@@ -111,7 +113,7 @@ export default function Profile({ navigation, route: { params } }: any) {
 
       setTimeout(() => {
         navigation.navigate('Profile', { updatedSettings });
-      }, 1000);
+      }, 500);
     } catch (error) {
       throw new Error(error);
     }
@@ -167,34 +169,25 @@ export default function Profile({ navigation, route: { params } }: any) {
       throw new Error('tags storage failed');
     }
   };
-
+  const color =
+    isModified && !disableSaveButton ? theme.colors.primary : theme.colors.gray;
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView enabled={true} behavior="position">
         <ScrollView showsVerticalScrollIndicator={false}>
-          {isModified ? (
-            <TouchableOpacity style={styles.titleBar} onPress={() => save()}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  color: theme.colors.primary
-                }}>
-                Sauvegarder
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.titleBar}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  color: theme.colors.gray
-                }}>
-                Sauvegarder
-              </Text>
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity
+            style={styles.titleBar}
+            disabled={disableSaveButton}
+            onPress={() => isModified && save()}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 16,
+                color: color
+              }}>
+              Sauvegarder
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity>
             <ProfilContainer
               image={
