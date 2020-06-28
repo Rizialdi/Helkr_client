@@ -1,11 +1,12 @@
-// import gql from 'graphql-tag';
-// import { message } from '../fragments';
+import gql from 'graphql-tag';
+import { message } from '../fragments';
 
-// export default gql`
-//   subscription NewMessage {
-//     newMessage {
-//       ...message
-//     }
-//   }
-//   ${message}
-// `;
+export default gql`
+  subscription NewMessage($channelIds: [String!]!) {
+    newMessage(channelIds: $channelIds) {
+      ...message
+      channelId
+    }
+  }
+  ${message}
+`;

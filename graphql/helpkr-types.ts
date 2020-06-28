@@ -84,6 +84,7 @@ export type Message = {
   sentById?: Maybe<Scalars['String']>;
   text: Scalars['String'];
   createdAt: Scalars['DateTime'];
+  channelId?: Maybe<Scalars['String']>;
   channel?: Maybe<Channel>;
 };
 
@@ -307,6 +308,7 @@ export type Subscription = {
   onOfferingAdded: Offering;
   updateAppliedTo: UpdateAppliedToType;
   newMessage: Message;
+  newChannel: Channel;
 };
 
 
@@ -326,7 +328,12 @@ export type SubscriptionUpdateAppliedToArgs = {
 
 
 export type SubscriptionNewMessageArgs = {
-  channelId: Scalars['String'];
+  channelIds: Array<Scalars['String']>;
+};
+
+
+export type SubscriptionNewChannelArgs = {
+  userId: Scalars['String'];
 };
 
 export type UpdateAppliedToType = {
@@ -652,6 +659,33 @@ export type UserByIdQuery = (
   & { userById: (
     { __typename?: 'utilisateur' }
     & Pick<Utilisateur, 'nom' | 'tags' | 'prenom' | 'avatar' | 'address' | 'verified' | 'description' | 'professional'>
+  ) }
+);
+
+export type NewChannelSubscriptionVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type NewChannelSubscription = (
+  { __typename?: 'Subscription' }
+  & { newChannel: (
+    { __typename?: 'channel' }
+    & ChatFragment
+  ) }
+);
+
+export type NewMessageSubscriptionVariables = Exact<{
+  channelIds: Array<Scalars['String']>;
+}>;
+
+
+export type NewMessageSubscription = (
+  { __typename?: 'Subscription' }
+  & { newMessage: (
+    { __typename?: 'message' }
+    & Pick<Message, 'channelId'>
+    & MessageFragment
   ) }
 );
 
@@ -1252,6 +1286,65 @@ export function useUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>;
 export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>;
 export type UserByIdQueryResult = ApolloReactCommon.QueryResult<UserByIdQuery, UserByIdQueryVariables>;
+export const NewChannelDocument = gql`
+    subscription newChannel($userId: String!) {
+  newChannel(userId: $userId) {
+    ...chat
+  }
+}
+    ${ChatFragmentDoc}`;
+
+/**
+ * __useNewChannelSubscription__
+ *
+ * To run a query within a React component, call `useNewChannelSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewChannelSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewChannelSubscription({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useNewChannelSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<NewChannelSubscription, NewChannelSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<NewChannelSubscription, NewChannelSubscriptionVariables>(NewChannelDocument, baseOptions);
+      }
+export type NewChannelSubscriptionHookResult = ReturnType<typeof useNewChannelSubscription>;
+export type NewChannelSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewChannelSubscription>;
+export const NewMessageDocument = gql`
+    subscription NewMessage($channelIds: [String!]!) {
+  newMessage(channelIds: $channelIds) {
+    ...message
+    channelId
+  }
+}
+    ${MessageFragmentDoc}`;
+
+/**
+ * __useNewMessageSubscription__
+ *
+ * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewMessageSubscription({
+ *   variables: {
+ *      channelIds: // value for 'channelIds'
+ *   },
+ * });
+ */
+export function useNewMessageSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, baseOptions);
+      }
+export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
+export type NewMessageSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewMessageSubscription>;
 export const OnOfferingAddedDocument = gql`
     subscription onOfferingAdded($tags: [String!]) {
   onOfferingAdded(tags: $tags) {

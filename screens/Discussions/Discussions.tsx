@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -16,6 +16,13 @@ import {
 } from '../../graphql';
 import { useStoreState } from '../../models';
 import { makePseudoName } from '../../utils';
+import {
+  useNewMessageSubscription,
+  useNewChannelSubscription,
+  Channel,
+  Utilisateur,
+  AllChatsAndMessagesQueryResult
+} from '../../graphql/helpkr-types';
 
 const { width } = Dimensions.get('screen');
 
@@ -27,11 +34,7 @@ interface ItemProps {
   navigation?: any;
 }
 
-// interface User {__typename?: string,
-//   id: string, nom: string, prenom: string, avatar: string
-// }
-
-function Item({ name, channel, lastMessage, image, navigation }: ItemProps) {
+const Item = ({ name, channel, lastMessage, image, navigation }: ItemProps) => {
   return (
     <>
       <TouchableOpacity
@@ -62,27 +65,114 @@ function Item({ name, channel, lastMessage, image, navigation }: ItemProps) {
       </TouchableOpacity>
     </>
   );
-}
+};
 
 const Discussions = ({ navigation }: { navigation: any }) => {
   const { user } = useStoreState(state => state.User);
+  const [data, setData] = useState<AllChatsAndMessagesQuery>();
+
   let allChatUsersAndLastMessage: Array<{
     channelId: any;
     userFiltered: any;
     lastMessage: any;
   }> = [];
-  const { data, loading, error } = useAllChatsAndMessagesQuery({
+  let channelIds: string[] = [];
+
+  const {
+    data: dataAllChats,
+    loading,
+    error,
+    called
+  } = useAllChatsAndMessagesQuery({
     fetchPolicy: 'cache-and-network',
     pollInterval: 1000
   });
+
+  useEffect(() => {
+    dataAllChats && !error && setData(dataAllChats);
+  }, [dataAllChats]);
+
   data?.allChatsAndMessages.map(channel => {
     const channelId = channel.id;
     const userFiltered = channel.users.filter(item => item.id !== user.id)[0];
     const lastMessage = channel.messages[0];
-    allChatUsersAndLastMessage.push({ channelId, userFiltered, lastMessage });
+    channelIds.push(channelId);
+    allChatUsersAndLastMessage.push({
+      channelId,
+      userFiltered,
+      lastMessage
+    });
   });
 
-  const retriveChannelData = (
+  // Some channelIds are found after looping through allChatsAndMessages
+
+  if (channelIds) {
+    const {
+      data: dataUpdateMessages,
+      error: errorUpdateMessages
+    } = useNewMessageSubscription({
+      variables: {
+        channelIds: channelIds
+      },
+      shouldResubscribe: true
+    });
+
+    useEffect(() => {
+      if (
+        dataUpdateMessages &&
+        data?.allChatsAndMessages &&
+        dataUpdateMessages.newMessage &&
+        !errorUpdateMessages
+      ) {
+        const newData = data?.allChatsAndMessages.map(item => {
+          if (item.id === dataUpdateMessages?.newMessage.channelId) {
+            const {
+              channelId: _,
+              ...newMessage
+            } = dataUpdateMessages?.newMessage;
+            return {
+              ...item,
+              messages: [newMessage, ...item.messages]
+            };
+          }
+          return {
+            item
+          };
+        });
+        //@ts-ignore
+        setData(newData);
+      }
+    }, [dataUpdateMessages]);
+  }
+
+  const {
+    data: dataUpdateChannels,
+    error: errorUpdateChannels
+  } = useNewChannelSubscription({
+    variables: {
+      userId: user.id
+    },
+    shouldResubscribe: true
+  });
+
+  useEffect(() => {
+    if (
+      dataUpdateChannels &&
+      data?.allChatsAndMessages &&
+      !errorUpdateChannels
+    ) {
+      const newData = {
+        ...dataAllChats,
+        allChatsAndMessages: [
+          dataUpdateChannels.newChannel,
+          ...data?.allChatsAndMessages
+        ]
+      };
+      setData(newData);
+    }
+  }, [dataUpdateChannels]);
+
+  const retrieveChannelData = (
     data: AllChatsAndMessagesQuery,
     channelId: string
   ) => {
@@ -91,6 +181,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     )[0];
     return channel;
   };
+
   return (
     <Layout title={'Discussions'}>
       {data ? (
@@ -102,7 +193,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
               <Item
                 name={makePseudoName(user.nom, user.prenom)}
                 lastMessage={item?.lastMessage?.text}
-                channel={retriveChannelData(data, item.channelId)}
+                channel={retrieveChannelData(data, item.channelId)}
                 image={user.avatar}
                 navigation={navigation}
               />

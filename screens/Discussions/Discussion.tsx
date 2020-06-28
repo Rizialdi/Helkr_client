@@ -12,11 +12,9 @@ import {
 import CustomActions from './components/CustomActions';
 import CustomView from './components/CustomView';
 import NavBar from './components/NavBar';
-import messagesData from './components/data/messages';
-import earlierMessages from './components/data/earlierMessages';
 import { formattingTextMessages } from '../../utils';
 import { useStoreState } from '../../models';
-import 'dayjs/locale/fr';
+import { locale } from 'dayjs';
 
 const styles = StyleSheet.create({
   container: { flex: 1 }
@@ -62,7 +60,7 @@ const Discussion = (props: any) => {
       setMessages(
         GiftedChat.prepend(
           messages,
-          earlierMessages() as IMessage[],
+          [] as IMessage[], //earlier messages
           Platform.OS !== 'web'
         )
       );
@@ -82,7 +80,7 @@ const Discussion = (props: any) => {
   // setTimeout(() => this.botSend(step), Math.round(Math.random() * 1000))
 
   const botSend = (step = 0) => {
-    const newMessage = (messagesData as IMessage[])
+    const newMessage = ([] as IMessage[])
       .reverse()
       // .filter(filterBotMessages)
       .find(findStep(step));
@@ -209,7 +207,7 @@ const Discussion = (props: any) => {
             onLoadEarlier={onLoadEarlier}
             isLoadingEarlier={loadingEarlier}
             parsePatterns={parsePatterns}
-            locale={'dayjs/locale/fr'}
+            locale={locale('fr-ca', {}, true)}
             user={{ _id: user.id, name: user.token }}
             scrollToBottom
             onLongPressAvatar={user => alert(JSON.stringify(user))}

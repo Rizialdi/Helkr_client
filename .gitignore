@@ -18,3 +18,4 @@ yarn.lock
 package-lock.json
 *.lock*
 graphql/types.ts
+apollo.Fragment.*
