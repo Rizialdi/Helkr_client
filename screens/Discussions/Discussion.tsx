@@ -1,7 +1,13 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { AppLoading, Linking } from 'expo';
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  TouchableOpacity
+} from 'react-native';
 import {
   Bubble,
   GiftedChat,
@@ -15,10 +21,12 @@ import NavBar from './components/NavBar';
 import { formattingTextMessages } from '../../utils';
 import { useStoreState } from '../../models';
 import { locale } from 'dayjs';
+import { ChatFragment } from '../../graphql/helpkr-types';
 
-const styles = StyleSheet.create({
-  container: { flex: 1 }
-});
+interface Props {
+  channel: ChatFragment;
+  toOpen: Dispatch<SetStateAction<boolean>>;
+}
 
 const filterBotMessages = (message: IMessage) =>
   !message.system && message.user && message.user._id && message.user._id === 2;
@@ -30,7 +38,7 @@ const otherUser = {
   avatar: 'https://facebook.github.io/react/img/logo_og.png'
 };
 
-const Discussion = (props: any) => {
+const Discussion = ({ channel, toOpen }: Props) => {
   const [step, setStep] = useState<number>(0);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
@@ -45,8 +53,7 @@ const Discussion = (props: any) => {
     setIsMounted(true);
     setAppIsReady(true);
     setIsTyping(false);
-    props?.route?.params?.channel &&
-      setMessages(formattingTextMessages(props?.route?.params?.channel));
+    channel && setMessages(formattingTextMessages(channel));
   }, []);
 
   useEffect(() => {
@@ -199,7 +206,8 @@ const Discussion = (props: any) => {
         <AppLoading />
       ) : (
         <View style={styles.container} accessible>
-          <NavBar />
+          <NavBar recipient={'doudou'} toOpen={toOpen} />
+
           <GiftedChat
             messages={messages}
             onSend={onSend}
@@ -234,3 +242,7 @@ const Discussion = (props: any) => {
 };
 
 export default Discussion;
+
+const styles = StyleSheet.create({
+  container: { flex: 1 }
+});

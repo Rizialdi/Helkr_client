@@ -18,12 +18,12 @@ import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { SFC, useState } from 'react';
 import { AsyncStorage } from 'react-native';
+import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
 import store from './models';
 import Navigation from './navigation';
-import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
-import introspectionQueryResultData from './graphql/helpkr-types';
+import { typeDefs, resolvers } from './apollo-cache';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: { __schema: { types: [] } }
@@ -89,9 +89,30 @@ const link = split(
 );
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  link,
   cache,
-  link
+  typeDefs,
+  resolvers
 });
+
+// client
+//   .clearStore()
+//   .then(() =>
+cache.writeData({
+  data: {
+    lastMessageReadIds: [
+      // {
+      //   __typename: 'LastMessageReadIdAndChannel',
+      //   channelId: 'ckby0uepx0000gnp9ga0pnpnw',
+      //   lastMessageReadId: 'ckby0uepx0001gnp9hme39np1'
+      // }
+    ]
+  }
+});
+// )
+// .then(() => {
+//   // console.log(cache);
+// });
 
 // import all icons
 const icons = [

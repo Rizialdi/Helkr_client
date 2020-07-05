@@ -44,8 +44,9 @@ export type CandidateToOfferingSuccess = {
 
 export type Channel = {
   __typename?: 'channel';
-  id: Scalars['String'];
   createdAt: Scalars['DateTime'];
+  id: Scalars['String'];
+  lastMessageReadId: Scalars['String'];
   messages: Array<Message>;
   users: Array<Utilisateur>;
 };
@@ -78,6 +79,12 @@ export type CreateChannel = {
 
 
 
+export type LastMessageReadIdAndChannel = {
+  __typename?: 'LastMessageReadIdAndChannel';
+  channelId: Scalars['String'];
+  lastMessageReadId: Scalars['String'];
+};
+
 export type Message = {
   __typename?: 'message';
   id: Scalars['String'];
@@ -102,55 +109,21 @@ export type Moyenne = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createAvis: Scalars['Boolean'];
-  registerUser: AuthPayload;
-  avatarUpload: Scalars['Boolean'];
-  descriptionUpdate: Scalars['Boolean'];
-  addressUpdate: Scalars['Boolean'];
-  tagsUpdate: Scalars['Boolean'];
   addOffering: Scalars['Boolean'];
-  updateOffering: Scalars['Boolean'];
+  addressUpdate: Scalars['Boolean'];
+  avatarUpload: Scalars['Boolean'];
   candidateToOffering: CandidateToOfferingSuccess;
-  deleteOffering: Scalars['Boolean'];
   chooseCandidate: Scalars['Boolean'];
   completeOffering: Scalars['Boolean'];
-  createMessage: Scalars['Boolean'];
+  createAvis: Scalars['Boolean'];
   createChannel: CreateChannel;
-};
-
-
-export type MutationCreateAvisArgs = {
-  scoredId: Scalars['String'];
-  comment: Scalars['String'];
-  score: Scalars['Int'];
-  offeringId: Scalars['String'];
-};
-
-
-export type MutationRegisterUserArgs = {
-  nom: Scalars['String'];
-  prenom: Scalars['String'];
-  numero: Scalars['String'];
-};
-
-
-export type MutationAvatarUploadArgs = {
-  file: Scalars['String'];
-};
-
-
-export type MutationDescriptionUpdateArgs = {
-  text: Scalars['String'];
-};
-
-
-export type MutationAddressUpdateArgs = {
-  text: Scalars['String'];
-};
-
-
-export type MutationTagsUpdateArgs = {
-  tags: Array<Scalars['String']>;
+  createMessage: Scalars['Boolean'];
+  deleteOffering: Scalars['Boolean'];
+  descriptionUpdate: Scalars['Boolean'];
+  registerUser: AuthPayload;
+  tagsUpdate: Scalars['Boolean'];
+  updateLastMessageIdorAddChat?: Maybe<Scalars['Boolean']>;
+  updateOffering: Scalars['Boolean'];
 };
 
 
@@ -162,18 +135,17 @@ export type MutationAddOfferingArgs = {
 };
 
 
-export type MutationUpdateOfferingArgs = {
-  id: Scalars['String'];
-  description: Scalars['String'];
+export type MutationAddressUpdateArgs = {
+  text: Scalars['String'];
+};
+
+
+export type MutationAvatarUploadArgs = {
+  file: Scalars['String'];
 };
 
 
 export type MutationCandidateToOfferingArgs = {
-  id: Scalars['String'];
-};
-
-
-export type MutationDeleteOfferingArgs = {
   id: Scalars['String'];
 };
 
@@ -190,6 +162,19 @@ export type MutationCompleteOfferingArgs = {
 };
 
 
+export type MutationCreateAvisArgs = {
+  scoredId: Scalars['String'];
+  comment: Scalars['String'];
+  score: Scalars['Int'];
+  offeringId: Scalars['String'];
+};
+
+
+export type MutationCreateChannelArgs = {
+  recipient: Scalars['String'];
+};
+
+
 export type MutationCreateMessageArgs = {
   channelId?: Maybe<Scalars['String']>;
   recipient?: Maybe<Scalars['String']>;
@@ -197,8 +182,37 @@ export type MutationCreateMessageArgs = {
 };
 
 
-export type MutationCreateChannelArgs = {
-  recipient: Scalars['String'];
+export type MutationDeleteOfferingArgs = {
+  id: Scalars['String'];
+};
+
+
+export type MutationDescriptionUpdateArgs = {
+  text: Scalars['String'];
+};
+
+
+export type MutationRegisterUserArgs = {
+  nom: Scalars['String'];
+  prenom: Scalars['String'];
+  numero: Scalars['String'];
+};
+
+
+export type MutationTagsUpdateArgs = {
+  tags: Array<Scalars['String']>;
+};
+
+
+export type MutationUpdateLastMessageIdorAddChatArgs = {
+  channelId: Scalars['String'];
+  lastMessageReadId: Scalars['String'];
+};
+
+
+export type MutationUpdateOfferingArgs = {
+  id: Scalars['String'];
+  description: Scalars['String'];
 };
 
 export type Offering = {
@@ -238,31 +252,32 @@ export type OfferingWhereUniqueInput = {
 
 export type Query = {
   __typename?: 'Query';
-  getAvisUser: Array<Avis>;
-  users: Array<Utilisateur>;
-  userById: Utilisateur;
-  getUserInfo: AuthPayload;
-  getUserStats: Stats;
-  offeringsUser: Array<Offering>;
-  incompleteOfferings: Array<Offering>;
-  offeringById: Offering;
-  isCandidateTo: Array<Offering>;
-  myIncompleteOffering: Array<Offering>;
-  myIncompleteOfferingWithCandidates: Array<Offering>;
-  messages: Array<Message>;
+  allChatsAndMessages: Array<Channel>;
   channel: Channel;
   channels: Array<Channel>;
-  allChatsAndMessages: Array<Channel>;
+  getAvisUser: Array<Avis>;
+  getUserInfo: AuthPayload;
+  getUserStats: Stats;
+  incompleteOfferings: Array<Offering>;
+  isCandidateTo: Array<Offering>;
+  lastMessageReadIds?: Maybe<Array<Maybe<LastMessageReadIdAndChannel>>>;
+  messages: Array<Message>;
+  myIncompleteOffering: Array<Offering>;
+  myIncompleteOfferingWithCandidates: Array<Offering>;
+  offeringById: Offering;
+  offeringsUser: Array<Offering>;
+  userById: Utilisateur;
+  users: Array<Utilisateur>;
+};
+
+
+export type QueryChannelArgs = {
+  id: Scalars['String'];
 };
 
 
 export type QueryGetAvisUserArgs = {
   userId: Scalars['String'];
-};
-
-
-export type QueryUserByIdArgs = {
-  id: Scalars['String'];
 };
 
 
@@ -276,11 +291,6 @@ export type QueryGetUserStatsArgs = {
 };
 
 
-export type QueryOfferingsUserArgs = {
-  numero: Scalars['String'];
-};
-
-
 export type QueryIncompleteOfferingsArgs = {
   filters?: Maybe<Array<Scalars['String']>>;
 };
@@ -291,7 +301,12 @@ export type QueryOfferingByIdArgs = {
 };
 
 
-export type QueryChannelArgs = {
+export type QueryOfferingsUserArgs = {
+  numero: Scalars['String'];
+};
+
+
+export type QueryUserByIdArgs = {
   id: Scalars['String'];
 };
 
@@ -438,7 +453,7 @@ export type UtilisateurWhereUniqueInput = {
     
 export type ChatFragment = (
   { __typename?: 'channel' }
-  & Pick<Channel, 'id' | 'createdAt'>
+  & Pick<Channel, 'id' | 'createdAt' | 'lastMessageReadId'>
   & { messages: Array<(
     { __typename?: 'message' }
     & MessageFragment
@@ -741,6 +756,7 @@ export const ChatFragmentDoc = gql`
   users {
     ...user
   }
+  lastMessageReadId @client(always: true)
 }
     ${MessageFragmentDoc}
 ${UserFragmentDoc}`;

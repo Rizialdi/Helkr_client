@@ -1,10 +1,13 @@
 # TODO Change this path to refer to a running graphql endpoint
 # TODO Ensure authentication on your api endpoint
 schema: http://localhost:4000 #../server/helpkr.graphql
+
 documents: './graphql/**/*.{tsx,ts}'
 overwrite: true
 generates:
   ./graphql/helpkr-types.ts:
+    # used to add local queries @client
+    schema: ./apollo-cache/typeDefs/index.ts
     plugins:
       - add: '/* eslint-disable */'
       - typescript

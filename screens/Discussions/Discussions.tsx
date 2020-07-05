@@ -6,9 +6,10 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ImageSourcePropType
+  ImageSourcePropType,
+  Modal
 } from 'react-native';
-import { Layout, Text } from '../shareComponents';
+import { Layout, Text, Block } from '../shareComponents';
 
 import {
   useAllChatsAndMessagesQuery,
@@ -17,29 +18,49 @@ import {
 import { useStoreState } from '../../models';
 import { makePseudoName } from '../../utils';
 import {
+  UserFragment,
+  MessageFragment,
+  Message
+} from '../../graphql/helpkr-types';
+import {
   useNewMessageSubscription,
   useNewChannelSubscription,
   Channel,
   Utilisateur,
   AllChatsAndMessagesQueryResult
 } from '../../graphql/helpkr-types';
+import Icon from 'react-native-vector-icons/AntDesign';
+import Discussion from './Discussion';
 
 const { width } = Dimensions.get('screen');
 
 interface ItemProps {
   name: string;
   lastMessage: string;
+  unReadMessageCount: number | null;
   channel: any;
   image: ImageSourcePropType;
   navigation?: any;
 }
 
-const Item = ({ name, channel, lastMessage, image, navigation }: ItemProps) => {
+const Item = ({
+  name,
+  channel,
+  lastMessage,
+  unReadMessageCount,
+  image,
+  navigation
+}: ItemProps) => {
+  const { themeColors } = useStoreState(state => state.Preferences);
+  const [openDiscussionScreen, setOpenDiscussionScreen] = useState<boolean>(
+    false
+  );
+  console.log(openDiscussionScreen);
   return (
     <>
       <TouchableOpacity
         style={styles.item}
-        onPress={() => navigation.navigate('Discussion', { channel })}>
+        onPress={() => setOpenDiscussionScreen(true)}>
         <View style={{ flex: 0.25 }}>
           <TouchableOpacity
             style={{
@@ -61,8 +82,22 @@ const Item = ({ name, channel, lastMessage, image, navigation }: ItemProps) => {
         <View style={{ flex: 0.75, alignSelf: 'flex-start' }}>
           <Text style={styles.name}>{name}</Text>
           <Text style={styles.message}>{lastMessage}</Text>
+          {unReadMessageCount && unReadMessageCount > 0 ? (
+            <Text>{JSON.stringify(unReadMessageCount)}</Text>
+          ) : null}
         </View>
       </TouchableOpacity>
+      <Modal
+        animationType="fade"
+        hardwareAccelerated={true}
+        presentationStyle="overFullScreen"
+        visible={openDiscussionScreen}>
+        <Block padding={[20, 0]}>
+          {channel && (
+            <Discussion channel={channel} toOpen={setOpenDiscussionScreen} />
+          )}
+        </Block>
+      </Modal>
     </>
   );
 };
@@ -72,10 +107,20 @@ const Discussions = ({ navigation }: { navigation: any }) => {
   const [data, setData] = useState<AllChatsAndMessagesQuery>();
 
   let allChatUsersAndLastMessage: Array<{
-    channelId: any;
-    userFiltered: any;
-    lastMessage: any;
+    channelId: string;
+    userFiltered: {
+      __typename?: 'utilisateur' | undefined;
+    } & {
+      __typename?: 'utilisateur' | undefined;
+    } & Pick<Utilisateur, 'id' | 'prenom' | 'nom' | 'avatar'>;
+    lastMessage: {
+      __typename?: 'message' | undefined;
+    } & {
+      __typename?: 'message' | undefined;
+    } & Pick<Message, 'text' | 'id' | 'createdAt' | 'sentById'>;
+    unReadMessageCount: number | null;
   }> = [];
+
   let channelIds: string[] = [];
 
   const {
@@ -96,11 +141,16 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     const channelId = channel.id;
     const userFiltered = channel.users.filter(item => item.id !== user.id)[0];
     const lastMessage = channel.messages[0];
+    const unReadMessageCount = channel.messages.findIndex(
+      message => message.id === channel.lastMessageReadId
+    );
+
     channelIds.push(channelId);
     allChatUsersAndLastMessage.push({
       channelId,
       userFiltered,
-      lastMessage
+      lastMessage,
+      unReadMessageCount
     });
   });
 
@@ -194,7 +244,8 @@ const Discussions = ({ navigation }: { navigation: any }) => {
                 name={makePseudoName(user.nom, user.prenom)}
                 lastMessage={item?.lastMessage?.text}
                 channel={retrieveChannelData(data, item.channelId)}
-                image={user.avatar}
+                unReadMessageCount={item?.unReadMessageCount}
+                image={user.avatar as ImageSourcePropType}
                 navigation={navigation}
               />
             );

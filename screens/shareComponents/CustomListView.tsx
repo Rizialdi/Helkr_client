@@ -1,13 +1,13 @@
-import Icon from 'react-native-vector-icons/AntDesign'
-import React, { FC, useState } from 'react'
-import { FlatList, Modal } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/AntDesign';
+import React, { FC, useState } from 'react';
+import { FlatList, Modal } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import Block from './Block'
-import ListItemOffering from './ListItemOffering'
-import Text from './Text'
-import { useStoreState } from '../../models'
-import { MyIncompleteOfferingQuery } from '../../graphql/helpkr-types'
+import Block from './Block';
+import ListItemOffering from './ListItemOffering';
+import Text from './Text';
+import { useStoreState } from '../../models';
+import { MyIncompleteOfferingQuery } from '../../graphql/helpkr-types';
 
 export interface dataContent {
   id: string;
@@ -69,7 +69,7 @@ const CustomListView: FC<Props> = ({
         }}
       />
       <Modal
-        animationType="slide"
+        animationType="fade"
         hardwareAccelerated={true}
         presentationStyle="overFullScreen"
         visible={openModal}>
