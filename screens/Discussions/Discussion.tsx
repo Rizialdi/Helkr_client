@@ -19,29 +19,17 @@ import {
 } from '../../utils';
 import { useStoreState, useStoreActions } from '../../models';
 import { locale } from 'dayjs';
-import {
-  ChatFragment,
-  AllChatsAndMessagesDocument
-} from '../../graphql/helpkr-types';
-import { useMutation } from '@apollo/react-hooks';
-import { UPDATE_UNREAD_COUNT } from '../../apollo-cache/resolvers/index';
-import { cache } from '../../App';
+import { ChatFragment } from '../../graphql/helpkr-types';
+import { SendAMessage } from './Discussions';
 interface Props {
   channel: ChatFragment;
   toOpen: Dispatch<SetStateAction<boolean>>;
+  sendAMessage: SendAMessage;
 }
 
-const filterBotMessages = (message: IMessage) =>
-  !message.system && message.user && message.user._id && message.user._id === 2;
 const findStep = (step: number) => (message: IMessage) => message._id === step;
 
-const otherUser = {
-  _id: 2,
-  name: 'React Native',
-  avatar: 'https://facebook.github.io/react/img/logo_og.png'
-};
-
-const Discussion = ({ channel, toOpen }: Props) => {
+const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
   const [step, setStep] = useState<number>(0);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
@@ -50,23 +38,10 @@ const Discussion = ({ channel, toOpen }: Props) => {
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  // Used when tried to use apollo's local state
   const { id: channelId } = channel;
   const { id: lastMessageReadId } = channel.messages.sort(
     (a, b) => a.createdAt - b.createdAt
   )[0];
-
-  // const [
-  //   updatingUnReadCount,
-  //   { called, error, loading, data, client }
-  // ] = useMutation(UPDATE_UNREAD_COUNT, {
-  //   variables: { channelId, lastMessageReadId },
-  //   refetchQueries: [{ query: AllChatsAndMessagesDocument }]
-  // });
-
-  // if (!loading && called) client?.reFetchObservableQueries();
-
-  // console.log(called, error, loading, data);
 
   const { user } = useStoreState(state => state.User);
   const { lastMessageReadIds } = useStoreState(state => state.ChatMessages);
@@ -78,50 +53,43 @@ const Discussion = ({ channel, toOpen }: Props) => {
     { channelId, lastMessageReadId },
     ...lastMessageReadIds
   ];
+
+  const [data, setData] = useState<ChatFragment>();
+
+  useEffect(() => {
+    setData(channel);
+  }, [channel]);
+
   // Finding the name of the interlocutor
-  const { nom, prenom } = channel.users.filter(item => item.id !== user.id)[0];
+  const Data = data ? data : channel;
+  const { nom, prenom, id: recipientId } = Data.users.filter(
+    item => item.id !== user.id
+  )[0];
   const recipient = makePseudoName(nom, prenom);
 
   useEffect(() => {
     setIsMounted(true);
     setAppIsReady(true);
     setIsTyping(false);
-    setLastMessageReadIds(newLastMessageReadIds);
     storeLastMessageReadIds(newLastMessageReadIds);
   }, []);
 
   useEffect(() => {
     // To prevent state update after unmounting
-    if (isMounted) {
-      channel && setMessages(formattingTextMessages(channel));
+    if (isMounted || Data) {
+      Data && setMessages(formattingTextMessages(Data));
       setLoadEarlier(true);
       setIsLoadingEarlier(false);
       setIsMounted(false);
     }
-  }, [isMounted]);
+    setLastMessageReadIds(newLastMessageReadIds);
+  }, [isMounted, Data]);
 
   const onLoadEarlier = () => setIsLoadingEarlier(true);
 
   let onSend = (messages: Array<any> = [{}]) => {
-    const sentMessages = [{ ...messages[0], sent: true, received: true }];
-    setMessages(
-      GiftedChat.prepend(messages, sentMessages, Platform.OS !== 'web')
-    );
-    setStep(step + 1);
-  };
-  // for demo purpose
-  // setTimeout(() => this.botSend(step), Math.round(Math.random() * 1000))
-
-  const botSend = (step = 0) => {
-    const newMessage = ([] as IMessage[])
-      .reverse()
-      // .filter(filterBotMessages)
-      .find(findStep(step));
-    if (newMessage) {
-      setMessages(
-        GiftedChat.prepend(messages, [newMessage], Platform.OS !== 'web')
-      );
-    }
+    const { text } = messages[0];
+    sendAMessage(text, channelId, recipientId);
   };
 
   const parsePatterns = (_linkStyle: any) => {
@@ -138,23 +106,6 @@ const Discussion = ({ channel, toOpen }: Props) => {
     return <CustomView {...props} />;
   };
 
-  const onReceive = (text: string) => {
-    setMessages(
-      GiftedChat.prepend(
-        messages,
-        [
-          {
-            _id: Math.round(Math.random() * 1000000),
-            text,
-            createdAt: new Date(),
-            user: otherUser
-          }
-        ],
-        Platform.OS !== 'web'
-      )
-    );
-  };
-
   const onSendFromUser = (messages: IMessage[] = []) => {
     const createdAt = new Date();
     const messagesToUpload = messages.map(message => ({
@@ -164,10 +115,6 @@ const Discussion = ({ channel, toOpen }: Props) => {
       _id: Math.round(Math.random() * 1000000)
     }));
     onSend(messagesToUpload);
-  };
-
-  const setIsTypingFunction = () => {
-    setIsTyping(!isTyping);
   };
 
   const renderCustomActions = (props: any) =>
@@ -256,7 +203,7 @@ const Discussion = ({ channel, toOpen }: Props) => {
             renderQuickReplySend={renderQuickReplySend}
             inverted={Platform.OS !== 'web'}
             timeTextStyle={{
-              left: { color: 'red' },
+              left: { color: 'green' },
               right: { color: 'yellow' }
             }}
           />

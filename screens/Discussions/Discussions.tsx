@@ -17,7 +17,11 @@ import {
 } from '../../graphql';
 import { useStoreState } from '../../models';
 import { makePseudoName, sortChatMessages } from '../../utils';
-import { Message } from '../../graphql/helpkr-types';
+import {
+  Message,
+  ChatFragment,
+  useCreateMessageMutation
+} from '../../graphql/helpkr-types';
 import {
   useNewMessageSubscription,
   useNewChannelSubscription,
@@ -27,14 +31,21 @@ import Discussion from './Discussion';
 
 const { width } = Dimensions.get('screen');
 
+type Chat = { __typename?: 'channel' } & ChatFragment;
 interface ItemProps {
   name: string;
   lastMessage: string;
   unReadMessageCount: number | null;
-  channel: any;
+  channel: Chat;
   image: ImageSourcePropType;
-  navigation?: any;
+  sendAMessage: SendAMessage;
 }
+
+export type SendAMessage = (
+  text: string,
+  channelId?: string,
+  recipient?: string
+) => void;
 
 const Item = ({
   name,
@@ -42,13 +53,17 @@ const Item = ({
   lastMessage,
   unReadMessageCount,
   image,
-  navigation
+  sendAMessage
 }: ItemProps) => {
   const { themeColors } = useStoreState(state => state.Preferences);
   const [openDiscussionScreen, setOpenDiscussionScreen] = useState<boolean>(
     false
   );
+  const [dataToChild, setDataToChild] = useState<Chat>();
 
+  useEffect(() => {
+    setDataToChild(channel);
+  }, [channel]);
   return (
     <>
       <TouchableOpacity
@@ -87,7 +102,11 @@ const Item = ({
         visible={openDiscussionScreen}>
         <Block padding={[20, 0]}>
           {channel && (
-            <Discussion channel={channel} toOpen={setOpenDiscussionScreen} />
+            <Discussion
+              channel={dataToChild as ChatFragment}
+              toOpen={setOpenDiscussionScreen}
+              sendAMessage={sendAMessage}
+            />
           )}
         </Block>
       </Modal>
@@ -127,6 +146,12 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     fetchPolicy: 'cache-and-network',
     pollInterval: 1000
   });
+
+  const [mutation] = useCreateMessageMutation();
+
+  const sendAMessage: SendAMessage = (text = '', channelId, recipient) => {
+    mutation({ variables: { channelId, recipient, text } });
+  };
 
   useEffect(() => {
     dataAllChats && !error && setData(dataAllChats);
@@ -228,7 +253,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
   const retrieveChannelData = (
     data: AllChatsAndMessagesQuery,
     channelId: string
-  ) => {
+  ): Chat => {
     const channel = data?.allChatsAndMessages?.filter(
       channel => channel.id === channelId
     )[0];
@@ -249,7 +274,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
                 channel={retrieveChannelData(data, item.channelId)}
                 unReadMessageCount={item?.unReadMessageCount}
                 image={user.avatar as ImageSourcePropType}
-                navigation={navigation}
+                sendAMessage={sendAMessage}
               />
             );
           }}
