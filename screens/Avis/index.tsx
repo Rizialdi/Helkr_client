@@ -19,14 +19,22 @@ import { makePseudoName } from '../../utils';
 const { width } = Dimensions.get('window');
 
 interface Props {
-  navigation: Route;
+  navigation?: Route;
   // TODO Give Proper type
-  route: any;
+  route?: { params: any };
+  candidateModalId?: string;
 }
 
-export default ({ navigation, route: { params } }: Props) => {
+export default ({ candidateModalId, ...props }: Props) => {
   const { user } = useStoreState(state => state.User);
-  const userId = params && params.id ? params.id : user?.id;
+
+  const navigation = props?.navigation;
+  const route = props?.route;
+  const userId = candidateModalId
+    ? candidateModalId
+    : route?.params && route?.params.id
+    ? route?.params.id
+    : user?.id;
 
   const { loading, error, data } = useGetAvisUserQuery({
     variables: { userId },
@@ -47,7 +55,7 @@ export default ({ navigation, route: { params } }: Props) => {
           </View>
         ) : (
           <View style={styles.container}>
-            {data && data?.getAvisUser ? (
+            {data && data?.getAvisUser.length ? (
               data?.getAvisUser?.map(avis => {
                 const {
                   id: idAvis,
@@ -62,9 +70,11 @@ export default ({ navigation, route: { params } }: Props) => {
                     style={{ width: width }}
                     key={idAvis}
                     onPress={() =>
-                      navigation.navigate('ProfilesNavigation', {
-                        id: id
-                      })
+                      candidateModalId
+                        ? null
+                        : navigation?.navigate('ProfilesNavigation', {
+                            id: id
+                          })
                     }>
                     <ListCard
                       avatar={avatar}
@@ -77,7 +87,7 @@ export default ({ navigation, route: { params } }: Props) => {
                 );
               })
             ) : (
-              <Text style={{ marginTop: 25 }}>
+              <Text bold style={{ marginTop: 25 }}>
                 Vous n'avez aucun avis pour le moment.
               </Text>
             )}

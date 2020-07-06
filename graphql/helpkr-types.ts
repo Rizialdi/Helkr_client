@@ -24,13 +24,13 @@ export type AuthPayload = {
 
 export type Avis = {
   __typename?: 'avis';
-  id: Scalars['String'];
   comment: Scalars['String'];
   createdAt: Scalars['DateTime'];
-  scorer: Utilisateur;
-  scored: Utilisateur;
-  score: Scalars['Int'];
+  id: Scalars['String'];
   offering: Offering;
+  score: Scalars['Int'];
+  scored: Utilisateur;
+  scorer: Utilisateur;
 };
 
 export type AvisWhereUniqueInput = {
@@ -46,7 +46,6 @@ export type Channel = {
   __typename?: 'channel';
   createdAt: Scalars['DateTime'];
   id: Scalars['String'];
-  lastMessageReadId: Scalars['String'];
   messages: Array<Message>;
   users: Array<Utilisateur>;
 };
@@ -73,26 +72,20 @@ export type ChannelWhereUniqueInput = {
 
 export type CreateChannel = {
   __typename?: 'createChannel';
-  success: Scalars['Boolean'];
   channel: Channel;
+  success: Scalars['Boolean'];
 };
 
 
-
-export type LastMessageReadIdAndChannel = {
-  __typename?: 'LastMessageReadIdAndChannel';
-  channelId: Scalars['String'];
-  lastMessageReadId: Scalars['String'];
-};
 
 export type Message = {
   __typename?: 'message';
+  channel?: Maybe<Channel>;
+  channelId?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
   id: Scalars['String'];
   sentById?: Maybe<Scalars['String']>;
   text: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  channelId?: Maybe<Scalars['String']>;
-  channel?: Maybe<Channel>;
 };
 
 export type MessageWhereUniqueInput = {
@@ -102,8 +95,8 @@ export type MessageWhereUniqueInput = {
 export type Moyenne = {
   __typename?: 'moyenne';
   id: Scalars['String'];
-  userId: Scalars['String'];
   moyenne: Scalars['Float'];
+  userId: Scalars['String'];
   utilisateur: Utilisateur;
 };
 
@@ -122,16 +115,15 @@ export type Mutation = {
   descriptionUpdate: Scalars['Boolean'];
   registerUser: AuthPayload;
   tagsUpdate: Scalars['Boolean'];
-  updateLastMessageIdorAddChat?: Maybe<Scalars['Boolean']>;
   updateOffering: Scalars['Boolean'];
 };
 
 
 export type MutationAddOfferingArgs = {
-  type: Scalars['String'];
   category: Scalars['String'];
   description: Scalars['String'];
   details: Scalars['String'];
+  type: Scalars['String'];
 };
 
 
@@ -151,22 +143,22 @@ export type MutationCandidateToOfferingArgs = {
 
 
 export type MutationChooseCandidateArgs = {
-  id: Scalars['String'];
   candidateId: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
 export type MutationCompleteOfferingArgs = {
-  id: Scalars['String'];
   completedById: Scalars['String'];
+  id: Scalars['String'];
 };
 
 
 export type MutationCreateAvisArgs = {
-  scoredId: Scalars['String'];
   comment: Scalars['String'];
-  score: Scalars['Int'];
   offeringId: Scalars['String'];
+  score: Scalars['Int'];
+  scoredId: Scalars['String'];
 };
 
 
@@ -194,8 +186,8 @@ export type MutationDescriptionUpdateArgs = {
 
 export type MutationRegisterUserArgs = {
   nom: Scalars['String'];
-  prenom: Scalars['String'];
   numero: Scalars['String'];
+  prenom: Scalars['String'];
 };
 
 
@@ -204,44 +196,38 @@ export type MutationTagsUpdateArgs = {
 };
 
 
-export type MutationUpdateLastMessageIdorAddChatArgs = {
-  channelId: Scalars['String'];
-  lastMessageReadId: Scalars['String'];
-};
-
-
 export type MutationUpdateOfferingArgs = {
-  id: Scalars['String'];
   description: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type Offering = {
   __typename?: 'offering';
-  id: Scalars['String'];
-  type: Scalars['String'];
-  category: Scalars['String'];
-  description: Scalars['String'];
   author: Utilisateur;
-  candidates: Array<Utilisateur>;
-  selectedCandidate?: Maybe<Utilisateur>;
-  createdAt: Scalars['DateTime'];
-  details: Scalars['JSON'];
   avis: Array<Avis>;
+  candidates: Array<Utilisateur>;
+  category: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  details: Scalars['JSON'];
+  id: Scalars['String'];
+  selectedCandidate?: Maybe<Utilisateur>;
   status?: Maybe<Scalars['String']>;
-};
-
-
-export type OfferingCandidatesArgs = {
-  after?: Maybe<UtilisateurWhereUniqueInput>;
-  before?: Maybe<UtilisateurWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  type: Scalars['String'];
 };
 
 
 export type OfferingAvisArgs = {
   after?: Maybe<AvisWhereUniqueInput>;
   before?: Maybe<AvisWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type OfferingCandidatesArgs = {
+  after?: Maybe<UtilisateurWhereUniqueInput>;
+  before?: Maybe<UtilisateurWhereUniqueInput>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
 };
@@ -260,7 +246,6 @@ export type Query = {
   getUserStats: Stats;
   incompleteOfferings: Array<Offering>;
   isCandidateTo: Array<Offering>;
-  lastMessageReadIds?: Maybe<Array<Maybe<LastMessageReadIdAndChannel>>>;
   messages: Array<Message>;
   myIncompleteOffering: Array<Offering>;
   myIncompleteOfferingWithCandidates: Array<Offering>;
@@ -312,23 +297,33 @@ export type QueryUserByIdArgs = {
 
 export type Stats = {
   __typename?: 'Stats';
+  average: Scalars['Float'];
   done: Scalars['Int'];
   proposed: Scalars['Int'];
-  average: Scalars['Float'];
 };
 
 export type Subscription = {
   __typename?: 'Subscription';
   newAvis: Avis;
+  newChannel: Channel;
+  newMessage: Message;
   onOfferingAdded: Offering;
   updateAppliedTo: UpdateAppliedToType;
-  newMessage: Message;
-  newChannel: Channel;
 };
 
 
 export type SubscriptionNewAvisArgs = {
   userId: Scalars['String'];
+};
+
+
+export type SubscriptionNewChannelArgs = {
+  userId: Scalars['String'];
+};
+
+
+export type SubscriptionNewMessageArgs = {
+  channelIds: Array<Scalars['String']>;
 };
 
 
@@ -341,16 +336,6 @@ export type SubscriptionUpdateAppliedToArgs = {
   userId: Scalars['String'];
 };
 
-
-export type SubscriptionNewMessageArgs = {
-  channelIds: Array<Scalars['String']>;
-};
-
-
-export type SubscriptionNewChannelArgs = {
-  userId: Scalars['String'];
-};
-
 export type UpdateAppliedToType = {
   __typename?: 'updateAppliedToType';
   id: Scalars['String'];
@@ -359,24 +344,64 @@ export type UpdateAppliedToType = {
 
 export type Utilisateur = {
   __typename?: 'utilisateur';
-  id: Scalars['String'];
-  nom: Scalars['String'];
-  prenom: Scalars['String'];
-  avatar?: Maybe<Scalars['String']>;
-  numero: Scalars['String'];
-  tags: Array<Scalars['String']>;
   address?: Maybe<Scalars['String']>;
+  avatar?: Maybe<Scalars['String']>;
+  avisgave: Array<Avis>;
+  avisreceived: Array<Avis>;
+  channels: Array<Channel>;
+  completedofferings: Array<Offering>;
   description?: Maybe<Scalars['String']>;
-  professional: Scalars['Boolean'];
-  verified: Scalars['Boolean'];
+  id: Scalars['String'];
+  messages: Array<Message>;
+  moyenne: Scalars['Int'];
+  nom: Scalars['String'];
+  numero: Scalars['String'];
   offering: Array<Offering>;
   offerings: Array<Offering>;
-  completedofferings: Array<Offering>;
-  channels: Array<Channel>;
-  messages: Array<Message>;
-  avisreceived: Array<Avis>;
-  avisgave: Array<Avis>;
-  moyenne: Scalars['Int'];
+  prenom: Scalars['String'];
+  professional: Scalars['Boolean'];
+  tags: Array<Scalars['String']>;
+  verified: Scalars['Boolean'];
+};
+
+
+export type UtilisateurAvisgaveArgs = {
+  after?: Maybe<AvisWhereUniqueInput>;
+  before?: Maybe<AvisWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type UtilisateurAvisreceivedArgs = {
+  after?: Maybe<AvisWhereUniqueInput>;
+  before?: Maybe<AvisWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type UtilisateurChannelsArgs = {
+  after?: Maybe<ChannelWhereUniqueInput>;
+  before?: Maybe<ChannelWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type UtilisateurCompletedofferingsArgs = {
+  after?: Maybe<OfferingWhereUniqueInput>;
+  before?: Maybe<OfferingWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type UtilisateurMessagesArgs = {
+  after?: Maybe<MessageWhereUniqueInput>;
+  before?: Maybe<MessageWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 
@@ -391,46 +416,6 @@ export type UtilisateurOfferingArgs = {
 export type UtilisateurOfferingsArgs = {
   after?: Maybe<OfferingWhereUniqueInput>;
   before?: Maybe<OfferingWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type UtilisateurCompletedofferingsArgs = {
-  after?: Maybe<OfferingWhereUniqueInput>;
-  before?: Maybe<OfferingWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type UtilisateurChannelsArgs = {
-  after?: Maybe<ChannelWhereUniqueInput>;
-  before?: Maybe<ChannelWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type UtilisateurMessagesArgs = {
-  after?: Maybe<MessageWhereUniqueInput>;
-  before?: Maybe<MessageWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type UtilisateurAvisreceivedArgs = {
-  after?: Maybe<AvisWhereUniqueInput>;
-  before?: Maybe<AvisWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type UtilisateurAvisgaveArgs = {
-  after?: Maybe<AvisWhereUniqueInput>;
-  before?: Maybe<AvisWhereUniqueInput>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
 };
@@ -453,7 +438,7 @@ export type UtilisateurWhereUniqueInput = {
     
 export type ChatFragment = (
   { __typename?: 'channel' }
-  & Pick<Channel, 'id' | 'createdAt' | 'lastMessageReadId'>
+  & Pick<Channel, 'id' | 'createdAt'>
   & { messages: Array<(
     { __typename?: 'message' }
     & MessageFragment
@@ -660,6 +645,10 @@ export type OfferingByIdQuery = (
   & { offeringById: (
     { __typename?: 'offering' }
     & Pick<Offering, 'details'>
+    & { candidates: Array<(
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'id' | 'avatar' | 'professional' | 'moyenne'>
+    )> }
     & OfferingFragment
   ) }
 );
@@ -756,7 +745,6 @@ export const ChatFragmentDoc = gql`
   users {
     ...user
   }
-  lastMessageReadId @client(always: true)
 }
     ${MessageFragmentDoc}
 ${UserFragmentDoc}`;
@@ -1233,6 +1221,12 @@ export const OfferingByIdDocument = gql`
   offeringById(id: $id) {
     ...offering
     details
+    candidates {
+      id
+      avatar
+      professional
+      moyenne
+    }
   }
 }
     ${OfferingFragmentDoc}`;

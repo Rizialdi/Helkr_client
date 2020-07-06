@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CustomListView } from '../../shareComponents';
 import { ActivityIndicator } from 'react-native';
 import ModalItem from './ModalItem';
+import ModalItemManageCandidates from './ModalItemManageCandidates';
 
 import {
   useMyIncompleteOfferingWithCandidatesQuery,
@@ -46,7 +47,7 @@ const ManageCandidates = () => {
       <CustomListView
         data={stateData?.myIncompleteOfferingWithCandidates}
         emptyMessage={'Aucun candidat à une offre actuellement'}
-        modalItem={<ModalItem />}
+        modalItem={<ModalItemManageCandidates />}
         refreshing={refreshing}
         onRefresh={onRefresh}
       />

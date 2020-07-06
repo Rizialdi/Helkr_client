@@ -12,7 +12,6 @@ export default gql`
     users {
       ...user
     }
-    lastMessageReadId @client(always: true)
   }
   ${message}
   ${user}

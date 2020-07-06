@@ -49,7 +49,7 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator<
 const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
-      initialRouteName="Accueil"
+      initialRouteName="Gerer"
       activeColor={theme.colors.primary}
       sceneAnimationEnabled={true}
       backBehavior={'initialRoute'}
@@ -71,7 +71,7 @@ const createBottomTabs = () => {
           tabBarIcon: () => <Icon name="tagso" size={24} color="black" />
         }}
       />
-      <MaterialBottomTabs.Screen
+      {/* <MaterialBottomTabs.Screen
         name="Accueil"
         component={Accueil}
         options={{
@@ -94,7 +94,7 @@ const createBottomTabs = () => {
           tabBarLabel: 'Profil',
           tabBarIcon: () => <Icon name="user" size={24} color="black" />
         }}
-      />
+      /> */}
     </MaterialBottomTabs.Navigator>
   );
 };
