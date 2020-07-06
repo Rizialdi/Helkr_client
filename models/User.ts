@@ -2,9 +2,9 @@ import { Action, action, Thunk, thunk } from 'easy-peasy';
 import { AsyncStorage } from 'react-native';
 
 interface userContextInterface {
-  id: string;
-  token: string;
-  prenom: string;
+  id?: string;
+  token?: string;
+  prenom?: string;
 }
 
 export interface UserModel {

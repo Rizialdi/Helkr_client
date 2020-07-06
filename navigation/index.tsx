@@ -213,7 +213,8 @@ export default () => {
   const user = useStoreState(state => state.User.user);
   const {
     User: { loadUser },
-    Offering: { loadTags }
+    Offering: { loadTags },
+    ChatMessages: { loadLastMessageReadIds }
   } = useStoreActions(actions => actions);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -221,6 +222,7 @@ export default () => {
   useEffect(() => {
     loadUser();
     loadTags();
+    loadLastMessageReadIds();
     setTimeout(() => setIsLoading(false), 2000);
   }, []);
 

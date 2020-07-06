@@ -16,20 +16,13 @@ import {
   AllChatsAndMessagesQuery
 } from '../../graphql';
 import { useStoreState } from '../../models';
-import { makePseudoName } from '../../utils';
-import {
-  UserFragment,
-  MessageFragment,
-  Message
-} from '../../graphql/helpkr-types';
+import { makePseudoName, sortChatMessages } from '../../utils';
+import { Message } from '../../graphql/helpkr-types';
 import {
   useNewMessageSubscription,
   useNewChannelSubscription,
-  Channel,
-  Utilisateur,
-  AllChatsAndMessagesQueryResult
+  Utilisateur
 } from '../../graphql/helpkr-types';
-import Icon from 'react-native-vector-icons/AntDesign';
 import Discussion from './Discussion';
 
 const { width } = Dimensions.get('screen');
@@ -55,7 +48,7 @@ const Item = ({
   const [openDiscussionScreen, setOpenDiscussionScreen] = useState<boolean>(
     false
   );
-  console.log(openDiscussionScreen);
+
   return (
     <>
       <TouchableOpacity
@@ -104,6 +97,8 @@ const Item = ({
 
 const Discussions = ({ navigation }: { navigation: any }) => {
   const { user } = useStoreState(state => state.User);
+  const { lastMessageReadIds } = useStoreState(state => state.ChatMessages);
+
   const [data, setData] = useState<AllChatsAndMessagesQuery>();
 
   let allChatUsersAndLastMessage: Array<{
@@ -137,22 +132,30 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     dataAllChats && !error && setData(dataAllChats);
   }, [dataAllChats]);
 
-  data?.allChatsAndMessages.map(channel => {
-    const channelId = channel.id;
-    const userFiltered = channel.users.filter(item => item.id !== user.id)[0];
-    const lastMessage = channel.messages[0];
-    const unReadMessageCount = channel.messages.findIndex(
-      message => message.id === channel.lastMessageReadId
-    );
+  if (data && data?.allChatsAndMessages) {
+    data?.allChatsAndMessages?.map(channel => {
+      const channelId = channel.id;
+      const lastMessageReadIdAndChannel = lastMessageReadIds.filter(
+        item => item.channelId === channelId
+      )[0];
+      const userFiltered = channel.users.filter(item => item.id !== user.id)[0];
+      const lastMessage = channel.messages[0];
+      const unReadMessageCount = lastMessageReadIdAndChannel
+        ? channel.messages.findIndex(
+            message =>
+              message.id === lastMessageReadIdAndChannel?.lastMessageReadId
+          )
+        : channel.messages.length;
 
-    channelIds.push(channelId);
-    allChatUsersAndLastMessage.push({
-      channelId,
-      userFiltered,
-      lastMessage,
-      unReadMessageCount
+      channelIds.push(channelId);
+      allChatUsersAndLastMessage.push({
+        channelId,
+        userFiltered,
+        lastMessage,
+        unReadMessageCount
+      });
     });
-  });
+  }
 
   // Some channelIds are found after looping through allChatsAndMessages
 
@@ -174,7 +177,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
         dataUpdateMessages.newMessage &&
         !errorUpdateMessages
       ) {
-        const newData = data?.allChatsAndMessages.map(item => {
+        const newData = data?.allChatsAndMessages?.map(item => {
           if (item.id === dataUpdateMessages?.newMessage.channelId) {
             const {
               channelId: _,
@@ -200,7 +203,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     error: errorUpdateChannels
   } = useNewChannelSubscription({
     variables: {
-      userId: user.id
+      userId: user.id as string
     },
     shouldResubscribe: true
   });
@@ -226,7 +229,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     data: AllChatsAndMessagesQuery,
     channelId: string
   ) => {
-    const channel = data.allChatsAndMessages.filter(
+    const channel = data?.allChatsAndMessages?.filter(
       channel => channel.id === channelId
     )[0];
     return channel;
@@ -236,7 +239,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
     <Layout title={'Discussions'}>
       {data ? (
         <FlatList
-          data={allChatUsersAndLastMessage}
+          data={sortChatMessages(allChatUsersAndLastMessage)}
           renderItem={({ item }) => {
             const user = item.userFiltered;
             return (

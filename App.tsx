@@ -29,7 +29,14 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: { __schema: { types: [] } }
 });
 // TODO change the ip address before production
-const cache = new InMemoryCache({ fragmentMatcher });
+export const cache = new InMemoryCache({ fragmentMatcher });
+
+// const persistor = new CachePersistor({
+//   cache,
+//   storage: AsyncStorage as PersistentStorage<
+//     PersistedData<NormalizedCacheObject>
+//   >
+// });
 
 persistCache({
   cache,
@@ -37,6 +44,13 @@ persistCache({
     PersistedData<NormalizedCacheObject>
   >
 });
+
+//Instead of using persistCache, you can instantiate a CachePersistor,
+// which will give you fine - grained control of persistence.
+// persistor.restore(); // Immediately restore the cache. Returns a Promise.
+// // persistor.persist(); // Immediately persist the cache. Returns a Promise.
+// persistor.purge(); // Immediately purge the stored cache. Returns a Promise.
+// persistor.persist();
 
 // Create an http link:
 const httpLink = createHttpLink({
@@ -73,7 +87,7 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
-// using the ability to split links, you can send data to each link
+// using the ability AllChatsAndMessagesto split links, you can send data to each link
 // depending on what kind of operation is being sent
 const link = split(
   // split based on operation type
@@ -101,11 +115,11 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 cache.writeData({
   data: {
     lastMessageReadIds: [
-      // {
-      //   __typename: 'LastMessageReadIdAndChannel',
-      //   channelId: 'ckby0uepx0000gnp9ga0pnpnw',
-      //   lastMessageReadId: 'ckby0uepx0001gnp9hme39np1'
-      // }
+      {
+        __typename: 'LastMessageReadIdAndChannel',
+        channelId: 'ckby0uepx0000gnp9ga0pnpnw',
+        lastMessageReadId: 'ckby0uepx0001gnp9hme39np1'
+      }
     ]
   }
 });

@@ -4,14 +4,17 @@ import Preferences, { PreferencesModel } from './Preferences';
 import User, { UserModel } from './User';
 
 import Offering, { OfferingModel } from './Offering';
+import ChatMessages, { ChatMessagesModel } from './ChatMessages';
 
 interface StoreModel {
+  ChatMessages: ChatMessagesModel;
   Preferences: PreferencesModel;
   Offering: OfferingModel;
   User: UserModel;
 }
 
 const model: StoreModel = {
+  ChatMessages,
   Preferences,
   Offering,
   User

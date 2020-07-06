@@ -1,5 +1,7 @@
-import { ChatFragment, UserFragment } from './graphql/helpkr-types';
+import { ChatFragment, Utilisateur, Message } from './graphql/helpkr-types';
 import { User } from 'react-native-gifted-chat';
+import { AsyncStorage } from 'react-native';
+import { chatMessagesContextInterface } from './models/ChatMessages';
 const yearMonths: string[] = [
   'jan.',
   'fev.',
@@ -75,4 +77,43 @@ export const formattingTextMessages = (channel: ChatFragment) => {
   });
 
   return newMessages;
+};
+
+export const storeLastMessageReadIds = async (
+  array: chatMessagesContextInterface[]
+) => {
+  (async () => {
+    try {
+      await AsyncStorage.setItem('lastMessageReadIds', JSON.stringify(array));
+    } catch (error) {
+      throw new Error('lastMessageReadIds storage failed');
+    }
+  })();
+};
+
+type chatAndMessagesArray = Array<{
+  channelId: string;
+  userFiltered: {
+    __typename?: 'utilisateur' | undefined;
+  } & {
+    __typename?: 'utilisateur' | undefined;
+  } & Pick<Utilisateur, 'id' | 'prenom' | 'nom' | 'avatar'>;
+  lastMessage: {
+    __typename?: 'message' | undefined;
+  } & {
+    __typename?: 'message' | undefined;
+  } & Pick<Message, 'text' | 'id' | 'createdAt' | 'sentById'>;
+  unReadMessageCount: number | null;
+}>;
+
+export const sortChatMessages = (
+  array: chatAndMessagesArray
+): chatAndMessagesArray => {
+  const sortedChatMessages = array.sort(
+    (a, b) =>
+      new Date(b.lastMessage.createdAt).getTime() -
+      new Date(a.lastMessage.createdAt).getTime()
+  );
+
+  return sortedChatMessages;
 };

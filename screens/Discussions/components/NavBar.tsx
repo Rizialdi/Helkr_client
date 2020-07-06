@@ -16,13 +16,13 @@ const NavBarCustom: FC<Props> = ({ recipient, toOpen }) => {
 
   return (
     <Block flex={false} style={styles.header}>
-      <Block>
+      <Block left style={{ flex: 2 }}>
         <TouchableOpacity onPress={() => toOpen(false)}>
-          <Icon name="arrowleft" size={24} />
+          <Icon name="left" size={24} />
         </TouchableOpacity>
       </Block>
-      <Block style={{ flex: 1, alignItems: 'center' }}>
-        <Text style={styles.recipient}>{recipient}</Text>
+      <Block style={{ flex: 8 }}>
+        <Text style={styles.recipient}> {recipient} </Text>
       </Block>
     </Block>
   );
@@ -34,10 +34,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'gray',
-    height: 50,
-    paddingHorizontal: 14
+    height: 60,
+    paddingHorizontal: 14,
+    borderBottomColor: 'gray',
+    borderBottomWidth: 0.5
   },
   recipient: {
     fontSize: 18,

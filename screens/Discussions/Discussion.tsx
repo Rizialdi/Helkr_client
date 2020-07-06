@@ -1,13 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { AppLoading, Linking } from 'expo';
 import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Platform,
-  TouchableOpacity
-} from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 import {
   Bubble,
   GiftedChat,
@@ -18,11 +12,20 @@ import {
 import CustomActions from './components/CustomActions';
 import CustomView from './components/CustomView';
 import NavBar from './components/NavBar';
-import { formattingTextMessages } from '../../utils';
-import { useStoreState } from '../../models';
+import {
+  formattingTextMessages,
+  makePseudoName,
+  storeLastMessageReadIds
+} from '../../utils';
+import { useStoreState, useStoreActions } from '../../models';
 import { locale } from 'dayjs';
-import { ChatFragment } from '../../graphql/helpkr-types';
-
+import {
+  ChatFragment,
+  AllChatsAndMessagesDocument
+} from '../../graphql/helpkr-types';
+import { useMutation } from '@apollo/react-hooks';
+import { UPDATE_UNREAD_COUNT } from '../../apollo-cache/resolvers/index';
+import { cache } from '../../App';
 interface Props {
   channel: ChatFragment;
   toOpen: Dispatch<SetStateAction<boolean>>;
@@ -47,34 +50,57 @@ const Discussion = ({ channel, toOpen }: Props) => {
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
+  // Used when tried to use apollo's local state
+  const { id: channelId } = channel;
+  const { id: lastMessageReadId } = channel.messages.sort(
+    (a, b) => a.createdAt - b.createdAt
+  )[0];
+
+  // const [
+  //   updatingUnReadCount,
+  //   { called, error, loading, data, client }
+  // ] = useMutation(UPDATE_UNREAD_COUNT, {
+  //   variables: { channelId, lastMessageReadId },
+  //   refetchQueries: [{ query: AllChatsAndMessagesDocument }]
+  // });
+
+  // if (!loading && called) client?.reFetchObservableQueries();
+
+  // console.log(called, error, loading, data);
+
   const { user } = useStoreState(state => state.User);
+  const { lastMessageReadIds } = useStoreState(state => state.ChatMessages);
+  const { setLastMessageReadIds } = useStoreActions(
+    actions => actions.ChatMessages
+  );
+
+  const newLastMessageReadIds = [
+    { channelId, lastMessageReadId },
+    ...lastMessageReadIds
+  ];
+  // Finding the name of the interlocutor
+  const { nom, prenom } = channel.users.filter(item => item.id !== user.id)[0];
+  const recipient = makePseudoName(nom, prenom);
 
   useEffect(() => {
     setIsMounted(true);
     setAppIsReady(true);
     setIsTyping(false);
-    channel && setMessages(formattingTextMessages(channel));
+    setLastMessageReadIds(newLastMessageReadIds);
+    storeLastMessageReadIds(newLastMessageReadIds);
   }, []);
 
   useEffect(() => {
-    isMounted === true && setIsMounted(!isMounted);
+    // To prevent state update after unmounting
+    if (isMounted) {
+      channel && setMessages(formattingTextMessages(channel));
+      setLoadEarlier(true);
+      setIsLoadingEarlier(false);
+      setIsMounted(false);
+    }
   }, [isMounted]);
 
   const onLoadEarlier = () => setIsLoadingEarlier(true);
-
-  setTimeout(() => {
-    if (isMounted === true) {
-      setMessages(
-        GiftedChat.prepend(
-          messages,
-          [] as IMessage[], //earlier messages
-          Platform.OS !== 'web'
-        )
-      );
-      setLoadEarlier(true);
-      setIsLoadingEarlier(false);
-    }
-  }, 1500); // simulating network
 
   let onSend = (messages: Array<any> = [{}]) => {
     const sentMessages = [{ ...messages[0], sent: true, received: true }];
@@ -192,7 +218,7 @@ const Discussion = ({ channel, toOpen }: Props) => {
     }
   };
 
-  const renderQuickReplySend = () => <Text>{' custom send =>'}</Text>;
+  const renderQuickReplySend = () => <Text>{' custom send =>'} </Text>;
 
   const renderSend = (props: Send['props']) => (
     <Send {...props} containerStyle={{ justifyContent: 'center' }}>
@@ -206,8 +232,7 @@ const Discussion = ({ channel, toOpen }: Props) => {
         <AppLoading />
       ) : (
         <View style={styles.container} accessible>
-          <NavBar recipient={'doudou'} toOpen={toOpen} />
-
+          <NavBar recipient={recipient} toOpen={toOpen} />
           <GiftedChat
             messages={messages}
             onSend={onSend}
@@ -216,7 +241,7 @@ const Discussion = ({ channel, toOpen }: Props) => {
             isLoadingEarlier={loadingEarlier}
             parsePatterns={parsePatterns}
             locale={locale('fr-ca', {}, true)}
-            user={{ _id: user.id, name: user.token }}
+            user={{ _id: user.id as string, name: user.token }}
             scrollToBottom
             onLongPressAvatar={user => alert(JSON.stringify(user))}
             onPressAvatar={() => alert('short press')}
