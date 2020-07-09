@@ -6,6 +6,9 @@ import Button from './Button';
 import TagItem from './TagItem';
 import CustomListView, { dataContent } from './CustomListView';
 import CandidateCard from './CandidateCard';
+import SelectedCandidateCard from './SelectedCandidateCard';
+import Calendar from './Calendar';
+
 export {
   Layout,
   TermsOfServices,
@@ -15,5 +18,7 @@ export {
   TagItem,
   dataContent,
   CustomListView,
-  CandidateCard
+  CandidateCard,
+  SelectedCandidateCard,
+  Calendar
 };

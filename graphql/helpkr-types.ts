@@ -494,6 +494,17 @@ export type CandidateToOfferingMutation = (
   ) }
 );
 
+export type ChooseCandidateMutationVariables = Exact<{
+  id: Scalars['String'];
+  candidateId: Scalars['String'];
+}>;
+
+
+export type ChooseCandidateMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'chooseCandidate'>
+);
+
 export type CreateMessageMutationVariables = Exact<{
   channelId?: Maybe<Scalars['String']>;
   recipient?: Maybe<Scalars['String']>;
@@ -646,6 +657,9 @@ export type OfferingByIdQuery = (
     { __typename?: 'offering' }
     & Pick<Offering, 'details'>
     & { candidates: Array<(
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'id' | 'avatar' | 'professional' | 'moyenne'>
+    )>, selectedCandidate?: Maybe<(
       { __typename?: 'utilisateur' }
       & Pick<Utilisateur, 'id' | 'avatar' | 'professional' | 'moyenne'>
     )> }
@@ -827,6 +841,37 @@ export function useCandidateToOfferingMutation(baseOptions?: ApolloReactHooks.Mu
 export type CandidateToOfferingMutationHookResult = ReturnType<typeof useCandidateToOfferingMutation>;
 export type CandidateToOfferingMutationResult = ApolloReactCommon.MutationResult<CandidateToOfferingMutation>;
 export type CandidateToOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<CandidateToOfferingMutation, CandidateToOfferingMutationVariables>;
+export const ChooseCandidateDocument = gql`
+    mutation chooseCandidate($id: String!, $candidateId: String!) {
+  chooseCandidate(id: $id, candidateId: $candidateId)
+}
+    `;
+export type ChooseCandidateMutationFn = ApolloReactCommon.MutationFunction<ChooseCandidateMutation, ChooseCandidateMutationVariables>;
+
+/**
+ * __useChooseCandidateMutation__
+ *
+ * To run a mutation, you first call `useChooseCandidateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChooseCandidateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [chooseCandidateMutation, { data, loading, error }] = useChooseCandidateMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      candidateId: // value for 'candidateId'
+ *   },
+ * });
+ */
+export function useChooseCandidateMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChooseCandidateMutation, ChooseCandidateMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChooseCandidateMutation, ChooseCandidateMutationVariables>(ChooseCandidateDocument, baseOptions);
+      }
+export type ChooseCandidateMutationHookResult = ReturnType<typeof useChooseCandidateMutation>;
+export type ChooseCandidateMutationResult = ApolloReactCommon.MutationResult<ChooseCandidateMutation>;
+export type ChooseCandidateMutationOptions = ApolloReactCommon.BaseMutationOptions<ChooseCandidateMutation, ChooseCandidateMutationVariables>;
 export const CreateMessageDocument = gql`
     mutation createMessage($channelId: String, $recipient: String, $text: String!) {
   createMessage(channelId: $channelId, recipient: $recipient, text: $text)
@@ -1222,6 +1267,12 @@ export const OfferingByIdDocument = gql`
     ...offering
     details
     candidates {
+      id
+      avatar
+      professional
+      moyenne
+    }
+    selectedCandidate {
       id
       avatar
       professional

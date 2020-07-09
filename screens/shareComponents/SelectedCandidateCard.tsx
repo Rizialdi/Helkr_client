@@ -12,19 +12,13 @@ interface Props {
   avatar: string | null;
   average: number;
   professional: boolean;
-  parentCallback: React.Dispatch<
-    React.SetStateAction<CandidateCardClickedPart>
-  >;
-  setSelectedId: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const candidateCard: FC<Props> = ({
   professional,
   average,
   avatar = null,
-  id,
-  parentCallback,
-  setSelectedId
+  id
 }) => {
   return (
     <Block
@@ -50,11 +44,10 @@ const candidateCard: FC<Props> = ({
           <Text semibold>{average} / 5</Text>
           <Text semibold>{professional ? 'Professionnel' : 'Amateur'}</Text>
           <TouchableOpacity
-            onPress={() => {
-              parentCallback('icon'), setSelectedId(id);
-            }}
+            //Link to message
+            onPress={() => null}
             style={{ backgroundColor: 'red', padding: 15 }}>
-            <Icon name="right" size={15} />
+            <Icon name="message1" size={15} />
           </TouchableOpacity>
         </Block>
       </View>
