@@ -1,5 +1,13 @@
 import React, { useState, useEffect, FC } from 'react';
-import { ActivityIndicator, StyleSheet, Dimensions, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Dimensions,
+  View,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView
+} from 'react-native';
 import Modal from 'react-native-modal';
 import { Calendar } from '../../shareComponents';
 
@@ -18,6 +26,12 @@ import Avis from '../../Avis';
 import { LocalDateObject } from '../../shareComponents/Calendar';
 import Button from '../../shareComponents/Button';
 import { useChooseCandidateMutation } from '../../../graphql/helpkr-types';
+import MultiStepMenuCheckout from './MultiStepMenuCheckout';
+import CompletedOrIssue from './CompletedOrIssue';
+import AmountToPay from './AmountToPay';
+import ValidationCode from './ValidationCode';
+import DropReview from './DropReview';
+import IssueReporting from './IssueReporting';
 const { height } = Dimensions.get('screen');
 
 interface Props {
@@ -25,19 +39,28 @@ interface Props {
 }
 
 export type CandidateCardClickedPart = '' | 'icon';
+export type CompletedOrIssue = 'completed' | 'issue' | null;
 
 const ModalItemManageCandidates: FC<Props> = props => {
   const [selectedId, setSelectedId] = useState<string>('');
   const { called, loading, data } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
-  console.log('selectedId', selectedId);
+
   const [chooseCandidate] = useChooseCandidateMutation();
   const [isUpdateOnUser, setIsUpdateOnUser] = useState<boolean>(false);
   const [date, setDate] = useState<LocalDateObject | null>(null);
   const [candidateCardClickedPart, setCandidateCardClickedPart] = useState<
     CandidateCardClickedPart
   >('');
+  const [completedOrIssue, setCompletedOrIssue] = useState<CompletedOrIssue>(
+    null
+  );
+
+  const [priceToPay, setPriceToPay] = useState<string>('0');
+  const [isValidationCodeCorrect, setIsValidationCodeCorrect] = useState<
+    boolean
+  >(false);
 
   const onModalClose = () => {
     setDate({});
@@ -113,21 +136,64 @@ const ModalItemManageCandidates: FC<Props> = props => {
             onBackdropPress={() => setIsUpdateOnUser(false)}
             onSwipeComplete={() => setIsUpdateOnUser(false)}>
             <View style={styles.modal}>
-              <Text center bold vertical={25}>
+              <Text center bold>
                 Dites nous tout
               </Text>
-              <Block flex={false} margin={[20, 20]}>
-                <Button secondary>
-                  <Text bold center>
-                    Marquer comme terminé
-                  </Text>
-                </Button>
-                <Button accent>
-                  <Text bold center>
-                    Signaler un problème
-                  </Text>
-                </Button>
-              </Block>
+              <MultiStepMenuCheckout>
+                <MultiStepMenuCheckout.MenuItemCheckout>
+                  <CompletedOrIssue setCompletedOrIssue={setCompletedOrIssue} />
+                </MultiStepMenuCheckout.MenuItemCheckout>
+                <MultiStepMenuCheckout.MenuItemCheckout>
+                  {completedOrIssue === 'completed' ? (
+                    <AmountToPay setPriceToPay={setPriceToPay} />
+                  ) : completedOrIssue === 'issue' ? (
+                    <KeyboardAvoidingView behavior={'padding'}>
+                      <ScrollView
+                        alwaysBounceVertical={true}
+                        showsVerticalScrollIndicator={false}
+                        scrollEnabled={true}>
+                        <IssueReporting />
+                      </ScrollView>
+                    </KeyboardAvoidingView>
+                  ) : (
+                    <Text>Vous ne devriez pas etre ici</Text>
+                  )}
+                </MultiStepMenuCheckout.MenuItemCheckout>
+                <MultiStepMenuCheckout.MenuItemCheckout>
+                  {completedOrIssue === 'completed' && priceToPay ? (
+                    <ValidationCode
+                      setIsValidationCodeCorrect={setIsValidationCodeCorrect}
+                    />
+                  ) : (
+                    <Text>Une erreur s'est produite</Text>
+                  )}
+                </MultiStepMenuCheckout.MenuItemCheckout>
+                <MultiStepMenuCheckout.MenuItemCheckout>
+                  {completedOrIssue === 'completed' &&
+                  priceToPay &&
+                  isValidationCodeCorrect ? (
+                    <KeyboardAvoidingView behavior={'padding'}>
+                      <ScrollView
+                        alwaysBounceVertical={true}
+                        showsVerticalScrollIndicator={false}
+                        scrollEnabled={true}>
+                        <DropReview />
+                      </ScrollView>
+                    </KeyboardAvoidingView>
+                  ) : (
+                    <Text>Une erreur s'est produite</Text>
+                  )}
+                </MultiStepMenuCheckout.MenuItemCheckout>
+                <MultiStepMenuCheckout.MenuItemCheckout>
+                  {completedOrIssue === 'completed' &&
+                  priceToPay &&
+                  isValidationCodeCorrect ? (
+                    <></>
+                  ) : (
+                    <Text>Une erreur s'est produite</Text>
+                  )}
+                </MultiStepMenuCheckout.MenuItemCheckout>
+              </MultiStepMenuCheckout>
             </View>
           </Modal>
 
@@ -197,7 +263,8 @@ const styles = StyleSheet.create({
   modalContainer: {
     margin: 0,
     paddingTop: 20,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    overflow: 'hidden'
   },
   modal: {
     flexDirection: 'column',

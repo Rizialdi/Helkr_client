@@ -8,6 +8,7 @@ import CustomListView, { dataContent } from './CustomListView';
 import CandidateCard from './CandidateCard';
 import SelectedCandidateCard from './SelectedCandidateCard';
 import Calendar from './Calendar';
+import TextAreaInput from './TextAreaInput';
 
 export {
   Layout,
@@ -20,5 +21,6 @@ export {
   CustomListView,
   CandidateCard,
   SelectedCandidateCard,
-  Calendar
+  Calendar,
+  TextAreaInput
 };

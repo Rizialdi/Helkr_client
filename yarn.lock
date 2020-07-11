@@ -7931,6 +7931,11 @@ react-native-simple-toast@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-native-simple-toast/-/react-native-simple-toast-1.0.0.tgz#116f00774c00b082bde2c44585028f4015b9aaaa"
   integrity sha512-xaMhI1PTNlDs4PF9AflNsD55RDwlPaFpF6iq1qb3o1MCy1nDkYyqRbytwtvUODepPwOvtgMQSDaGW1u0tgUnjw==
 
+react-native-stars@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-native-stars/-/react-native-stars-1.2.1.tgz#66d523ebaf0cdb58dbba6f24a7607914fe049994"
+  integrity sha512-reeTED4Sizb4HXs3mGm2UFghtuC2D4v38tBgAajd4uQLTfzRDsBUXxxPfT+EqNSMOOk4lcXJ47mKDXD/gbbiaA==
+
 react-native-swipe-gestures@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"

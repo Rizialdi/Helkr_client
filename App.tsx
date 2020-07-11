@@ -109,6 +109,16 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   resolvers
 });
 
+// (async () => {
+//   try {
+//     await AsyncStorage.setItem('prenom', 'Abou');
+//     await AsyncStorage.setItem(
+//       'token',
+//       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja2I5dXlhcmMwMDAwc3lwOWlocXd6ODdjIiwiaWF0IjoxNTk0NDI2NzMxfQ.YWWCfdlz2q9ZZ4p_VGNvhScH-rSAQjWv_97q8wsjw8k'
+//     );
+//     await AsyncStorage.setItem('id', 'ckb9uyarc0000syp9ihqwz87c');
+//   } catch (error) {}
+// })();
 // client
 //   .clearStore()
 //   .then(() =>
@@ -153,7 +163,8 @@ const handleResourcesAsync = async () => {
     rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
     serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
     serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
-    serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf')
+    serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf'),
+    HelveticaNeue: require('./assets/fonts/Raleway-Regular.ttf')
   });
 
   const cacheIcons = icons.map(icon => {
