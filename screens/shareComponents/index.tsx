@@ -9,6 +9,7 @@ import CandidateCard from './CandidateCard';
 import SelectedCandidateCard from './SelectedCandidateCard';
 import Calendar from './Calendar';
 import TextAreaInput from './TextAreaInput';
+import OfferingDetailsOnModal from './OfferingDetailsOnModal';
 
 export {
   Layout,
@@ -22,5 +23,6 @@ export {
   CandidateCard,
   SelectedCandidateCard,
   Calendar,
-  TextAreaInput
+  TextAreaInput,
+  OfferingDetailsOnModal
 };

@@ -6,6 +6,7 @@ import Block from './Block';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { CandidateCardClickedPart } from '../Manage/components/ModalItemManageCandidates';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useStoreState } from '../../models';
 
 interface Props {
   id: string;
@@ -26,38 +27,54 @@ const candidateCard: FC<Props> = ({
   parentCallback,
   setSelectedId
 }) => {
+  const { themeColors } = useStoreState(store => store.Preferences);
   return (
     <Block
-      flex={false}
-      row
-      gray
-      padding={5}
-      margin={[15, 0]}
-      style={[styles.candidateView, styles.shadow, { borderRadius: 6 }]}>
-      <View style={{ flex: 1 }}>
-        <Image
-          source={
-            avatar
-              ? { uri: avatar }
-              : require('../../assets/images/default-user-image.png')
-          }
-          resizeMode="contain"
-          style={{ width: '100%', height: '100%' }}
-        />
-      </View>
-      <View style={{ flex: 3, borderRadius: 6 }}>
-        <Block row space={'around'} center>
-          <Text semibold>{average} / 5</Text>
-          <Text semibold>{professional ? 'Professionnel' : 'Amateur'}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              parentCallback('icon'), setSelectedId(id);
-            }}
-            style={{ backgroundColor: 'red', padding: 15 }}>
-            <Icon name="right" size={15} />
-          </TouchableOpacity>
-        </Block>
-      </View>
+      padding={8}
+      style={{
+        borderRadius: 6,
+        backgroundColor: '#d8eaed',
+        marginTop: 10,
+        marginBottom: 5
+      }}>
+      <Block
+        flex={false}
+        row
+        margin={[0, 0]}
+        padding={5}
+        style={[
+          styles.candidateView,
+          { borderRadius: 6, backgroundColor: themeColors.white }
+        ]}>
+        <View style={{ flex: 1 }}>
+          <Image
+            source={
+              avatar
+                ? { uri: avatar }
+                : require('../../assets/images/default-user-image.png')
+            }
+            resizeMode="contain"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </View>
+        <View style={{ flex: 3, borderRadius: 6 }}>
+          <Block row space={'around'} center>
+            <Text semibold>{average} / 5</Text>
+            <Text semibold>{professional ? 'Professionnel' : 'Amateur'}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                parentCallback('icon'), setSelectedId(id);
+              }}
+              style={{
+                backgroundColor: themeColors.secondary,
+                padding: 15,
+                borderRadius: 10
+              }}>
+              <Icon name="right" size={20} />
+            </TouchableOpacity>
+          </Block>
+        </View>
+      </Block>
     </Block>
   );
 };
@@ -70,7 +87,7 @@ const styles = StyleSheet.create({
     height: 80
   },
   shadow: {
-    shadowColor: 'black',
+    shadowColor: 'yellow',
     shadowOffset: {
       width: 0,
       height: 6

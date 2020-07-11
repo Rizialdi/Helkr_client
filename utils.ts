@@ -18,7 +18,8 @@ const yearMonths: string[] = [
 ];
 
 export const formatDate = (timestamp: string = '15886987435'): string => {
-  const difference = Date.now() / 1000 - parseInt(timestamp) / 1000;
+  const time = new Date(timestamp);
+  const difference = Date.now() / 1000 - time.valueOf() / 1000;
   // Calculate the number of days
   var days = Math.floor(difference / 86400);
   // Calculate the number of months
@@ -43,7 +44,7 @@ export const formatDate = (timestamp: string = '15886987435'): string => {
 };
 
 export const formatDateAvis = (timestamp: string = '15886987435'): string => {
-  const date = new Date(parseInt(timestamp));
+  const date = new Date(timestamp);
   return yearMonths[date.getMonth()] + ' ' + date.getFullYear();
 };
 
@@ -116,4 +117,9 @@ export const sortChatMessages = (
   );
 
   return sortedChatMessages;
+};
+
+export const capitalize = (str: string) => {
+  if (typeof str !== 'string') return '';
+  return str.charAt(0).toUpperCase() + str.slice(1);
 };

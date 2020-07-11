@@ -1,14 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Block, Button, Text } from '../../shareComponents';
-import Stars from 'react-native-stars';
 
-import {
-  Keyboard,
-  ScrollView,
-  KeyboardAvoidingView,
-  Dimensions
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
 import { useStoreState } from '../../../models';
 import RadioForm, {
   RadioButton,

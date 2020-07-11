@@ -87,6 +87,34 @@ const CustomText: React.FC<Props> = ({
 }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
 
+  const handleVertical = () => {
+    if (typeof vertical === 'number') {
+      return {
+        marginVertical: vertical,
+        marginTop: 0,
+        marginBottom: 0
+      };
+    }
+
+    if (typeof vertical === 'object') {
+      const verticalSize = Object.keys(vertical).length;
+      switch (verticalSize) {
+        case 1:
+          return {
+            marginTop: vertical[0],
+            marginBottom: vertical[0],
+            marginVertical: 0
+          };
+        default:
+          return {
+            marginTop: vertical[0],
+            marginBottom: vertical[1],
+
+            marginVertical: 0
+          };
+      }
+    }
+  };
   const textStyles: StyleProp<TextStyle> = [
     {
       color: themeColors.defaultTextColor
@@ -103,7 +131,7 @@ const CustomText: React.FC<Props> = ({
     transform && { textTransform: transform },
     size && { fontSize: size },
     horizontal && { marginHorizontal: horizontal },
-    vertical && { marginVertical: vertical },
+    vertical && { ...handleVertical() },
     height && { lineHeight: height },
     spacing && { letterSpacing: spacing },
     weight && { fontWeight: weight },
