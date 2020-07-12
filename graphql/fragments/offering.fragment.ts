@@ -7,5 +7,6 @@ export default gql`
     category
     description
     createdAt
+    updatedAt
   }
 `;

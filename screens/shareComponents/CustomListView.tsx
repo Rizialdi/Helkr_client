@@ -7,7 +7,6 @@ import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
 import { useStoreState } from '../../models';
-import { MyIncompleteOfferingQuery } from '../../graphql/helpkr-types';
 
 export interface dataContent {
   id: string;
@@ -82,7 +81,10 @@ const CustomListView: FC<Props> = ({
             <Icon name="close" size={24} color={themeColors.black} />
           </TouchableOpacity>
           {selectedOffering &&
-            React.cloneElement(modalItem, { id: selectedOffering })}
+            React.cloneElement(modalItem, {
+              id: selectedOffering,
+              setOpenModal: setOpenModal
+            })}
         </Block>
       </Modal>
     </Block>

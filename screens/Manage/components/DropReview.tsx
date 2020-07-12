@@ -28,7 +28,6 @@ const DropReview: FC<Props> = ({ nextStep }) => {
     false
   );
   const [ratingValue, setRatingValue] = useState<number>(5);
-  console.log(ratingValue);
   return (
     <KeyboardAvoidingView behavior={'position'}>
       <ScrollView

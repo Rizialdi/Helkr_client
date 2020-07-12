@@ -12,18 +12,22 @@ interface Props {
     type: string;
     description: string;
     createdAt: string;
+    updatedAt: string;
     status?: string;
   };
 }
 export default ({ offering }: Props) => {
-  const { category, type, description, createdAt } = offering;
+  const { category, type, description, createdAt, updatedAt } = offering;
   return (
     <Block flex={false} style={styles.container}>
       {offering?.status && <TagItem tag={offering?.status} status />}
       <Block flex={false} row middle space={'around'}>
         <TagItem tag={type} type />
         <TagItem tag={category} category />
-        <TagItem tag={formatDate(createdAt)} date />
+        <TagItem
+          tag={updatedAt ? formatDate(updatedAt) : formatDate(createdAt)}
+          date
+        />
       </Block>
       <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
         {description}

@@ -242,7 +242,6 @@ const ModalItemManageCandidates: FC<Props> = props => {
                             })
                               .then(({ data }) => data?.chooseCandidate)
                               .then(data => {
-                                console.log(data);
                                 try {
                                   if (data) {
                                     onModalClose();
@@ -285,7 +284,6 @@ const styles = StyleSheet.create({
   modal: {
     flexDirection: 'column',
     height: height * 0.75,
-    padding: 10,
     backgroundColor: 'white',
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12

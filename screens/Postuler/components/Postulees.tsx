@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import ModalItem from './ModalItem'
-import { useStoreState } from '../../../models'
-import { CustomListView, dataContent } from '../../shareComponents'
-import { IsCandidateToQuery, useIsCandidateToQuery, useUpdateAppliedToSubscription } from '../../../graphql'
+import ModalItem from './ModalItem';
+import { useStoreState } from '../../../models';
+import { CustomListView, dataContent } from '../../shareComponents';
+import {
+  IsCandidateToQuery,
+  useIsCandidateToQuery,
+  useUpdateAppliedToSubscription
+} from '../../../graphql';
 
 const Postulees = () => {
   const [stateData, setStateData] = useState<IsCandidateToQuery>();
@@ -56,11 +60,11 @@ const Postulees = () => {
         offering => !(offering.id === dataUpdate?.updateAppliedTo?.id)
       );
       setStateData({
+        //@ts-ignore
         isCandidateTo: updatedStatus.concat(newArray)
       });
     }
   }, [dataUpdate]);
-
   return (
     <>
       {loadingTabTwo && <ActivityIndicator />}

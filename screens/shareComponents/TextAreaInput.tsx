@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -32,6 +32,8 @@ interface Props {
   black?: boolean;
   white?: boolean;
   gray?: boolean;
+  value?: string;
+  parentCallback?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TextAreaInput: FC<Props> = ({
@@ -55,12 +57,20 @@ const TextAreaInput: FC<Props> = ({
   animated,
   style,
   children,
+  parentCallback,
   ...props
 }) => {
   const [value, setValue] = useState<string>('');
   const [count, setCount] = useState<number>(0);
   const { themeColors } = useStoreState(state => state.Preferences);
   if (min >= max) return null;
+
+  useEffect(() => {
+    if (props.value) {
+      setValue(props.value);
+      setCount(props.value.length);
+    }
+  }, []);
 
   const blockStyles: StyleProp<ViewStyle> = [
     center && styles.center,
@@ -87,6 +97,7 @@ const TextAreaInput: FC<Props> = ({
         placeholder={placeholder}
         onChangeText={value => {
           setValue(value), setCount(value.length);
+          parentCallback && parentCallback(value);
         }}
         style={[
           styles.input,

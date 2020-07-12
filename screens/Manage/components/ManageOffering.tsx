@@ -7,7 +7,7 @@ import {
 } from '../../../graphql';
 
 import { CustomListView } from '../../shareComponents';
-import ModalItem from './ModalItem';
+import ModalItemManageOfferings from './ModalItemManageOfferings';
 
 const ManageOffering = () => {
   const [stateData, setStateData] = useState<MyIncompleteOfferingQuery>();
@@ -44,7 +44,7 @@ const ManageOffering = () => {
       <CustomListView
         data={stateData?.myIncompleteOffering}
         emptyMessage={"Vous n'avez aucune offre actuellement"}
-        modalItem={<ModalItem />}
+        modalItem={<ModalItemManageOfferings />}
         refreshing={refreshing}
         onRefresh={onRefresh}
       />

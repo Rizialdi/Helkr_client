@@ -214,6 +214,7 @@ export type Offering = {
   selectedCandidate?: Maybe<Utilisateur>;
   status?: Maybe<Scalars['String']>;
   type: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 
@@ -455,7 +456,7 @@ export type MessageFragment = (
 
 export type OfferingFragment = (
   { __typename?: 'offering' }
-  & Pick<Offering, 'id' | 'type' | 'category' | 'description' | 'createdAt'>
+  & Pick<Offering, 'id' | 'type' | 'category' | 'description' | 'createdAt' | 'updatedAt'>
 );
 
 export type ScorerFragment = (
@@ -515,6 +516,27 @@ export type CreateMessageMutationVariables = Exact<{
 export type CreateMessageMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'createMessage'>
+);
+
+export type DeleteOfferingMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteOfferingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteOffering'>
+);
+
+export type UpdateOfferingMutationVariables = Exact<{
+  id: Scalars['String'];
+  description: Scalars['String'];
+}>;
+
+
+export type UpdateOfferingMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateOffering'>
 );
 
 export type AvatarUploadMutationVariables = Exact<{
@@ -769,6 +791,7 @@ export const OfferingFragmentDoc = gql`
   category
   description
   createdAt
+  updatedAt
 }
     `;
 export const ScorerFragmentDoc = gql`
@@ -904,6 +927,67 @@ export function useCreateMessageMutation(baseOptions?: ApolloReactHooks.Mutation
 export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
 export type CreateMessageMutationResult = ApolloReactCommon.MutationResult<CreateMessageMutation>;
 export type CreateMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
+export const DeleteOfferingDocument = gql`
+    mutation deleteOffering($id: String!) {
+  deleteOffering(id: $id)
+}
+    `;
+export type DeleteOfferingMutationFn = ApolloReactCommon.MutationFunction<DeleteOfferingMutation, DeleteOfferingMutationVariables>;
+
+/**
+ * __useDeleteOfferingMutation__
+ *
+ * To run a mutation, you first call `useDeleteOfferingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOfferingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOfferingMutation, { data, loading, error }] = useDeleteOfferingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteOfferingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteOfferingMutation, DeleteOfferingMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteOfferingMutation, DeleteOfferingMutationVariables>(DeleteOfferingDocument, baseOptions);
+      }
+export type DeleteOfferingMutationHookResult = ReturnType<typeof useDeleteOfferingMutation>;
+export type DeleteOfferingMutationResult = ApolloReactCommon.MutationResult<DeleteOfferingMutation>;
+export type DeleteOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOfferingMutation, DeleteOfferingMutationVariables>;
+export const UpdateOfferingDocument = gql`
+    mutation updateOffering($id: String!, $description: String!) {
+  updateOffering(id: $id, description: $description)
+}
+    `;
+export type UpdateOfferingMutationFn = ApolloReactCommon.MutationFunction<UpdateOfferingMutation, UpdateOfferingMutationVariables>;
+
+/**
+ * __useUpdateOfferingMutation__
+ *
+ * To run a mutation, you first call `useUpdateOfferingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOfferingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOfferingMutation, { data, loading, error }] = useUpdateOfferingMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateOfferingMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<UpdateOfferingMutation, UpdateOfferingMutationVariables>) {
+        return ApolloReactHooks.useMutation<UpdateOfferingMutation, UpdateOfferingMutationVariables>(UpdateOfferingDocument, baseOptions);
+      }
+export type UpdateOfferingMutationHookResult = ReturnType<typeof useUpdateOfferingMutation>;
+export type UpdateOfferingMutationResult = ApolloReactCommon.MutationResult<UpdateOfferingMutation>;
+export type UpdateOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<UpdateOfferingMutation, UpdateOfferingMutationVariables>;
 export const AvatarUploadDocument = gql`
     mutation avatarUpload($file: String!) {
   avatarUpload(file: $file)
