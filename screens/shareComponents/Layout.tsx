@@ -22,7 +22,7 @@ const Layout: SFC<Props> = ({ title, children }) => {
   return (
     <SafeAreaView
       style={{ ...styles.container, backgroundColor: themeColors.background }}>
-      <KeyboardAvoidingView enabled={true} behavior="position">
+      <KeyboardAvoidingView enabled={true} behavior="height">
         {title && (
           <View
             style={{

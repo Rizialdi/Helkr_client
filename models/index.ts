@@ -5,8 +5,9 @@ import User, { UserModel } from './User';
 
 import Offering, { OfferingModel } from './Offering';
 import ChatMessages, { ChatMessagesModel } from './ChatMessages';
-
+import JobAuthorization, { JobAuthorizationModel } from './JobAuthorization';
 interface StoreModel {
+  JobAuthorization: JobAuthorizationModel;
   ChatMessages: ChatMessagesModel;
   Preferences: PreferencesModel;
   Offering: OfferingModel;
@@ -14,6 +15,7 @@ interface StoreModel {
 }
 
 const model: StoreModel = {
+  JobAuthorization,
   ChatMessages,
   Preferences,
   Offering,

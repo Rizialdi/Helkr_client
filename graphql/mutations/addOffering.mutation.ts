@@ -6,12 +6,14 @@ export default gql`
     $category: String!
     $description: String!
     $details: String!
+    $referenceId: String!
   ) {
     addOffering(
       type: $type
+      details: $details
       category: $category
       description: $description
-      details: $details
+      referenceId: $referenceId
     )
   }
 `;

@@ -5,8 +5,9 @@ export default gql`
     id
     type
     category
-    description
     createdAt
     updatedAt
+    description
+    referenceId
   }
 `;

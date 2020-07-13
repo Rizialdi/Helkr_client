@@ -10,6 +10,7 @@ import SelectedCandidateCard from './SelectedCandidateCard';
 import Calendar from './Calendar';
 import TextAreaInput from './TextAreaInput';
 import OfferingDetailsOnModal from './OfferingDetailsOnModal';
+import StackedToBottom from './StackedToBottom';
 
 export {
   Layout,
@@ -24,5 +25,6 @@ export {
   SelectedCandidateCard,
   Calendar,
   TextAreaInput,
-  OfferingDetailsOnModal
+  OfferingDetailsOnModal,
+  StackedToBottom
 };

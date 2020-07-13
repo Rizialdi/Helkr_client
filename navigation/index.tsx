@@ -49,7 +49,7 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator<
 const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
-      initialRouteName="Gerer"
+      initialRouteName="Postuler"
       activeColor={theme.colors.primary}
       sceneAnimationEnabled={true}
       backBehavior={'initialRoute'}
@@ -214,7 +214,8 @@ export default () => {
   const {
     User: { loadUser },
     Offering: { loadTags },
-    ChatMessages: { loadLastMessageReadIds }
+    ChatMessages: { loadLastMessageReadIds },
+    JobAuthorization: { loadJobAuthorizations }
   } = useStoreActions(actions => actions);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -223,6 +224,7 @@ export default () => {
     loadUser();
     loadTags();
     loadLastMessageReadIds();
+    loadJobAuthorizations();
     setTimeout(() => setIsLoading(false), 2000);
   }, []);
 

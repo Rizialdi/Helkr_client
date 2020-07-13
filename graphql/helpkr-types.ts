@@ -14,6 +14,15 @@ export type Scalars = {
   Float: number;
   DateTime: any;
   JSON: any;
+  Json: any;
+};
+
+export type Authorizedcategories = {
+  __typename?: 'authorizedcategories';
+  id: Scalars['String'];
+  listofauthorizedcategories?: Maybe<Scalars['Json']>;
+  userId?: Maybe<Scalars['String']>;
+  utilisateur?: Maybe<Utilisateur>;
 };
 
 export type AuthPayload = {
@@ -78,6 +87,7 @@ export type CreateChannel = {
 
 
 
+
 export type Message = {
   __typename?: 'message';
   channel?: Maybe<Channel>;
@@ -102,8 +112,10 @@ export type Moyenne = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addAuthorizedCategories: Scalars['Boolean'];
   addOffering: Scalars['Boolean'];
   addressUpdate: Scalars['Boolean'];
+  addVerificationpieces: Scalars['Boolean'];
   avatarUpload: Scalars['Boolean'];
   candidateToOffering: CandidateToOfferingSuccess;
   chooseCandidate: Scalars['Boolean'];
@@ -119,16 +131,29 @@ export type Mutation = {
 };
 
 
+export type MutationAddAuthorizedCategoriesArgs = {
+  id?: Maybe<Scalars['String']>;
+  listofauthorizedcategories: Scalars['String'];
+};
+
+
 export type MutationAddOfferingArgs = {
   category: Scalars['String'];
   description: Scalars['String'];
   details: Scalars['String'];
+  referenceId: Scalars['String'];
   type: Scalars['String'];
 };
 
 
 export type MutationAddressUpdateArgs = {
   text: Scalars['String'];
+};
+
+
+export type MutationAddVerificationpiecesArgs = {
+  id?: Maybe<Scalars['String']>;
+  listofpieces: Scalars['String'];
 };
 
 
@@ -211,6 +236,7 @@ export type Offering = {
   description: Scalars['String'];
   details: Scalars['JSON'];
   id: Scalars['String'];
+  referenceId?: Maybe<Scalars['String']>;
   selectedCandidate?: Maybe<Utilisateur>;
   status?: Maybe<Scalars['String']>;
   type: Scalars['String'];
@@ -242,9 +268,11 @@ export type Query = {
   allChatsAndMessages: Array<Channel>;
   channel: Channel;
   channels: Array<Channel>;
+  getAuthorizedCategories: Authorizedcategories;
   getAvisUser: Array<Avis>;
   getUserInfo: AuthPayload;
   getUserStats: Stats;
+  getVerificationPieces: Verificationpieces;
   incompleteOfferings: Array<Offering>;
   isCandidateTo: Array<Offering>;
   messages: Array<Message>;
@@ -262,6 +290,11 @@ export type QueryChannelArgs = {
 };
 
 
+export type QueryGetAuthorizedCategoriesArgs = {
+  id?: Maybe<Scalars['String']>;
+};
+
+
 export type QueryGetAvisUserArgs = {
   userId: Scalars['String'];
 };
@@ -274,6 +307,11 @@ export type QueryGetUserInfoArgs = {
 
 export type QueryGetUserStatsArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryGetVerificationPiecesArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -357,11 +395,11 @@ export type Utilisateur = {
   moyenne: Scalars['Int'];
   nom: Scalars['String'];
   numero: Scalars['String'];
-  offering: Array<Offering>;
   offerings: Array<Offering>;
   prenom: Scalars['String'];
   professional: Scalars['Boolean'];
   tags: Array<Scalars['String']>;
+  verificationpieces?: Maybe<Verificationpieces>;
   verified: Scalars['Boolean'];
 };
 
@@ -406,14 +444,6 @@ export type UtilisateurMessagesArgs = {
 };
 
 
-export type UtilisateurOfferingArgs = {
-  after?: Maybe<OfferingWhereUniqueInput>;
-  before?: Maybe<OfferingWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
 export type UtilisateurOfferingsArgs = {
   after?: Maybe<OfferingWhereUniqueInput>;
   before?: Maybe<OfferingWhereUniqueInput>;
@@ -424,6 +454,14 @@ export type UtilisateurOfferingsArgs = {
 export type UtilisateurWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
   numero?: Maybe<Scalars['String']>;
+};
+
+export type Verificationpieces = {
+  __typename?: 'verificationpieces';
+  id: Scalars['String'];
+  listofpieces?: Maybe<Scalars['Json']>;
+  userId?: Maybe<Scalars['String']>;
+  utilisateur?: Maybe<Utilisateur>;
 };
 
 
@@ -456,7 +494,7 @@ export type MessageFragment = (
 
 export type OfferingFragment = (
   { __typename?: 'offering' }
-  & Pick<Offering, 'id' | 'type' | 'category' | 'description' | 'createdAt' | 'updatedAt'>
+  & Pick<Offering, 'id' | 'type' | 'category' | 'createdAt' | 'updatedAt' | 'description' | 'referenceId'>
 );
 
 export type ScorerFragment = (
@@ -474,6 +512,7 @@ export type AddOfferingMutationVariables = Exact<{
   category: Scalars['String'];
   description: Scalars['String'];
   details: Scalars['String'];
+  referenceId: Scalars['String'];
 }>;
 
 
@@ -590,6 +629,19 @@ export type AllChatsAndMessagesQuery = (
   )> }
 );
 
+export type GetAuthorizedCategoriesQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetAuthorizedCategoriesQuery = (
+  { __typename?: 'Query' }
+  & { getAuthorizedCategories: (
+    { __typename?: 'authorizedcategories' }
+    & Pick<Authorizedcategories, 'listofauthorizedcategories'>
+  ) }
+);
+
 export type GetAvisUserQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
@@ -702,6 +754,19 @@ export type UserByIdQuery = (
   ) }
 );
 
+export type GetVerificationPiecesQueryVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetVerificationPiecesQuery = (
+  { __typename?: 'Query' }
+  & { getVerificationPieces: (
+    { __typename?: 'verificationpieces' }
+    & Pick<Verificationpieces, 'listofpieces'>
+  ) }
+);
+
 export type NewChannelSubscriptionVariables = Exact<{
   userId: Scalars['String'];
 }>;
@@ -789,9 +854,10 @@ export const OfferingFragmentDoc = gql`
   id
   type
   category
-  description
   createdAt
   updatedAt
+  description
+  referenceId
 }
     `;
 export const ScorerFragmentDoc = gql`
@@ -800,8 +866,8 @@ export const ScorerFragmentDoc = gql`
 }
     ${UserFragmentDoc}`;
 export const AddOfferingDocument = gql`
-    mutation addOffering($type: String!, $category: String!, $description: String!, $details: String!) {
-  addOffering(type: $type, category: $category, description: $description, details: $details)
+    mutation addOffering($type: String!, $category: String!, $description: String!, $details: String!, $referenceId: String!) {
+  addOffering(type: $type, details: $details, category: $category, description: $description, referenceId: $referenceId)
 }
     `;
 export type AddOfferingMutationFn = ApolloReactCommon.MutationFunction<AddOfferingMutation, AddOfferingMutationVariables>;
@@ -823,6 +889,7 @@ export type AddOfferingMutationFn = ApolloReactCommon.MutationFunction<AddOfferi
  *      category: // value for 'category'
  *      description: // value for 'description'
  *      details: // value for 'details'
+ *      referenceId: // value for 'referenceId'
  *   },
  * });
  */
@@ -1140,6 +1207,39 @@ export function useAllChatsAndMessagesLazyQuery(baseOptions?: ApolloReactHooks.L
 export type AllChatsAndMessagesQueryHookResult = ReturnType<typeof useAllChatsAndMessagesQuery>;
 export type AllChatsAndMessagesLazyQueryHookResult = ReturnType<typeof useAllChatsAndMessagesLazyQuery>;
 export type AllChatsAndMessagesQueryResult = ApolloReactCommon.QueryResult<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>;
+export const GetAuthorizedCategoriesDocument = gql`
+    query getAuthorizedCategories($id: String) {
+  getAuthorizedCategories(id: $id) {
+    listofauthorizedcategories
+  }
+}
+    `;
+
+/**
+ * __useGetAuthorizedCategoriesQuery__
+ *
+ * To run a query within a React component, call `useGetAuthorizedCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAuthorizedCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAuthorizedCategoriesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetAuthorizedCategoriesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetAuthorizedCategoriesQuery, GetAuthorizedCategoriesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetAuthorizedCategoriesQuery, GetAuthorizedCategoriesQueryVariables>(GetAuthorizedCategoriesDocument, baseOptions);
+      }
+export function useGetAuthorizedCategoriesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetAuthorizedCategoriesQuery, GetAuthorizedCategoriesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetAuthorizedCategoriesQuery, GetAuthorizedCategoriesQueryVariables>(GetAuthorizedCategoriesDocument, baseOptions);
+        }
+export type GetAuthorizedCategoriesQueryHookResult = ReturnType<typeof useGetAuthorizedCategoriesQuery>;
+export type GetAuthorizedCategoriesLazyQueryHookResult = ReturnType<typeof useGetAuthorizedCategoriesLazyQuery>;
+export type GetAuthorizedCategoriesQueryResult = ApolloReactCommon.QueryResult<GetAuthorizedCategoriesQuery, GetAuthorizedCategoriesQueryVariables>;
 export const GetAvisUserDocument = gql`
     query getAvisUser($userId: String!) {
   getAvisUser(userId: $userId) {
@@ -1431,6 +1531,39 @@ export function useUserByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHoo
 export type UserByIdQueryHookResult = ReturnType<typeof useUserByIdQuery>;
 export type UserByIdLazyQueryHookResult = ReturnType<typeof useUserByIdLazyQuery>;
 export type UserByIdQueryResult = ApolloReactCommon.QueryResult<UserByIdQuery, UserByIdQueryVariables>;
+export const GetVerificationPiecesDocument = gql`
+    query getVerificationPieces($id: String) {
+  getVerificationPieces(id: $id) {
+    listofpieces
+  }
+}
+    `;
+
+/**
+ * __useGetVerificationPiecesQuery__
+ *
+ * To run a query within a React component, call `useGetVerificationPiecesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetVerificationPiecesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetVerificationPiecesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetVerificationPiecesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetVerificationPiecesQuery, GetVerificationPiecesQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetVerificationPiecesQuery, GetVerificationPiecesQueryVariables>(GetVerificationPiecesDocument, baseOptions);
+      }
+export function useGetVerificationPiecesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetVerificationPiecesQuery, GetVerificationPiecesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetVerificationPiecesQuery, GetVerificationPiecesQueryVariables>(GetVerificationPiecesDocument, baseOptions);
+        }
+export type GetVerificationPiecesQueryHookResult = ReturnType<typeof useGetVerificationPiecesQuery>;
+export type GetVerificationPiecesLazyQueryHookResult = ReturnType<typeof useGetVerificationPiecesLazyQuery>;
+export type GetVerificationPiecesQueryResult = ApolloReactCommon.QueryResult<GetVerificationPiecesQuery, GetVerificationPiecesQueryVariables>;
 export const NewChannelDocument = gql`
     subscription newChannel($userId: String!) {
   newChannel(userId: $userId) {

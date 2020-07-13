@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import ModalItem from './ModalItem';
+import ModalItemApplyToOffering from './ModalItemApplyToOffering';
 import { useStoreState } from '../../../models';
 import { CustomListView } from '../../shareComponents';
 import {
@@ -71,7 +71,7 @@ const Offres = () => {
       <CustomListView
         data={stateData?.incompleteOfferings}
         emptyMessage={'Aucun tag trouvé.'}
-        modalItem={<ModalItem />}
+        modalItem={<ModalItemApplyToOffering />}
         refreshing={refreshing}
         onRefresh={onRefresh}
       />

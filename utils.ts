@@ -1,7 +1,12 @@
-import { ChatFragment, Utilisateur, Message } from './graphql/helpkr-types';
-import { User } from 'react-native-gifted-chat';
+import { Linking } from 'expo';
+import { Alert } from 'react-native';
 import { AsyncStorage } from 'react-native';
+import * as Permissions from 'expo-permissions';
+import { User } from 'react-native-gifted-chat';
+
 import { chatMessagesContextInterface } from './models/ChatMessages';
+import { ChatFragment, Utilisateur, Message } from './graphql/helpkr-types';
+
 const yearMonths: string[] = [
   'jan.',
   'fev.',
@@ -126,4 +131,28 @@ export const sortChatMessages = (
 export const capitalize = (str: string) => {
   if (typeof str !== 'string') return '';
   return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const getPermissionAsync = async (
+  permission: Permissions.PermissionType
+): Promise<boolean> => {
+  const { status } = await Permissions.askAsync(permission);
+  if (status !== 'granted') {
+    const permissionName = permission.toLowerCase().replace('_', ' ');
+    Alert.alert(
+      'Action impossible 😞',
+      `Si vous voulez utiliser cette fonctionnailté, vous devrez permmettre l'activation de ${permissionName} dans les réglages de votre téléphone.`,
+      [
+        {
+          text: 'Allons Y',
+          onPress: () => Linking.openURL('app-settings:')
+        },
+        { text: 'Annuler', onPress: () => {}, style: 'cancel' }
+      ],
+      { cancelable: true }
+    );
+
+    return false;
+  }
+  return true;
 };

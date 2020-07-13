@@ -1,9 +1,51 @@
+const listeDePieces = [
+  {
+    id: 1,
+    label: 'identite',
+    titre: "Une carte d'identité / séjour en cours de validité",
+    description: 'afin de confirmer votre identité.'
+  },
+  {
+    id: 2,
+    label: 'casierjudiciaire',
+    titre: 'Un casier judiciaire',
+    description: ''
+  },
+  {
+    id: 3,
+    label: 'attestationhonneur',
+    titre: "Une attestation sur l'honneur",
+    description: ''
+  },
+  {
+    id: 4,
+    label: 'certificat',
+    titre: 'Un certificat de professionalisation',
+    description: 'afin de garantir le service proposé au client'
+  },
+  {
+    id: 5,
+    label: 'diplome',
+    titre: 'Le diplome le plus haut',
+    description: ''
+  },
+  {
+    id: 6,
+    label: 'honneur',
+    titre: "Une attestation sur l'honneur",
+    description: ''
+  }
+];
+
+const listeDePiecesObligatoires = [1, 2];
 const accueil = [
   {
     id: 'Maison',
     name: 'Maison',
     tag: {
       Réparation: {
+        referenceId: 'cb92efe392377fce4c29e18a820b2019',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         foyer: [
           { label: 'foyer1', value: 'foyer 1' },
           { label: 'foyer2', value: 'foyer2' }
@@ -38,6 +80,8 @@ const accueil = [
         ]
       },
       Néttoyage: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         Utilite: [
           { label: 'balai 1', value: 'balai 1' },
           { label: 'serpiere 2', value: 'serpiere 2' }
@@ -63,6 +107,8 @@ const accueil = [
     name: 'Cours',
     tag: {
       'Cours de francais': {
+        referenceId: 'c37ce6b6e39a61524deb915f37f34cbe',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         foyer: [
           { label: 'foyer1', value: 'foyer 1' },
           { label: 'foyer2', value: 'foyer2' }
@@ -81,6 +127,8 @@ const accueil = [
         ]
       },
       Mathématique: {
+        referenceId: '04dc4a564a633cc89a2589517f80d34e',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         Utilite: [
           { label: 'balai 1', value: 'balai 1' },
           { label: 'serpiere 2', value: 'serpiere 2' }
@@ -106,6 +154,8 @@ const accueil = [
     name: 'Maison2',
     tag: {
       Réparation: {
+        referenceId: 'cb92efe392377fce4c29e18a820b2019',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         foyer: [
           { label: 'foyer1', value: 'foyer 1' },
           { label: 'foyer2', value: 'foyer2' }
@@ -140,6 +190,8 @@ const accueil = [
         ]
       },
       Néttoyage: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         Utilite: [
           { label: 'balai 1', value: 'balai 1' },
           { label: 'serpiere 2', value: 'serpiere 2' }
@@ -165,6 +217,8 @@ const accueil = [
     name: 'Cours2',
     tag: {
       'Cours de francais': {
+        referenceId: 'c37ce6b6e39a61524deb915f37f34cbe',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         foyer: [
           { label: 'foyer1', value: 'foyer 1' },
           { label: 'foyer2', value: 'foyer2' }
@@ -183,6 +237,8 @@ const accueil = [
         ]
       },
       Mathématique: {
+        referenceId: '04dc4a564a633cc89a2589517f80d34e',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         Utilite: [
           { label: 'balai 1', value: 'balai 1' },
           { label: 'serpiere 2', value: 'serpiere 2' }
@@ -208,6 +264,8 @@ const accueil = [
     name: 'Maison3',
     tag: {
       Réparation: {
+        referenceId: 'cb92efe392377fce4c29e18a820b2019',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         foyer: [
           { label: 'foyer1', value: 'foyer 1' },
           { label: 'foyer2', value: 'foyer2' }
@@ -242,6 +300,8 @@ const accueil = [
         ]
       },
       Néttoyage: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         Utilite: [
           { label: 'balai 1', value: 'balai 1' },
           { label: 'serpiere 2', value: 'serpiere 2' }
@@ -267,6 +327,8 @@ const accueil = [
     name: 'Cours3',
     tag: {
       'Cours de francais': {
+        referenceId: 'c37ce6b6e39a61524deb915f37f34cbe',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         foyer: [
           { label: 'foyer1', value: 'foyer 1' },
           { label: 'foyer2', value: 'foyer2' }
@@ -285,6 +347,8 @@ const accueil = [
         ]
       },
       Mathématique: {
+        referenceId: '04dc4a564a633cc89a2589517f80d34e',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
         Utilite: [
           { label: 'balai 1', value: 'balai 1' },
           { label: 'serpiere 2', value: 'serpiere 2' }
@@ -306,6 +370,25 @@ const accueil = [
     image: require('../assets/icons/student.svg')
   }
 ];
+
+export const getListofPieces = (id: string | null = '') => {
+  if (!id) return;
+  const matchingArray = accueil.map(cat => {
+    const array = Object.entries(cat.tag).map(([_, value], __) => {
+      if (value?.referenceId === id) {
+        return value.pieces;
+      }
+    });
+    return array[1];
+  });
+  const listeOfNumber = matchingArray[0];
+
+  const toReturn = listeDePieces.filter(item => {
+    // console.log('bb', listeOfNumber?.includes(item.id));
+    return listeOfNumber?.includes(item.id);
+  });
+  return toReturn;
+};
 
 const illustrations = [
   { id: 1 },

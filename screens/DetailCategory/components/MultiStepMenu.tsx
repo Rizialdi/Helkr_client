@@ -43,7 +43,12 @@ class MultiStepMenu extends Component<Props, State, any> {
   };
 
   _onSubmit = () => {
-    const { categoryName, categoryItem, addOffering } = this.props;
+    const {
+      categoryName,
+      categoryItem,
+      categoryReferenceId,
+      addOffering
+    } = this.props;
     const { values } = this.state;
     try {
       addOffering &&
@@ -52,7 +57,8 @@ class MultiStepMenu extends Component<Props, State, any> {
             type: categoryItem,
             category: categoryName,
             description: values?.offeringDescription,
-            details: JSON.stringify(values)
+            details: JSON.stringify(values),
+            referenceId: ''
           }
         })
           .then(() => {})
@@ -92,6 +98,7 @@ class MultiStepMenu extends Component<Props, State, any> {
 interface Props {
   categoryName: string;
   categoryItem: string;
+  categoryReferenceId: string;
   children: JSX.Element[];
   addOffering: (
     options?: MutationFunctionOptions<any, Record<string, any>>

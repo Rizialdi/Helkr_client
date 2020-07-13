@@ -1,11 +1,20 @@
-import * as ImagePicker from 'expo-image-picker'
-import * as Permissions from 'expo-permissions'
-import Constants from 'expo-constants'
-import Icon from 'react-native-vector-icons/Octicons'
-import React, { useEffect, useState } from 'react'
-import { Image, ImageSourcePropType, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native'
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
+import Icon from 'react-native-vector-icons/Octicons';
+import React, { useEffect, useState } from 'react';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert
+} from 'react-native';
 
-import { Text } from '../../shareComponents'
+import { getPermissionAsync } from '../../../utils';
+import { Text } from '../../shareComponents';
 
 interface Props {
   image: ImageSourcePropType;
@@ -36,41 +45,28 @@ export default ({
     onChange(address || '');
   }, [address]);
 
-  const getPermissionAsync = async () => {
-    if (Constants?.platform?.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert(
-          'Désolé; nous avons besoin de la permission pour effectuer cette action'
-        );
-      }
-    }
-  };
-
   const onChange = (text: string) => {
     setText(text);
     parentAddressCallback(text);
   };
 
   const pickImage = async () => {
-    getPermissionAsync();
-
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 0.5,
-        base64: true
-      });
-      if (!result.cancelled) {
-        //@ts-ignore
-        setImagePicked(result);
-        //@ts-ignore
-        parentCallback(result);
+    if (await getPermissionAsync(Permissions.CAMERA_ROLL)) {
+      try {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 0.5,
+          base64: true
+        });
+        if (!result.cancelled) {
+          setImagePicked(result);
+          parentCallback(result);
+        }
+      } catch (error) {
+        throw new Error(`Invalid image ${error}`);
       }
-    } catch (error) {
-      throw new Error(`Invalid image ${error}`);
     }
   };
 
