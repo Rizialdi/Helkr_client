@@ -5,47 +5,20 @@ import * as ImagePicker from 'expo-image-picker';
 import { useStoreState } from '../../../models';
 //In addition, you'll also need to enable the iCloud Application Service in your App identifier.
 // DocumentPicker
-import {
-  Dimensions,
-  Keyboard,
-  ScrollView,
-  KeyboardAvoidingView
-} from 'react-native';
-import { getPermissionAsync } from '../../../utils';
+import { Dimensions, ScrollView } from 'react-native';
+import { getPermissionAsync, getFileName } from '../../../utils';
 import MultiStepMenuCompletePieces from './MultiStepMenuCompletePieces';
 import { ListOfPieces } from './ModalItemApplyToOffering';
+import { ReactNativeFile } from 'apollo-upload-client';
+import { useAddVerificationpiecesMutation } from '../../../graphql';
+
 const { height } = Dimensions.get('screen');
 
 interface Props {
   listOfPieces: ListOfPieces;
 }
 const CompletePieces: FC<Props> = ({ listOfPieces }) => {
-  const [
-    imagePicked,
-    setImagePicked
-  ] = useState<ImagePicker.ImagePickerResult | null>(null);
-
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
-
-  const pickImage = async () => {
-    if (await getPermissionAsync(Permissions.CAMERA_ROLL)) {
-      try {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 0.5,
-          base64: true
-        });
-        if (!result.cancelled) {
-          setImagePicked(result);
-        }
-      } catch (error) {
-        throw new Error(`Invalid image ${error}`);
-      }
-    }
-  };
-
   return (
     <MultiStepMenuCompletePieces listOfPieces={listOfPieces}>
       <MultiStepMenuCompletePieces.MenuItemCompletePieces>
@@ -103,30 +76,105 @@ const FirstScreen = ({ ...props }) => {
   );
 };
 
-const SecondScreen = ({ ...props }) => {
-  const [casierFile, setCasierFile] = useState<string>('');
+interface ImagesPicked {
+  [label: string]: ReactNativeFile;
+}
 
-  const actions = {
-    'Un casier judiciaire': setCasierFile,
-    'Un certificat de professionalisation':
-      'afin de garantir le service proposé au client',
-    "Une carte d'identité / séjour en cours de validité":
-      'afin de confirmer votre identité.'
+const SecondScreen = ({ ...props }) => {
+  const documentList = props.listOfPieces as ListOfPieces;
+
+  const [imagesPicked, setImagesPicked] = useState<ImagesPicked>();
+  const [
+    addPiecesMutation,
+    { data, loading, called, error }
+  ] = useAddVerificationpiecesMutation();
+
+  const pickImage = async (label: string) => {
+    if (await getPermissionAsync(Permissions.CAMERA_ROLL)) {
+      try {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 0.5,
+          base64: true
+        });
+        if (!result.cancelled) {
+          const type = result
+            ? `image/${String(result?.uri).split('.')[1]}`
+            : '';
+
+          const uri: ReactNativeFile = new ReactNativeFile({
+            uri: `data:${type};base64,${result?.base64}`,
+            type,
+            name: getFileName(result?.uri)
+          });
+
+          imagesPicked
+            ? setImagesPicked({ ...imagesPicked, [label]: uri })
+            : setImagesPicked({ [label]: uri });
+        }
+      } catch (error) {
+        throw new Error(`Invalid image ${error}`);
+      }
+    }
+  };
+
+  const onSubmit = () => {
+    const toSendStringified = JSON.stringify(imagesPicked);
+    addPiecesMutation({
+      variables: { id: '', listofpieces: toSendStringified }
+    });
+    console.log(data, loading, called, error);
   };
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
-          <Text center bold>
+      <ScrollView
+        style={{
+          height: height * 0.75
+        }}
+        showsVerticalScrollIndicator={false}>
+        <Block flex={false} margin={[0, 25, 48 * 1 + 20]}>
+          <Text center bold vertical={[0, 15]}>
             Veuillez completer votre profil afin de pouvoir postuler à une offre
           </Text>
-          <Button secondary>
-            <Text bold center>
-              Joindre useNewChannelSubscription
-            </Text>
-          </Button>
+          {documentList?.map((item, idx) => {
+            const isTrue =
+              imagesPicked && Object.keys(imagesPicked).includes(item.label);
+            return (
+              <Button
+                key={idx}
+                gray={!isTrue}
+                secondary={isTrue}
+                onPress={() => pickImage(item.label)}>
+                <Text bold center>
+                  {!isTrue ? item.titre : 'Modifier'}
+                </Text>
+              </Button>
+            );
+          })}
         </Block>
       </ScrollView>
+      <Block flex={false} margin={[0, 20]}>
+        <StackedToBottom>
+          <Button
+            secondary={
+              imagesPicked &&
+              documentList &&
+              Object.keys(imagesPicked).length === documentList?.length
+            }
+            onPress={() =>
+              imagesPicked &&
+              documentList &&
+              Object.keys(imagesPicked).length === documentList?.length &&
+              onSubmit()
+            }>
+            <Text center bold>
+              Soummettre
+            </Text>
+          </Button>
+        </StackedToBottom>
+      </Block>
     </>
   );
 };

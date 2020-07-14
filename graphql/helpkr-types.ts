@@ -521,6 +521,17 @@ export type AddOfferingMutation = (
   & Pick<Mutation, 'addOffering'>
 );
 
+export type AddVerificationpiecesMutationVariables = Exact<{
+  id?: Maybe<Scalars['String']>;
+  listofpieces: Scalars['String'];
+}>;
+
+
+export type AddVerificationpiecesMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addVerificationpieces'>
+);
+
 export type CandidateToOfferingMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -899,6 +910,37 @@ export function useAddOfferingMutation(baseOptions?: ApolloReactHooks.MutationHo
 export type AddOfferingMutationHookResult = ReturnType<typeof useAddOfferingMutation>;
 export type AddOfferingMutationResult = ApolloReactCommon.MutationResult<AddOfferingMutation>;
 export type AddOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<AddOfferingMutation, AddOfferingMutationVariables>;
+export const AddVerificationpiecesDocument = gql`
+    mutation addVerificationpieces($id: String, $listofpieces: String!) {
+  addVerificationpieces(id: $id, listofpieces: $listofpieces)
+}
+    `;
+export type AddVerificationpiecesMutationFn = ApolloReactCommon.MutationFunction<AddVerificationpiecesMutation, AddVerificationpiecesMutationVariables>;
+
+/**
+ * __useAddVerificationpiecesMutation__
+ *
+ * To run a mutation, you first call `useAddVerificationpiecesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddVerificationpiecesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addVerificationpiecesMutation, { data, loading, error }] = useAddVerificationpiecesMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      listofpieces: // value for 'listofpieces'
+ *   },
+ * });
+ */
+export function useAddVerificationpiecesMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<AddVerificationpiecesMutation, AddVerificationpiecesMutationVariables>) {
+        return ApolloReactHooks.useMutation<AddVerificationpiecesMutation, AddVerificationpiecesMutationVariables>(AddVerificationpiecesDocument, baseOptions);
+      }
+export type AddVerificationpiecesMutationHookResult = ReturnType<typeof useAddVerificationpiecesMutation>;
+export type AddVerificationpiecesMutationResult = ApolloReactCommon.MutationResult<AddVerificationpiecesMutation>;
+export type AddVerificationpiecesMutationOptions = ApolloReactCommon.BaseMutationOptions<AddVerificationpiecesMutation, AddVerificationpiecesMutationVariables>;
 export const CandidateToOfferingDocument = gql`
     mutation candidateToOffering($id: String!) {
   candidateToOffering(id: $id) {
