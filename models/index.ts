@@ -6,7 +6,12 @@ import User, { UserModel } from './User';
 import Offering, { OfferingModel } from './Offering';
 import ChatMessages, { ChatMessagesModel } from './ChatMessages';
 import JobAuthorization, { JobAuthorizationModel } from './JobAuthorization';
+import SendVerifPiecesReferenceIds, {
+  SendVerifPiecesReferenceIdsInterfaceModel
+} from './SendVerifPiecesReferenceIds';
+
 interface StoreModel {
+  SendVerifPiecesReferenceIds: SendVerifPiecesReferenceIdsInterfaceModel;
   JobAuthorization: JobAuthorizationModel;
   ChatMessages: ChatMessagesModel;
   Preferences: PreferencesModel;
@@ -15,6 +20,7 @@ interface StoreModel {
 }
 
 const model: StoreModel = {
+  SendVerifPiecesReferenceIds,
   JobAuthorization,
   ChatMessages,
   Preferences,

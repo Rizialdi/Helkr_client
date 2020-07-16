@@ -1,5 +1,4 @@
-import React, { FC, useRef, useState, useEffect } from 'react';
-import { useApolloClient } from 'react-apollo';
+import React, { FC, useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -139,7 +138,10 @@ const ModalItem: FC<Props> = props => {
           {isAuthorizedToApply ? (
             <Text>Postuler</Text>
           ) : (
-            <CompletePieces listOfPieces={listOfPieces} />
+            <CompletePieces
+              listOfPieces={listOfPieces}
+              referenceId={data?.offeringById.referenceId as string}
+            />
           )}
         </View>
       </Modal>

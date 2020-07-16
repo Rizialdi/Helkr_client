@@ -10,6 +10,7 @@ import { ListOfPieces } from './ModalItemApplyToOffering';
 interface Props {
   children: JSX.Element[];
   listOfPieces: ListOfPieces;
+  referenceId: string;
 }
 
 interface State {
@@ -45,10 +46,11 @@ class MultiStepMenuCompletePieces extends Component<Props, State, any> {
         {React.Children.map(children, (child: any, idx: number) => {
           if (idx === this.state.step) {
             return React.cloneElement(child, {
-              listOfPieces: this.props.listOfPieces,
               values: this.state.values,
               currentIndex: this.state.step,
               totalChildren: children?.length,
+              referenceId: this.props.referenceId,
+              listOfPieces: this.props.listOfPieces,
               isLast: children ? this.state.step === children.length - 1 : true,
               onSubmit: this._onSubmit,
               nextStep: this._nextStep,

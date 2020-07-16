@@ -4,26 +4,16 @@ import {
   View,
   Button,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
-import { ListOfPieces } from './ModalItemApplyToOffering';
+import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
 
 const { height } = Dimensions.get('screen');
-interface Props {
-  children: JSX.Element;
-  values: object;
-  listOfPieces: ListOfPieces;
-  categoryItem: string;
-  currentIndex: number;
-  totalChildren: number;
-  isLast: boolean;
-  onSubmit: () => void;
-  nextStep: () => void;
-  onChangeValue: (a: string, b: string) => void;
-}
-const MenuItemCompletePieces: SFC<Props> = ({ children, ...props }) => {
+const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
+  children,
+  ...props
+}) => {
   const width = (props.currentIndex / props.totalChildren) * 100;
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -31,11 +21,12 @@ const MenuItemCompletePieces: SFC<Props> = ({ children, ...props }) => {
     <KeyboardAvoidingView behavior={'padding'}>
       {React.cloneElement(children, {
         listOfPieces: props.listOfPieces,
-        values: props.values,
+        referenceId: props.referenceId,
         onChange: props.onChangeValue,
         nextStep: props.nextStep,
         onSelected: setSelected,
-        isLast: props.isLast
+        isLast: props.isLast,
+        values: props.values
       })}
       {!props.isLast ? null : (
         <View

@@ -215,7 +215,8 @@ export default () => {
     User: { loadUser },
     Offering: { loadTags },
     ChatMessages: { loadLastMessageReadIds },
-    JobAuthorization: { loadJobAuthorizations }
+    JobAuthorization: { loadJobAuthorizations },
+    SendVerifPiecesReferenceIds: { loadsendVerifPiecesReferenceIds }
   } = useStoreActions(actions => actions);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -225,6 +226,7 @@ export default () => {
     loadTags();
     loadLastMessageReadIds();
     loadJobAuthorizations();
+    loadsendVerifPiecesReferenceIds();
     setTimeout(() => setIsLoading(false), 2000);
   }, []);
 

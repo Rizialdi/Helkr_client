@@ -154,6 +154,7 @@ export type MutationAddressUpdateArgs = {
 export type MutationAddVerificationpiecesArgs = {
   id?: Maybe<Scalars['String']>;
   listofpieces: Scalars['String'];
+  referenceId: Scalars['String'];
 };
 
 
@@ -270,6 +271,7 @@ export type Query = {
   channels: Array<Channel>;
   getAuthorizedCategories: Authorizedcategories;
   getAvisUser: Array<Avis>;
+  getSendVerificationPiecesReferenceIdsAndStatus: Scalars['String'];
   getUserInfo: AuthPayload;
   getUserStats: Stats;
   getVerificationPieces: Verificationpieces;
@@ -297,6 +299,11 @@ export type QueryGetAuthorizedCategoriesArgs = {
 
 export type QueryGetAvisUserArgs = {
   userId: Scalars['String'];
+};
+
+
+export type QueryGetSendVerificationPiecesReferenceIdsAndStatusArgs = {
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -460,8 +467,8 @@ export type Verificationpieces = {
   __typename?: 'verificationpieces';
   id: Scalars['String'];
   listofpieces?: Maybe<Scalars['Json']>;
-  userId?: Maybe<Scalars['String']>;
-  utilisateur?: Maybe<Utilisateur>;
+  userId: Scalars['String'];
+  utilisateur: Utilisateur;
 };
 
 
@@ -524,6 +531,7 @@ export type AddOfferingMutation = (
 export type AddVerificationpiecesMutationVariables = Exact<{
   id?: Maybe<Scalars['String']>;
   listofpieces: Scalars['String'];
+  referenceId: Scalars['String'];
 }>;
 
 
@@ -668,6 +676,16 @@ export type GetAvisUserQuery = (
       & ScorerFragment
     ) }
   )> }
+);
+
+export type GetSendVerificationPiecesReferenceIdsAndStatusQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetSendVerificationPiecesReferenceIdsAndStatusQuery = (
+  { __typename?: 'Query' }
+  & Pick<Query, 'getSendVerificationPiecesReferenceIdsAndStatus'>
 );
 
 export type GetUserStatsQueryVariables = Exact<{
@@ -911,8 +929,8 @@ export type AddOfferingMutationHookResult = ReturnType<typeof useAddOfferingMuta
 export type AddOfferingMutationResult = ApolloReactCommon.MutationResult<AddOfferingMutation>;
 export type AddOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<AddOfferingMutation, AddOfferingMutationVariables>;
 export const AddVerificationpiecesDocument = gql`
-    mutation addVerificationpieces($id: String, $listofpieces: String!) {
-  addVerificationpieces(id: $id, listofpieces: $listofpieces)
+    mutation addVerificationpieces($id: String, $listofpieces: String!, $referenceId: String!) {
+  addVerificationpieces(id: $id, listofpieces: $listofpieces, referenceId: $referenceId)
 }
     `;
 export type AddVerificationpiecesMutationFn = ApolloReactCommon.MutationFunction<AddVerificationpiecesMutation, AddVerificationpiecesMutationVariables>;
@@ -932,6 +950,7 @@ export type AddVerificationpiecesMutationFn = ApolloReactCommon.MutationFunction
  *   variables: {
  *      id: // value for 'id'
  *      listofpieces: // value for 'listofpieces'
+ *      referenceId: // value for 'referenceId'
  *   },
  * });
  */
@@ -1321,6 +1340,37 @@ export function useGetAvisUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetAvisUserQueryHookResult = ReturnType<typeof useGetAvisUserQuery>;
 export type GetAvisUserLazyQueryHookResult = ReturnType<typeof useGetAvisUserLazyQuery>;
 export type GetAvisUserQueryResult = ApolloReactCommon.QueryResult<GetAvisUserQuery, GetAvisUserQueryVariables>;
+export const GetSendVerificationPiecesReferenceIdsAndStatusDocument = gql`
+    query getSendVerificationPiecesReferenceIdsAndStatus($id: String!) {
+  getSendVerificationPiecesReferenceIdsAndStatus(id: $id)
+}
+    `;
+
+/**
+ * __useGetSendVerificationPiecesReferenceIdsAndStatusQuery__
+ *
+ * To run a query within a React component, call `useGetSendVerificationPiecesReferenceIdsAndStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSendVerificationPiecesReferenceIdsAndStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSendVerificationPiecesReferenceIdsAndStatusQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetSendVerificationPiecesReferenceIdsAndStatusQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetSendVerificationPiecesReferenceIdsAndStatusQuery, GetSendVerificationPiecesReferenceIdsAndStatusQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetSendVerificationPiecesReferenceIdsAndStatusQuery, GetSendVerificationPiecesReferenceIdsAndStatusQueryVariables>(GetSendVerificationPiecesReferenceIdsAndStatusDocument, baseOptions);
+      }
+export function useGetSendVerificationPiecesReferenceIdsAndStatusLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetSendVerificationPiecesReferenceIdsAndStatusQuery, GetSendVerificationPiecesReferenceIdsAndStatusQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetSendVerificationPiecesReferenceIdsAndStatusQuery, GetSendVerificationPiecesReferenceIdsAndStatusQueryVariables>(GetSendVerificationPiecesReferenceIdsAndStatusDocument, baseOptions);
+        }
+export type GetSendVerificationPiecesReferenceIdsAndStatusQueryHookResult = ReturnType<typeof useGetSendVerificationPiecesReferenceIdsAndStatusQuery>;
+export type GetSendVerificationPiecesReferenceIdsAndStatusLazyQueryHookResult = ReturnType<typeof useGetSendVerificationPiecesReferenceIdsAndStatusLazyQuery>;
+export type GetSendVerificationPiecesReferenceIdsAndStatusQueryResult = ApolloReactCommon.QueryResult<GetSendVerificationPiecesReferenceIdsAndStatusQuery, GetSendVerificationPiecesReferenceIdsAndStatusQueryVariables>;
 export const GetUserStatsDocument = gql`
     query getUserStats($id: String!) {
   getUserStats(id: $id) {

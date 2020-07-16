@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useStoreState } from '../../../models';
 //In addition, you'll also need to enable the iCloud Application Service in your App identifier.
 // DocumentPicker
-import { Dimensions, ScrollView } from 'react-native';
+import { Dimensions, ScrollView, AsyncStorage } from 'react-native';
 import { getPermissionAsync, getFileName } from '../../../utils';
 import MultiStepMenuCompletePieces from './MultiStepMenuCompletePieces';
 import { ListOfPieces } from './ModalItemApplyToOffering';
@@ -16,11 +16,14 @@ const { height } = Dimensions.get('screen');
 
 interface Props {
   listOfPieces: ListOfPieces;
+  referenceId: string;
 }
-const CompletePieces: FC<Props> = ({ listOfPieces }) => {
+const CompletePieces: FC<Props> = ({ listOfPieces, referenceId }) => {
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
   return (
-    <MultiStepMenuCompletePieces listOfPieces={listOfPieces}>
+    <MultiStepMenuCompletePieces
+      listOfPieces={listOfPieces}
+      referenceId={referenceId}>
       <MultiStepMenuCompletePieces.MenuItemCompletePieces>
         <FirstScreen />
       </MultiStepMenuCompletePieces.MenuItemCompletePieces>
@@ -33,46 +36,65 @@ const CompletePieces: FC<Props> = ({ listOfPieces }) => {
 
 const FirstScreen = ({ ...props }) => {
   const documentList = props.listOfPieces as ListOfPieces;
+  const referenceId = props.referenceId as string;
+
+  const { sendVerifPiecesReferenceIds } = useStoreState(
+    store => store.SendVerifPiecesReferenceIds
+  );
+
+  const didSentDocumentForRef = Object.entries(
+    sendVerifPiecesReferenceIds
+  ).find(([key, _], __) => key === referenceId);
+
+  const status = !!didSentDocumentForRef
+    ? didSentDocumentForRef[1]
+    : 'didntyetapplied';
+  console.log('status', status, 'ref', referenceId);
+
+  const displayRequiredDocs = status === 'didntyetapplied';
   return (
-    <>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
-          <Text center bold>
-            Veuillez completer votre profil afin de pouvoir postuler à une offre
-          </Text>
-          <Text style={{ textAlign: 'justify' }}>
-            {'\n'}
-            Chez <Text bold> Helkr</Text>, nous mettons un point d'honneur à
-            satisfaire et à garantir le service proposé. Pour ce faire, nous
-            devons savoir quelques points sur vous et determiner si vos
-            compétences sont en accord avec la mission proposée
-            {'\n'}
-            Vous trouverez ci-dessous une liste de pièces à fournir:
-            {'\n'}
-          </Text>
-          {documentList?.map((item, idx) => (
-            <Text key={idx} vertical={[5, 5]}>
-              <Text bold>- {item.titre} </Text>
-              {item.description}
+    displayRequiredDocs && (
+      <>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Block flex={false} margin={[20, 20]}>
+            <Text center bold>
+              Veuillez completer votre profil afin de pouvoir postuler à une
+              offre
             </Text>
-          ))}
-          <Text vertical={[15, 15]}>
-            Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
-            entité tièrce. Elles seront essentiellement utilisées par notre
-            équipe pour la validation de votre profil.
-          </Text>
+            <Text style={{ textAlign: 'justify' }}>
+              {'\n'}
+              Chez <Text bold> Helkr</Text>, nous mettons un point d'honneur à
+              satisfaire et à garantir le service proposé. Pour ce faire, nous
+              devons savoir quelques points sur vous et determiner si vos
+              compétences sont en accord avec la mission proposée
+              {'\n'}
+              Vous trouverez ci-dessous une liste de pièces à fournir:
+              {'\n'}
+            </Text>
+            {documentList?.map((item, idx) => (
+              <Text key={idx} vertical={[5, 5]}>
+                <Text bold>- {item.titre} </Text>
+                {item.description}
+              </Text>
+            ))}
+            <Text vertical={[15, 15]}>
+              Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
+              entité tièrce. Elles seront essentiellement utilisées par notre
+              équipe pour la validation de votre profil.
+            </Text>
+          </Block>
+        </ScrollView>
+        <Block margin={[0, 20]}>
+          <StackedToBottom>
+            <Button secondary onPress={() => props.nextStep()}>
+              <Text bold center>
+                Commencer
+              </Text>
+            </Button>
+          </StackedToBottom>
         </Block>
-      </ScrollView>
-      <Block margin={[0, 20]}>
-        <StackedToBottom>
-          <Button secondary onPress={() => props.nextStep()}>
-            <Text bold center>
-              Commencer
-            </Text>
-          </Button>
-        </StackedToBottom>
-      </Block>
-    </>
+      </>
+    )
   );
 };
 
@@ -82,7 +104,7 @@ interface ImagesPicked {
 
 const SecondScreen = ({ ...props }) => {
   const documentList = props.listOfPieces as ListOfPieces;
-
+  const referenceId = props.referenceId as string;
   const [imagesPicked, setImagesPicked] = useState<ImagesPicked>();
   const [
     addPiecesMutation,
@@ -123,9 +145,12 @@ const SecondScreen = ({ ...props }) => {
   const onSubmit = () => {
     const toSendStringified = JSON.stringify(imagesPicked);
     addPiecesMutation({
-      variables: { id: '', listofpieces: toSendStringified }
-    });
-    console.log(data, loading, called, error);
+      variables: { id: '', listofpieces: toSendStringified, referenceId }
+    })
+      .then(data => data)
+      .then(async data => {
+        // await AsyncStorage.setItem('sendVerifPiecesReferenceIds');
+      });
   };
   return (
     <>
