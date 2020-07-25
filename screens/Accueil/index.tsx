@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import { Badge, Block, Card } from '../../components';
+import { Badge, Block, Card } from '../shareComponents';
 import { Text } from '../shareComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
@@ -153,8 +153,8 @@ export default function Accueil({ navigation }: Props) {
                 onPress={() =>
                   navigation.navigate('DetailCategory', { category })
                 }>
-                <Card center middle shadow style={styles.category}>
-                  <Badge margin={[0, 0, 15]} size={70} white>
+                <Card center middle style={styles.category} shadow>
+                  <Badge margin={[0, 0, 15]} size={70} secondary>
                     <Image
                       source={category.image}
                       style={{ width: 0, height: 40 }}
@@ -166,8 +166,8 @@ export default function Accueil({ navigation }: Props) {
                     style={{ fontFamily: 'josefinRegular', fontSize: 18 }}>
                     {category.name}
                   </Text>
-                  <Text gray caption>
-                    {JSON.stringify(Object.keys(category.tag))}
+                  <Text gray caption numberOfLines={1}>
+                    {Object.keys(category.tag).join(', ')}
                   </Text>
                 </Card>
               </TouchableOpacity>

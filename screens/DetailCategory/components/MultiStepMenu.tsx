@@ -1,16 +1,21 @@
-import React, { Component, ComponentType } from 'react';
+import React, { Component, ComponentType, ComponentClass } from 'react';
 import {
   ChildProps,
   ExecutionResult,
   graphql,
   MutationFunctionOptions,
   ChildDataProps,
-  DataProps
+  DataProps,
+  DataValue
 } from 'react-apollo';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 
 import MenuItem from './MenuItem';
-import { AddOfferingDocument } from '../../../graphql';
+import {
+  AddOfferingDocument,
+  AddOfferingMutationVariables,
+  AddOfferingMutationResult
+} from '../../../graphql';
 
 // todo values object ? array ?
 interface State {
@@ -46,25 +51,23 @@ class MultiStepMenu extends Component<Props, State, any> {
     const {
       categoryName,
       categoryItem,
-      categoryReferenceId,
+      categoryItemReferenceId,
       addOffering
     } = this.props;
     const { values } = this.state;
     try {
-      addOffering &&
+      return (
+        addOffering &&
         addOffering({
           variables: {
             type: categoryItem,
             category: categoryName,
             description: values?.offeringDescription,
             details: JSON.stringify(values),
-            referenceId: ''
+            referenceId: categoryItemReferenceId
           }
         })
-          .then(() => {})
-          .catch(error => {
-            throw new Error(`Ajout offre impossible, ${error}`);
-          });
+      );
     } catch (error) {
       throw new Error(`Ajout offre impossible, ${error}`);
     }
@@ -95,20 +98,36 @@ class MultiStepMenu extends Component<Props, State, any> {
   }
 }
 
+type InputProps = AddOfferingMutationVariables & Props;
+
 interface Props {
   categoryName: string;
   categoryItem: string;
-  categoryReferenceId: string;
+  categoryItemReferenceId: string;
   children: JSX.Element[];
-  addOffering: (
+  addOffering?: (
     options?: MutationFunctionOptions<any, Record<string, any>>
   ) => Promise<ExecutionResult<any>>;
 }
 
-// ChildDataProps<InputProps, Response, Variables>
-type TChildProps = ChildDataProps<{}, Props, {}>;
+type CustomChildProps = Props &
+  InputProps & {
+    addOffering: DataValue<
+      AddOfferingMutationResult,
+      AddOfferingMutationVariables
+    >;
+  };
 
-// graphql<InputProps, Response, Variables, ChildProps>()
-export default graphql<{}, Props, {}, TChildProps>(ADD_OFFERING, {
+export default (graphql<
+  Props,
+  AddOfferingMutationResult,
+  AddOfferingMutationVariables,
+  CustomChildProps
+>(ADD_OFFERING, {
   name: 'addOffering'
-})((MultiStepMenu as unknown) as ComponentType<DataProps<Props, {}>>);
+})(
+  (MultiStepMenu as unknown) as ComponentClass<CustomChildProps, State>
+) as unknown) as ComponentClass<Props, State> & any;
+
+// used casting as any to prevent linting for
+// MultiStepMenu.Item

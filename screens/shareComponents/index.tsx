@@ -11,12 +11,16 @@ import Calendar from './Calendar';
 import TextAreaInput from './TextAreaInput';
 import OfferingDetailsOnModal from './OfferingDetailsOnModal';
 import StackedToBottom from './StackedToBottom';
+import Badge from './Badge';
+import Card from './Card';
 
 export {
   Layout,
   TermsOfServices,
   Text,
   Block,
+  Card,
+  Badge,
   Button,
   TagItem,
   dataContent,

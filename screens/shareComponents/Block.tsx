@@ -2,7 +2,7 @@ import React, { SFC } from 'react';
 import { StyleSheet, View, Animated, StyleProp, ViewStyle } from 'react-native';
 import { useStoreState } from '../../models';
 
-interface Props {
+export interface BlockProps {
   flex?: boolean;
   row?: boolean;
   column?: object;
@@ -29,7 +29,7 @@ interface Props {
   gray?: boolean;
 }
 
-const Block: SFC<Props> = ({
+const Block: SFC<BlockProps> = ({
   flex,
   row,
   column,

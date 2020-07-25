@@ -71,7 +71,7 @@ const createBottomTabs = () => {
           tabBarIcon: () => <Icon name="tagso" size={24} color="black" />
         }}
       />
-      {/* <MaterialBottomTabs.Screen
+      <MaterialBottomTabs.Screen
         name="Accueil"
         component={Accueil}
         options={{
@@ -79,7 +79,7 @@ const createBottomTabs = () => {
           tabBarIcon: () => <Icon name="home" size={24} color="black" />
         }}
       />
-      <MaterialBottomTabs.Screen
+      {/* <MaterialBottomTabs.Screen
         name="Discussions"
         component={Discussions}
         options={{

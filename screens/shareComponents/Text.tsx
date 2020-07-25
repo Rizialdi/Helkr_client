@@ -20,8 +20,11 @@ interface Props {
   caption?: boolean;
   small?: boolean;
   size?: any;
+  numberOfLines?: number;
   transform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase';
   align?: 'center' | 'auto' | 'left' | 'right' | 'justify';
+  ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
+  lineBreakMode?: 'head' | 'middle' | 'tail' | 'clip';
   // styling
   regular?: boolean;
   bold?: boolean;

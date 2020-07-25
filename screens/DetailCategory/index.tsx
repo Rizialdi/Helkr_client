@@ -5,7 +5,8 @@ import {
   FlatList,
   SafeAreaView,
   Dimensions,
-  Modal
+  Modal,
+  Alert
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Text, Layout } from '../shareComponents';
@@ -48,26 +49,32 @@ const DetailCategory: SFC<Props> = ({ route }) => {
           )}
           keyExtractor={item => item}
         />
+
         <Modal
           animationType="slide"
           hardwareAccelerated={true}
           presentationStyle="overFullScreen"
           visible={openModal}>
-          <MultiStepMenu
-            //@ts-ignore
-            categoryName={category.name}
-            categoryItem={categoryItem}>
-            {categoryItem &&
-              Object.keys(category.tag[categoryItem]).map((item, idx) => (
-                //@ts-ignore
-                <MultiStepMenu.Item key={idx} openModal={setOpenModal}>
-                  <RadioForm
-                    name={item}
-                    radio_props={category.tag[categoryItem][item]}
-                  />
-                </MultiStepMenu.Item>
-              ))}
-          </MultiStepMenu>
+          {categoryItem && (
+            <MultiStepMenu
+              categoryName={category.name}
+              categoryItem={categoryItem}
+              categoryItemReferenceId={category.tag[categoryItem].referenceId}>
+              {categoryItem &&
+                Object.keys(category.tag[categoryItem].detailQuestions).map(
+                  (item, idx) => (
+                    <MultiStepMenu.Item key={idx} openModal={setOpenModal}>
+                      <RadioForm
+                        name={item}
+                        radio_props={
+                          category.tag[categoryItem].detailQuestions[item]
+                        }
+                      />
+                    </MultiStepMenu.Item>
+                  )
+                )}
+            </MultiStepMenu>
+          )}
         </Modal>
       </SafeAreaView>
     </Layout>

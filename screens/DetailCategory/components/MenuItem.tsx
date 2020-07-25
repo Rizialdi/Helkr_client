@@ -6,13 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Alert
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { Text } from '../../shareComponents';
 import { useStoreState } from '../../../models';
+import { ExecutionResult } from 'react-apollo';
 
 const { height } = Dimensions.get('screen');
 interface Props {
@@ -22,7 +24,7 @@ interface Props {
   currentIndex: number;
   totalChildren: number;
   isLast: boolean;
-  onSubmit: () => void;
+  onSubmit: () => Promise<ExecutionResult<any>>;
   nextStep: () => void;
   prevStep: () => void;
   onChangeValue: (a: string, b: string) => void;
@@ -86,7 +88,20 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
             title="Soumettre"
             disabled={!selected}
             onPress={() => {
-              props.onSubmit(), props.openModal(false);
+              props
+                .onSubmit()
+                .then(({ data }) => {
+                  data?.addOffering &&
+                    Alert.alert(
+                      'Votre annonce',
+                      "vient d'être ajouté",
+                      [{ text: 'OK', onPress: () => props.openModal(false) }],
+                      { cancelable: false }
+                    );
+                })
+                .catch(error => {
+                  throw new Error(`Ajout offre impossible, ${error}`);
+                });
             }}
           />
         </View>
