@@ -25,7 +25,7 @@ const { height } = Dimensions.get('screen');
 
 interface Props {
   id?: string;
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 type ButtonOption = 'modifier' | 'supprimer' | '';

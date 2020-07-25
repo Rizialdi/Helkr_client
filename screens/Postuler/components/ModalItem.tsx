@@ -1,11 +1,14 @@
-import React, { FC, useRef } from 'react'
-import { useApolloClient } from 'react-apollo'
-import { ActivityIndicator } from 'react-native'
+import React, { FC, useRef } from 'react';
+import { useApolloClient } from 'react-apollo';
+import { ActivityIndicator } from 'react-native';
 
-import { Block, Button, Layout, Text } from '../../shareComponents'
-import { TagItem } from '../../shareComponents'
-import { formatDate } from '../../../utils'
-import { useCandidateToOfferingMutation, useOfferingByIdQuery } from '../../../graphql'
+import { Block, Button, Layout, Text } from '../../shareComponents';
+import { TagItem } from '../../shareComponents';
+import { formatDate } from '../../../utils';
+import {
+  useCandidateToOfferingMutation,
+  useOfferingByIdQuery
+} from '../../../graphql';
 
 interface Props {
   id?: string;

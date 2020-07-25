@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text } from './shareComponents';
 import { StyleSheet, Dimensions, View } from 'react-native';
+//@ts-ignore
 import Image from 'react-native-remote-svg';
 
 interface Props {

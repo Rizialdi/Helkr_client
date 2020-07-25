@@ -201,7 +201,7 @@ const accueil = [
       },
       Néttoyage: {
         referenceId: '660c0b9df522d1c7a442640e91592730',
-        pieces: [...listeDePiecesObligatoires, 1, 3],
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
           Utilite: [
             { label: 'balai 1', value: 'balai 1' },
@@ -319,7 +319,7 @@ const accueil = [
       },
       Néttoyage: {
         referenceId: '660c0b9df522d1c7a442640e91592730',
-        pieces: [...listeDePiecesObligatoires, 1, 3],
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
           Utilite: [
             { label: 'balai 1', value: 'balai 1' },

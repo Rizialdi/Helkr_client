@@ -52,49 +52,48 @@ const FirstScreen = ({ ...props }) => {
   console.log('status', status, 'ref', referenceId);
 
   const displayRequiredDocs = status === 'didntyetapplied';
-  return (
-    displayRequiredDocs && (
-      <>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Block flex={false} margin={[20, 20]}>
-            <Text center bold>
-              Veuillez completer votre profil afin de pouvoir postuler à une
-              offre
+  return displayRequiredDocs ? (
+    <>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Block flex={false} margin={[20, 20]}>
+          <Text center bold>
+            Veuillez completer votre profil afin de pouvoir postuler à une offre
+          </Text>
+          <Text style={{ textAlign: 'justify' }}>
+            {'\n'}
+            Chez <Text bold> Helkr</Text>, nous mettons un point d'honneur à
+            satisfaire et à garantir le service proposé. Pour ce faire, nous
+            devons savoir quelques points sur vous et determiner si vos
+            compétences sont en accord avec la mission proposée
+            {'\n'}
+            Vous trouverez ci-dessous une liste de pièces à fournir:
+            {'\n'}
+          </Text>
+          {documentList?.map((item, idx) => (
+            <Text key={idx} vertical={[5, 5]}>
+              <Text bold>- {item.titre} </Text>
+              {item.description}
             </Text>
-            <Text style={{ textAlign: 'justify' }}>
-              {'\n'}
-              Chez <Text bold> Helkr</Text>, nous mettons un point d'honneur à
-              satisfaire et à garantir le service proposé. Pour ce faire, nous
-              devons savoir quelques points sur vous et determiner si vos
-              compétences sont en accord avec la mission proposée
-              {'\n'}
-              Vous trouverez ci-dessous une liste de pièces à fournir:
-              {'\n'}
-            </Text>
-            {documentList?.map((item, idx) => (
-              <Text key={idx} vertical={[5, 5]}>
-                <Text bold>- {item.titre} </Text>
-                {item.description}
-              </Text>
-            ))}
-            <Text vertical={[15, 15]}>
-              Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
-              entité tièrce. Elles seront essentiellement utilisées par notre
-              équipe pour la validation de votre profil.
-            </Text>
-          </Block>
-        </ScrollView>
-        <Block margin={[0, 20]}>
-          <StackedToBottom>
-            <Button secondary onPress={() => props.nextStep()}>
-              <Text bold center>
-                Commencer
-              </Text>
-            </Button>
-          </StackedToBottom>
+          ))}
+          <Text vertical={[15, 15]}>
+            Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
+            entité tièrce. Elles seront essentiellement utilisées par notre
+            équipe pour la validation de votre profil.
+          </Text>
         </Block>
-      </>
-    )
+      </ScrollView>
+      <Block margin={[0, 20]}>
+        <StackedToBottom>
+          <Button secondary onPress={() => props.nextStep()}>
+            <Text bold center>
+              Commencer
+            </Text>
+          </Button>
+        </StackedToBottom>
+      </Block>
+    </>
+  ) : (
+    <></>
   );
 };
 
@@ -195,7 +194,7 @@ const SecondScreen = ({ ...props }) => {
               onSubmit()
             }>
             <Text center bold>
-              Soummettre
+              Soumettre
             </Text>
           </Button>
         </StackedToBottom>

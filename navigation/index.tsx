@@ -79,7 +79,7 @@ const createBottomTabs = () => {
           tabBarIcon: () => <Icon name="home" size={24} color="black" />
         }}
       />
-      {/* <MaterialBottomTabs.Screen
+      <MaterialBottomTabs.Screen
         name="Discussions"
         component={Discussions}
         options={{
@@ -94,7 +94,7 @@ const createBottomTabs = () => {
           tabBarLabel: 'Profil',
           tabBarIcon: () => <Icon name="user" size={24} color="black" />
         }}
-      /> */}
+      />
     </MaterialBottomTabs.Navigator>
   );
 };

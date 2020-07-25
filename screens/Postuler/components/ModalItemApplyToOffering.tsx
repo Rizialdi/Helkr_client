@@ -52,6 +52,9 @@ const ModalItem: FC<Props> = props => {
   const [applyTo] = useCandidateToOfferingMutation();
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
+
+  console.log('jobAuthorizations', jobAuthorizations);
+
   const isAuthorizedToApply =
     data?.offeringById.referenceId &&
     jobAuthorizations.includes(data?.offeringById.referenceId);
