@@ -22,6 +22,7 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
       {React.cloneElement(children, {
         listOfPieces: props.listOfPieces,
         referenceId: props.referenceId,
+        setOpenModal: props.setOpenModal,
         onChange: props.onChangeValue,
         nextStep: props.nextStep,
         onSelected: setSelected,

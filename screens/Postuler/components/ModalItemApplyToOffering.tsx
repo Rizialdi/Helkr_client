@@ -25,9 +25,11 @@ import {
 import CompletePieces from './CompletePieces';
 import { useStoreState } from '../../../models';
 import { mocks } from '../../../constants';
+import client from '../../../ApolloClient';
 
 interface Props {
   id?: string;
+  setOpenModal?: React.Dispatch<React.SetStateAction<Boolean>>;
 }
 
 const { height } = Dimensions.get('screen');
@@ -53,11 +55,26 @@ const ModalItem: FC<Props> = props => {
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
 
-  console.log('jobAuthorizations', jobAuthorizations);
-
   const isAuthorizedToApply =
     data?.offeringById.referenceId &&
     jobAuthorizations.includes(data?.offeringById.referenceId);
+
+  const applyToOffering = () => {
+    applyTo({
+      variables: { id: data?.offeringById?.id as string }
+    })
+      .then(({ data }) => data?.candidateToOffering)
+      .then(data => {
+        try {
+          if (data?.success) {
+            client.reFetchObservableQueries();
+          }
+        } catch (error) {
+          throw new Error(`Impossible de Candidater ${error}`);
+        }
+      })
+      .then(() => props.setOpenModal && props.setOpenModal(false));
+  };
 
   useEffect(() => {
     if (!isAuthorizedToApply) {
@@ -105,21 +122,8 @@ const ModalItem: FC<Props> = props => {
         <StackedToBottom>
           <Button
             secondary
-            onPress={
-              () => setModalOpen(true)
-              //   applyTo({
-              //     variables: { id: data?.offeringById?.id as string }
-              //   })
-              //     .then(({ data }) => data?.candidateToOffering)
-              //     .then(data => {
-              //       try {
-              //         if (data?.success) {
-              //           client.reFetchObservableQueries();
-              //         }
-              //       } catch (error) {
-              //         throw new Error(`Impossible de Candidater ${error}`);
-              //       }
-              //     })
+            onPress={() =>
+              isAuthorizedToApply ? applyToOffering() : setModalOpen(true)
             }>
             <Text bold center>
               Postuler
@@ -138,12 +142,15 @@ const ModalItem: FC<Props> = props => {
         onBackdropPress={() => setModalOpen(false)}
         onSwipeComplete={() => setModalOpen(false)}>
         <View style={styles.modal}>
-          {isAuthorizedToApply ? (
-            <Text>Postuler</Text>
-          ) : (
+          {!isAuthorizedToApply && (
             <CompletePieces
               listOfPieces={listOfPieces}
               referenceId={data?.offeringById.referenceId as string}
+              setOpenModal={
+                props.setOpenModal as React.Dispatch<
+                  React.SetStateAction<Boolean>
+                >
+              }
             />
           )}
         </View>

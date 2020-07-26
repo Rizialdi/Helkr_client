@@ -397,19 +397,14 @@ const accueil = [
 
 export const getListofPieces = (id: string | null = '') => {
   if (!id) return;
-  const matchingArray = accueil.map(cat => {
-    const array = Object.entries(cat.tag).map(([_, value], __) => {
-      if (value?.referenceId === id) {
-        return value.pieces;
-      }
-    });
-    return array[1];
+  const matchingCategory = accueil.find(({ tag }) => {
+    return Object.values(tag).find(value => value?.referenceId === id);
   });
-  const listeOfNumber = matchingArray[0];
-
-  const toReturn = listeDePieces.filter(item => {
-    // console.log('bb', listeOfNumber?.includes(item.id));
-    return listeOfNumber?.includes(item.id);
+  const matchingItem = matchingCategory
+    ? Object.values(matchingCategory.tag).filter(i => i?.referenceId === id)[0]
+    : { pieces: '' };
+  const toReturn = listeDePieces.filter(({ id }) => {
+    return matchingItem && matchingItem?.pieces?.includes(id as never);
   });
   return toReturn;
 };

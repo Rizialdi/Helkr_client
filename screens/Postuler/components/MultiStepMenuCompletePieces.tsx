@@ -11,6 +11,7 @@ interface Props {
   children: JSX.Element[];
   listOfPieces: ListOfPieces;
   referenceId: string;
+  setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
 }
 
 interface State {
@@ -51,6 +52,7 @@ class MultiStepMenuCompletePieces extends Component<Props, State, any> {
               totalChildren: children?.length,
               referenceId: this.props.referenceId,
               listOfPieces: this.props.listOfPieces,
+              setOpenModal: this.props.setOpenModal,
               isLast: children ? this.state.step === children.length - 1 : true,
               onSubmit: this._onSubmit,
               nextStep: this._nextStep,

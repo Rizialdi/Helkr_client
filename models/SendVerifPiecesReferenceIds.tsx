@@ -55,7 +55,9 @@ const storedOrFetchedData = async (): Promise<
             )) as string);
       });
 
-    const toReturn = JSON.parse(sendVerifPiecesReferenceIds);
+    const toReturn = sendVerifPiecesReferenceIds
+      ? JSON.parse(sendVerifPiecesReferenceIds)
+      : '';
 
     if (!toReturn) return {};
     return toReturn;

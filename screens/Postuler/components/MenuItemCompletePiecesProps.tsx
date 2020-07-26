@@ -11,4 +11,5 @@ export interface MenuItemCompletePiecesProps {
   onSubmit: () => void;
   nextStep: () => void;
   onChangeValue: (a: string, b: string) => void;
+  setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
 }
