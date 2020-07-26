@@ -64,15 +64,15 @@ const ModalItem: FC<Props> = props => {
       variables: { id: data?.offeringById?.id as string }
     })
       .then(({ data }) => data?.candidateToOffering)
-      .then(data => {
+      .then(res => {
         try {
-          if (data?.success) {
+          if (res?.success) {
             client.reFetchObservableQueries();
           }
         } catch (error) {
           throw new Error(`Impossible de Candidater ${error}`);
         }
-      })
+      }) // ajouter une alerte ? TODO
       .then(() => props.setOpenModal && props.setOpenModal(false));
   };
 
