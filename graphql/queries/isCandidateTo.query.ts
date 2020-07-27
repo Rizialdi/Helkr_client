@@ -6,6 +6,7 @@ export default gql`
     isCandidateTo {
       ...offering
       status
+      eventday
     }
   }
   ${offering}

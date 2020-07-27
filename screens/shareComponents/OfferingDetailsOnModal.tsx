@@ -3,7 +3,7 @@ import {} from 'react-native';
 import Text from './Text';
 import { capitalize } from '../../utils';
 interface Props {
-  details: { details: object };
+  details: { details: string };
 }
 
 const OfferingDetailsOnModal: FC<Props> = ({ details }) => {
@@ -11,7 +11,9 @@ const OfferingDetailsOnModal: FC<Props> = ({ details }) => {
   return (
     <>
       {details &&
-        Object.entries(details?.details).map(([key, value], idx) => {
+        Object.entries(
+          JSON.parse(details?.details) as { [key: string]: string }
+        ).map(([key, value], idx) => {
           if (itemsNotToDisplay.includes(key)) {
             return;
           }

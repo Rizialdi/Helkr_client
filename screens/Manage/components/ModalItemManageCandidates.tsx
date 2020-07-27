@@ -90,7 +90,13 @@ const ModalItemManageCandidates: FC<Props> = props => {
             <Text>{data?.offeringById?.description}</Text>
 
             <Text bold size={16} vertical={[20, 10]}>
-              Categories
+              Categorie
+            </Text>
+
+            <Text>{data?.offeringById?.category}</Text>
+
+            <Text bold size={16} vertical={[20, 10]}>
+              Renseignements
             </Text>
 
             <OfferingDetailsOnModal details={data?.offeringById?.details} />
@@ -119,8 +125,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
                     }
                   />
                 </TouchableOpacity>
-              ) : (
-                data?.offeringById.candidates.length &&
+              ) : data?.offeringById.candidates.length ? (
                 data.offeringById.candidates.map(item => (
                   <TouchableOpacity
                     key={item.id}
@@ -135,6 +140,8 @@ const ModalItemManageCandidates: FC<Props> = props => {
                     />
                   </TouchableOpacity>
                 ))
+              ) : (
+                <></>
               )}
             </Block>
 

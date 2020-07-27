@@ -226,10 +226,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   shadow: {
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 12
+    },
     shadowOpacity: 0.1,
-    shadowRadius: 13,
-    elevation: 2
+    shadowRadius: 16.0,
+    elevation: 24,
+    backgroundColor: 'yellow'
   }
 });
 

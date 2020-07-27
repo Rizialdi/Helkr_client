@@ -111,7 +111,7 @@ const ModalItem: FC<Props> = props => {
               <Text>{data?.offeringById?.description}</Text>
 
               <Text bold size={16} vertical={[20, 10]}>
-                Categories
+                Categorie
               </Text>
               <OfferingDetailsOnModal details={data?.offeringById?.details} />
             </Block>

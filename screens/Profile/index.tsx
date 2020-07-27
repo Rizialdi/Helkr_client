@@ -1,5 +1,5 @@
-import Icon from 'react-native-vector-icons/Octicons'
-import React, { useMemo, useState } from 'react'
+import Icon from 'react-native-vector-icons/Octicons';
+import React, { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -7,13 +7,18 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View,
-} from 'react-native'
+  View
+} from 'react-native';
 
-import { makePseudoName } from '../../utils'
-import { Text } from '../shareComponents'
-import { AvgContainer, Description, ProfilContainer, StatsContainer, Tag } from './components'
-import { useGetUserStatsQuery, useUserByIdQuery } from '../../graphql'
+import { makePseudoName } from '../../utils';
+import { Text } from '../shareComponents';
+import {
+  Description,
+  ProfilContainer,
+  StatsContainer,
+  Tag
+} from './components';
+import { useGetUserStatsQuery, useUserByIdQuery } from '../../graphql';
 
 export default function Profile({ navigation, route: { params } }: any) {
   const [Id, setId] = useState<string | null>('');
@@ -30,21 +35,6 @@ export default function Profile({ navigation, route: { params } }: any) {
   }, []);
 
   const id = params && params.id ? params.id : Id;
-
-  const {
-    data: {
-      getUserStats: { done, proposed, average } = {
-        done: 0,
-        proposed: 0,
-        average: 0
-      }
-    } = {}
-  } = useGetUserStatsQuery({
-    variables: { id },
-    errorPolicy: 'ignore',
-    fetchPolicy: 'cache-and-network',
-    pollInterval: 1000 * 3600 * 24
-  });
 
   const {
     data: {
@@ -108,21 +98,9 @@ export default function Profile({ navigation, route: { params } }: any) {
           verified={verified}
           pro={professional}
         />
-        <StatsContainer done={done} proposed={proposed} average={average} />
+        <StatsContainer id={id} navigation={navigation} />
         <View style={styles.delimiter}></View>
         <Description description={description} />
-        <View style={styles.delimiter}></View>
-        <TouchableOpacity
-          style={styles.lineStars}
-          disabled={done === 0}
-          onPress={() =>
-            navigation.navigate('Avis', {
-              id: id
-            })
-          }>
-          <AvgContainer average={average} done={done} />
-          {done > 0 && <Icon name="chevron-right" size={24} color="#52575D" />}
-        </TouchableOpacity>
         <View style={styles.delimiter}></View>
         <View>
           <Text
@@ -164,11 +142,5 @@ const styles = StyleSheet.create({
     borderTopColor: '#DFD8C8',
     borderTopWidth: 0.5,
     marginTop: 25
-  },
-  lineStars: {
-    flexDirection: 'row',
-    marginTop: 25,
-    justifyContent: 'space-between',
-    marginHorizontal: 16
   }
 });

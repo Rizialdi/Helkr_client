@@ -6,20 +6,23 @@ import {
   View
 } from 'react-native';
 import { useStoreState } from '../../models';
+import Block, { BlockProps } from './Block';
 
-interface Props {
+interface Props extends BlockProps {
   title?: string;
   children: JSX.Element | JSX.Element[];
 }
 
-const StackedToBottom: SFC<Props> = ({ children }) => {
+const StackedToBottom: SFC<Props> = ({ children, ...props }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
 
   return (
     <SafeAreaView
       style={{ ...styles.container, backgroundColor: themeColors.background }}>
       <KeyboardAvoidingView enabled={true} behavior="height">
-        {children}
+        <Block flex={false} {...props}>
+          {children}
+        </Block>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

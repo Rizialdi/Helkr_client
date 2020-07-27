@@ -1,21 +1,38 @@
 import React, { FC, useRef } from 'react';
 import { useApolloClient } from 'react-apollo';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 
-import { Block, Button, Layout, Text } from '../../shareComponents';
-import { TagItem } from '../../shareComponents';
-import { formatDate } from '../../../utils';
+import {
+  Block,
+  Button,
+  Layout,
+  Text,
+  OfferingDetailsOnModal
+} from '../../shareComponents';
+import { TagItem, Card } from '../../shareComponents';
+import {
+  formatDate,
+  formatDateAvis,
+  makePseudoName,
+  getDayAndDate
+} from '../../../utils';
 import {
   useCandidateToOfferingMutation,
-  useOfferingByIdQuery
+  useOfferingByIdQuery,
+  useOfferingByIdPostuleesQuery
 } from '../../../graphql';
+import { ListCard } from '../../Avis/components';
+import AuthorCard from './AuthorCard';
+import PreferredDays from './PreferredDays';
+import { plainDayAndDate, capitalize } from '../../../utils';
 
 interface Props {
   id?: string;
+  status?: 'acceptée' | 'refusée' | 'en attente';
 }
 
 const ModalItem: FC<Props> = props => {
-  const { data, loading, error, called } = useOfferingByIdQuery({
+  const { data, loading, error, called } = useOfferingByIdPostuleesQuery({
     fetchPolicy: 'cache-and-network',
     variables: {
       id: props?.id || ''
@@ -24,49 +41,89 @@ const ModalItem: FC<Props> = props => {
   const [applyTo] = useCandidateToOfferingMutation();
   const client = useApolloClient();
 
-  const toastRef = useRef(null);
+  const author = data?.offeringById?.author;
 
   return (
-    <Layout title={'Details'}>
-      {loading && !called ? (
-        <ActivityIndicator size={'large'} />
-      ) : (
-        <Block flex={false}>
-          <Block flex={false} row middle space={'around'}>
-            <TagItem tag={data?.offeringById?.type} type />
-            <TagItem tag={data?.offeringById?.category} category />
-            <TagItem tag={formatDate(data?.offeringById?.createdAt)} date />
-          </Block>
-          <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
-            {data?.offeringById?.description}
-          </Text>
-          <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
-            {JSON.stringify(data?.offeringById.details)}
-          </Text>
-          <Block margin={[20, 20]}>
-            <Button
-              secondary
-              onPress={() =>
-                applyTo({ variables: { id: data?.offeringById?.id as string } })
-                  .then(({ data }) => data?.candidateToOffering)
-                  .then(data => {
-                    try {
-                      if (data?.success) {
-                        client.reFetchObservableQueries();
-                      }
-                    } catch (error) {
-                      throw new Error(`Impossible de Candidater ${error}`);
-                    }
-                  })
-              }>
-              <Text bold center>
-                Postuler
+    <>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Layout title={'Details'}>
+          {loading && !called ? (
+            <ActivityIndicator size={'large'} />
+          ) : (
+            <Block flex={false} margin={[0, 25, 48 * 2 + 20]}>
+              <Block margin={[0, -25]} flex={false} row middle space={'around'}>
+                <TagItem tag={data?.offeringById?.type} type />
+                <TagItem tag={data?.offeringById?.category} category />
+                <TagItem
+                  tag={
+                    data?.offeringById.updatedAt
+                      ? formatDateAvis(data?.offeringById?.updatedAt)
+                      : formatDateAvis(data?.offeringById?.createdAt)
+                  }
+                  date
+                />
+              </Block>
+              <Text bold size={16} vertical={[20, 10]}>
+                Description
               </Text>
-            </Button>
-          </Block>
-        </Block>
-      )}
-    </Layout>
+              <Text>{data?.offeringById?.description}</Text>
+
+              <Text bold size={16} vertical={[20, 10]}>
+                Categorie
+              </Text>
+
+              <Text horizontal={20}>{data?.offeringById?.category}</Text>
+
+              <Text bold size={16} vertical={[20, 10]}>
+                Renseignements
+              </Text>
+
+              <OfferingDetailsOnModal details={data?.offeringById?.details} />
+
+              {props.status === 'acceptée' && (
+                <>
+                  <Text bold size={16} vertical={[20, 10]}>
+                    Auteur
+                  </Text>
+                  <Card shadow>
+                    <AuthorCard
+                      id={author?.id as string}
+                      nom={author?.nom as string}
+                      prenom={author?.prenom as string}
+                      numero={author?.numero as string}
+                      avatar={author?.avatar as string}
+                      address={author?.address as string}
+                    />
+                  </Card>
+                  {data?.offeringById.eventday ? (
+                    <>
+                      <Text bold size={16} vertical={[20, 10]}>
+                        Jour de la prestation
+                      </Text>
+                      <Text horizontal={20} semibold transform={'capitalize'}>
+                        {plainDayAndDate(data?.offeringById.eventday).join(' ')}
+                      </Text>
+                    </>
+                  ) : (
+                    <>
+                      <Text bold size={16} vertical={[20, 10]}>
+                        Jours choisis
+                      </Text>
+                      <PreferredDays
+                        offeringId={props.id as string}
+                        preferredDays={
+                          data?.offeringById.preferreddays as string[]
+                        }
+                      />
+                    </>
+                  )}
+                </>
+              )}
+            </Block>
+          )}
+        </Layout>
+      </ScrollView>
+    </>
   );
 };
 

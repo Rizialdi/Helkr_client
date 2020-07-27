@@ -52,7 +52,9 @@ const ModalItemManageOfferings: FC<Props> = props => {
                   tag={
                     data?.offeringById.updatedAt
                       ? formatDateAvis(data?.offeringById?.updatedAt)
-                      : formatDateAvis(data?.offeringById?.createdAt)
+                      : data?.offeringById.createdAt
+                      ? formatDateAvis(data?.offeringById?.createdAt)
+                      : ''
                   }
                   date
                 />
@@ -63,7 +65,7 @@ const ModalItemManageOfferings: FC<Props> = props => {
               <Text>{data?.offeringById?.description}</Text>
 
               <Text bold size={16} vertical={[20, 10]}>
-                Categories
+                Categorie
               </Text>
 
               <OfferingDetailsOnModal details={data?.offeringById?.details} />

@@ -18,7 +18,7 @@ export interface dataContent {
 }
 
 interface Props {
-  data?: any;
+  data?: dataContent[];
   onRefresh: () => void;
   emptyMessage: string;
   modalItem: JSX.Element;
@@ -32,10 +32,15 @@ const CustomListView: FC<Props> = ({
   refreshing
 }) => {
   const [selectedOffering, setSelectedOffering] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
-
+  const openToDescription = (id: string, status: string = '') => {
+    setSelectedOffering(id);
+    setOpenModal(true);
+    setStatus(status);
+  };
   return (
     <Block flex={false}>
       {!data?.length && (
@@ -58,10 +63,13 @@ const CustomListView: FC<Props> = ({
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => {
-                setSelectedOffering(id);
-                setOpenModal(true);
-              }}>
+              onPress={() =>
+                item.status && item.status === 'refusée'
+                  ? null
+                  : item.status
+                  ? openToDescription(id, item.status)
+                  : openToDescription(id)
+              }>
               <ListItemOffering offering={item} />
             </TouchableOpacity>
           );
@@ -83,7 +91,8 @@ const CustomListView: FC<Props> = ({
           {selectedOffering &&
             React.cloneElement(modalItem, {
               id: selectedOffering,
-              setOpenModal: setOpenModal
+              setOpenModal: setOpenModal,
+              status: status
             })}
         </Block>
       </Modal>

@@ -5,21 +5,36 @@ import * as Permissions from 'expo-permissions';
 import { User } from 'react-native-gifted-chat';
 
 import { chatMessagesContextInterface } from './models/ChatMessages';
-import { ChatFragment, Utilisateur, Message } from './graphql/helpkr-types';
+import {
+  ChatFragment,
+  Utilisateur,
+  Message,
+  Offering
+} from './graphql/helpkr-types';
 
-const yearMonths: string[] = [
-  'jan.',
-  'fev.',
-  'mar.',
-  'avr.',
+export const yearMonths: string[] = [
+  'janvier',
+  'fevrier',
+  'mars',
+  'avril',
   'mai',
-  'jui.',
-  'juil.',
-  'aou.',
-  'sep.',
-  'oct.',
-  'nov.',
-  'dec.'
+  'juin',
+  'juillet',
+  'aout',
+  'septembre',
+  'octobre',
+  'novembre',
+  'decembre'
+];
+
+const daysOfWeek: string[] = [
+  'lundi',
+  'mardi',
+  'mercredi',
+  'jeudi',
+  'vendredi',
+  'samedi',
+  'dimanche'
 ];
 
 export const formatDate = (
@@ -50,11 +65,34 @@ export const formatDate = (
   return elapsedTime;
 };
 
+export const getDayAndDate = (
+  timestamp: string = '1595798432136'
+): (string | number)[] => {
+  const date = new Date(parseInt(timestamp));
+  return [
+    daysOfWeek[date.getDay()].slice(0, 3),
+    yearMonths[date.getMonth()],
+    date.getDate()
+  ];
+};
+
+export const plainDayAndDate = (
+  timestamp: string = '1595798432136'
+): (string | number)[] => {
+  const date = new Date(parseInt(timestamp));
+  return [
+    daysOfWeek[date.getDay()],
+    date.getDate(),
+    yearMonths[date.getMonth()],
+    date.getFullYear()
+  ];
+};
+
 export const formatDateAvis = (
   timestamp: string | number = '15886987435'
 ): string => {
   const date = new Date(timestamp);
-  return yearMonths[date.getMonth()] + ' ' + date.getFullYear();
+  return yearMonths[date.getMonth()].slice(0, 3) + ' ' + date.getFullYear();
 };
 
 export const makePseudoName = (nom: string, prenom: string): string =>
@@ -155,4 +193,39 @@ export const getPermissionAsync = async (
     return false;
   }
   return true;
+};
+
+const sordOnField = (array: Offering[], field: string) => {
+  return array.sort(
+    (a: any, b: any) =>
+      new Date(parseInt(b[field] || 0)).getTime() -
+      new Date(parseInt(a[field] || 0)).getTime()
+  );
+};
+
+export const sortPostuleeOnInterest = (array: Offering[] = []) => {
+  const havingEventDay: Offering[] = [];
+  const notHavingEventDay: Offering[] = [];
+  array.map(item => {
+    if (item.eventday) {
+      havingEventDay.push(item);
+      return;
+    }
+    notHavingEventDay.push(item);
+  });
+  const reorderByValue = notHavingEventDay.map(item => {
+    switch (item.status) {
+      case 'en attente':
+        return { ...item, orderingDate: item.updatedAt };
+      case 'acceptée':
+        return { ...item, orderingDate: item.updatedAt };
+      default:
+        return { ...item, orderingDate: item.createdAt };
+    }
+  });
+
+  return [
+    ...sordOnField(havingEventDay, 'eventday'),
+    ...sordOnField(reorderByValue, 'orderingDate')
+  ];
 };

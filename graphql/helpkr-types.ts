@@ -119,6 +119,7 @@ export type Mutation = {
   avatarUpload: Scalars['Boolean'];
   candidateToOffering: CandidateToOfferingSuccess;
   chooseCandidate: Scalars['Boolean'];
+  chooseEventDay: Scalars['Boolean'];
   completeOffering: Scalars['Boolean'];
   createAvis: Scalars['Boolean'];
   createChannel: CreateChannel;
@@ -126,14 +127,15 @@ export type Mutation = {
   deleteOffering: Scalars['Boolean'];
   descriptionUpdate: Scalars['Boolean'];
   registerUser: AuthPayload;
+  removeAuthorizedCategories: Scalars['Boolean'];
   tagsUpdate: Scalars['Boolean'];
   updateOffering: Scalars['Boolean'];
 };
 
 
 export type MutationAddAuthorizedCategoriesArgs = {
+  authorizedcategory: Scalars['String'];
   id?: Maybe<Scalars['String']>;
-  listofauthorizedcategories: Scalars['String'];
 };
 
 
@@ -171,6 +173,12 @@ export type MutationCandidateToOfferingArgs = {
 export type MutationChooseCandidateArgs = {
   candidateId: Scalars['String'];
   id: Scalars['String'];
+};
+
+
+export type MutationChooseEventDayArgs = {
+  id: Scalars['String'];
+  timestamp: Scalars['String'];
 };
 
 
@@ -217,6 +225,12 @@ export type MutationRegisterUserArgs = {
 };
 
 
+export type MutationRemoveAuthorizedCategoriesArgs = {
+  id?: Maybe<Scalars['String']>;
+  referenceId: Scalars['String'];
+};
+
+
 export type MutationTagsUpdateArgs = {
   tags: Array<Scalars['String']>;
 };
@@ -236,7 +250,9 @@ export type Offering = {
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
   details: Scalars['JSON'];
+  eventday?: Maybe<Scalars['String']>;
   id: Scalars['String'];
+  preferreddays: Array<Scalars['String']>;
   referenceId?: Maybe<Scalars['String']>;
   selectedCandidate?: Maybe<Utilisateur>;
   status?: Maybe<Scalars['String']>;
@@ -267,6 +283,7 @@ export type OfferingWhereUniqueInput = {
 export type Query = {
   __typename?: 'Query';
   allChatsAndMessages: Array<Channel>;
+  allOfferings: Array<Offering>;
   channel: Channel;
   channels: Array<Channel>;
   getAuthorizedCategories: Authorizedcategories;
@@ -284,6 +301,11 @@ export type Query = {
   offeringsUser: Array<Offering>;
   userById: Utilisateur;
   users: Array<Utilisateur>;
+};
+
+
+export type QueryAllOfferingsArgs = {
+  filters?: Maybe<Array<Scalars['String']>>;
 };
 
 
@@ -339,6 +361,12 @@ export type QueryOfferingsUserArgs = {
 
 export type QueryUserByIdArgs = {
   id: Scalars['String'];
+};
+
+export type ReferenceidUserIdIdCompoundUniqueInput = {
+  id: Scalars['String'];
+  referenceid: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type Stats = {
@@ -406,7 +434,7 @@ export type Utilisateur = {
   prenom: Scalars['String'];
   professional: Scalars['Boolean'];
   tags: Array<Scalars['String']>;
-  verificationpieces?: Maybe<Verificationpieces>;
+  verificationpieces: Array<Verificationpieces>;
   verified: Scalars['Boolean'];
 };
 
@@ -458,6 +486,14 @@ export type UtilisateurOfferingsArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
+
+export type UtilisateurVerificationpiecesArgs = {
+  after?: Maybe<VerificationpiecesWhereUniqueInput>;
+  before?: Maybe<VerificationpiecesWhereUniqueInput>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
 export type UtilisateurWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
   numero?: Maybe<Scalars['String']>;
@@ -467,8 +503,15 @@ export type Verificationpieces = {
   __typename?: 'verificationpieces';
   id: Scalars['String'];
   listofpieces?: Maybe<Scalars['Json']>;
+  referenceid: Scalars['String'];
+  status?: Maybe<Scalars['String']>;
   userId: Scalars['String'];
   utilisateur: Utilisateur;
+};
+
+export type VerificationpiecesWhereUniqueInput = {
+  referenceid_userId_id?: Maybe<ReferenceidUserIdIdCompoundUniqueInput>;
+  userId?: Maybe<Scalars['String']>;
 };
 
 
@@ -562,6 +605,17 @@ export type ChooseCandidateMutationVariables = Exact<{
 export type ChooseCandidateMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'chooseCandidate'>
+);
+
+export type ChooseEventDayMutationVariables = Exact<{
+  id: Scalars['String'];
+  timestamp: Scalars['String'];
+}>;
+
+
+export type ChooseEventDayMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'chooseEventDay'>
 );
 
 export type CreateMessageMutationVariables = Exact<{
@@ -721,7 +775,7 @@ export type IsCandidateToQuery = (
   { __typename?: 'Query' }
   & { isCandidateTo: Array<(
     { __typename?: 'offering' }
-    & Pick<Offering, 'status'>
+    & Pick<Offering, 'status' | 'eventday'>
     & OfferingFragment
   )> }
 );
@@ -766,6 +820,25 @@ export type OfferingByIdQuery = (
       { __typename?: 'utilisateur' }
       & Pick<Utilisateur, 'id' | 'avatar' | 'professional' | 'moyenne'>
     )> }
+    & OfferingFragment
+  ) }
+);
+
+export type OfferingByIdPostuleesQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type OfferingByIdPostuleesQuery = (
+  { __typename?: 'Query' }
+  & { offeringById: (
+    { __typename?: 'offering' }
+    & Pick<Offering, 'details' | 'preferreddays' | 'eventday'>
+    & { author: (
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'numero' | 'address'>
+      & UserFragment
+    ) }
     & OfferingFragment
   ) }
 );
@@ -1023,6 +1096,37 @@ export function useChooseCandidateMutation(baseOptions?: ApolloReactHooks.Mutati
 export type ChooseCandidateMutationHookResult = ReturnType<typeof useChooseCandidateMutation>;
 export type ChooseCandidateMutationResult = ApolloReactCommon.MutationResult<ChooseCandidateMutation>;
 export type ChooseCandidateMutationOptions = ApolloReactCommon.BaseMutationOptions<ChooseCandidateMutation, ChooseCandidateMutationVariables>;
+export const ChooseEventDayDocument = gql`
+    mutation chooseEventDay($id: String!, $timestamp: String!) {
+  chooseEventDay(id: $id, timestamp: $timestamp)
+}
+    `;
+export type ChooseEventDayMutationFn = ApolloReactCommon.MutationFunction<ChooseEventDayMutation, ChooseEventDayMutationVariables>;
+
+/**
+ * __useChooseEventDayMutation__
+ *
+ * To run a mutation, you first call `useChooseEventDayMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChooseEventDayMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [chooseEventDayMutation, { data, loading, error }] = useChooseEventDayMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      timestamp: // value for 'timestamp'
+ *   },
+ * });
+ */
+export function useChooseEventDayMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<ChooseEventDayMutation, ChooseEventDayMutationVariables>) {
+        return ApolloReactHooks.useMutation<ChooseEventDayMutation, ChooseEventDayMutationVariables>(ChooseEventDayDocument, baseOptions);
+      }
+export type ChooseEventDayMutationHookResult = ReturnType<typeof useChooseEventDayMutation>;
+export type ChooseEventDayMutationResult = ApolloReactCommon.MutationResult<ChooseEventDayMutation>;
+export type ChooseEventDayMutationOptions = ApolloReactCommon.BaseMutationOptions<ChooseEventDayMutation, ChooseEventDayMutationVariables>;
 export const CreateMessageDocument = gql`
     mutation createMessage($channelId: String, $recipient: String, $text: String!) {
   createMessage(channelId: $channelId, recipient: $recipient, text: $text)
@@ -1444,6 +1548,7 @@ export const IsCandidateToDocument = gql`
   isCandidateTo {
     ...offering
     status
+    eventday
   }
 }
     ${OfferingFragmentDoc}`;
@@ -1583,6 +1688,48 @@ export function useOfferingByIdLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type OfferingByIdQueryHookResult = ReturnType<typeof useOfferingByIdQuery>;
 export type OfferingByIdLazyQueryHookResult = ReturnType<typeof useOfferingByIdLazyQuery>;
 export type OfferingByIdQueryResult = ApolloReactCommon.QueryResult<OfferingByIdQuery, OfferingByIdQueryVariables>;
+export const OfferingByIdPostuleesDocument = gql`
+    query offeringByIdPostulees($id: String!) {
+  offeringById(id: $id) {
+    ...offering
+    details
+    preferreddays
+    eventday
+    author {
+      ...user
+      numero
+      address
+    }
+  }
+}
+    ${OfferingFragmentDoc}
+${UserFragmentDoc}`;
+
+/**
+ * __useOfferingByIdPostuleesQuery__
+ *
+ * To run a query within a React component, call `useOfferingByIdPostuleesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOfferingByIdPostuleesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOfferingByIdPostuleesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOfferingByIdPostuleesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<OfferingByIdPostuleesQuery, OfferingByIdPostuleesQueryVariables>) {
+        return ApolloReactHooks.useQuery<OfferingByIdPostuleesQuery, OfferingByIdPostuleesQueryVariables>(OfferingByIdPostuleesDocument, baseOptions);
+      }
+export function useOfferingByIdPostuleesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<OfferingByIdPostuleesQuery, OfferingByIdPostuleesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<OfferingByIdPostuleesQuery, OfferingByIdPostuleesQueryVariables>(OfferingByIdPostuleesDocument, baseOptions);
+        }
+export type OfferingByIdPostuleesQueryHookResult = ReturnType<typeof useOfferingByIdPostuleesQuery>;
+export type OfferingByIdPostuleesLazyQueryHookResult = ReturnType<typeof useOfferingByIdPostuleesLazyQuery>;
+export type OfferingByIdPostuleesQueryResult = ApolloReactCommon.QueryResult<OfferingByIdPostuleesQuery, OfferingByIdPostuleesQueryVariables>;
 export const UserByIdDocument = gql`
     query userById($id: String!) {
   userById(id: $id) {

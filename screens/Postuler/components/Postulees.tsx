@@ -9,6 +9,7 @@ import {
   useIsCandidateToQuery,
   useUpdateAppliedToSubscription
 } from '../../../graphql';
+import { sortPostuleeOnInterest } from '../../../utils';
 
 const Postulees = () => {
   const [stateData, setStateData] = useState<IsCandidateToQuery>();
@@ -69,7 +70,7 @@ const Postulees = () => {
     <>
       {loadingTabTwo && <ActivityIndicator />}
       <CustomListView
-        data={stateData?.isCandidateTo}
+        data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
         emptyMessage={"Vous n'avez aucune candidature"}
         modalItem={<ModalItem />}
         refreshing={refreshing}

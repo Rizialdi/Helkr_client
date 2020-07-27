@@ -12,8 +12,8 @@ interface Props {
     type: string;
     description: string;
     createdAt: string;
-    updatedAt: string;
-    status?: string;
+    updatedAt?: string;
+    status?: string | null | undefined;
   };
 }
 export default ({ offering }: Props) => {

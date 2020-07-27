@@ -7,12 +7,12 @@ import Text from './Text';
 
 interface Props {
   tag: string | undefined;
-  category?;
-  date?;
-  type?;
-  status?;
-  enattente?;
-  refusée?;
+  category?: boolean;
+  date?: boolean;
+  type?: boolean;
+  status?: boolean;
+  enattente?: boolean;
+  refusée?: boolean;
 }
 const TagItem: SFC<Props> = ({
   tag = '',
@@ -33,7 +33,7 @@ const TagItem: SFC<Props> = ({
     type && { backgroundColor: 'rgba(50, 158, 123, 0.1)' }
   ];
 
-  const statusStyles = {
+  const statusStyles: { [key: string]: { [key: string]: string } } = {
     'en attente': {
       backgroundColor: themeColors.primary
     },

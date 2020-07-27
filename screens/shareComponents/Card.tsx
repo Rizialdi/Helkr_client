@@ -17,7 +17,10 @@ const Card: React.FC<Props> = ({ style, shadow, children, ...props }) => {
     styles.card,
     style,
     shadow && styles.shadow,
-    { backgroundColor: themeColors.white }
+    !props.primary &&
+      !props.secondary && {
+        backgroundColor: themeColors.white
+      }
   ];
 
   return (
