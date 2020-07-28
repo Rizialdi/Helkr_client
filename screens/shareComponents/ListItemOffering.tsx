@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-import { formatDate } from '../../utils';
+import { formatDate, getDayAndDate } from '../../utils';
 import Block from './Block';
 import TagItem from './TagItem';
 import Text from './Text';
@@ -13,14 +13,38 @@ interface Props {
     description: string;
     createdAt: string;
     updatedAt?: string;
+    eventday?: string;
+    completed?: boolean;
     status?: string | null | undefined;
   };
 }
 export default ({ offering }: Props) => {
-  const { category, type, description, createdAt, updatedAt } = offering;
+  const {
+    category,
+    type,
+    description,
+    createdAt,
+    updatedAt,
+    eventday,
+    completed
+  } = offering;
   return (
     <Block flex={false} style={styles.container}>
-      {offering?.status && <TagItem tag={offering?.status} status />}
+      {offering?.status && completed ? (
+        <Block>
+          <TagItem tag={'terminé'} status />
+        </Block>
+      ) : offering?.status && eventday ? (
+        <Block flex={false} row space={'between'} margin={[0, 25]}>
+          <TagItem tag={'Rendez-vous'} rdv />
+          <TagItem
+            tag={`${getDayAndDate(offering?.eventday).join(' ')} `}
+            date
+          />
+        </Block>
+      ) : offering?.status ? (
+        <TagItem tag={offering?.status} status />
+      ) : null}
       <Block flex={false} row middle space={'around'}>
         <TagItem tag={type} type />
         <TagItem tag={category} category />

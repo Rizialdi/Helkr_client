@@ -173,6 +173,7 @@ export type MutationCandidateToOfferingArgs = {
 export type MutationChooseCandidateArgs = {
   candidateId: Scalars['String'];
   id: Scalars['String'];
+  preferreddays: Array<Scalars['String']>;
 };
 
 
@@ -247,6 +248,7 @@ export type Offering = {
   avis: Array<Avis>;
   candidates: Array<Utilisateur>;
   category: Scalars['String'];
+  completed: Scalars['Boolean'];
   createdAt: Scalars['DateTime'];
   description: Scalars['String'];
   details: Scalars['JSON'];
@@ -599,6 +601,7 @@ export type CandidateToOfferingMutation = (
 export type ChooseCandidateMutationVariables = Exact<{
   id: Scalars['String'];
   candidateId: Scalars['String'];
+  preferreddays: Array<Scalars['String']>;
 }>;
 
 
@@ -775,7 +778,7 @@ export type IsCandidateToQuery = (
   { __typename?: 'Query' }
   & { isCandidateTo: Array<(
     { __typename?: 'offering' }
-    & Pick<Offering, 'status' | 'eventday'>
+    & Pick<Offering, 'status' | 'eventday' | 'completed'>
     & OfferingFragment
   )> }
 );
@@ -799,6 +802,10 @@ export type MyIncompleteOfferingWithCandidatesQuery = (
   & { myIncompleteOfferingWithCandidates: Array<(
     { __typename?: 'offering' }
     & Pick<Offering, 'status'>
+    & { selectedCandidate?: Maybe<(
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'id'>
+    )> }
     & OfferingFragment
   )> }
 );
@@ -1066,8 +1073,8 @@ export type CandidateToOfferingMutationHookResult = ReturnType<typeof useCandida
 export type CandidateToOfferingMutationResult = ApolloReactCommon.MutationResult<CandidateToOfferingMutation>;
 export type CandidateToOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<CandidateToOfferingMutation, CandidateToOfferingMutationVariables>;
 export const ChooseCandidateDocument = gql`
-    mutation chooseCandidate($id: String!, $candidateId: String!) {
-  chooseCandidate(id: $id, candidateId: $candidateId)
+    mutation chooseCandidate($id: String!, $candidateId: String!, $preferreddays: [String!]!) {
+  chooseCandidate(id: $id, candidateId: $candidateId, preferreddays: $preferreddays)
 }
     `;
 export type ChooseCandidateMutationFn = ApolloReactCommon.MutationFunction<ChooseCandidateMutation, ChooseCandidateMutationVariables>;
@@ -1087,6 +1094,7 @@ export type ChooseCandidateMutationFn = ApolloReactCommon.MutationFunction<Choos
  *   variables: {
  *      id: // value for 'id'
  *      candidateId: // value for 'candidateId'
+ *      preferreddays: // value for 'preferreddays'
  *   },
  * });
  */
@@ -1549,6 +1557,7 @@ export const IsCandidateToDocument = gql`
     ...offering
     status
     eventday
+    completed
   }
 }
     ${OfferingFragmentDoc}`;
@@ -1614,6 +1623,9 @@ export const MyIncompleteOfferingWithCandidatesDocument = gql`
   myIncompleteOfferingWithCandidates {
     ...offering
     status
+    selectedCandidate {
+      id
+    }
   }
 }
     ${OfferingFragmentDoc}`;

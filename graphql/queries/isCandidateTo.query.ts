@@ -7,6 +7,7 @@ export default gql`
       ...offering
       status
       eventday
+      completed
     }
   }
   ${offering}

@@ -182,9 +182,7 @@ const CustomText: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   // default style
-  text: {
-    fontSize: theme.sizes.font
-  },
+  text: { fontFamily: 'HelveticaNeue', fontSize: theme.sizes.font },
   // variations
   regular: {
     fontWeight: 'normal'

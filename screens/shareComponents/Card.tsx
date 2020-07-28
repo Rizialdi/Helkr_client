@@ -32,18 +32,19 @@ const Card: React.FC<Props> = ({ style, shadow, children, ...props }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 6,
-    padding: 16 + 4,
-    marginBottom: 16
+    borderRadius: 10,
+    paddingVertical: 16 + 4,
+    marginBottom: 15,
+    marginTop: 5
   },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 12
+      height: 5
     },
     shadowOpacity: 0.1,
-    shadowRadius: 16.0,
+    shadowRadius: 50.0,
     elevation: 24
   }
 });

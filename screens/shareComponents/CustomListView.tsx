@@ -14,6 +14,7 @@ export interface dataContent {
   description: string;
   category: string;
   createdAt: string;
+  completed: boolean;
   status?: string | null | undefined;
 }
 
@@ -64,7 +65,7 @@ const CustomListView: FC<Props> = ({
             <TouchableOpacity
               key={index}
               onPress={() =>
-                item.status && item.status === 'refusée'
+                (item.status && item.status === 'refusée') || item.completed
                   ? null
                   : item.status
                   ? openToDescription(id, item.status)

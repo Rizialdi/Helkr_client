@@ -6,6 +6,9 @@ export default gql`
     myIncompleteOfferingWithCandidates {
       ...offering
       status
+      selectedCandidate {
+        id
+      }
     }
   }
   ${offering}

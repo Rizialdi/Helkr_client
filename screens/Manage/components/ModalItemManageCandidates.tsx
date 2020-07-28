@@ -32,6 +32,14 @@ import ValidationCode from './ValidationCode';
 import DropReview from './DropReview';
 import IssueReporting from './IssueReporting';
 import OfferingDetailsOnModal from '../../shareComponents/OfferingDetailsOnModal';
+import {
+  MyIncompleteOfferingWithCandidatesQuery,
+  MyIncompleteOfferingWithCandidatesDocument,
+  OfferingByIdQuery,
+  OfferingByIdDocument
+} from '../../../graphql';
+import { DataProxy } from 'apollo-cache';
+
 const { height } = Dimensions.get('screen');
 
 interface Props {
@@ -66,6 +74,106 @@ const ModalItemManageCandidates: FC<Props> = props => {
     setDate({});
     setSelectedId('');
     setCandidateCardClickedPart('');
+  };
+  console.log(data);
+  const updateCache = (cache: DataProxy) => {
+    if (!selectedId || !props.id) return;
+
+    const myIncompleteOfferingWithCandidates = cache.readQuery({
+      query: MyIncompleteOfferingWithCandidatesDocument
+    }) as MyIncompleteOfferingWithCandidatesQuery | undefined;
+
+    const offeringById = cache.readQuery({
+      query: OfferingByIdDocument,
+      variables: { id: props.id }
+    }) as OfferingByIdQuery | undefined;
+
+    const newMyIncompleteOfferingsWithCandidates = {
+      ...myIncompleteOfferingWithCandidates,
+      myIncompleteOfferingWithCandidates: {
+        __typename: 'offering',
+        ...myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates.map(
+          item => {
+            if (item.id != props.id) return item;
+            const newItem = {
+              ...item,
+              selectedCandidate: {
+                __typename: 'utilisateur',
+                id: selectedId
+              }
+            };
+            return newItem;
+          }
+        )
+      }
+    };
+
+    // const newOfferingById = {
+    //   ...offeringById,
+    //   offeringById: {
+    //     ...offeringById?.offeringById,
+    //     selectedCandidate: {
+    //       __typename: 'utilisateur',
+    //       id: selectedId
+    //     }
+    //   }
+    // };
+
+    console.log('mex1', myIncompleteOfferingWithCandidates);
+    console.log('mex2', newMyIncompleteOfferingsWithCandidates);
+    //console.log('tex1', offeringById);
+
+    cache.writeQuery({
+      query: MyIncompleteOfferingWithCandidatesDocument,
+      data: newMyIncompleteOfferingsWithCandidates
+    });
+
+    // cache.writeQuery({
+    //   query: OfferingByIdDocument,
+    //   variables: { id: props.id },
+    //   data: newOfferingById
+    // });
+
+    const myIncompleteOfferingWithCandidates2 = cache.readQuery({
+      query: MyIncompleteOfferingWithCandidatesDocument
+    }) as MyIncompleteOfferingWithCandidatesQuery | undefined;
+
+    // const offeringById2 = cache.readQuery({
+    //   query: OfferingByIdDocument,
+    //   variables: { id: props.id }
+    // }) as OfferingByIdQuery | undefined;
+
+    // // console.log('mex1', myIncompleteOfferingWithCandidates);
+    console.log('mex2', myIncompleteOfferingWithCandidates2);
+    // console.log('*************************************');
+    // console.log('tex1', offeringById);
+    // console.log('tex2', offeringById2);
+  };
+
+  const onSubmit = () => {
+    if (!date) return;
+    const arrayOfDate = Object.keys(date).map(item =>
+      new Date(item).getTime().toString()
+    );
+    chooseCandidate({
+      variables: {
+        id: props.id as string,
+        candidateId: selectedId,
+        preferreddays: arrayOfDate
+      },
+      update: updateCache
+    }).then(({ data }) => {
+      try {
+        if (data?.chooseCandidate) {
+          onModalClose();
+          console.log('sucks baby');
+        } else {
+          //Modal ou information -> choix candidat impossible
+        }
+      } catch (error) {
+        throw new Error(`Impossible de choisir le Candidate ${error}`);
+      }
+    });
   };
 
   return (
@@ -106,7 +214,6 @@ const ModalItemManageCandidates: FC<Props> = props => {
                   ? 'Candidat retenu'
                   : 'Candidats'}
               </Text>
-
               {data?.offeringById.selectedCandidate ? (
                 <TouchableOpacity
                   key={data?.offeringById.selectedCandidate.id}
@@ -238,30 +345,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
                     <Calendar parentCallback={setDate} />
                     {date && Object.keys(date).length === 3 && (
                       <Block margin={[20, 20]}>
-                        <Button
-                          secondary
-                          onPress={() =>
-                            chooseCandidate({
-                              variables: {
-                                id: props.id as string,
-                                candidateId: selectedId
-                              }
-                            })
-                              .then(({ data }) => data?.chooseCandidate)
-                              .then(data => {
-                                try {
-                                  if (data) {
-                                    onModalClose();
-                                  } else {
-                                    //Modal ou information -> choix candidat impossible
-                                  }
-                                } catch (error) {
-                                  throw new Error(
-                                    `Impossible de choisir le Candidate ${error}`
-                                  );
-                                }
-                              })
-                          }>
+                        <Button secondary onPress={() => onSubmit()}>
                           <Text bold center>
                             Je chosis ce candidat
                           </Text>

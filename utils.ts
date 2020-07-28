@@ -71,8 +71,8 @@ export const getDayAndDate = (
   const date = new Date(parseInt(timestamp));
   return [
     daysOfWeek[date.getDay()].slice(0, 3),
-    yearMonths[date.getMonth()],
-    date.getDate()
+    date.getDate(),
+    yearMonths[date.getMonth()]
   ];
 };
 

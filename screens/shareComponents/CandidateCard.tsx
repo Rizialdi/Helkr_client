@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { CandidateCardClickedPart } from '../Manage/components/ModalItemManageCandidates';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
+import Card from './Card';
 
 interface Props {
   id: string;
@@ -29,23 +30,8 @@ const candidateCard: FC<Props> = ({
 }) => {
   const { themeColors } = useStoreState(store => store.Preferences);
   return (
-    <Block
-      padding={8}
-      style={{
-        borderRadius: 6,
-        backgroundColor: '#d8eaed',
-        marginTop: 10,
-        marginBottom: 5
-      }}>
-      <Block
-        flex={false}
-        row
-        margin={[0, 0]}
-        padding={5}
-        style={[
-          styles.candidateView,
-          { borderRadius: 6, backgroundColor: themeColors.white }
-        ]}>
+    <Card shadow>
+      <Block flex={true} row>
         <View style={{ flex: 1 }}>
           <Image
             source={
@@ -57,7 +43,7 @@ const candidateCard: FC<Props> = ({
             style={{ width: '100%', height: '100%' }}
           />
         </View>
-        <View style={{ flex: 3, borderRadius: 6 }}>
+        <View style={{ flex: 3 }}>
           <Block row space={'around'} center>
             <Text semibold>{average} / 5</Text>
             <Text semibold>{professional ? 'Professionnel' : 'Amateur'}</Text>
@@ -75,24 +61,8 @@ const candidateCard: FC<Props> = ({
           </Block>
         </View>
       </Block>
-    </Block>
+    </Card>
   );
 };
 
 export default candidateCard;
-
-const styles = StyleSheet.create({
-  candidateView: {
-    flexDirection: 'row',
-    height: 80
-  },
-  shadow: {
-    shadowColor: 'yellow',
-    shadowOffset: {
-      width: 0,
-      height: 6
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4
-  }
-});

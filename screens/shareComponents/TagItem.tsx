@@ -2,7 +2,6 @@ import React, { SFC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { useStoreState } from '../../models';
-import Block from './Block';
 import Text from './Text';
 
 interface Props {
@@ -13,6 +12,7 @@ interface Props {
   status?: boolean;
   enattente?: boolean;
   refusée?: boolean;
+  rdv?: boolean;
 }
 const TagItem: SFC<Props> = ({
   tag = '',
@@ -21,6 +21,7 @@ const TagItem: SFC<Props> = ({
   type,
   enattente,
   refusée,
+  rdv,
   ...props
 }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
@@ -30,7 +31,8 @@ const TagItem: SFC<Props> = ({
       backgroundColor: 'rgba(175, 158, 123, 0.1)'
     },
     date && { backgroundColor: 'rgba(175, 100, 123, 0.1)' },
-    type && { backgroundColor: 'rgba(50, 158, 123, 0.1)' }
+    type && { backgroundColor: 'rgba(50, 158, 123, 0.1)' },
+    rdv && { backgroundColor: themeColors.secondary }
   ];
 
   const statusStyles: { [key: string]: { [key: string]: string } } = {
@@ -39,30 +41,27 @@ const TagItem: SFC<Props> = ({
     },
     refusée: { backgroundColor: themeColors.accent },
     acceptée: { backgroundColor: themeColors.secondary },
-    complete: { backgroundColor: themeColors.gray }
+    terminé: { backgroundColor: themeColors.gray }
   };
 
   return (
     <>
       {props.status ? (
-        <Block
-          flex={true}
-          row
-          margin={[5, 25]}
-          padding={[5, 5]}
-          style={[statusStyles[tag]]}>
-          <Text medium bold transform={'capitalize'}>
+        <View
+          style={[styles.container, styles.containerStatus, statusStyles[tag]]}>
+          <Text bold transform={'capitalize'}>
             {tag}
           </Text>
-        </Block>
+        </View>
       ) : (
-        <View style={blockStyles}>
+        <View style={[blockStyles]}>
           <Text
             style={{
               fontFamily: 'HelveticaNeue',
               fontSize: 15,
               marginRight: 5
-            }}>
+            }}
+            bold={rdv}>
             {tag}
           </Text>
         </View>
@@ -79,6 +78,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     margin: 5
+  },
+  containerStatus: {
+    marginHorizontal: 25,
+    marginBottom: 5,
+    alignSelf: 'flex-start'
   }
 });
 

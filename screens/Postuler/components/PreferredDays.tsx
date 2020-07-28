@@ -93,7 +93,7 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
     <>
       <Block space={'around'} row>
         {preferredDays.map((item, key) => {
-          const [dayOfWeek, month, day] = getDayAndDate(item);
+          const [dayOfWeek, day, month] = getDayAndDate(item);
           return (
             <TouchableOpacity key={key} onPress={() => setClickedDayIdx(key)}>
               <Block center>
@@ -133,9 +133,9 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
             {clickedDayIdx != null && (
               <>
                 <Text bold align={'justify'}>{` Voulez-vous confirmer le ${
-                  getDayAndDate(preferredDays[clickedDayIdx])[2]
-                } ${
                   getDayAndDate(preferredDays[clickedDayIdx])[1]
+                } ${
+                  getDayAndDate(preferredDays[clickedDayIdx])[2]
                 } comme jour de la prestation ?`}</Text>
                 <Text caption align={'justify'} vertical={[20, 10]}>
                   En cliquant sur Je confirme, vous vous engagez à vous

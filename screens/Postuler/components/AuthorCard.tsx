@@ -59,7 +59,8 @@ export default ({ id, nom, prenom, avatar, numero, address }: author) => {
                 style={{
                   backgroundColor: themeColors.secondary,
                   padding: 15,
-                  borderRadius: 10
+                  borderRadius: 10,
+                  marginRight: 15
                 }}>
                 <Icon name="phone" size={20} />
               </TouchableOpacity>

@@ -1,30 +1,18 @@
-import React, { FC, useRef } from 'react';
-import { useApolloClient } from 'react-apollo';
+import React, { FC } from 'react';
 import { ActivityIndicator, ScrollView } from 'react-native';
 
 import {
   Block,
-  Button,
   Layout,
   Text,
   OfferingDetailsOnModal
 } from '../../shareComponents';
 import { TagItem, Card } from '../../shareComponents';
-import {
-  formatDate,
-  formatDateAvis,
-  makePseudoName,
-  getDayAndDate
-} from '../../../utils';
-import {
-  useCandidateToOfferingMutation,
-  useOfferingByIdQuery,
-  useOfferingByIdPostuleesQuery
-} from '../../../graphql';
-import { ListCard } from '../../Avis/components';
+import { formatDateAvis } from '../../../utils';
+import { useOfferingByIdPostuleesQuery } from '../../../graphql';
 import AuthorCard from './AuthorCard';
 import PreferredDays from './PreferredDays';
-import { plainDayAndDate, capitalize } from '../../../utils';
+import { plainDayAndDate } from '../../../utils';
 
 interface Props {
   id?: string;
@@ -38,8 +26,6 @@ const ModalItem: FC<Props> = props => {
       id: props?.id || ''
     }
   });
-  const [applyTo] = useCandidateToOfferingMutation();
-  const client = useApolloClient();
 
   const author = data?.offeringById?.author;
 

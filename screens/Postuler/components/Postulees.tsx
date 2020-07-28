@@ -70,6 +70,7 @@ const Postulees = () => {
     <>
       {loadingTabTwo && <ActivityIndicator />}
       <CustomListView
+        // TODO resolve typescrit linting
         data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
         emptyMessage={"Vous n'avez aucune candidature"}
         modalItem={<ModalItem />}
