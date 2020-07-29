@@ -75,7 +75,6 @@ const ModalItemManageCandidates: FC<Props> = props => {
     setSelectedId('');
     setCandidateCardClickedPart('');
   };
-  console.log(data);
   const updateCache = (cache: DataProxy) => {
     if (!selectedId || !props.id) return;
 
@@ -88,66 +87,42 @@ const ModalItemManageCandidates: FC<Props> = props => {
       variables: { id: props.id }
     }) as OfferingByIdQuery | undefined;
 
-    const newMyIncompleteOfferingsWithCandidates = {
-      ...myIncompleteOfferingWithCandidates,
-      myIncompleteOfferingWithCandidates: {
-        __typename: 'offering',
-        ...myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates.map(
-          item => {
-            if (item.id != props.id) return item;
-            const newItem = {
-              ...item,
-              selectedCandidate: {
-                __typename: 'utilisateur',
-                id: selectedId
-              }
-            };
-            return newItem;
-          }
-        )
+    const selectedCandidate = data?.offeringById.candidates.find(
+      item => item.id === selectedId
+    );
+
+    const newMyIncompeleteOfferingWithCandidates = myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates.map(
+      item => {
+        if (item.id != props.id) return item;
+        return {
+          ...item,
+          selectedCandidate
+        };
       }
+    );
+
+    const newMyIncompleteOfferingsWithCandidates = {
+      myIncompleteOfferingWithCandidates: newMyIncompeleteOfferingWithCandidates
     };
 
-    // const newOfferingById = {
-    //   ...offeringById,
-    //   offeringById: {
-    //     ...offeringById?.offeringById,
-    //     selectedCandidate: {
-    //       __typename: 'utilisateur',
-    //       id: selectedId
-    //     }
-    //   }
-    // };
-
-    console.log('mex1', myIncompleteOfferingWithCandidates);
-    console.log('mex2', newMyIncompleteOfferingsWithCandidates);
-    //console.log('tex1', offeringById);
+    const newOfferingById = {
+      ...offeringById,
+      offeringById: {
+        ...offeringById?.offeringById,
+        selectedCandidate
+      }
+    };
 
     cache.writeQuery({
       query: MyIncompleteOfferingWithCandidatesDocument,
       data: newMyIncompleteOfferingsWithCandidates
     });
 
-    // cache.writeQuery({
-    //   query: OfferingByIdDocument,
-    //   variables: { id: props.id },
-    //   data: newOfferingById
-    // });
-
-    const myIncompleteOfferingWithCandidates2 = cache.readQuery({
-      query: MyIncompleteOfferingWithCandidatesDocument
-    }) as MyIncompleteOfferingWithCandidatesQuery | undefined;
-
-    // const offeringById2 = cache.readQuery({
-    //   query: OfferingByIdDocument,
-    //   variables: { id: props.id }
-    // }) as OfferingByIdQuery | undefined;
-
-    // // console.log('mex1', myIncompleteOfferingWithCandidates);
-    console.log('mex2', myIncompleteOfferingWithCandidates2);
-    // console.log('*************************************');
-    // console.log('tex1', offeringById);
-    // console.log('tex2', offeringById2);
+    cache.writeQuery({
+      query: OfferingByIdDocument,
+      variables: { id: props.id },
+      data: newOfferingById
+    });
   };
 
   const onSubmit = () => {
@@ -166,7 +141,6 @@ const ModalItemManageCandidates: FC<Props> = props => {
       try {
         if (data?.chooseCandidate) {
           onModalClose();
-          console.log('sucks baby');
         } else {
           //Modal ou information -> choix candidat impossible
         }
@@ -179,7 +153,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
   return (
     <ScrollView scrollEnabled={true} showsVerticalScrollIndicator={false}>
       <Layout title={'Details'}>
-        {loading && !called ? (
+        {(loading && !called) || !data ? (
           <ActivityIndicator size={'large'} />
         ) : (
           <Block flex={false} margin={[0, 25]}>
