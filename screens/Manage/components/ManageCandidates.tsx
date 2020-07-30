@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { CustomListView } from '../../shareComponents';
+import { CustomListView } from '../../sharedComponents';
 import { ActivityIndicator } from 'react-native';
 import { useStoreState } from '../../../models';
 import ModalItemManageCandidates from './ModalItemManageCandidates';
 import {
-  MyIncompleteOfferingQuery,
   OfferingByIdDocument,
   OfferingByIdQuery
 } from '../../../graphql/helpkr-types';
@@ -13,7 +12,6 @@ import {
   MyIncompleteOfferingWithCandidatesQuery,
   useUpdatedEventDaySubscription
 } from '../../../graphql';
-import { DataProxy } from 'apollo-cache';
 import { cache } from '../../../ApolloClient';
 
 const ManageCandidates = () => {

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text } from '../../shareComponents';
+import { Block, Button, Text } from '../../sharedComponents';
 import { TextInput, Keyboard } from 'react-native';
 
 interface Props {

@@ -11,14 +11,14 @@ import {
 } from 'react-native';
 
 import { makePseudoName } from '../../utils';
-import { Text } from '../shareComponents';
+import { Text } from '../sharedComponents';
 import {
   Description,
   ProfilContainer,
   StatsContainer,
   Tag
 } from './components';
-import { useGetUserStatsQuery, useUserByIdQuery } from '../../graphql';
+import { useUserByIdQuery } from '../../graphql';
 
 export default function Profile({ navigation, route: { params } }: any) {
   const [Id, setId] = useState<string | null>('');

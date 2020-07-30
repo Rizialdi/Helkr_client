@@ -6,15 +6,14 @@ import {
   AsyncStorage,
   Keyboard,
   KeyboardAvoidingView,
-  StyleSheet,
-  TextInput
+  StyleSheet
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
 
 import { Block, Button, Input } from '../components';
 import { theme } from '../constants';
 import { useStoreActions } from '../models';
-import { Text } from './shareComponents';
+import { Text } from './sharedComponents';
 
 const Verification: SFC<Props> = ({
   navigation,

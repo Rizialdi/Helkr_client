@@ -1,6 +1,6 @@
-import React, { Component, FC } from 'react';
+import React, { FC } from 'react';
 import { View, Dimensions, StyleSheet } from 'react-native';
-import { Text } from './shareComponents';
+import { Text } from './sharedComponents';
 //@ts-ignore
 import Image from 'react-native-remote-svg';
 const { width, height } = Dimensions.get('window');

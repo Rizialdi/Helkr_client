@@ -14,7 +14,7 @@ import {
   TagItem,
   OfferingDetailsOnModal,
   StackedToBottom
-} from '../../shareComponents';
+} from '../../sharedComponents';
 import Modal from 'react-native-modal';
 import { useOfferingByIdQuery } from '../../../graphql';
 import { formatDateAvis } from '../../../utils';

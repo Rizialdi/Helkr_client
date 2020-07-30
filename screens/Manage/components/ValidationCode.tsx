@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text } from '../../shareComponents';
+import { Block, Button, Text } from '../../sharedComponents';
 import { TextInput, Keyboard } from 'react-native';
 
 interface Props {
@@ -17,9 +17,6 @@ const CompletedOrIssueComponent: FC<Props> = ({
   setIsValidationCodeCorrect
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [validationCorrectness, setValidationCorrectness] = useState<boolean>(
-    false
-  );
   return (
     <Block flex={false} margin={[20, 20]}>
       <TextInput

@@ -7,7 +7,7 @@ import RadioForm, {
   //@ts-ignore
 } from 'react-native-simple-radio-button';
 
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 
 import { useStoreState } from '../../../models';
 

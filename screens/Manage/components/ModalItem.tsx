@@ -1,8 +1,8 @@
-import React, { useRef, FC } from 'react';
+import React, { FC } from 'react';
 import { useApolloClient } from 'react-apollo';
 import { ActivityIndicator } from 'react-native';
 
-import { Text, Layout, Block, Button, TagItem } from '../../shareComponents';
+import { Text, Layout, Block, Button, TagItem } from '../../sharedComponents';
 import {
   useOfferingByIdQuery,
   useCandidateToOfferingMutation
@@ -19,7 +19,6 @@ const ModalItem: FC<Props> = props => {
 
   const client = useApolloClient();
   const [applyTo] = useCandidateToOfferingMutation();
-  const toastRef = useRef(null);
 
   return (
     <Layout title={'Details'}>

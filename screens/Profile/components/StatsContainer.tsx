@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 import { useGetUserStatsQuery } from '../../../graphql';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AvgContainer from './AvgContainer';

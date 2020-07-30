@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 
 interface Props {
   tag?: string;

@@ -13,7 +13,7 @@ import { ImagePicker } from 'expo';
 import { ReactNativeFile } from 'apollo-upload-client';
 
 import { theme } from '../../constants';
-import { Text } from '../shareComponents';
+import { Text } from '../sharedComponents';
 import { Description, ProfilContainer, Tag } from './components';
 import { useStoreActions } from '../../models';
 import { getFileName } from '../../utils';

@@ -11,7 +11,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useStoreState } from '../../models';
-import { Text } from '../shareComponents';
+import { Text } from '../sharedComponents';
 import { ListCard } from './components';
 import { useGetAvisUserQuery } from '../../graphql';
 import { makePseudoName } from '../../utils';

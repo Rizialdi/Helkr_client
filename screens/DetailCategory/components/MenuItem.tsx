@@ -12,7 +12,7 @@ import {
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 import { useStoreState } from '../../../models';
 import { ExecutionResult } from 'react-apollo';
 

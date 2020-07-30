@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text } from '../../shareComponents';
+import { Block, Button, Text } from '../../sharedComponents';
 
 import { ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
 import { useStoreState } from '../../../models';
@@ -9,7 +9,7 @@ import RadioForm, {
   RadioButtonLabel
   //@ts-ignore
 } from 'react-native-simple-radio-button';
-import { TextAreaInput } from '../../shareComponents';
+import { TextAreaInput } from '../../sharedComponents';
 const { height } = Dimensions.get('screen');
 interface Props {
   currentIndex?: number;
@@ -18,7 +18,7 @@ interface Props {
   onSubmit?: () => void;
   nextStep?: () => void;
 }
-const IssueReporting: FC<Props> = ({ nextStep }) => {
+const IssueReporting: FC<Props> = () => {
   const { themeColors } = useStoreState(state => state.Preferences);
   const [selectedIssue, setSelectedIssue] = useState<string>('');
 

@@ -6,7 +6,7 @@ import {
   MyIncompleteOfferingQuery
 } from '../../../graphql';
 
-import { CustomListView } from '../../shareComponents';
+import { CustomListView } from '../../sharedComponents';
 import ModalItemManageOfferings from './ModalItemManageOfferings';
 
 const ManageOffering = () => {

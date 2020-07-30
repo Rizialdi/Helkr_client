@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { useStoreState } from '../../models';
-import { Block, Layout, Text } from '../shareComponents';
+import { Block, Layout, Text } from '../sharedComponents';
 import { Offres, Postulees } from './components';
 
 //TODO implement infinite scroll when Issue resolved

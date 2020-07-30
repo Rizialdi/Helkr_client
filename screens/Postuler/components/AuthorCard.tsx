@@ -7,7 +7,7 @@ import {
   Dimensions
 } from 'react-native';
 
-import { Text, Block } from '../../shareComponents';
+import { Text, Block } from '../../sharedComponents';
 import { makePseudoName } from '../../../utils';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useStoreState } from '../../../models';

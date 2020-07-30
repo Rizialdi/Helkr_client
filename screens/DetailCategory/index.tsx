@@ -5,11 +5,10 @@ import {
   FlatList,
   SafeAreaView,
   Dimensions,
-  Modal,
-  Alert
+  Modal
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Text, Layout } from '../shareComponents';
+import { Text, Layout } from '../sharedComponents';
 import { MultiStepMenu, RadioForm } from './components/';
 
 interface Props {

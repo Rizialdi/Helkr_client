@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text, StackedToBottom } from '../../shareComponents';
+import { Block, Button, Text, StackedToBottom } from '../../sharedComponents';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { useStoreState, useStoreActions } from '../../../models';

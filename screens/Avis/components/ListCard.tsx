@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 import { formatDateAvis } from '../../../utils';
 
 interface Mark {

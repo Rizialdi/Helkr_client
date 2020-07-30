@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text } from '../../shareComponents';
+import { Block, Button, Text } from '../../sharedComponents';
 import Stars from 'react-native-stars';
 
 import {
@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { theme } from '../../../constants';
-import TextAreaInput from '../../shareComponents/TextAreaInput';
+import TextAreaInput from '../../sharedComponents/TextAreaInput';
 const { height } = Dimensions.get('screen');
 
 interface Props {
@@ -24,9 +24,6 @@ interface Props {
 }
 const DropReview: FC<Props> = ({ nextStep }) => {
   const [inputValue, setInputValue] = useState<string>('');
-  const [validationCorrectness, setValidationCorrectness] = useState<boolean>(
-    false
-  );
   const [ratingValue, setRatingValue] = useState<number>(5);
   return (
     <KeyboardAvoidingView behavior={'position'}>

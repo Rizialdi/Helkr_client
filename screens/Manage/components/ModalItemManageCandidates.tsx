@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Calendar } from '../../shareComponents';
+import { Calendar } from '../../sharedComponents';
 
 import {
   Text,
@@ -17,13 +17,13 @@ import {
   TagItem,
   CandidateCard,
   SelectedCandidateCard
-} from '../../shareComponents';
+} from '../../sharedComponents';
 import { useOfferingByIdQuery } from '../../../graphql';
-import { formatDateAvis, plainDayAndDate } from '../../../utils';
+import { formatDateAvis } from '../../../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Avis from '../../Avis';
-import { LocalDateObject } from '../../shareComponents/Calendar';
-import Button from '../../shareComponents/Button';
+import { LocalDateObject } from '../../sharedComponents/Calendar';
+import Button from '../../sharedComponents/Button';
 import { useChooseCandidateMutation } from '../../../graphql/helpkr-types';
 import MultiStepMenuCheckout from './MultiStepMenuCheckout';
 import CompletedOrIssue from './CompletedOrIssue';
@@ -31,7 +31,7 @@ import AmountToPay from './AmountToPay';
 import ValidationCode from './ValidationCode';
 import DropReview from './DropReview';
 import IssueReporting from './IssueReporting';
-import OfferingDetailsOnModal from '../../shareComponents/OfferingDetailsOnModal';
+import OfferingDetailsOnModal from '../../sharedComponents/OfferingDetailsOnModal';
 import {
   MyIncompleteOfferingWithCandidatesQuery,
   MyIncompleteOfferingWithCandidatesDocument,
@@ -39,7 +39,7 @@ import {
   OfferingByIdDocument
 } from '../../../graphql';
 import { DataProxy } from 'apollo-cache';
-import EventDay from '../../shareComponents/EventDay';
+import EventDay from '../../sharedComponents/EventDay';
 
 const { height } = Dimensions.get('screen');
 

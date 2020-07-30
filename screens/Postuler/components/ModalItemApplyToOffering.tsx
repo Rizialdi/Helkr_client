@@ -15,8 +15,8 @@ import {
   Text,
   OfferingDetailsOnModal,
   StackedToBottom
-} from '../../shareComponents';
-import { TagItem } from '../../shareComponents';
+} from '../../sharedComponents';
+import { TagItem } from '../../sharedComponents';
 import { formatDate } from '../../../utils';
 import {
   useCandidateToOfferingMutation,

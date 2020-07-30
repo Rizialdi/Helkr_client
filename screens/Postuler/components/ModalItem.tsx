@@ -6,14 +6,13 @@ import {
   Layout,
   Text,
   OfferingDetailsOnModal
-} from '../../shareComponents';
-import { TagItem, Card } from '../../shareComponents';
+} from '../../sharedComponents';
+import { TagItem, Card } from '../../sharedComponents';
 import { formatDateAvis } from '../../../utils';
 import { useOfferingByIdPostuleesQuery } from '../../../graphql';
 import AuthorCard from './AuthorCard';
 import PreferredDays from './PreferredDays';
-import { plainDayAndDate } from '../../../utils';
-import EventDay from '../../shareComponents/EventDay';
+import EventDay from '../../sharedComponents/EventDay';
 
 interface Props {
   id?: string;

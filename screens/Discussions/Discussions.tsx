@@ -9,7 +9,7 @@ import {
   ImageSourcePropType,
   Modal
 } from 'react-native';
-import { Layout, Text, Block } from '../shareComponents';
+import { Layout, Text, Block } from '../sharedComponents';
 
 import {
   useAllChatsAndMessagesQuery,

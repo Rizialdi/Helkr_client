@@ -1,8 +1,14 @@
-import React, { Component } from 'react'
-import { // CSS-like styles
-  View, Dimensions, Platform, ScrollView, StyleSheet } from 'react-native'
+import React, { Component } from 'react';
+import {
+  // CSS-like styles
+  View,
+  Dimensions,
+  Platform,
+  ScrollView,
+  StyleSheet
+} from 'react-native';
 
-import ButtonIntro from './ButtonIntro'
+import ButtonIntro from './ButtonIntro';
 
 /**
  * Swiper

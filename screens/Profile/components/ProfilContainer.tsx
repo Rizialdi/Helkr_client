@@ -1,8 +1,14 @@
-import React from 'react'
-import Icon from 'react-native-vector-icons/Octicons'
-import { Image, ImageSourcePropType, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React from 'react';
+import Icon from 'react-native-vector-icons/Octicons';
+import {
+  Image,
+  ImageSourcePropType,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
-import { Text } from '../../shareComponents'
+import { Text } from '../../sharedComponents';
 
 interface Props {
   image?: ImageSourcePropType;

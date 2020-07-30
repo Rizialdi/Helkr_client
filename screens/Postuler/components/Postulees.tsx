@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native';
 
 import ModalItem from './ModalItem';
 import { useStoreState } from '../../../models';
-import { CustomListView, dataContent } from '../../shareComponents';
+import { CustomListView, dataContent } from '../../sharedComponents';
 import {
   IsCandidateToQuery,
   useIsCandidateToQuery,

@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { FC } from 'react';
-import { Block } from '../../shareComponents';
+import { Block } from '../../sharedComponents';
 import Icon from 'react-native-vector-icons/AntDesign';
 interface Props {
   recipient: string;

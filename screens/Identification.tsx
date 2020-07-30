@@ -17,7 +17,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Block, Button, Input } from '../components';
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../config';
 import { theme } from '../constants';
-import { TermsOfServices, Text } from './shareComponents';
+import { TermsOfServices, Text } from './sharedComponents';
 
 const { width, height } = Dimensions.get('screen');
 

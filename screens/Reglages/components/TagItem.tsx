@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 
 interface Props {
   tag?: string;

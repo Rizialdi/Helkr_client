@@ -5,7 +5,7 @@ import RadioForm, {
   RadioButtonLabel
   //@ts-ignore
 } from 'react-native-simple-radio-button';
-import { Block, Text, Button } from '../../shareComponents';
+import { Block, Text, Button } from '../../sharedComponents';
 import {
   useDeleteOfferingMutation,
   MyIncompleteOfferingDocument

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native'
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
 
-import { theme } from '../../../constants'
-import { Text } from '../../shareComponents'
+import { theme } from '../../../constants';
+import { Text } from '../../sharedComponents';
 
 interface Props {
   description: string | null | undefined;

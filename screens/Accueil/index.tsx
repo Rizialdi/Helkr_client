@@ -12,8 +12,8 @@ import {
   View
 } from 'react-native';
 
-import { Badge, Block, Card } from '../shareComponents';
-import { Text } from '../shareComponents';
+import { Badge, Block, Card } from '../sharedComponents';
+import { Text } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
 

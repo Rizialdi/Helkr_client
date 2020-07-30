@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 import TagItem from './TagItem';
 
 const tagList = [

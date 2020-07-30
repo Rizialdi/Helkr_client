@@ -1,6 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
 import Icon from 'react-native-vector-icons/Octicons';
 import React, { useEffect, useState } from 'react';
 import {
@@ -9,12 +8,11 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  View,
-  Alert
+  View
 } from 'react-native';
 
 import { getPermissionAsync } from '../../../utils';
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 
 interface Props {
   image: ImageSourcePropType;

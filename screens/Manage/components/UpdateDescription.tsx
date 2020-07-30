@@ -1,11 +1,10 @@
 import React, { useState, useEffect, FC } from 'react';
-import { Block, Text, Button, TextAreaInput } from '../../shareComponents';
+import { Block, Text, Button, TextAreaInput } from '../../sharedComponents';
 import {
   useUpdateOfferingMutation,
   MyIncompleteOfferingDocument,
   MyIncompleteOfferingQuery
 } from '../../../graphql';
-import { useApolloClient } from '@apollo/react-hooks';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -21,7 +20,6 @@ interface Props {
   closeModal: () => void;
 }
 const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
-  const client = useApolloClient();
   const [text, setTextValue] = useState<string>('');
 
   useEffect(() => {
@@ -32,9 +30,6 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
     updateOfferingMutation,
     { loading, error }
   ] = useUpdateOfferingMutation();
-  const [isDescriptionUpdated, setIsDescriptionUpdated] = useState<boolean>(
-    false
-  );
 
   const updateCache = (cache: DataProxy) => {
     const data = cache.readQuery({
@@ -63,16 +58,13 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
       update: updateCache
     }).then(data => {
       if (error) {
-        setIsDescriptionUpdated(false);
         closeModal();
         //TODO toast change unsuccessful
       }
       if (data.data?.updateOffering) {
-        setIsDescriptionUpdated(true);
         closeModal();
         //TODO toast change successful
       } else {
-        setIsDescriptionUpdated(false);
         closeModal();
         //TODO toast change unsuccessful
       }

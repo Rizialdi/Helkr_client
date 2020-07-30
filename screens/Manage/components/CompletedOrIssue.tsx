@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Block, Button, Text } from '../../shareComponents';
+import { Block, Button, Text } from '../../sharedComponents';
 import { CompletedOrIssue } from './ModalItemManageCandidates';
 
 interface Props {

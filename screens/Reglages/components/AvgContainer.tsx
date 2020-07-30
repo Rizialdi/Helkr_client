@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 
 import { theme } from '../../../constants';
-import { Text } from '../../shareComponents';
+import { Text } from '../../sharedComponents';
 
 interface Props {
   average?: number | null;

@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native';
 
 import ModalItemApplyToOffering from './ModalItemApplyToOffering';
 import { useStoreState } from '../../../models';
-import { CustomListView } from '../../shareComponents';
+import { CustomListView } from '../../sharedComponents';
 import {
   IncompleteOfferingsQuery,
   useIncompleteOfferingsQuery,

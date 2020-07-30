@@ -8,7 +8,7 @@ import {
   Card,
   Text,
   StackedToBottom
-} from '../../shareComponents';
+} from '../../sharedComponents';
 import { getDayAndDate } from '../../../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -29,7 +29,7 @@ interface Props {
 const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
   const [clickedDayIdx, setClickedDayIdx] = useState<number | null>(null);
 
-  const [choosEventDay, { data, loading, error }] = useChooseEventDayMutation();
+  const [choosEventDay, { loading, error }] = useChooseEventDayMutation();
 
   const updateCache = (cache: DataProxy) => {
     if (!offeringId || !(clickedDayIdx != null)) return;
@@ -86,7 +86,7 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
         }
       })
       .catch(err => {
-        throw new Error(`${error}`);
+        throw new Error(`${error} - ${err}`);
       });
   };
   return (
