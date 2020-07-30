@@ -14,7 +14,7 @@ import Toast from 'react-native-easy-toast';
 import ValidationComponent from 'react-native-form-validator';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { Block, Button, Input } from '../components';
+import { Block, Button, Input } from './sharedComponents';
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../config';
 import { theme } from '../constants';
 import { TermsOfServices, Text } from './sharedComponents';

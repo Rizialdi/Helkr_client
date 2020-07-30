@@ -24,11 +24,16 @@ import {
   useTagsUpdateMutation,
   useUserByIdQuery
 } from '../../graphql';
+import {
+  StackNavigationInterface,
+  MainStackParamList
+} from '../../navigation/Routes';
 
-export default function Profile({ navigation, route: { params } }: any) {
+export default function Profile({
+  navigation
+}: StackNavigationInterface<MainStackParamList, 'Reglages'>) {
   const [Id, setId] = useState<string>('');
   const apolloClient = useApolloClient();
-  let updatedSettings: boolean = false;
   const [disableSaveButton, setDisableSaveButton] = useState<boolean>(false);
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
   const [addressParent, setAddressParent] = useState<string>('');
@@ -105,14 +110,13 @@ export default function Profile({ navigation, route: { params } }: any) {
   const save = () => {
     try {
       setDisableSaveButton(true);
-      isModified && (updatedSettings = true);
       pictureUrl && onChangeImage(pictureUrl);
       descriptionParent && onChangeDescription(descriptionParent);
       addressParent && onChangeAddress(addressParent);
       tagList && onChangeTags(tagList);
 
       setTimeout(() => {
-        navigation.navigate('Profile', { updatedSettings });
+        navigation.navigate('Profile');
       }, 500);
     } catch (error) {
       throw new Error(error);
@@ -195,7 +199,7 @@ export default function Profile({ navigation, route: { params } }: any) {
                   ? { uri: image }
                   : avatar
                   ? { uri: avatar }
-                  : require('../../assets/images/default-user-image.png')
+                  : require('../../assets/images/defaultUserImage.png')
               }
               username={
                 prenom.replace(/^./, prenom[0].toUpperCase()) +

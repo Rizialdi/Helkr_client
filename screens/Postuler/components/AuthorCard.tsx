@@ -40,7 +40,7 @@ export default ({ id, nom, prenom, avatar, numero, address }: author) => {
               source={
                 avatar
                   ? { uri: avatar }
-                  : require('../../../assets/images/default-user-image.png')
+                  : require('../../../assets/images/defaultUserImage.png')
               }
               style={styles.image}
               resizeMode="contain"

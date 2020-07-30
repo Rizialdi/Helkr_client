@@ -18,7 +18,7 @@ const icons = [
   require('./assets/icons/phone1-2.svg'),
   require('./assets/icons/reglages.svg'),
   require('./assets/icons/marksymbol.svg'),
-  require('./assets/images/default-user-image.png')
+  require('./assets/images/defaultUserImage.png')
 ];
 
 interface Props {

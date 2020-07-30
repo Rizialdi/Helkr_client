@@ -13,11 +13,13 @@ import OfferingDetailsOnModal from './OfferingDetailsOnModal';
 import StackedToBottom from './StackedToBottom';
 import Badge from './Badge';
 import Card from './Card';
+import Input from './Input';
 
 export {
   Layout,
   TermsOfServices,
   Text,
+  Input,
   Block,
   Card,
   Badge,

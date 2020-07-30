@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import React, { useMemo, useState } from 'react';
 import {
   Dimensions,
-  Route,
   ScrollView,
   StyleSheet,
   TextInput,
@@ -16,8 +15,9 @@ import { Badge, Block, Card } from '../sharedComponents';
 import { Text } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
+import { MainStackParamList } from '../../navigation/Routes';
+import { StackNavigationInterface } from '../../navigation/Routes';
 
-//@ts-ignore
 interface categorie {
   id: string;
   tag: object;
@@ -27,13 +27,11 @@ interface categorie {
 
 type categories = Array<categorie>;
 
-interface Props {
-  navigation: Route;
-}
-
 const { width } = Dimensions.get('window');
 
-export default function Accueil({ navigation }: Props) {
+export default function Accueil({
+  navigation
+}: StackNavigationInterface<MainStackParamList, 'PrincipalView'>) {
   const [categories, setCategories] = useState<categories | null>();
   const [inputText, setInputText] = useState<string>('');
   const [username, setUsername] = useState<string>('');

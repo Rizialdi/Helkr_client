@@ -15,7 +15,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import ValidationComponent from 'react-native-form-validator';
 
 import { Button, Block, Input } from '../components';
-import { Text, TermsOfServices } from './sharedComponents';
+import { Text, TermsOfServices } from './shareComponents';
 import { theme } from '../constants';
 
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from '../config';

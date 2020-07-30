@@ -5,8 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  View,
-  Route
+  View
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -15,26 +14,34 @@ import { Text } from '../sharedComponents';
 import { ListCard } from './components';
 import { useGetAvisUserQuery } from '../../graphql';
 import { makePseudoName } from '../../utils';
+import {
+  StackNavigationInterface,
+  MainStackParamList
+} from '../../navigation/Routes';
 
 const { width } = Dimensions.get('window');
 
 interface Props {
-  navigation?: Route;
+  navigation: StackNavigationInterface<MainStackParamList, 'Avis'>;
   // TODO Give Proper type
-  route?: { params: any };
+  route?: StackNavigationInterface<MainStackParamList, 'Avis'>;
   candidateModalId?: string;
 }
 
-export default ({ candidateModalId, ...props }: Props) => {
+export default ({
+  navigation: { navigation },
+  candidateModalId,
+  route
+}: Props) => {
   const { user } = useStoreState(state => state.User);
-
-  const navigation = props?.navigation;
-  const route = props?.route;
+  const routeParams = route?.route.params;
   const userId = candidateModalId
     ? candidateModalId
-    : route?.params && route?.params.id
-    ? route?.params.id
-    : user?.id;
+    : routeParams && routeParams.id
+    ? routeParams.id
+    : user?.id
+    ? user?.id
+    : '';
 
   const { loading, error, data } = useGetAvisUserQuery({
     variables: { userId },
@@ -72,7 +79,7 @@ export default ({ candidateModalId, ...props }: Props) => {
                     onPress={() =>
                       candidateModalId
                         ? null
-                        : navigation?.navigate('ProfilesNavigation', {
+                        : navigation.navigate('Profile', {
                             id: id
                           })
                     }>

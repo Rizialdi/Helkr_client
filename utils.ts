@@ -115,7 +115,7 @@ export const formattingTextMessages = (channel: ChatFragment) => {
     users[user.id] = {
       _id: user.id,
       name: makePseudoName(user.nom, user.prenom),
-      avatar: user.avatar || require('./assets/images/default-user-image.png')
+      avatar: user.avatar || require('./assets/images/defaultUserImage.png')
     };
   });
 

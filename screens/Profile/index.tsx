@@ -19,8 +19,14 @@ import {
   Tag
 } from './components';
 import { useUserByIdQuery } from '../../graphql';
+import {
+  StackNavigationInterface,
+  MainStackParamList
+} from '../../navigation/Routes';
 
-export default function Profile({ navigation, route: { params } }: any) {
+type Props = StackNavigationInterface<MainStackParamList, 'Profile'>;
+
+export default function Profile({ navigation, route: { params } }: Props) {
   const [Id, setId] = useState<string | null>('');
 
   useMemo(() => {
@@ -34,7 +40,7 @@ export default function Profile({ navigation, route: { params } }: any) {
     })();
   }, []);
 
-  const id = params && params.id ? params.id : Id;
+  const id = params && params?.id ? params.id : Id ? Id : '';
 
   const {
     data: {
@@ -91,7 +97,7 @@ export default function Profile({ navigation, route: { params } }: any) {
           image={
             avatar
               ? { uri: avatar }
-              : require('../../assets/images/default-user-image.png')
+              : require('../../assets/images/defaultUserImage.png')
           }
           username={makePseudoName(nom, prenom)}
           address={address}

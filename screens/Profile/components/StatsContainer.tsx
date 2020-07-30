@@ -5,11 +5,13 @@ import { Text } from '../../sharedComponents';
 import { useGetUserStatsQuery } from '../../../graphql';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AvgContainer from './AvgContainer';
+import { MainStackParamList } from '../../../navigation/Routes';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Props {
   id: string;
   offeringAuthorStars?: boolean;
-  navigation?: any;
+  navigation: StackNavigationProp<MainStackParamList, 'Profile'>;
 }
 
 export default ({ id, offeringAuthorStars, navigation }: Props) => {

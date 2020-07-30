@@ -1,7 +1,7 @@
 import Icon from 'react-native-vector-icons/AntDesign';
 import React, { useEffect, useState } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer, RouteProp } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Accueil from '../screens/Accueil';
@@ -19,27 +19,7 @@ import Screen from '../screens/Screen';
 import Verification from '../screens/Verification';
 import { useStoreActions, useStoreState } from '../models';
 import { theme } from '../constants';
-
-type MainStackParamList = {
-  DetailCategory: { category: { name: string } };
-  Discussion: undefined;
-  Reglages: undefined;
-  Avis: undefined;
-  ProfilesNavigation: undefined;
-  Enregistrement: undefined;
-  Identification: undefined;
-  Verification: undefined;
-  Screen: undefined;
-  PrincipalView: BottomStackParamList;
-};
-
-type BottomStackParamList = {
-  Accueil: undefined;
-  Gerer: undefined;
-  Postuler: undefined;
-  Discussions: undefined;
-  Profile: undefined;
-};
+import { MainStackParamList, BottomStackParamList } from './Routes';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -130,22 +110,22 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
           <MainStack.Screen
             name="Discussion"
             component={Discussion}
-            options={({ route }) => ({ headerShown: false, title: '' })}
+            options={() => ({ headerShown: false, title: '' })}
           />
           <MainStack.Screen
             name="Reglages"
             component={Reglages}
-            options={({ route }) => ({ headerShown: true, title: '' })}
+            options={() => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
             name="Avis"
             component={Avis}
-            options={({ route }) => ({ headerShown: true, title: '' })}
+            options={() => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
-            name="ProfilesNavigation"
+            name="Profile"
             component={Profile}
-            options={({ route }) => ({ headerShown: true, title: '' })}
+            options={() => ({ headerShown: true, title: '' })}
           />
         </>
       ) : (
@@ -178,12 +158,16 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
           <MainStack.Screen
             name="Discussion"
             component={Discussion}
-            options={({ route }) => ({ headerShown: false, title: '' })}
+            options={() => ({ headerShown: false, title: '' })}
           />
           <MainStack.Screen
             name="DetailCategory"
             component={DetailCategory}
-            options={({ route }): { headerShown: boolean; title: string } => ({
+            options={({
+              route
+            }: {
+              route: route;
+            }): { headerShown: boolean; title: string } => ({
               headerShown: true,
               title: route?.params?.category.name
             })}
@@ -191,17 +175,17 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
           <MainStack.Screen
             name="Reglages"
             component={Reglages}
-            options={({ route }) => ({ headerShown: true, title: '' })}
+            options={() => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
             name="Avis"
             component={Avis}
-            options={({ route }) => ({ headerShown: true, title: '' })}
+            options={() => ({ headerShown: true, title: '' })}
           />
           <MainStack.Screen
-            name="ProfilesNavigation"
+            name="Profile"
             component={Profile}
-            options={({ route }) => ({ headerShown: true, title: '' })}
+            options={() => ({ headerShown: true, title: '' })}
           />
         </>
       )}
@@ -241,8 +225,3 @@ export default () => {
 type route = {
   params: { category: { name: string } };
 };
-
-interface Props {
-  route: RouteProp<Record<string, object | undefined>, 'DetailCategory'>;
-  navigation: any;
-}

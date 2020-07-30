@@ -37,7 +37,7 @@ const candidateCard: FC<Props> = ({
             source={
               avatar
                 ? { uri: avatar }
-                : require('../../assets/images/default-user-image.png')
+                : require('../../assets/images/defaultUserImage.png')
             }
             resizeMode="contain"
             style={{ width: '100%', height: '100%' }}

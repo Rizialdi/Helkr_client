@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import Toast from 'react-native-easy-toast';
 
-import { Block, Button, Input } from '../components';
+import { Block, Button, Input } from './sharedComponents';
 import { theme } from '../constants';
 import { useStoreActions } from '../models';
 import { Text } from './sharedComponents';

@@ -35,7 +35,7 @@ export default ({
         source={
           avatar
             ? { uri: avatar }
-            : require('../../../assets/images/default-user-image.png')
+            : require('../../../assets/images/defaultUserImage.png')
         }
         style={styles.image}
         resizeMode="cover"

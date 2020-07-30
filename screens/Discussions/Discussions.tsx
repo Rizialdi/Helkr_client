@@ -80,7 +80,7 @@ const Item = ({
             }}>
             <Image
               source={
-                image || require('../../assets/images/default-user-image.png')
+                image || require('../../assets/images/defaultUserImage.png')
               }
               resizeMode="cover"
               style={{ width: '100%', height: '100%' }}

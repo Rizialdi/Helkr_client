@@ -30,7 +30,7 @@ export default ({
       <TouchableOpacity style={styles.profileImage}>
         <Image
           source={
-            image || require('../../../assets/images/default-user-image.png')
+            image || require('../../../assets/images/defaultUserImage.png')
           }
           style={styles.image}
           resizeMode="cover"></Image>
