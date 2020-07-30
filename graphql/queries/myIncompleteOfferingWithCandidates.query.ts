@@ -6,6 +6,7 @@ export default gql`
     myIncompleteOfferingWithCandidates {
       ...offering
       status
+      eventday
       selectedCandidate {
         id
       }

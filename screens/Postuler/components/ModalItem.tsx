@@ -13,6 +13,7 @@ import { useOfferingByIdPostuleesQuery } from '../../../graphql';
 import AuthorCard from './AuthorCard';
 import PreferredDays from './PreferredDays';
 import { plainDayAndDate } from '../../../utils';
+import EventDay from '../../shareComponents/EventDay';
 
 interface Props {
   id?: string;
@@ -82,14 +83,7 @@ const ModalItem: FC<Props> = props => {
                     />
                   </Card>
                   {data?.offeringById.eventday ? (
-                    <>
-                      <Text bold size={16} vertical={[20, 10]}>
-                        Jour de la prestation
-                      </Text>
-                      <Text horizontal={20} semibold transform={'capitalize'}>
-                        {plainDayAndDate(data?.offeringById.eventday).join(' ')}
-                      </Text>
-                    </>
+                    <EventDay eventday={data?.offeringById.eventday} />
                   ) : (
                     <>
                       <Text bold size={16} vertical={[20, 10]}>

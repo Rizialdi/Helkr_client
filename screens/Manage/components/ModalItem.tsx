@@ -23,7 +23,7 @@ const ModalItem: FC<Props> = props => {
 
   return (
     <Layout title={'Details'}>
-      {loading && !called ? (
+      {(loading && !called) || !data ? (
         <ActivityIndicator size={'large'} />
       ) : (
         <Block flex={false}>

@@ -89,7 +89,7 @@ const ModalItem: FC<Props> = props => {
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Layout title={'Details'}>
-          {loading && !called ? (
+          {(loading && !called) || !data ? (
             <ActivityIndicator size={'large'} />
           ) : (
             <Block flex={false} margin={[0, 25, 48 * 1 + 20]}>

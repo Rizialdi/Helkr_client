@@ -41,7 +41,8 @@ const TagItem: SFC<Props> = ({
     },
     refusée: { backgroundColor: themeColors.accent },
     acceptée: { backgroundColor: themeColors.secondary },
-    terminé: { backgroundColor: themeColors.gray }
+    terminée: { backgroundColor: themeColors.gray },
+    validée: { backgroundColor: themeColors.primary }
   };
 
   return (

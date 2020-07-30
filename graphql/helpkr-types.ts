@@ -385,6 +385,7 @@ export type Subscription = {
   newMessage: Message;
   onOfferingAdded: Offering;
   updateAppliedTo: UpdateAppliedToType;
+  updatedEventDay: UpdateSelectedEventDay;
 };
 
 
@@ -412,10 +413,21 @@ export type SubscriptionUpdateAppliedToArgs = {
   userId: Scalars['String'];
 };
 
+
+export type SubscriptionUpdatedEventDayArgs = {
+  userId: Scalars['String'];
+};
+
 export type UpdateAppliedToType = {
   __typename?: 'updateAppliedToType';
   id: Scalars['String'];
   status: Scalars['String'];
+};
+
+export type UpdateSelectedEventDay = {
+  __typename?: 'updateSelectedEventDay';
+  eventday: Scalars['String'];
+  offeringId: Scalars['String'];
 };
 
 export type Utilisateur = {
@@ -801,7 +813,7 @@ export type MyIncompleteOfferingWithCandidatesQuery = (
   { __typename?: 'Query' }
   & { myIncompleteOfferingWithCandidates: Array<(
     { __typename?: 'offering' }
-    & Pick<Offering, 'status'>
+    & Pick<Offering, 'status' | 'eventday'>
     & { selectedCandidate?: Maybe<(
       { __typename?: 'utilisateur' }
       & Pick<Utilisateur, 'id'>
@@ -819,7 +831,7 @@ export type OfferingByIdQuery = (
   { __typename?: 'Query' }
   & { offeringById: (
     { __typename?: 'offering' }
-    & Pick<Offering, 'details'>
+    & Pick<Offering, 'details' | 'eventday'>
     & { candidates: Array<(
       { __typename?: 'utilisateur' }
       & Pick<Utilisateur, 'id' | 'avatar' | 'professional' | 'moyenne'>
@@ -913,6 +925,19 @@ export type OnOfferingAddedSubscription = (
   & { onOfferingAdded: (
     { __typename?: 'offering' }
     & OfferingFragment
+  ) }
+);
+
+export type UpdatedEventDaySubscriptionVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type UpdatedEventDaySubscription = (
+  { __typename?: 'Subscription' }
+  & { updatedEventDay: (
+    { __typename?: 'updateSelectedEventDay' }
+    & Pick<UpdateSelectedEventDay, 'eventday' | 'offeringId'>
   ) }
 );
 
@@ -1623,6 +1648,7 @@ export const MyIncompleteOfferingWithCandidatesDocument = gql`
   myIncompleteOfferingWithCandidates {
     ...offering
     status
+    eventday
     selectedCandidate {
       id
     }
@@ -1659,6 +1685,7 @@ export const OfferingByIdDocument = gql`
   offeringById(id: $id) {
     ...offering
     details
+    eventday
     candidates {
       id
       avatar
@@ -1903,6 +1930,36 @@ export function useOnOfferingAddedSubscription(baseOptions?: ApolloReactHooks.Su
       }
 export type OnOfferingAddedSubscriptionHookResult = ReturnType<typeof useOnOfferingAddedSubscription>;
 export type OnOfferingAddedSubscriptionResult = ApolloReactCommon.SubscriptionResult<OnOfferingAddedSubscription>;
+export const UpdatedEventDayDocument = gql`
+    subscription updatedEventDay($userId: String!) {
+  updatedEventDay(userId: $userId) {
+    eventday
+    offeringId
+  }
+}
+    `;
+
+/**
+ * __useUpdatedEventDaySubscription__
+ *
+ * To run a query within a React component, call `useUpdatedEventDaySubscription` and pass it any options that fit your needs.
+ * When your component renders, `useUpdatedEventDaySubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUpdatedEventDaySubscription({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpdatedEventDaySubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<UpdatedEventDaySubscription, UpdatedEventDaySubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<UpdatedEventDaySubscription, UpdatedEventDaySubscriptionVariables>(UpdatedEventDayDocument, baseOptions);
+      }
+export type UpdatedEventDaySubscriptionHookResult = ReturnType<typeof useUpdatedEventDaySubscription>;
+export type UpdatedEventDaySubscriptionResult = ApolloReactCommon.SubscriptionResult<UpdatedEventDaySubscription>;
 export const UpdateAppliedToDocument = gql`
     subscription updateAppliedTo($userId: String!) {
   updateAppliedTo(userId: $userId) {

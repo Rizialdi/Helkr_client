@@ -65,7 +65,8 @@ const CustomListView: FC<Props> = ({
             <TouchableOpacity
               key={index}
               onPress={() =>
-                (item.status && item.status === 'refusée') || item.completed
+                (item.status && item.status === 'refusée') ||
+                (item.status && item.status === 'terminée')
                   ? null
                   : item.status
                   ? openToDescription(id, item.status)

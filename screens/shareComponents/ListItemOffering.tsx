@@ -28,11 +28,12 @@ export default ({ offering }: Props) => {
     eventday,
     completed
   } = offering;
+
   return (
     <Block flex={false} style={styles.container}>
-      {offering?.status && completed ? (
+      {offering?.status && offering?.status === 'terminée' ? (
         <Block>
-          <TagItem tag={'terminé'} status />
+          <TagItem tag={offering.status} status />
         </Block>
       ) : offering?.status && eventday ? (
         <Block flex={false} row space={'between'} margin={[0, 25]}>
@@ -42,7 +43,7 @@ export default ({ offering }: Props) => {
             date
           />
         </Block>
-      ) : offering?.status ? (
+      ) : offering?.status && offering?.status != 'terminée' ? (
         <TagItem tag={offering?.status} status />
       ) : null}
       <Block flex={false} row middle space={'around'}>

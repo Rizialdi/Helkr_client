@@ -6,6 +6,7 @@ export default gql`
     offeringById(id: $id) {
       ...offering
       details
+      eventday
       candidates {
         id
         avatar

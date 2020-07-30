@@ -1,18 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { CustomListView } from '../../shareComponents';
 import { ActivityIndicator } from 'react-native';
-import ModalItem from './ModalItem';
+import { useStoreState } from '../../../models';
 import ModalItemManageCandidates from './ModalItemManageCandidates';
-
+import {
+  MyIncompleteOfferingQuery,
+  OfferingByIdDocument,
+  OfferingByIdQuery
+} from '../../../graphql/helpkr-types';
 import {
   useMyIncompleteOfferingWithCandidatesQuery,
-  MyIncompleteOfferingWithCandidatesQuery
+  MyIncompleteOfferingWithCandidatesQuery,
+  useUpdatedEventDaySubscription
 } from '../../../graphql';
+import { DataProxy } from 'apollo-cache';
+import { cache } from '../../../ApolloClient';
 
 const ManageCandidates = () => {
+  const {
+    user: { id: userId }
+  } = useStoreState(state => state.User);
   const [stateData, setStateData] = useState<
     MyIncompleteOfferingWithCandidatesQuery
   >();
+
+  const {
+    data: dataUpdateEventDay,
+    error: errorUpdateEventDay
+  } = useUpdatedEventDaySubscription({
+    variables: { userId: userId as string },
+    shouldResubscribe: true
+  });
+
+  const updateOfferingEventDay = (id: string, eventday: string) => {
+    if (!id) return;
+
+    const offeringById = cache.readQuery({
+      query: OfferingByIdDocument,
+      variables: { id }
+    }) as OfferingByIdQuery | undefined;
+
+    const newOfferingById = {
+      ...offeringById,
+      offeringById: {
+        ...offeringById?.offeringById,
+        eventday
+      }
+    };
+
+    cache.writeQuery({
+      query: OfferingByIdDocument,
+      variables: { id },
+      data: newOfferingById
+    });
+  };
+
+  useEffect(() => {
+    if (dataUpdateEventDay?.updatedEventDay && !errorUpdateEventDay) {
+      const { offeringId, eventday } = dataUpdateEventDay.updatedEventDay;
+      if (!data?.myIncompleteOfferingWithCandidates) return;
+
+      const newOfferingData = data?.myIncompleteOfferingWithCandidates.map(
+        item => {
+          if (item.id != offeringId) return item;
+          return { ...item, eventday };
+        }
+      );
+      if (!newOfferingData) return;
+      const newData = {
+        ...data,
+        myIncompleteOfferingWithCandidates: newOfferingData
+      };
+      setStateData(newData);
+      updateOfferingEventDay(offeringId, eventday);
+    }
+  }, [dataUpdateEventDay]);
+
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 

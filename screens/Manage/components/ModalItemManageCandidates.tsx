@@ -19,7 +19,7 @@ import {
   SelectedCandidateCard
 } from '../../shareComponents';
 import { useOfferingByIdQuery } from '../../../graphql';
-import { formatDateAvis } from '../../../utils';
+import { formatDateAvis, plainDayAndDate } from '../../../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Avis from '../../Avis';
 import { LocalDateObject } from '../../shareComponents/Calendar';
@@ -39,6 +39,7 @@ import {
   OfferingByIdDocument
 } from '../../../graphql';
 import { DataProxy } from 'apollo-cache';
+import EventDay from '../../shareComponents/EventDay';
 
 const { height } = Dimensions.get('screen');
 
@@ -223,6 +224,9 @@ const ModalItemManageCandidates: FC<Props> = props => {
                 ))
               ) : (
                 <></>
+              )}
+              {data?.offeringById.eventday && (
+                <EventDay eventday={data?.offeringById.eventday} />
               )}
             </Block>
 
