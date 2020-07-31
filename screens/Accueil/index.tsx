@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 
-import { Block } from '../sharedComponents';
+import { Block, Text } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
 import { MainStackParamList } from '../../navigation/Routes';
@@ -61,6 +61,7 @@ export default function Accueil(
               </TouchableOpacity>
             </View>
           </Block>
+          <Text>ert</Text>
           {/* When many cities */}
           {/* <TouchableOpacity
             style={styles.loopTouchable}

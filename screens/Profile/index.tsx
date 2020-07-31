@@ -3,12 +3,12 @@ import React, { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   AsyncStorage,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { makePseudoName } from '../../utils';
 import { Text } from '../sharedComponents';

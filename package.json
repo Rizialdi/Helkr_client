@@ -10,7 +10,7 @@
     "codegen": "graphql-codegen",
     "lint": "eslint --ext .ts . --max-warnings 0",
     "format": "prettier --config ./.prettierrc.yml \"**/**/*.{ts,tsx}\" --write",
-    "postinstall": "patch-package",
+    "postinstall": "patch-package && rm -rf node_module/expo/react-native-safe-area-context",
     "precommit": "pretty-quick --staged"
   },
   "dependencies": {
@@ -68,6 +68,7 @@
     "react-native-reanimated": "~1.4.0",
     "react-native-remote-svg": "^2.0.6",
     "react-native-safe-area-context": "0.6.0",
+    "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-simple-toast": "^1.0.0",

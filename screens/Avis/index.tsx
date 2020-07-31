@@ -2,12 +2,12 @@ import React from 'react';
 import {
   ActivityIndicator,
   Dimensions,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useStoreState } from '../../models';
 import { Text } from '../sharedComponents';

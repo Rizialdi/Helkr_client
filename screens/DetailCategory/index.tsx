@@ -1,13 +1,8 @@
 import React, { useState, SFC } from 'react';
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  Dimensions,
-  Modal
-} from 'react-native';
+import { View, StyleSheet, FlatList, Dimensions, Modal } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { Text, Layout } from '../sharedComponents';
 import { MultiStepMenu, RadioForm } from './components/';
 

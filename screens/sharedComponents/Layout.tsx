@@ -1,11 +1,6 @@
 import React, { SFC } from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  KeyboardAvoidingView
-} from 'react-native';
-
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Text from './Text';
 import { useStoreState } from '../../models';
 

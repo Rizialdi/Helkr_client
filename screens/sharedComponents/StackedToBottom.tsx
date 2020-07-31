@@ -1,5 +1,7 @@
 import React, { SFC } from 'react';
-import { KeyboardAvoidingView, SafeAreaView, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { useStoreState } from '../../models';
 import Block, { BlockProps } from './Block';
 interface Props extends BlockProps {

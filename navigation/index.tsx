@@ -1,7 +1,11 @@
 import Icon from 'react-native-vector-icons/AntDesign';
 import React, { useEffect, useState } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  NavigationState,
+  InitialState
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Accueil from '../screens/Accueil';
@@ -20,6 +24,7 @@ import Verification from '../screens/Verification';
 import { useStoreActions, useStoreState } from '../models';
 import { theme } from '../constants';
 import { MainStackParamList, BottomStackParamList } from './Routes';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -81,119 +86,126 @@ const createBottomTabs = () => {
 
 const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
   return (
-    <MainStack.Navigator
-      initialRouteName="Screen"
-      headerMode="screen"
-      screenOptions={{
-        headerTintColor: 'black',
-        headerTitleStyle: {
-          color: 'black',
-          alignSelf: 'center',
-          fontSize: 20
-        }
-      }}>
-      {token ? (
-        <>
-          <MainStack.Screen
-            name="PrincipalView"
-            children={createBottomTabs}
-            options={{ headerShown: false }}
-          />
-          <MainStack.Screen
-            name="DetailCategory"
-            component={DetailCategory}
-            options={({ route }) => ({
-              headerShown: true,
-              title: route?.params?.category?.name
-            })}
-          />
-          <MainStack.Screen
-            name="Discussion"
-            component={Discussion}
-            options={() => ({ headerShown: false, title: '' })}
-          />
-          <MainStack.Screen
-            name="Reglages"
-            component={Reglages}
-            options={() => ({ headerShown: true, title: '' })}
-          />
-          <MainStack.Screen
-            name="Avis"
-            component={Avis}
-            options={() => ({ headerShown: true, title: '' })}
-          />
-          <MainStack.Screen
-            name="Profile"
-            component={Profile}
-            options={() => ({ headerShown: true, title: '' })}
-          />
-        </>
-      ) : (
-        <>
-          <MainStack.Screen
-            name="Screen"
-            component={Screen}
-            options={{ headerShown: false }}
-          />
-          <MainStack.Screen
-            name="Enregistrement"
-            component={Enregistrement}
-            options={{ headerShown: false }}
-          />
-          <MainStack.Screen
-            name="Identification"
-            component={Identification}
-            options={{ headerShown: false }}
-          />
-          <MainStack.Screen
-            name="Verification"
-            component={Verification}
-            options={{ headerShown: false }}
-          />
-          <MainStack.Screen
-            name="PrincipalView"
-            children={createBottomTabs}
-            options={{ headerShown: false }}
-          />
-          <MainStack.Screen
-            name="Discussion"
-            component={Discussion}
-            options={() => ({ headerShown: false, title: '' })}
-          />
-          <MainStack.Screen
-            name="DetailCategory"
-            component={DetailCategory}
-            options={({
-              route
-            }: {
-              route: route;
-            }): { headerShown: boolean; title: string } => ({
-              headerShown: true,
-              title: route?.params?.category.name
-            })}
-          />
-          <MainStack.Screen
-            name="Reglages"
-            component={Reglages}
-            options={() => ({ headerShown: true, title: '' })}
-          />
-          <MainStack.Screen
-            name="Avis"
-            component={Avis}
-            options={() => ({ headerShown: true, title: '' })}
-          />
-          <MainStack.Screen
-            name="Profile"
-            component={Profile}
-            options={() => ({ headerShown: true, title: '' })}
-          />
-        </>
-      )}
-    </MainStack.Navigator>
+    <SafeAreaProvider>
+      <MainStack.Navigator
+        initialRouteName="Screen"
+        headerMode="screen"
+        screenOptions={{
+          headerTintColor: 'black',
+          headerTitleStyle: {
+            color: 'black',
+            alignSelf: 'center',
+            fontSize: 20
+          }
+        }}>
+        {token ? (
+          <>
+            <MainStack.Screen
+              name="PrincipalView"
+              children={createBottomTabs}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="DetailCategory"
+              component={DetailCategory}
+              options={({ route }) => ({
+                headerShown: true,
+                title: route?.params?.category?.name
+              })}
+            />
+            <MainStack.Screen
+              name="Discussion"
+              component={Discussion}
+              options={() => ({ headerShown: false, title: '' })}
+            />
+            <MainStack.Screen
+              name="Reglages"
+              component={Reglages}
+              options={() => ({ headerShown: true, title: '' })}
+            />
+            <MainStack.Screen
+              name="Avis"
+              component={Avis}
+              options={() => ({ headerShown: true, title: '' })}
+            />
+            <MainStack.Screen
+              name="Profile"
+              component={Profile}
+              options={() => ({ headerShown: true, title: '' })}
+            />
+          </>
+        ) : (
+          <>
+            <MainStack.Screen
+              name="Screen"
+              component={Screen}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="Enregistrement"
+              component={Enregistrement}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="Identification"
+              component={Identification}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="Verification"
+              component={Verification}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="PrincipalView"
+              children={createBottomTabs}
+              options={{ headerShown: false }}
+            />
+            <MainStack.Screen
+              name="Discussion"
+              component={Discussion}
+              options={() => ({ headerShown: false, title: '' })}
+            />
+            <MainStack.Screen
+              name="DetailCategory"
+              component={DetailCategory}
+              options={({
+                route
+              }: {
+                route: route;
+              }): { headerShown: boolean; title: string } => ({
+                headerShown: true,
+                title: route?.params?.category.name
+              })}
+            />
+            <MainStack.Screen
+              name="Reglages"
+              component={Reglages}
+              options={() => ({ headerShown: true, title: '' })}
+            />
+            <MainStack.Screen
+              name="Avis"
+              component={Avis}
+              options={() => ({ headerShown: true, title: '' })}
+            />
+            <MainStack.Screen
+              name="Profile"
+              component={Profile}
+              options={() => ({ headerShown: true, title: '' })}
+            />
+          </>
+        )}
+      </MainStack.Navigator>
+    </SafeAreaProvider>
   );
 };
 
-export default () => {
+interface Props {
+  initialState: InitialState | undefined;
+  onStateChange: ((state: NavigationState | undefined) => void) | undefined;
+}
+
+export default ({ initialState, onStateChange }: Props) => {
   const user = useStoreState(state => state.User.user);
   const {
     User: { loadUser },
@@ -215,10 +227,19 @@ export default () => {
   }, []);
 
   if (isLoading) return <BienvenueFirst />;
+
   return (
-    <NavigationContainer>
-      <MyMainStack token={user && user.token ? user.token : null} />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <SafeAreaProvider>
+        <SafeAreaProvider>
+          <NavigationContainer {...{ initialState, onStateChange }}>
+            <SafeAreaProvider>
+              <MyMainStack token={user && user.token ? user.token : null} />
+            </SafeAreaProvider>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </SafeAreaProvider>
+    </SafeAreaProvider>
   );
 };
 

@@ -3,7 +3,6 @@ import { useApolloClient } from '@apollo/react-hooks';
 import {
   AsyncStorage,
   KeyboardAvoidingView,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import { ImagePicker } from 'expo';
 import { ReactNativeFile } from 'apollo-upload-client';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { theme } from '../../constants';
 import { Text } from '../sharedComponents';
