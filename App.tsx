@@ -32,17 +32,19 @@ interface Props {
 }
 
 const handleResourcesAsync = async () => {
-  await Font.loadAsync({
-    josefinBold: require('./assets/fonts/JosefinSans-Bold.ttf'),
-    josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
-    josefinRegular: require('./assets/fonts/JosefinSans-Regular.ttf'),
-    josefinSemiBold: require('./assets/fonts/JosefinSans-SemiBold.ttf'),
-    rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
-    serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
-    serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
-    serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf'),
-    HelveticaNeue: require('./assets/fonts/Raleway-Regular.ttf')
-  });
+  (async () => {
+    await Font.loadAsync({
+      josefinBold: require('./assets/fonts/JosefinSans-Bold.ttf'),
+      josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
+      josefinRegular: require('./assets/fonts/JosefinSans-Regular.ttf'),
+      josefinSemiBold: require('./assets/fonts/JosefinSans-SemiBold.ttf'),
+      rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
+      serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
+      serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
+      serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf'),
+      HelveticaNeue: require('./assets/fonts/Raleway-Regular.ttf')
+    });
+  })();
 
   const cacheIcons = icons.map(icon => {
     return Asset.fromModule(icon).downloadAsync();
@@ -98,20 +100,14 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
   }
 
   return (
-    <SafeAreaProvider
-      initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-      <ApolloProvider client={client}>
+    <ApolloProvider client={client}>
+      <StoreProvider store={store}>
         <SafeAreaProvider
           initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-          <StoreProvider store={store}>
-            <SafeAreaProvider
-              initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-              <Navigation {...{ initialState, onStateChange }} />
-            </SafeAreaProvider>
-          </StoreProvider>
+          <Navigation {...{ initialState, onStateChange }} />
         </SafeAreaProvider>
-      </ApolloProvider>
-    </SafeAreaProvider>
+      </StoreProvider>
+    </ApolloProvider>
   );
 };
 

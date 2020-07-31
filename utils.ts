@@ -1,4 +1,4 @@
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import * as Permissions from 'expo-permissions';

@@ -229,20 +229,9 @@ export default ({ initialState, onStateChange }: Props) => {
   if (isLoading) return <BienvenueFirst />;
 
   return (
-    <SafeAreaProvider
-      initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-      <SafeAreaProvider
-        initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-        <SafeAreaProvider>
-          <NavigationContainer {...{ initialState, onStateChange }}>
-            <SafeAreaProvider
-              initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-              <MyMainStack token={user && user.token ? user.token : null} />
-            </SafeAreaProvider>
-          </NavigationContainer>
-        </SafeAreaProvider>
-      </SafeAreaProvider>
-    </SafeAreaProvider>
+    <NavigationContainer {...{ initialState, onStateChange }}>
+      <MyMainStack token={user && user.token ? user.token : null} />
+    </NavigationContainer>
   );
 };
 
