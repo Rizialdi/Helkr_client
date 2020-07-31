@@ -61,7 +61,6 @@ export default function Accueil(
               </TouchableOpacity>
             </View>
           </Block>
-          <Text>ert</Text>
           {/* When many cities */}
           {/* <TouchableOpacity
             style={styles.loopTouchable}

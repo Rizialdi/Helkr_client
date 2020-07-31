@@ -83,23 +83,29 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
 
   if (!isLoadingComplete && !skipLoadingScreen && !isNavigationReady) {
     return (
-      <AppLoading
-        // @ts-ignore
-        startAsync={handleResourcesAsync}
-        onError={error => {
-          throw error;
-        }}
-        onFinish={() => setIsLoadingComplete(true)}
-      />
+      <SafeAreaProvider
+        initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
+        <AppLoading
+          // @ts-ignore
+          startAsync={handleResourcesAsync}
+          onError={error => {
+            throw error;
+          }}
+          onFinish={() => setIsLoadingComplete(true)}
+        />
+      </SafeAreaProvider>
     );
   }
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider
+      initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
       <ApolloProvider client={client}>
-        <SafeAreaProvider>
+        <SafeAreaProvider
+          initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
           <StoreProvider store={store}>
-            <SafeAreaProvider>
+            <SafeAreaProvider
+              initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>
               <Navigation {...{ initialState, onStateChange }} />
             </SafeAreaProvider>
           </StoreProvider>
