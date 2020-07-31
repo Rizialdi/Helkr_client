@@ -1,6 +1,7 @@
 import React, { SFC } from 'react';
 import { StyleSheet, View, Animated, StyleProp, ViewStyle } from 'react-native';
 import { useStoreState } from '../../models';
+import { MargInterface, PaddinInterface } from './Interface';
 
 export interface BlockProps {
   flex?: boolean;
@@ -59,7 +60,7 @@ const Block: SFC<BlockProps> = ({
 }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
 
-  const handleMargins = () => {
+  const handleMargins = (): MargInterface | undefined => {
     if (typeof margin === 'number') {
       return {
         marginTop: margin,
@@ -102,9 +103,10 @@ const Block: SFC<BlockProps> = ({
           };
       }
     }
+    return;
   };
 
-  const handlePaddings = () => {
+  const handlePaddings = (): PaddinInterface | undefined => {
     if (typeof padding === 'number') {
       return {
         paddingTop: padding,
@@ -147,6 +149,7 @@ const Block: SFC<BlockProps> = ({
           };
       }
     }
+    return;
   };
 
   const blockStyles:

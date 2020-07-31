@@ -25,8 +25,7 @@ export default ({ offering }: Props) => {
     description,
     createdAt,
     updatedAt,
-    eventday,
-    completed
+    eventday
   } = offering;
 
   return (
@@ -54,9 +53,7 @@ export default ({ offering }: Props) => {
           date
         />
       </Block>
-      <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
-        {description}
-      </Text>
+      <Text style={styles.description}>{description}</Text>
     </Block>
   );
 };
@@ -82,5 +79,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     marginTop: 15,
     marginBottom: 15
-  }
+  },
+  description: { marginHorizontal: 30, marginVertical: 15 }
 });

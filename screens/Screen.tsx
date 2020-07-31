@@ -41,21 +41,18 @@ const Screen: FC<Props> = () => {
 };
 
 const styles = StyleSheet.create({
-  // Slide styles
   slide: {
-    flex: 1, // Take up all screen
-    justifyContent: 'center', // Center vertically
-    alignItems: 'center', // Center horizontally
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'white'
   },
-  // Header styles
   header: {
     color: 'black',
     fontSize: 30,
     fontWeight: 'bold',
     marginVertical: 15
   },
-  // Text below header
   text: {
     color: 'black',
     fontSize: 18,

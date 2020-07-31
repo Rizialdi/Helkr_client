@@ -1,10 +1,9 @@
-// just copy this code from the driving repo :)
 import React from 'react';
 import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
 
 import { useStoreState } from '../../models';
-
 import { theme } from '../../constants';
+import { VertInterface } from './Interface';
 
 interface Props {
   h1?: boolean;
@@ -62,7 +61,6 @@ const CustomText: React.FC<Props> = ({
   size,
   transform,
   align,
-  // styling
   regular,
   bold,
   semibold,
@@ -71,11 +69,10 @@ const CustomText: React.FC<Props> = ({
   light,
   center,
   right,
-  spacing, // letter-spacing
-  height, // line-height
+  spacing,
+  height,
   horizontal,
   vertical,
-  // colors
   accent,
   primary,
   secondary,
@@ -90,7 +87,7 @@ const CustomText: React.FC<Props> = ({
 }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
 
-  const handleVertical = () => {
+  const handleVertical = (): VertInterface | undefined => {
     if (typeof vertical === 'number') {
       return {
         marginVertical: vertical,
@@ -117,6 +114,7 @@ const CustomText: React.FC<Props> = ({
           };
       }
     }
+    return;
   };
   const textStyles: StyleProp<TextStyle> = [
     {

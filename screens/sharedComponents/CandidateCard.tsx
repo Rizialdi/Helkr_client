@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { Image, View, StyleSheet } from 'react-native';
 
 import Text from './Text';
 import Block from './Block';
@@ -40,7 +40,7 @@ const candidateCard: FC<Props> = ({
                 : require('../../assets/images/defaultUserImage.png')
             }
             resizeMode="contain"
-            style={{ width: '100%', height: '100%' }}
+            style={styles.image}
           />
         </View>
         <View style={{ flex: 3 }}>
@@ -51,11 +51,10 @@ const candidateCard: FC<Props> = ({
               onPress={() => {
                 parentCallback('icon'), setSelectedId(id);
               }}
-              style={{
-                backgroundColor: themeColors.secondary,
-                padding: 15,
-                borderRadius: 10
-              }}>
+              style={[
+                styles.image,
+                { backgroundColor: themeColors.secondary }
+              ]}>
               <Icon name="right" size={20} />
             </TouchableOpacity>
           </Block>
@@ -64,5 +63,13 @@ const candidateCard: FC<Props> = ({
     </Card>
   );
 };
+
+const styles = StyleSheet.create({
+  image: { width: '100%', height: '100%' },
+  icon: {
+    padding: 15,
+    borderRadius: 10
+  }
+});
 
 export default candidateCard;

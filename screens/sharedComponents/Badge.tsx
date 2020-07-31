@@ -1,9 +1,7 @@
-import React, { Component, FC } from 'react';
+import React, { SFC } from 'react';
 import { StyleSheet, StyleProp, ViewStyle, Animated } from 'react-native';
 
 import Block, { BlockProps } from './Block';
-import { useStoreState } from '../../models';
-
 interface Props extends BlockProps {
   children: JSX.Element;
   style?: object;
@@ -14,9 +12,7 @@ type Badge =
   | StyleProp<ViewStyle>
   | Animated.WithAnimatedValue<StyleProp<ViewStyle>>;
 
-const Badge: FC<Props> = ({ children, style, size, ...props }) => {
-  const { themeColors } = useStoreState(state => state.Preferences);
-
+const Badge: SFC<Props> = ({ children, style, size, ...props }) => {
   const badgeStyles: Badge = StyleSheet.flatten([
     styles.badge,
     size && {

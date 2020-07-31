@@ -5,8 +5,7 @@ import * as Icon from '@expo/vector-icons';
 import Text from './Text';
 import Block from './Block';
 import Button from './Button';
-import { theme } from '../constants';
-
+import { useStoreState } from '../../models';
 interface Props extends TextInputProps {
   email?: boolean;
   phone?: boolean;
@@ -33,6 +32,7 @@ const Input: React.FC<Props> = ({
   style,
   ...props
 }) => {
+  const { themeColors } = useStoreState(state => state.Preferences);
   const [toggleSecure, setToggleSecure] = useState<boolean>(false);
 
   useEffect(() => {
@@ -62,8 +62,8 @@ const Input: React.FC<Props> = ({
           rightLabel
         ) : (
           <Icon.Ionicons
-            color={theme.colors.gray}
-            size={theme.sizes.font * 1.35}
+            color={themeColors.gray}
+            size={14 * 1.35}
             name={!toggleSecure ? 'md-eye' : 'md-eye-off'}
           />
         )}
@@ -87,7 +87,8 @@ const Input: React.FC<Props> = ({
 
   const inputStyles = [
     styles.input,
-    error && { borderColor: theme.colors.accent },
+    { borderColor: themeColors.black, color: themeColors.black },
+    error && { borderColor: themeColors.accent },
     style
   ];
 
@@ -100,7 +101,7 @@ const Input: React.FC<Props> = ({
     : 'default';
 
   return (
-    <Block flex={false} margin={[theme.sizes.base, 0]}>
+    <Block flex={false} margin={[16, 0]}>
       {renderLabel()}
       <TextInput
         style={inputStyles}
@@ -119,19 +120,17 @@ const Input: React.FC<Props> = ({
 const styles = StyleSheet.create({
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.black,
-    borderRadius: theme.sizes.radius,
-    fontSize: theme.sizes.font,
+    borderRadius: 6,
+    fontSize: 14,
     fontWeight: '500',
-    color: theme.colors.black,
-    height: theme.sizes.base * 2.5
+    height: 16 * 2.5
   },
   toggle: {
     position: 'absolute',
     alignItems: 'flex-end',
-    width: theme.sizes.base * 2,
-    height: theme.sizes.base * 2,
-    top: theme.sizes.base,
+    width: 16 * 2,
+    height: 16 * 2,
+    top: 16,
     right: 0
   }
 });

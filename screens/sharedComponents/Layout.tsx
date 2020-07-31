@@ -1,14 +1,12 @@
 import React, { SFC } from 'react';
 import {
-  KeyboardAvoidingView,
-  SafeAreaView,
+  View,
   StyleSheet,
-  View
+  SafeAreaView,
+  KeyboardAvoidingView
 } from 'react-native';
 
 import Text from './Text';
-
-import { theme } from '../../constants';
 import { useStoreState } from '../../models';
 
 interface Props {
@@ -21,15 +19,10 @@ const Layout: SFC<Props> = ({ title, children }) => {
 
   return (
     <SafeAreaView
-      style={{ ...styles.container, backgroundColor: themeColors.background }}>
+      style={[styles.container, { backgroundColor: themeColors.background }]}>
       <KeyboardAvoidingView enabled={true} behavior="height">
         {title && (
-          <View
-            style={{
-              marginTop: 40,
-              marginBottom: 20,
-              marginHorizontal: theme.sizes.base * 2
-            }}>
+          <View style={styles.subContainer}>
             <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
               {title}
             </Text>
@@ -49,6 +42,11 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'HelveticaNeue',
     color: '#52575D'
+  },
+  subContainer: {
+    marginTop: 40,
+    marginBottom: 20,
+    marginHorizontal: 32
   }
 });
 

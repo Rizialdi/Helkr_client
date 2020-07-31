@@ -4,7 +4,6 @@ import { StyleSheet, Image, View } from 'react-native';
 import Text from './Text';
 import Block from './Block';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { CandidateCardClickedPart } from '../Manage/components/ModalItemManageCandidates';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import Card from './Card';
@@ -16,12 +15,7 @@ interface Props {
   professional: boolean;
 }
 
-const candidateCard: FC<Props> = ({
-  professional,
-  average,
-  avatar = null,
-  id
-}) => {
+const candidateCard: FC<Props> = ({ professional, average, avatar = null }) => {
   const { themeColors } = useStoreState(store => store.Preferences);
 
   return (
@@ -35,7 +29,7 @@ const candidateCard: FC<Props> = ({
                 : require('../../assets/images/defaultUserImage.png')
             }
             resizeMode="contain"
-            style={{ width: '100%', height: '100%' }}
+            style={styles.image}
           />
         </View>
         <View style={{ flex: 3 }}>
@@ -45,11 +39,10 @@ const candidateCard: FC<Props> = ({
             <TouchableOpacity
               //Link to message
               onPress={() => null}
-              style={{
-                backgroundColor: themeColors.secondary,
-                padding: 15,
-                borderRadius: 10
-              }}>
+              style={[
+                styles.subContainer,
+                { backgroundColor: themeColors.secondary }
+              ]}>
               <Icon name="message1" size={20} />
             </TouchableOpacity>
           </Block>
@@ -59,4 +52,11 @@ const candidateCard: FC<Props> = ({
   );
 };
 
+const styles = StyleSheet.create({
+  image: { width: '100%', height: '100%' },
+  subContainer: {
+    padding: 15,
+    borderRadius: 10
+  }
+});
 export default candidateCard;

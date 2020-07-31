@@ -1,17 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  TextInput,
-  StyleProp,
-  ViewStyle
-} from 'react-native';
+import { StyleSheet, TextInput, StyleProp, ViewStyle } from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import { useStoreState } from '../../models';
-
-const { height, width } = Dimensions.get('screen');
-
 interface Props {
   min: number;
   max: number;

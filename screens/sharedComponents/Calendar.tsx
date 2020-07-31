@@ -50,7 +50,7 @@ export interface LocalDateObject {
 interface Props {
   parentCallback: React.Dispatch<React.SetStateAction<LocalDateObject | null>>;
 }
-const CalendarComponent: SFC<Props> = ({ parentCallback, ...props }) => {
+const CalendarComponent: SFC<Props> = ({ parentCallback }) => {
   const [localDateObject, setLocalDateObject] = useState<LocalDateObject>({});
 
   const dateNow = Date.now();

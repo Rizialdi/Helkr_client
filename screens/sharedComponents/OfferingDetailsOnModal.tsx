@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { SFC } from 'react';
 import {} from 'react-native';
 import Text from './Text';
 import { capitalize } from '../../utils';
@@ -6,7 +6,7 @@ interface Props {
   details: { details: string };
 }
 
-const OfferingDetailsOnModal: FC<Props> = ({ details }) => {
+const OfferingDetailsOnModal: SFC<Props> = ({ details }) => {
   const itemsNotToDisplay: string[] = ['offeringDescription'];
   return (
     <>

@@ -1,5 +1,5 @@
 import Icon from 'react-native-vector-icons/AntDesign';
-import React, { FC, useState } from 'react';
+import React, { SFC, useState } from 'react';
 import { FlatList, Modal } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -25,7 +25,7 @@ interface Props {
   modalItem: JSX.Element;
   refreshing: boolean;
 }
-const CustomListView: FC<Props> = ({
+const CustomListView: SFC<Props> = ({
   data,
   onRefresh,
   emptyMessage,

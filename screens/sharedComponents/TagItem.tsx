@@ -56,13 +56,7 @@ const TagItem: SFC<Props> = ({
         </View>
       ) : (
         <View style={[blockStyles]}>
-          <Text
-            style={{
-              fontFamily: 'HelveticaNeue',
-              fontSize: 15,
-              marginRight: 5
-            }}
-            bold={rdv}>
+          <Text style={styles.text} bold={rdv}>
             {tag}
           </Text>
         </View>
@@ -84,6 +78,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
     marginBottom: 5,
     alignSelf: 'flex-start'
+  },
+  text: {
+    fontFamily: 'HelveticaNeue',
+    fontSize: 15,
+    marginRight: 5
   }
 });
 

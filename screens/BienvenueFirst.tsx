@@ -14,25 +14,19 @@ export class BienvenueFirst extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <View style={{ flex: 0.4, justifyContent: 'flex-end' }}>
+        <View style={styles.appTitle}>
           <Text size={48} style={{ fontFamily: 'rockSalt' }}>
             Helkr
           </Text>
         </View>
-        <View style={{ flex: 0.6, alignContent: 'center' }}>
+        <View style={styles.presentation}>
           <View>
             <Image
               source={require('../assets/icons/marksymbol.svg')}
-              style={{ width: '100%', height: height / 3 }}
+              style={styles.image}
             />
           </View>
-          <Text
-            style={{
-              paddingVertical: 15,
-              fontFamily: 'josefinRegular',
-              fontSize: 16
-            }}
-            semibold>
+          <Text style={styles.text} semibold>
             Toujours trouver la personne qui vous convient
           </Text>
         </View>
@@ -47,6 +41,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 20
+  },
+  appTitle: { flex: 0.4, justifyContent: 'flex-end' },
+  image: { width: '100%', height: height / 3 },
+  presentation: { flex: 0.6, alignContent: 'center' },
+  text: {
+    paddingVertical: 15,
+    fontFamily: 'josefinRegular',
+    fontSize: 16
   }
 });
 
