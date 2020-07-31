@@ -1,11 +1,7 @@
 import Icon from 'react-native-vector-icons/AntDesign';
 import React, { useEffect, useState } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import {
-  NavigationContainer,
-  InitialState,
-  NavigationState
-} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Accueil from '../screens/Accueil';
@@ -33,7 +29,7 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator<
 const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
-      initialRouteName="Accueil"
+      initialRouteName="Postuler"
       activeColor={theme.colors.primary}
       sceneAnimationEnabled={true}
       backBehavior={'initialRoute'}
@@ -196,12 +192,8 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
     </MainStack.Navigator>
   );
 };
-interface Props {
-  onStateChange: ((state: NavigationState | undefined) => void) | undefined;
-  initialState: InitialState | undefined;
-}
 
-export default ({ onStateChange, initialState }: Props) => {
+export default () => {
   const user = useStoreState(state => state.User.user);
   const {
     User: { loadUser },
@@ -224,7 +216,7 @@ export default ({ onStateChange, initialState }: Props) => {
 
   if (isLoading) return <BienvenueFirst />;
   return (
-    <NavigationContainer {...{ onStateChange, initialState }}>
+    <NavigationContainer>
       <MyMainStack token={user && user.token ? user.token : null} />
     </NavigationContainer>
   );

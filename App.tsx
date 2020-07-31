@@ -4,12 +4,12 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import * as Font from 'expo-font';
 import React, { SFC, useState } from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import store from './models';
 import Navigation from './navigation';
 
 import client from './ApolloClient';
 
-// import all icons
 const icons = [
   require('./assets/icons/house.svg'),
   require('./assets/icons/student.svg'),
@@ -61,11 +61,13 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <StoreProvider store={store}>
-        <Navigation />
-      </StoreProvider>
-    </ApolloProvider>
+    <SafeAreaProvider>
+      <ApolloProvider client={client}>
+        <StoreProvider store={store}>
+          <Navigation />
+        </StoreProvider>
+      </ApolloProvider>
+    </SafeAreaProvider>
   );
 };
 
