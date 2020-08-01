@@ -1,4 +1,3 @@
-import { ApolloProvider } from '@apollo/react-hooks';
 import {
   InMemoryCache,
   NormalizedCacheObject,
@@ -12,17 +11,10 @@ import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { onError } from 'apollo-link-error';
 import { getMainDefinition } from 'apollo-utilities';
-import { StoreProvider } from 'easy-peasy';
-import { AppLoading } from 'expo';
-import { Asset } from 'expo-asset';
-import * as Font from 'expo-font';
-import React, { SFC, useState } from 'react';
 import { AsyncStorage } from 'react-native';
 import { PersistentStorage, PersistedData } from 'apollo-cache-persist/types';
 
 import { WEB_SERVER_ADDRESS, WEB_SERVER_PORT } from './config';
-import store from './models';
-import Navigation from './navigation';
 import { typeDefs, resolvers } from './apollo-cache';
 
 const fragmentMatcher = new IntrospectionFragmentMatcher({

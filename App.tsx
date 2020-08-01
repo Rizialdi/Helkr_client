@@ -83,7 +83,7 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
     []
   );
 
-  if (!isLoadingComplete && !skipLoadingScreen && !isNavigationReady) {
+  if ((!isLoadingComplete && !skipLoadingScreen) || !isNavigationReady) {
     return (
       <SafeAreaProvider
         initialSafeAreaInsets={{ top: 0, right: 0, bottom: 0, left: 0 }}>

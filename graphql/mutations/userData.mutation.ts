@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const avatarUpload = gql`
-  mutation avatarUpload($file: String!) {
+  mutation avatarUpload($file: uploadImageType) {
     avatarUpload(file: $file)
   }
 `;

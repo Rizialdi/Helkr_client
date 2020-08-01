@@ -177,18 +177,20 @@ export const getPermissionAsync = async (
   const { status } = await Permissions.askAsync(permission);
   if (status !== 'granted') {
     const permissionName = permission.toLowerCase().replace('_', ' ');
-    Alert.alert(
-      'Action impossible 😞',
-      `Si vous voulez utiliser cette fonctionnailté, vous devrez permmettre l'activation de ${permissionName} dans les réglages de votre téléphone.`,
-      [
-        {
-          text: 'Allons Y',
-          onPress: () => Linking.openURL('app-settings:')
-        },
-        { text: 'Annuler', onPress: () => {}, style: 'cancel' }
-      ],
-      { cancelable: true }
-    );
+
+    Permissions.NOTIFICATIONS != permission &&
+      Alert.alert(
+        'Action impossible 😞',
+        `Si vous voulez utiliser cette fonctionnailté, vous devrez permettre l'activation de ${permissionName} dans les réglages de votre téléphone.`,
+        [
+          {
+            text: 'Allons Y',
+            onPress: () => Linking.openURL('app-settings:')
+          },
+          { text: 'Annuler', onPress: () => {}, style: 'cancel' }
+        ],
+        { cancelable: true }
+      );
 
     return false;
   }

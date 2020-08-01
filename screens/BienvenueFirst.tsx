@@ -15,9 +15,7 @@ export class BienvenueFirst extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.appTitle}>
-          <Text size={48} style={{ fontFamily: 'rockSalt' }}>
-            Helkr
-          </Text>
+          <Text size={48}>Helkr</Text>
         </View>
         <View style={styles.presentation}>
           <View>
@@ -47,7 +45,6 @@ const styles = StyleSheet.create({
   presentation: { flex: 0.6, alignContent: 'center' },
   text: {
     paddingVertical: 15,
-    fontFamily: 'josefinRegular',
     fontSize: 16
   }
 });
