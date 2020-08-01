@@ -1,10 +1,11 @@
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+type Tab = 'tabOne' | 'tabTwo';
 export type BottomStackParamList = {
   Accueil: undefined;
-  Gerer: undefined;
-  Postuler: undefined;
+  Gerer: undefined | { tab: Tab };
+  Postuler: undefined | { tab: Tab };
   Discussions: undefined;
   Profile: undefined;
 };

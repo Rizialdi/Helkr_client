@@ -13,7 +13,7 @@
 // import { Block, Text } from '../sharedComponents';
 // import { mocks, theme } from '../../constants';
 // import { useStoreState } from '../../models';
-// import { MainStackParamList } from '../../navigation/Routes';
+// import { MainStackParamList, BottomStackParamList } from '../../navigation/Routes';
 // import { StackNavigationInterface } from '../../navigation/Routes';
 // import { UserWelcome } from './components';
 // import { CategoriesInterface } from './components/Interfaces';
@@ -135,14 +135,17 @@ import * as Notifications from 'expo-notifications';
 import { Block, Text, Button } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
-import { MainStackParamList } from '../../navigation/Routes';
+import {
+  MainStackParamList,
+  BottomStackParamList
+} from '../../navigation/Routes';
 import { StackNavigationInterface } from '../../navigation/Routes';
 import { UserWelcome } from './components';
 import { CategoriesInterface } from './components/Interfaces';
 import { Categories } from './components';
 import {
-  sendPushNotification,
-  registerForPushNotificationsAsync
+  registerForPushNotificationsAsync,
+  navigationOnNotification
 } from './utils';
 
 import { useNotificationsTokenUpdateMutation } from '../../graphql';
@@ -150,24 +153,20 @@ import { firstAppOpening } from './utils';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowAlert: false,
     shouldPlaySound: false,
     shouldSetBadge: false
   })
 });
 
 const Accueil = (
-  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>
+  navigation: StackNavigationInterface<BottomStackParamList, 'Accueil'>
 ) => {
   const [tokenUpdate] = useNotificationsTokenUpdateMutation();
 
   const [categories, setCategories] = useState<CategoriesInterface | null>();
   const [inputText, setInputText] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-
-  const [notification, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
 
   const { user } = useStoreState(state => state.User);
 
@@ -188,26 +187,14 @@ const Accueil = (
           console.log('onece', token);
         });
     })();
-
-    // This listener is fired whenever a notification is received while the app is foregrounded
-    notificationListener.current = Notifications.addNotificationReceivedListener(
-      notification => {
-        setNotification(notification);
-      }
-    );
-
-    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(
+    const subscription = Notifications.addNotificationResponseReceivedListener(
       response => {
-        console.log(response);
+        const payload = response.notification.request.content.data.body;
+        navigationOnNotification(navigation, payload);
       }
     );
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
-    };
-  }, []);
+    return () => subscription.remove();
+  }, [navigation]);
 
   return (
     <Block style={{ backgroundColor: '#FFFFFF' }}>

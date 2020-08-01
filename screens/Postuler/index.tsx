@@ -9,7 +9,7 @@ import { Offres, Postulees } from './components';
 //TODO implement infinite scroll when Issue resolved
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
 
-const Postuler = () => {
+const Postuler = ({ navigation, route: { params } }) => {
   const tabs = ['Offres', 'Postulées'];
   const [activeTab, setActiveTab] = useState<string>('');
   const { themeColors } = useStoreState(state => state.Preferences);
@@ -17,6 +17,14 @@ const Postuler = () => {
   useEffect(() => {
     setActiveTab('Offres');
   }, []);
+
+  useEffect(() => {
+    params.tab === 'tabOne'
+      ? setActiveTab('Offres')
+      : params.tab === 'tabTwo'
+      ? setActiveTab('Postulées')
+      : null;
+  }, [params]);
 
   const renderTab = (tab: string) => {
     const isActive = activeTab == tab;

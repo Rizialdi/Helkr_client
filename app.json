@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Yoko",
-    "slug": "Yoko",
+    "name": "Helkr",
+    "slug": "Helkr",
     "privacy": "public",
     "platforms": [
       "ios",
@@ -10,6 +10,11 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "android": {
+      "package": "com.helkr.helkr",
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

@@ -11,7 +11,7 @@ import { ManageOffering, ManageCandidates } from './components';
 //TODO implement infinite scroll when Issue resolved
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
 
-const Manage = () => {
+const Manage = ({ navigation, route: { params } }) => {
   const tabs = ['Mes Offres', 'Candidats'];
   const [activeTab, setActiveTab] = useState<string>('');
   const { themeColors } = useStoreState(state => state.Preferences);
@@ -19,6 +19,14 @@ const Manage = () => {
   useEffect(() => {
     setActiveTab('Mes Offres');
   }, []);
+
+  useEffect(() => {
+    params.tab === 'tabOne'
+      ? setActiveTab('Mes Offres')
+      : params.tab === 'tabTwo'
+      ? setActiveTab('Candidats')
+      : null;
+  }, [params]);
 
   const renderTab = (tab: string) => {
     const isActive = activeTab == tab;
