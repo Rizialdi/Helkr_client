@@ -113,7 +113,7 @@ const Item = ({
   );
 };
 
-const Discussions = ({ navigation }: { navigation: any }) => {
+const Discussions = () => {
   const { user } = useStoreState(state => state.User);
   const { lastMessageReadIds } = useStoreState(state => state.ChatMessages);
 
@@ -136,12 +136,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
 
   let channelIds: string[] = [];
 
-  const {
-    data: dataAllChats,
-    loading,
-    error,
-    called
-  } = useAllChatsAndMessagesQuery({
+  const { data: dataAllChats, loading, error } = useAllChatsAndMessagesQuery({
     fetchPolicy: 'cache-and-network',
     pollInterval: 1000
   });
@@ -153,7 +148,7 @@ const Discussions = ({ navigation }: { navigation: any }) => {
   };
 
   useEffect(() => {
-    dataAllChats && !error && setData(dataAllChats);
+    !loading && dataAllChats && !error && setData(dataAllChats);
   }, [dataAllChats]);
 
   if (data && data?.allChatsAndMessages) {

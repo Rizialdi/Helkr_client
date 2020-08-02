@@ -1,15 +1,21 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { AppLoading, Linking } from 'expo';
+import { Linking } from 'expo';
 import React, { useState, useEffect, SetStateAction, Dispatch } from 'react';
-import { StyleSheet, View, Text, Platform } from 'react-native';
 import {
-  Bubble,
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  ActivityIndicator
+} from 'react-native';
+import {
+  // Bubble,
   GiftedChat,
-  SystemMessage,
-  IMessage,
+  // SystemMessage,
+  // IMessage,
   Send
 } from 'react-native-gifted-chat';
-import CustomActions from './components/CustomActions';
+// import CustomActions from './components/CustomActions';
 import CustomView from './components/CustomView';
 import NavBar from './components/NavBar';
 import {
@@ -27,15 +33,11 @@ interface Props {
   sendAMessage: SendAMessage;
 }
 
-const findStep = (step: number) => (message: IMessage) => message._id === step;
-
 const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
-  const [step, setStep] = useState<number>(0);
   const [messages, setMessages] = useState<Array<any>>([]);
   const [loadEarlier, setLoadEarlier] = useState<boolean>(false);
   const [loadingEarlier, setIsLoadingEarlier] = useState<boolean>(false);
   const [appIsReady, setAppIsReady] = useState<boolean>(false);
-  const [isTyping, setIsTyping] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
 
   const { id: channelId } = channel;
@@ -70,7 +72,6 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
   useEffect(() => {
     setIsMounted(true);
     setAppIsReady(true);
-    setIsTyping(false);
     storeLastMessageReadIds(newLastMessageReadIds);
   }, []);
 
@@ -97,7 +98,7 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
       {
         pattern: /#(\w+)/,
         style: { textDecorationLine: 'underline', color: 'darkorange' },
-        onPress: () => Linking.openURL('http://gifted.chat')
+        onPress: () => Linking.openURL('https://www.google.com')
       }
     ];
   };
@@ -106,39 +107,39 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
     return <CustomView {...props} />;
   };
 
-  const onSendFromUser = (messages: IMessage[] = []) => {
-    const createdAt = new Date();
-    const messagesToUpload = messages.map(message => ({
-      ...message,
-      user,
-      createdAt,
-      _id: Math.round(Math.random() * 1000000)
-    }));
-    onSend(messagesToUpload);
-  };
+  // const onSendFromUser = (messages: IMessage[] = []) => {
+  //   const createdAt = new Date();
+  //   const messagesToUpload = messages.map(message => ({
+  //     ...message,
+  //     user,
+  //     createdAt,
+  //     _id: Math.round(Math.random() * 1000000)
+  //   }));
+  //   onSend(messagesToUpload);
+  // };
 
-  const renderCustomActions = (props: any) =>
-    Platform.OS === 'web' ? null : (
-      <CustomActions {...props} onSend={onSendFromUser} />
-    );
+  // const renderCustomActions = (props: any) =>
+  //   Platform.OS === 'web' ? null : (
+  //     <CustomActions {...props} onSend={onSendFromUser} />
+  //   );
 
-  const renderBubble = (props: any) => {
-    return <Bubble {...props} />;
-  };
+  // const renderBubble = (props: any) => {
+  //   return <Bubble {...props} />;
+  // };
 
-  const renderSystemMessage = (props: any) => {
-    return (
-      <SystemMessage
-        {...props}
-        containerStyle={{
-          marginBottom: 15
-        }}
-        textStyle={{
-          fontSize: 14
-        }}
-      />
-    );
-  };
+  // const renderSystemMessage = (props: any) => {
+  //   return (
+  //     <SystemMessage
+  //       {...props}
+  //       containerStyle={{
+  //         marginBottom: 15
+  //       }}
+  //       textStyle={{
+  //         fontSize: 14
+  //       }}
+  //     />
+  //   );
+  // };
 
   const onQuickReply = (replies: Array<{ title: string }> = []) => {
     const createdAt = new Date();
@@ -176,7 +177,7 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
   return (
     <>
       {!appIsReady ? (
-        <AppLoading />
+        <ActivityIndicator size={'large'} />
       ) : (
         <View style={styles.container} accessible>
           <NavBar recipient={recipient} toOpen={toOpen} />
@@ -194,9 +195,9 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
             onPressAvatar={() => alert('short press')}
             onQuickReply={onQuickReply}
             keyboardShouldPersistTaps="never"
-            renderActions={renderCustomActions}
-            renderBubble={renderBubble}
-            renderSystemMessage={renderSystemMessage}
+            // renderActions={renderCustomActions}
+            // renderBubble={renderBubble}
+            // renderSystemMessage={renderSystemMessage}
             renderCustomView={renderCustomView}
             renderSend={renderSend}
             quickReplyStyle={{ borderRadius: 2 }}
