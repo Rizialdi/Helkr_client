@@ -433,6 +433,14 @@ export type SubscriptionUpdatedEventDayArgs = {
   userId: Scalars['String'];
 };
 
+export type Tags = {
+  __typename?: 'tags';
+  id: Scalars['String'];
+  tags: Array<Scalars['String']>;
+  userid?: Maybe<Scalars['String']>;
+  utilisateur?: Maybe<Utilisateur>;
+};
+
 export type UpdateAppliedToType = {
   __typename?: 'updateAppliedToType';
   id: Scalars['String'];
@@ -468,7 +476,7 @@ export type Utilisateur = {
   offerings: Array<Offering>;
   prenom: Scalars['String'];
   professional: Scalars['Boolean'];
-  tags: Array<Scalars['String']>;
+  tags?: Maybe<Array<Scalars['String']>>;
   verificationpieces: Array<Verificationpieces>;
   verified: Scalars['Boolean'];
 };
@@ -560,6 +568,15 @@ export type VerificationpiecesWhereUniqueInput = {
 };
       export default result;
     
+export type AvisFragment = (
+  { __typename?: 'avis' }
+  & Pick<Avis, 'id' | 'comment' | 'createdAt' | 'score'>
+  & { scorer: (
+    { __typename?: 'utilisateur' }
+    & UserFragment
+  ) }
+);
+
 export type ChatFragment = (
   { __typename?: 'channel' }
   & Pick<Channel, 'id' | 'createdAt'>
@@ -919,6 +936,19 @@ export type GetVerificationPiecesQuery = (
   ) }
 );
 
+export type NewAvisSubscriptionVariables = Exact<{
+  userId: Scalars['String'];
+}>;
+
+
+export type NewAvisSubscription = (
+  { __typename?: 'Subscription' }
+  & { newAvis: (
+    { __typename?: 'avis' }
+    & AvisFragment
+  ) }
+);
+
 export type NewChannelSubscriptionVariables = Exact<{
   userId: Scalars['String'];
 }>;
@@ -985,20 +1015,31 @@ export type UpdateAppliedToSubscription = (
   ) }
 );
 
-export const MessageFragmentDoc = gql`
-    fragment message on message {
-  id
-  text
-  createdAt
-  sentById
-}
-    `;
 export const UserFragmentDoc = gql`
     fragment user on utilisateur {
   id
   nom
   prenom
   avatar
+}
+    `;
+export const AvisFragmentDoc = gql`
+    fragment avis on avis {
+  id
+  comment
+  createdAt
+  score
+  scorer {
+    ...user
+  }
+}
+    ${UserFragmentDoc}`;
+export const MessageFragmentDoc = gql`
+    fragment message on message {
+  id
+  text
+  createdAt
+  sentById
 }
     `;
 export const ChatFragmentDoc = gql`
@@ -1903,6 +1944,35 @@ export function useGetVerificationPiecesLazyQuery(baseOptions?: ApolloReactHooks
 export type GetVerificationPiecesQueryHookResult = ReturnType<typeof useGetVerificationPiecesQuery>;
 export type GetVerificationPiecesLazyQueryHookResult = ReturnType<typeof useGetVerificationPiecesLazyQuery>;
 export type GetVerificationPiecesQueryResult = ApolloReactCommon.QueryResult<GetVerificationPiecesQuery, GetVerificationPiecesQueryVariables>;
+export const NewAvisDocument = gql`
+    subscription NewAvis($userId: String!) {
+  newAvis(userId: $userId) {
+    ...avis
+  }
+}
+    ${AvisFragmentDoc}`;
+
+/**
+ * __useNewAvisSubscription__
+ *
+ * To run a query within a React component, call `useNewAvisSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewAvisSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewAvisSubscription({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useNewAvisSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<NewAvisSubscription, NewAvisSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<NewAvisSubscription, NewAvisSubscriptionVariables>(NewAvisDocument, baseOptions);
+      }
+export type NewAvisSubscriptionHookResult = ReturnType<typeof useNewAvisSubscription>;
+export type NewAvisSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewAvisSubscription>;
 export const NewChannelDocument = gql`
     subscription newChannel($userId: String!) {
   newChannel(userId: $userId) {

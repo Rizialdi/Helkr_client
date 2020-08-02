@@ -36,7 +36,12 @@ export const firstAppOpening = async (): Promise<boolean> => {
   }
 };
 
-type screenToRedirect = 'Postulées' | 'Candidats' | 'Mes Offres' | 'Offres';
+type screenToRedirect =
+  | 'Postulées'
+  | 'Candidats'
+  | 'Mes Offres'
+  | 'Offres'
+  | 'Discussions';
 export const navigationOnNotification = (
   navigation: StackNavigationInterface<BottomStackParamList, 'Accueil'>,
   payload: { screenToRedirect: screenToRedirect; offeringId: string }
@@ -54,6 +59,9 @@ export const navigationOnNotification = (
     case 'Postulées':
     case 'Offres':
       navigation.navigation.navigate('Postuler', { tab });
+      break;
+    case 'Discussions':
+      navigation.navigation.navigate('Discussions');
       break;
     default:
       navigation.navigation.navigate('Accueil');

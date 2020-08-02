@@ -132,7 +132,7 @@ import {
 
 import * as Notifications from 'expo-notifications';
 
-import { Block, Text, Button } from '../sharedComponents';
+import { Block } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
 import {
@@ -150,6 +150,7 @@ import {
 
 import { useNotificationsTokenUpdateMutation } from '../../graphql';
 import { firstAppOpening } from './utils';
+import { AsyncStorage } from 'react-native';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -182,9 +183,9 @@ const Accueil = (
       const firstOpening = await firstAppOpening();
       console.log(firstOpening);
       firstOpening &&
-        registerForPushNotificationsAsync().then(token => {
+        registerForPushNotificationsAsync().then(async token => {
           token && tokenUpdate({ variables: { token } });
-          console.log('onece', token);
+          await AsyncStorage.setItem('tokenForNotifications', token);
         });
     })();
     const subscription = Notifications.addNotificationResponseReceivedListener(

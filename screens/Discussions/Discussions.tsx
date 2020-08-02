@@ -55,7 +55,6 @@ const Item = ({
   image,
   sendAMessage
 }: ItemProps) => {
-  const { themeColors } = useStoreState(state => state.Preferences);
   const [openDiscussionScreen, setOpenDiscussionScreen] = useState<boolean>(
     false
   );
