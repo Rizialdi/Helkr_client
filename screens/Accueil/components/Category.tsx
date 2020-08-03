@@ -29,7 +29,7 @@ const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
           style={{ fontFamily: 'josefinRegular', fontSize: 18 }}>
           {category.name}
         </Text>
-        <Text gray caption numberOfLines={1}>
+        <Text gray caption numberOfLines={1} horizontal={10}>
           {Object.keys(category.tag).join(', ')}
         </Text>
       </Card>

@@ -96,7 +96,7 @@ const Item = ({
                 <Text h2>{name}</Text>
               </View>
               <View>
-                <Text medium gray2={!colorCondition}>
+                <Text medium gray2={!colorCondition} numberOfLines={1}>
                   {lastMessageText}
                 </Text>
               </View>

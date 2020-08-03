@@ -227,7 +227,9 @@ export default function Profile({
               ]}>
               Tags
             </Text>
-            <Tag tags={tags} parentCallback={SetTags} />
+            {tags && tags.length > 0 && (
+              <Tag tags={tags} parentCallback={SetTags} />
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

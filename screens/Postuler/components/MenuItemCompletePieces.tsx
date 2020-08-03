@@ -1,12 +1,6 @@
 import React, { SFC, useState } from 'react';
 
-import {
-  View,
-  Button,
-  StyleSheet,
-  Dimensions,
-  KeyboardAvoidingView
-} from 'react-native';
+import { View, Button, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
 
 const { height } = Dimensions.get('screen');
@@ -45,15 +39,5 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  titleBar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-    marginBottom: 15,
-    marginHorizontal: 16
-  }
-});
 
 export default MenuItemCompletePieces;

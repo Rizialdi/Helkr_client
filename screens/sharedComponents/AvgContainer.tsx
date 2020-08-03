@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Octicons';
 
-import { theme } from '../../../constants';
-import { Text } from '../../sharedComponents';
+import { theme } from '../../constants';
+import Text from './Text';
 
 interface Props {
   average?: number | null;

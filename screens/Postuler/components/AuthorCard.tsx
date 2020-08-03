@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Dimensions
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 
 import { Text, Block, ImageComponent } from '../../sharedComponents';
 import { makePseudoName } from '../../../utils';
@@ -13,7 +7,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { useStoreState } from '../../../models';
 import { Linking } from 'expo';
 import Modal from 'react-native-modal';
-import { StatsContainer } from '../../Profile/components';
+import { StatsContainer } from '../../sharedComponents';
 
 const { height } = Dimensions.get('screen');
 interface author {

@@ -63,16 +63,19 @@ const ModalItem: FC<Props> = props => {
     applyTo({
       variables: { id: data?.offeringById?.id as string }
     })
-      .then(({ data }) => data?.candidateToOffering)
-      .then(res => {
+      .then(({ data, errors }) => {
         try {
-          if (res?.success) {
+          if (data?.candidateToOffering && data.candidateToOffering.success) {
             client.reFetchObservableQueries();
+            // TODO success modal ?
+            if (errors) {
+              // TODO error modal
+            }
           }
         } catch (error) {
           throw new Error(`Impossible de Candidater ${error}`);
         }
-      }) // ajouter une alerte ? TODO
+      })
       .then(() => props.setOpenModal && props.setOpenModal(false));
   };
 
@@ -89,33 +92,45 @@ const ModalItem: FC<Props> = props => {
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Layout title={'Details'}>
-          {(loading && !called) || !data ? (
-            <ActivityIndicator size={'large'} />
-          ) : (
-            <Block flex={false} margin={[0, 25, 48 * 1 + 20]}>
-              <Block margin={[0, -25]} flex={false} row middle space={'around'}>
-                <TagItem tag={data?.offeringById?.type} type />
-                <TagItem tag={data?.offeringById?.category} category />
-                <TagItem
-                  tag={
-                    data?.offeringById.updatedAt
-                      ? formatDate(data?.offeringById?.updatedAt)
-                      : formatDate(data?.offeringById?.createdAt)
-                  }
-                  date
-                />
-              </Block>
-              <Text bold size={16} vertical={[20, 10]}>
-                Description
-              </Text>
-              <Text>{data?.offeringById?.description}</Text>
+          <>
+            {(loading && !called) || !data ? (
+              <ActivityIndicator size={'large'} />
+            ) : (
+              <Block flex={false} margin={[0, 25, 48 * 1 + 20]}>
+                <Block
+                  margin={[0, -25]}
+                  flex={false}
+                  row
+                  middle
+                  space={'around'}>
+                  <TagItem tag={data?.offeringById?.type} type />
+                  <TagItem tag={data?.offeringById?.category} category />
+                  <TagItem
+                    tag={
+                      data?.offeringById.updatedAt
+                        ? formatDate(data?.offeringById?.updatedAt)
+                        : formatDate(data?.offeringById?.createdAt)
+                    }
+                    date
+                  />
+                </Block>
+                <Text bold size={16} vertical={[20, 10]}>
+                  Description
+                </Text>
+                <Text>{data?.offeringById?.description}</Text>
 
-              <Text bold size={16} vertical={[20, 10]}>
-                Categorie
+                <Text bold size={16} vertical={[20, 10]}>
+                  Categorie
+                </Text>
+                <OfferingDetailsOnModal details={data?.offeringById?.details} />
+              </Block>
+            )}
+            {error && (
+              <Text accent bold>
+                Une erreur reseau s'est produite. Veuillez réessayer plus tard
               </Text>
-              <OfferingDetailsOnModal details={data?.offeringById?.details} />
-            </Block>
-          )}
+            )}
+          </>
         </Layout>
       </ScrollView>
       <Block margin={[-20, 20]}>

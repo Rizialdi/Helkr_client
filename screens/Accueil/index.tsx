@@ -56,7 +56,6 @@ const Accueil = (
   useEffect(() => {
     (async () => {
       const firstOpening = await firstAppOpening();
-      console.log(firstOpening);
       firstOpening &&
         registerForPushNotificationsAsync().then(async token => {
           token && tokenUpdate({ variables: { token } });

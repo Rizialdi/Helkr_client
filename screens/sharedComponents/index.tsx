@@ -15,6 +15,8 @@ import Badge from './Badge';
 import Card from './Card';
 import Input from './Input';
 import ImageComponent from './ImageComponent';
+import StatsContainer from './StatsContainer';
+import AvgContainer from './AvgContainer';
 
 export {
   Layout,
@@ -34,5 +36,7 @@ export {
   TextAreaInput,
   OfferingDetailsOnModal,
   StackedToBottom,
-  ImageComponent
+  ImageComponent,
+  StatsContainer,
+  AvgContainer
 };

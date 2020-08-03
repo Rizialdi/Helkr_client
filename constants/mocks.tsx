@@ -103,6 +103,28 @@ const accueil: CategoriesInterface = [
             { label: 'bool', value: 'bbol' }
           ]
         }
+      },
+      Réttoyage: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
       }
     },
     image: 'house'

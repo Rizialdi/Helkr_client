@@ -156,7 +156,7 @@ const SecondScreen = ({ ...props }) => {
   const [imagesPicked, setImagesPicked] = useState<ImagesPicked>();
   const [
     addPiecesMutation,
-    { data, loading, called, error }
+    { loading, error }
   ] = useAddVerificationpiecesMutation();
 
   const pickImage = async (label: string) => {
@@ -199,7 +199,7 @@ const SecondScreen = ({ ...props }) => {
     addPiecesMutation({
       variables: { id: '', listofpieces, referenceId }
     })
-      .then(async ({ data }) => {
+      .then(async ({ data, errors }) => {
         if (data?.addVerificationpieces) {
           const previousData: Maybe<string> | string =
             (await AsyncStorage.getItem('sendVerifPiecesReferenceIds')) || '';
@@ -218,6 +218,9 @@ const SecondScreen = ({ ...props }) => {
           });
 
           props.setOpenModal(false);
+        }
+        if (errors || error) {
+          // TODO modal error to show
         }
       })
       .catch(err => {

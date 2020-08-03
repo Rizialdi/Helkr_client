@@ -7,6 +7,7 @@ import {
   StackNavigationInterface,
   MainStackParamList
 } from '../../../navigation/Routes';
+import { removeAccent } from '../../../utils';
 
 interface Props {
   categories: CategoriesInterface;
@@ -19,9 +20,11 @@ const Categories: SFC<Props> = ({ categories, inputText, navigation }) => {
       {categories
         ?.filter(
           category =>
-            `${category.name} ${Object.keys(category.tag)}`
+            `${removeAccent(category.name)} ${removeAccent(
+              Object.keys(category.tag).join(' ')
+            )}`
               .toUpperCase()
-              .indexOf(inputText.toUpperCase()) >= 0
+              .indexOf(removeAccent(inputText).toUpperCase()) >= 0
         )
         .map((category, key) => (
           <Category {...{ key }} {...{ category, navigation }} />

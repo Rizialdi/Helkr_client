@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, Image, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Text from './Text';
 import Block from './Block';

@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
-import { Text } from '../../sharedComponents';
-import { useGetUserStatsQuery } from '../../../graphql';
+import Text from './Text';
+import { useGetUserStatsQuery } from '../../graphql';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AvgContainer from './AvgContainer';
-import { MainStackParamList } from '../../../navigation/Routes';
+import { MainStackParamList } from '../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Props {
   id: string;
   offeringAuthorStars?: boolean;
-  navigation: StackNavigationProp<MainStackParamList, 'Profile'>;
+  navigation?: StackNavigationProp<MainStackParamList, 'Profile'>;
 }
 
 export default ({ id, offeringAuthorStars, navigation }: Props) => {

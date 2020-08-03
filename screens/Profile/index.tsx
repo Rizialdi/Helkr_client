@@ -116,7 +116,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
             ]}>
             Tags
           </Text>
-          <Tag tags={tags} />
+          {tags && tags?.length > 0 && <Tag tags={tags} />}
         </View>
       </ScrollView>
     </SafeAreaView>
