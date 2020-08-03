@@ -7,7 +7,6 @@ import {
   MainStackParamList
 } from '../../../navigation/Routes';
 import { theme } from '../../../constants';
-import Image from 'react-native-remote-svg';
 import IconSvg from './IconSvg';
 const { width } = Dimensions.get('window');
 
@@ -22,7 +21,6 @@ const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
       onPress={() => navigation.navigate('DetailCategory', { category })}>
       <Card center middle style={styles.category} shadow>
         <Badge margin={[0, 0, 15]} size={70} secondary>
-          {/* <Image source={category.image} style={{ width: 0, height: 40 }} /> */}
           <IconSvg kind={category.image} />
         </Badge>
         <Text

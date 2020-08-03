@@ -2,7 +2,6 @@ import React, { SFC, useState } from 'react';
 
 import {
   View,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
@@ -12,9 +11,10 @@ import {
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { Text } from '../../sharedComponents';
+import { Text, StackedToBottom, Button } from '../../sharedComponents';
 import { useStoreState } from '../../../models';
 import { ExecutionResult } from 'react-apollo';
+import Block from '../../sharedComponents/Block';
 
 const { height } = Dimensions.get('screen');
 interface Props {
@@ -36,6 +36,23 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
   const [selected, setSelected] = useState<boolean>(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
+
+  const onSubmitForm = () => {
+    props
+      .onSubmit()
+      .then(({ data }) => {
+        data?.addOffering &&
+          Alert.alert(
+            'Votre annonce',
+            "vient d'être ajouté",
+            [{ text: 'OK', onPress: () => props.openModal(false) }],
+            { cancelable: false }
+          );
+      })
+      .catch(error => {
+        throw new Error(`Ajout offre impossible, ${error}`);
+      });
+  };
   return (
     <KeyboardAvoidingView behavior={'padding'}>
       <View style={styles.titleBar}>
@@ -80,31 +97,22 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
         isLast: props.isLast
       })}
       {!props.isLast ? null : (
-        <View
+        <Block
           style={{
             marginVertical: height / 4
           }}>
-          <Button
-            title="Soumettre"
-            disabled={!selected}
-            onPress={() => {
-              props
-                .onSubmit()
-                .then(({ data }) => {
-                  data?.addOffering &&
-                    Alert.alert(
-                      'Votre annonce',
-                      "vient d'être ajouté",
-                      [{ text: 'OK', onPress: () => props.openModal(false) }],
-                      { cancelable: false }
-                    );
-                })
-                .catch(error => {
-                  throw new Error(`Ajout offre impossible, ${error}`);
-                });
-            }}
-          />
-        </View>
+          <StackedToBottom margin={[20, 20]}>
+            <Button
+              secondary={selected}
+              onPress={() => {
+                selected && onSubmitForm();
+              }}>
+              <Text center bold>
+                Soumettre
+              </Text>
+            </Button>
+          </StackedToBottom>
+        </Block>
       )}
     </KeyboardAvoidingView>
   );

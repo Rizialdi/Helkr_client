@@ -4,12 +4,10 @@ import {
   StyleSheet,
   Dimensions,
   FlatList,
-  Image,
   TouchableOpacity,
-  ImageSourcePropType,
   Modal
 } from 'react-native';
-import { Layout, Text, Block } from '../sharedComponents';
+import { Layout, Text, Block, ImageComponent } from '../sharedComponents';
 
 import {
   useAllChatsAndMessagesQuery,
@@ -37,7 +35,7 @@ interface ItemProps {
   lastMessage: string;
   unReadMessageCount: number | null;
   channel: Chat;
-  image: ImageSourcePropType;
+  image: string;
   sendAMessage: SendAMessage;
 }
 
@@ -77,13 +75,7 @@ const Item = ({
               overflow: 'hidden',
               margin: 'auto'
             }}>
-            <Image
-              source={
-                image || require('../../assets/images/defaultUserImage.png')
-              }
-              resizeMode="cover"
-              style={{ width: '100%', height: '100%' }}
-            />
+            <ImageComponent image={image} />
           </TouchableOpacity>
         </View>
         <View style={{ flex: 0.75, alignSelf: 'flex-start' }}>
@@ -256,7 +248,7 @@ const Discussions = () => {
 
   return (
     <Layout title={'Discussions'}>
-      {data ? (
+      {data && allChatUsersAndLastMessage.length ? (
         <FlatList
           data={sortChatMessages(allChatUsersAndLastMessage)}
           renderItem={({ item }) => {
@@ -267,7 +259,7 @@ const Discussions = () => {
                 lastMessage={item?.lastMessage?.text}
                 channel={retrieveChannelData(data, item.channelId)}
                 unReadMessageCount={item?.unReadMessageCount}
-                image={user.avatar as ImageSourcePropType}
+                image={user.avatar as string}
                 sendAMessage={sendAMessage}
               />
             );
@@ -275,7 +267,11 @@ const Discussions = () => {
           keyExtractor={item => item.channelId}
         />
       ) : (
-        <Text>Aucune discussion actuellement</Text>
+        <Block flex={false}>
+          <Text semibold horizontal={35} vertical={[20, 20]} numberOfLines={1}>
+            Vous n'avez aucune discussion actuellement.
+          </Text>
+        </Block>
       )}
     </Layout>
   );

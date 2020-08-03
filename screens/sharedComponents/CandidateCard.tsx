@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Image, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import Text from './Text';
 import Block from './Block';
@@ -8,6 +8,7 @@ import { CandidateCardClickedPart } from '../Manage/components/ModalItemManageCa
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import Card from './Card';
+import ImageComponent from './ImageComponent';
 
 interface Props {
   id: string;
@@ -33,15 +34,7 @@ const candidateCard: FC<Props> = ({
     <Card shadow>
       <Block flex={true} row>
         <View style={{ flex: 1 }}>
-          <Image
-            source={
-              avatar
-                ? { uri: avatar }
-                : require('../../assets/images/defaultUserImage.png')
-            }
-            resizeMode="contain"
-            style={styles.image}
-          />
+          <ImageComponent image={avatar} style={styles.image} />
         </View>
         <View style={{ flex: 3 }}>
           <Block row space={'around'} center>

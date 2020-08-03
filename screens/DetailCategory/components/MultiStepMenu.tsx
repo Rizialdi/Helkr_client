@@ -1,14 +1,11 @@
-import React, { Component, ComponentType, ComponentClass } from 'react';
+import React, { Component, ComponentClass } from 'react';
 import {
-  ChildProps,
   ExecutionResult,
   graphql,
   MutationFunctionOptions,
-  ChildDataProps,
-  DataProps,
   DataValue
 } from 'react-apollo';
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 
 import MenuItem from './MenuItem';
 import {

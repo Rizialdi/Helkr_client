@@ -14,6 +14,7 @@ import StackedToBottom from './StackedToBottom';
 import Badge from './Badge';
 import Card from './Card';
 import Input from './Input';
+import ImageComponent from './ImageComponent';
 
 export {
   Layout,
@@ -32,5 +33,6 @@ export {
   Calendar,
   TextAreaInput,
   OfferingDetailsOnModal,
-  StackedToBottom
+  StackedToBottom,
+  ImageComponent
 };

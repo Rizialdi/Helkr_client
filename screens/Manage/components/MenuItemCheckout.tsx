@@ -5,7 +5,6 @@ import {
   View,
   Button,
   StyleSheet,
-  TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
@@ -25,7 +24,6 @@ interface Props {
   completedOrIssue: (item: CompletedOrIssue) => void;
 }
 const MenuItemCheckout: SFC<Props> = ({ children, ...props }) => {
-  const width = (props.currentIndex / props.totalChildren) * 100;
   const [selected, setSelected] = useState<boolean>(false);
 
   return (

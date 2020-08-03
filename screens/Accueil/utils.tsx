@@ -42,9 +42,15 @@ type screenToRedirect =
   | 'Mes Offres'
   | 'Offres'
   | 'Discussions';
+
+export interface Payload {
+  screenToRedirect: screenToRedirect;
+  offeringId?: string;
+}
+
 export const navigationOnNotification = (
   navigation: StackNavigationInterface<BottomStackParamList, 'Accueil'>,
-  payload: { screenToRedirect: screenToRedirect; offeringId: string }
+  payload: Payload
 ) => {
   const tab =
     payload.screenToRedirect === 'Postulées' ||

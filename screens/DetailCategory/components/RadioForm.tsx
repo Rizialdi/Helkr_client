@@ -1,5 +1,5 @@
-import React, { SFC } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import React, { SFC, useState, useEffect } from 'react';
+import { View } from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -7,9 +7,10 @@ import RadioForm, {
   //@ts-ignore
 } from 'react-native-simple-radio-button';
 
-import { Text } from '../../sharedComponents';
+import { Text, TextAreaInput } from '../../sharedComponents';
 
 import { useStoreState } from '../../../models';
+import Block from '../../sharedComponents/Block';
 
 type valuesInterface = {
   name: string;
@@ -41,10 +42,16 @@ const CustomRadioForm: SFC<Props> = ({
     : onSelected && onSelected(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
+
+  const [description, setDescription] = useState<string>('');
+
+  useEffect(() => {
+    onChange && onChange('offeringDescription', description);
+  }, [description]);
   return (
     <View style={{ marginTop: 20 }}>
-      <Text center title light transform="capitalize">
-        {!isLast ? name : 'Ajouter une description ?'}
+      <Text center bold>
+        {!isLast ? name : 'Ajouter une description.'}
       </Text>
       <View style={{ marginTop: 20 }}>
         {!isLast ? (
@@ -106,42 +113,18 @@ const CustomRadioForm: SFC<Props> = ({
             ))}
           </RadioForm>
         ) : (
-          <>
-            <TextInput
-              placeholder={'Ajouter un descriptif ?'}
-              style={[styles.text, styles.subText2]}
-              maxLength={200}
-              multiline={true}
-              value={
-                values?.offeringDescription
-                  ? JSON.stringify(values?.offeringDescription)
-                  : ''
-              }
-              onChangeText={text =>
-                onChange && onChange('offeringDescription', text)
-              }
+          <Block margin={[0, 15]}>
+            <TextAreaInput
+              min={20}
+              max={200}
+              parentCallback={setDescription}
+              placeholder={'Decrivez votre mission içi.'}
             />
-          </>
+          </Block>
         )}
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  text: {
-    fontFamily: 'HelveticaNeue',
-    color: '#52575D'
-  },
-
-  subText2: {
-    fontSize: 14,
-    color: '#AEB5BC',
-    fontWeight: '500',
-    textAlign: 'justify',
-    paddingHorizontal: 20,
-    marginTop: 10
-  }
-});
 
 export default CustomRadioForm;

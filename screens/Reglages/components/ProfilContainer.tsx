@@ -2,20 +2,13 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import Icon from 'react-native-vector-icons/Octicons';
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
 import { getPermissionAsync } from '../../../utils';
-import { Text } from '../../sharedComponents';
+import { Text, ImageComponent } from '../../sharedComponents';
 
 interface Props {
-  image: ImageSourcePropType;
+  image: string;
   username: string;
   address?: string | null;
   verified?: boolean;
@@ -74,14 +67,13 @@ export default ({
         <TouchableOpacity
           style={styles.profileImage}
           onPress={() => pickImage()}>
-          <Image
-            source={
+          <ImageComponent
+            image={
               !imagePicked?.cancelled && imagePicked?.uri
-                ? { uri: imagePicked?.uri }
+                ? imagePicked.uri
                 : image
             }
             style={styles.image}
-            resizeMode="cover"
           />
         </TouchableOpacity>
         {verified && (

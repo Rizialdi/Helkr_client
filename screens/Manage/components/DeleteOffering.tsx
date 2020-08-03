@@ -42,7 +42,6 @@ const UpdateDescription: FC<Props> = ({
     deleteOfferingMutation,
     { loading, error }
   ] = useDeleteOfferingMutation();
-  const [isOfferingDeleted, setIsOfferingDeleted] = useState<boolean>(false);
   const objValue = [
     {
       label: 'Je souhaite supprimer mon annonce',
@@ -77,16 +76,13 @@ const UpdateDescription: FC<Props> = ({
       update: updateCache
     }).then(data => {
       if (error) {
-        setIsOfferingDeleted(false);
         closeModal();
         //TODO toast change unsuccessful
       }
       if (data.data?.deleteOffering) {
-        setIsOfferingDeleted(true);
         setOpenGlobalModal && setOpenGlobalModal(false);
         //TODO toast change successful
       } else {
-        setIsOfferingDeleted(false);
         closeModal();
         //TODO toast change unsuccessful
       }

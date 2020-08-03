@@ -194,13 +194,7 @@ export default function Profile({
           </TouchableOpacity>
           <TouchableOpacity>
             <ProfilContainer
-              image={
-                image
-                  ? { uri: image }
-                  : avatar
-                  ? { uri: avatar }
-                  : require('../../assets/images/defaultUserImage.png')
-              }
+              image={image ? image : avatar ? avatar : ''}
               username={
                 prenom.replace(/^./, prenom[0].toUpperCase()) +
                 ' ' +

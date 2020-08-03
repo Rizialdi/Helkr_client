@@ -94,11 +94,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
           </TouchableOpacity>
         )}
         <ProfilContainer
-          image={
-            avatar
-              ? { uri: avatar }
-              : require('../../assets/images/defaultUserImage.png')
-          }
+          image={avatar}
           username={makePseudoName(nom, prenom)}
           address={address}
           verified={verified}

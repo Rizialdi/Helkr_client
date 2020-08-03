@@ -4,13 +4,14 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '../../../constants';
 import { Text } from '../../sharedComponents';
 import { formatDateAvis } from '../../../utils';
+import ImageComponent from '../../sharedComponents/ImageComponent';
 
 interface Mark {
   scorer: string;
   score: number;
   comment: string;
   createdAt: string;
-  avatar: string | null | undefined;
+  avatar: string | undefined;
 }
 const mark: string[] = [
   'A éviter',
@@ -31,15 +32,8 @@ export default ({
   <TouchableOpacity style={styles.container}>
     <View style={styles.mainLine}>
       <Text style={{ fontSize: 16, fontWeight: '500' }}>{scorer}</Text>
-      <Image
-        source={
-          avatar
-            ? { uri: avatar }
-            : require('../../../assets/images/defaultUserImage.png')
-        }
-        style={styles.image}
-        resizeMode="cover"
-      />
+
+      <ImageComponent image={avatar} style={styles.image} />
     </View>
 
     <View style={{ marginHorizontal: 30 }}>

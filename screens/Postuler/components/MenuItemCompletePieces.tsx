@@ -14,7 +14,6 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
   children,
   ...props
 }) => {
-  const width = (props.currentIndex / props.totalChildren) * 100;
   const [selected, setSelected] = useState<boolean>(false);
 
   return (

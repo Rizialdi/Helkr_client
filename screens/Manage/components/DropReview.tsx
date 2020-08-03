@@ -49,6 +49,7 @@ const DropReview: FC<Props> = ({ nextStep }) => {
           <TextAreaInput
             min={20}
             max={150}
+            parentCallback={setInputValue}
             placeholder={'Entrez votre avis sur la prestation'}
           />
           <Block flex={false} margin={[20, 20]}>

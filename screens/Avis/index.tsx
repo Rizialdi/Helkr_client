@@ -14,27 +14,22 @@ import { Text } from '../sharedComponents';
 import { ListCard } from './components';
 import { useGetAvisUserQuery } from '../../graphql';
 import { makePseudoName } from '../../utils';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
+import { MainStackParamList } from '../../navigation/Routes';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 const { width } = Dimensions.get('window');
 
 interface Props {
-  navigation: StackNavigationInterface<MainStackParamList, 'Avis'>;
-  // TODO Give Proper type
-  route?: StackNavigationInterface<MainStackParamList, 'Avis'>;
+  navigation?: StackNavigationProp<MainStackParamList, 'Avis'>;
+  route?: RouteProp<MainStackParamList, 'Avis'>;
   candidateModalId?: string;
 }
 
-export default ({
-  navigation: { navigation },
-  candidateModalId,
-  route
-}: Props) => {
+export default ({ navigation, candidateModalId, route }: Props) => {
+  const Navigation = navigation ? navigation : '';
   const { user } = useStoreState(state => state.User);
-  const routeParams = route?.route.params;
+  const routeParams = route && route.params ? route.params : '';
   const userId = candidateModalId
     ? candidateModalId
     : routeParams && routeParams.id
@@ -79,9 +74,11 @@ export default ({
                     onPress={() =>
                       candidateModalId
                         ? null
-                        : navigation.navigate('Profile', {
+                        : Navigation
+                        ? Navigation.navigate('Profile', {
                             id: id
                           })
+                        : null
                     }>
                     <ListCard
                       avatar={avatar}

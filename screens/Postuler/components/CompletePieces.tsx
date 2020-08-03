@@ -221,7 +221,7 @@ const SecondScreen = ({ ...props }) => {
         }
       })
       .catch(err => {
-        throw new Error(`${error}`);
+        throw new Error(`${error}, ${err}`);
       });
   };
 

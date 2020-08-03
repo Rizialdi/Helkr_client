@@ -240,7 +240,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
               onBackButtonPress={() => setIsUpdateOnUser(false)}
               onBackdropPress={() => setIsUpdateOnUser(false)}
               onSwipeComplete={() => setIsUpdateOnUser(false)}>
-              <View style={styles.modal}>
+              <View style={[styles.modal, { height: height * 0.5 }]}>
                 <Text center bold>
                   Dites nous tout
                 </Text>

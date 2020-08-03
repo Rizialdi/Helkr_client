@@ -1,17 +1,11 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Octicons';
-import {
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { Text } from '../../sharedComponents';
+import { Text, ImageComponent } from '../../sharedComponents';
 
 interface Props {
-  image?: ImageSourcePropType;
+  image?: string | null;
   username: string;
   address?: string | null;
   verified?: boolean;
@@ -28,12 +22,7 @@ export default ({
   <>
     <View style={{ alignSelf: 'center' }}>
       <TouchableOpacity style={styles.profileImage}>
-        <Image
-          source={
-            image || require('../../../assets/images/defaultUserImage.png')
-          }
-          style={styles.image}
-          resizeMode="cover"></Image>
+        <ImageComponent {...{ image }} style={styles.image} />
       </TouchableOpacity>
       {verified && (
         <View style={styles.dm}>

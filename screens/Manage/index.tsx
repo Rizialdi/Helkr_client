@@ -5,13 +5,19 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import { Block, Layout, Text } from '../sharedComponents';
 import { ManageOffering, ManageCandidates } from './components';
+import {
+  StackNavigationInterface,
+  BottomStackParamList
+} from '../../navigation/Routes';
 
 // import { Offres, Postulees } from './components';
 
 //TODO implement infinite scroll when Issue resolved
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
 
-const Manage = ({ navigation, route: { params } }) => {
+const Manage = ({
+  route: { params }
+}: StackNavigationInterface<BottomStackParamList, 'Gerer'>) => {
   const tabs = ['Mes Offres', 'Candidats'];
   const [activeTab, setActiveTab] = useState<string>('');
   const { themeColors } = useStoreState(state => state.Preferences);
@@ -21,9 +27,9 @@ const Manage = ({ navigation, route: { params } }) => {
   }, []);
 
   useEffect(() => {
-    params.tab === 'tabOne'
+    params && params.tab === 'tabOne'
       ? setActiveTab('Mes Offres')
-      : params.tab === 'tabTwo'
+      : params && params.tab === 'tabTwo'
       ? setActiveTab('Candidats')
       : null;
   }, [params]);

@@ -7,7 +7,7 @@ import {
   Dimensions
 } from 'react-native';
 
-import { Text, Block } from '../../sharedComponents';
+import { Text, Block, ImageComponent } from '../../sharedComponents';
 import { makePseudoName } from '../../../utils';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useStoreState } from '../../../models';
@@ -21,7 +21,7 @@ interface author {
   nom: string;
   prenom: string;
   numero: string;
-  avatar: string | null;
+  avatar?: string;
   address: string | null;
 }
 export default ({ id, nom, prenom, avatar, numero, address }: author) => {
@@ -36,15 +36,7 @@ export default ({ id, nom, prenom, avatar, numero, address }: author) => {
       <TouchableOpacity onPress={() => setClicked(true)}>
         <Block flex row>
           <Block center>
-            <Image
-              source={
-                avatar
-                  ? { uri: avatar }
-                  : require('../../../assets/images/defaultUserImage.png')
-              }
-              style={styles.image}
-              resizeMode="contain"
-            />
+            <ImageComponent image={avatar} style={styles.image} />
           </Block>
           <View style={{ flex: 3 }}>
             <Block row space={'between'} center>

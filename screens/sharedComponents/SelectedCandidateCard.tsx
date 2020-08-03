@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import Card from './Card';
+import ImageComponent from './ImageComponent';
 
 interface Props {
   id: string;
@@ -22,15 +23,7 @@ const candidateCard: FC<Props> = ({ professional, average, avatar = null }) => {
     <Card shadow>
       <Block flex={false} row>
         <View style={{ flex: 1 }}>
-          <Image
-            source={
-              avatar
-                ? { uri: avatar }
-                : require('../../assets/images/defaultUserImage.png')
-            }
-            resizeMode="contain"
-            style={styles.image}
-          />
+          <ImageComponent image={avatar} style={styles.image} />
         </View>
         <View style={{ flex: 3 }}>
           <Block row space={'around'} center>

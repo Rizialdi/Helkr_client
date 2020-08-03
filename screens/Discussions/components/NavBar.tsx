@@ -1,9 +1,10 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Text, Platform, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { FC } from 'react';
-import { Block } from '../../sharedComponents';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { Block, Text } from '../../sharedComponents';
+import { AntDesign } from '@expo/vector-icons';
+
 interface Props {
   recipient: string;
   toOpen: Dispatch<SetStateAction<boolean>>;
@@ -15,14 +16,14 @@ const NavBarCustom: FC<Props> = ({ recipient, toOpen }) => {
   }
 
   return (
-    <Block flex={false} style={styles.header}>
-      <Block left style={{ flex: 2 }}>
+    <Block flex={false} center row style={styles.header}>
+      <Block left style={{ flex: 1 }} center>
         <TouchableOpacity onPress={() => toOpen(false)}>
-          <Icon name="left" size={24} />
+          <AntDesign name="left" size={26} />
         </TouchableOpacity>
       </Block>
-      <Block style={{ flex: 8 }}>
-        <Text style={styles.recipient}> {recipient} </Text>
+      <Block style={{ flex: 9 }} padding={[0, 20]}>
+        <Text size={22}> {recipient} </Text>
       </Block>
     </Block>
   );
@@ -32,15 +33,9 @@ export default NavBarCustom;
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 60,
+    height: 50,
     paddingHorizontal: 14,
     borderBottomColor: 'gray',
-    borderBottomWidth: 0.5
-  },
-  recipient: {
-    fontSize: 18,
-    marginVertical: 14
+    borderBottomWidth: StyleSheet.hairlineWidth
   }
 });
