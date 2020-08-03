@@ -37,6 +37,7 @@ const UpdateDescription: FC<Props> = ({
   );
 
   const { themeColors } = useStoreState(state => state.Preferences);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const [
     deleteOfferingMutation,
@@ -150,6 +151,7 @@ const UpdateDescription: FC<Props> = ({
 
           <Button
             accent={selectedConfirmation}
+            disabled={!netWorkStatus}
             onPress={() => {
               selectedConfirmation ? removeOffering() : null;
             }}>

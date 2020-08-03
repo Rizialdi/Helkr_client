@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { makePseudoName } from '../../utils';
-import { Text } from '../sharedComponents';
+import { Text, Layout } from '../sharedComponents';
 import {
   Description,
   ProfilContainer,
@@ -73,63 +73,59 @@ export default function Profile({ navigation, route: { params } }: Props) {
   });
 
   return (
-    <SafeAreaView style={styles.container}>
-      {loading && (
-        <View
-          style={{
-            zIndex: 99,
-            position: 'absolute',
-            top: '50%',
-            marginHorizontal: '50%'
-          }}>
-          <ActivityIndicator size="large" color="black" />
-        </View>
-      )}
-      <ScrollView showsVerticalScrollIndicator={true}>
-        {params && params.id ? null : (
-          <TouchableOpacity
-            style={styles.titleBar}
-            onPress={() => navigation.navigate('Reglages')}>
-            <Icon name="gear" size={24} color="#52575D" />
-          </TouchableOpacity>
+    <Layout>
+      <>
+        {loading && (
+          <View
+            style={{
+              zIndex: 99,
+              position: 'absolute',
+              top: '50%',
+              marginHorizontal: '50%'
+            }}>
+            <ActivityIndicator size="large" color="black" />
+          </View>
         )}
-        <ProfilContainer
-          image={avatar}
-          username={makePseudoName(nom, prenom)}
-          address={address}
-          verified={verified}
-          pro={professional}
-        />
-        <StatsContainer id={id} navigation={navigation} />
-        <View style={styles.delimiter}></View>
-        <Description description={description} />
-        <View style={styles.delimiter}></View>
-        <View>
-          <Text
-            style={[
-              styles.text,
-              {
-                fontWeight: '300',
-                fontSize: 24,
-                paddingLeft: 20
-              }
-            ]}>
-            Tags
-          </Text>
-          {tags && tags?.length > 0 && <Tag tags={tags} />}
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={true}>
+          {params && params.id ? null : (
+            <TouchableOpacity
+              style={styles.titleBar}
+              onPress={() => navigation.navigate('Reglages')}>
+              <Icon name="gear" size={24} color="#52575D" />
+            </TouchableOpacity>
+          )}
+          <ProfilContainer
+            image={avatar}
+            username={makePseudoName(nom, prenom)}
+            address={address}
+            verified={verified}
+            pro={professional}
+          />
+          <StatsContainer id={id} navigation={navigation} />
+          <View style={styles.delimiter}></View>
+          <Description description={description} />
+          <View style={styles.delimiter}></View>
+          <View>
+            <Text
+              style={[
+                styles.text,
+                {
+                  fontWeight: '300',
+                  fontSize: 24,
+                  paddingLeft: 20
+                }
+              ]}>
+              Tags
+            </Text>
+            {tags && tags?.length > 0 && <Tag tags={tags} />}
+          </View>
+        </ScrollView>
+      </>
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#FFF'
-  },
   text: {
     fontFamily: 'HelveticaNeue',
     color: '#52575D'

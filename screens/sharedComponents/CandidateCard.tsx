@@ -30,6 +30,7 @@ const candidateCard: FC<Props> = ({
   setSelectedId
 }) => {
   const { themeColors } = useStoreState(store => store.Preferences);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   return (
     <Card shadow>
       <Block flex={true} row>
@@ -41,6 +42,7 @@ const candidateCard: FC<Props> = ({
             <Text semibold>{average} / 5</Text>
             <Text semibold>{professional ? 'Professionnel' : 'Amateur'}</Text>
             <TouchableOpacity
+              disabled={!netWorkStatus}
               onPress={() => {
                 parentCallback('icon'), setSelectedId(id);
               }}

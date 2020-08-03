@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-
-import Text from './Text';
-import { useGetUserStatsQuery } from '../../graphql';
 import Icon from 'react-native-vector-icons/AntDesign';
 import AvgContainer from './AvgContainer';
 import { MainStackParamList } from '../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import Text from './Text';
+import { useGetUserStatsQuery } from '../../graphql';
+
+import { useStoreState } from '../../models';
 
 interface Props {
   id: string;
@@ -29,6 +31,8 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
     fetchPolicy: 'cache-and-network',
     pollInterval: 1000 * 3600 * 24
   });
+
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
     <>
@@ -59,7 +63,7 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
           <View style={styles.delimiter}></View>
           <TouchableOpacity
             style={styles.lineStars}
-            disabled={done === 0}
+            disabled={done === 0 || !netWorkStatus}
             onPress={() =>
               navigation &&
               navigation.navigate('Avis', {

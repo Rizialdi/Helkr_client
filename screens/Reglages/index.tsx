@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import { ImagePicker } from 'expo';
 import { ReactNativeFile } from 'apollo-upload-client';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { theme } from '../../constants';
 import { Text } from '../sharedComponents';
 import { Description, ProfilContainer, Tag } from './components';
-import { useStoreActions } from '../../models';
+import { useStoreActions, useStoreState } from '../../models';
 import { getFileName } from '../../utils';
+import Layout from '../sharedComponents/Layout';
 import {
   useAddressUpdateMutation,
   useAvatarUploadMutation,
@@ -45,6 +45,7 @@ export default function Profile({
   const [addressMutation] = useAddressUpdateMutation();
   const [tagsMutation] = useTagsUpdateMutation();
   const { setTags } = useStoreActions(actions => actions.Offering);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   useMemo(() => {
     (async () => {
@@ -176,12 +177,12 @@ export default function Profile({
   const color =
     isModified && !disableSaveButton ? theme.colors.primary : theme.colors.gray;
   return (
-    <SafeAreaView style={styles.container}>
+    <Layout>
       <KeyboardAvoidingView enabled={true} behavior="position">
         <ScrollView showsVerticalScrollIndicator={false}>
           <TouchableOpacity
             style={styles.titleBar}
-            disabled={disableSaveButton}
+            disabled={disableSaveButton || !netWorkStatus}
             onPress={() => isModified && save()}>
             <Text
               style={{
@@ -233,7 +234,7 @@ export default function Profile({
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </Layout>
   );
 }
 

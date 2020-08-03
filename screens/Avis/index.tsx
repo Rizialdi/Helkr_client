@@ -29,6 +29,7 @@ interface Props {
 export default ({ navigation, candidateModalId, route }: Props) => {
   const Navigation = navigation ? navigation : '';
   const { user } = useStoreState(state => state.User);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const routeParams = route && route.params ? route.params : '';
   const userId = candidateModalId
     ? candidateModalId
@@ -71,6 +72,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
                   <TouchableOpacity
                     style={{ width: width }}
                     key={idAvis}
+                    disabled={!netWorkStatus}
                     onPress={() =>
                       candidateModalId
                         ? null

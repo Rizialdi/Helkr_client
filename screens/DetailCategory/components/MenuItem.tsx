@@ -36,6 +36,7 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
   const [selected, setSelected] = useState<boolean>(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const onSubmitForm = () => {
     props
@@ -103,7 +104,8 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
           }}>
           <StackedToBottom margin={[20, 20]}>
             <Button
-              secondary={selected}
+              disabled={!netWorkStatus}
+              secondary={netWorkStatus && selected}
               onPress={() => {
                 selected && onSubmitForm();
               }}>

@@ -40,6 +40,7 @@ import {
 } from '../../../graphql';
 import { DataProxy } from 'apollo-cache';
 import EventDay from '../../sharedComponents/EventDay';
+import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 
@@ -70,6 +71,8 @@ const ModalItemManageCandidates: FC<Props> = props => {
   const [isValidationCodeCorrect, setIsValidationCodeCorrect] = useState<
     boolean
   >(false);
+
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const onModalClose = () => {
     setDate({});
@@ -323,7 +326,10 @@ const ModalItemManageCandidates: FC<Props> = props => {
                     <Calendar parentCallback={setDate} />
                     {date && Object.keys(date).length === 3 && (
                       <Block margin={[20, 20]}>
-                        <Button secondary onPress={() => onSubmit()}>
+                        <Button
+                          secondary
+                          disabled={!netWorkStatus}
+                          onPress={() => onSubmit()}>
                           <Text bold center>
                             Je chosis ce candidat
                           </Text>
@@ -332,7 +338,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
                     )}
                   </>
                 ) : (
-                  <Avis candidateModalId={selectedId} />
+                  netWorkStatus && <Avis candidateModalId={selectedId} />
                 )}
               </View>
             </Modal>

@@ -5,12 +5,13 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  AsyncStorage
 } from 'react-native';
 
 import * as Notifications from 'expo-notifications';
 
-import { Block } from '../sharedComponents';
+import { Block, Layout } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
 import { BottomStackParamList } from '../../navigation/Routes';
@@ -25,7 +26,6 @@ import {
 
 import { useNotificationsTokenUpdateMutation } from '../../graphql';
 import { firstAppOpening, Payload } from './utils';
-import { AsyncStorage } from 'react-native';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -74,10 +74,13 @@ const Accueil = (
   }, [navigation]);
 
   return (
-    <Block style={{ backgroundColor: '#FFFFFF' }}>
+    <Layout>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ paddingVertical: theme.sizes.base * 2 }}>
+        style={{
+          paddingVertical: theme.sizes.base * 2,
+          backgroundColor: 'white'
+        }}>
         {username && <UserWelcome {...{ username }} />}
         <View style={styles.container}>
           <Block style={styles.tabBar}>
@@ -111,7 +114,7 @@ const Accueil = (
           <Categories {...{ categories, inputText, navigation }} />
         )}
       </ScrollView>
-    </Block>
+    </Layout>
   );
 };
 

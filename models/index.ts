@@ -9,10 +9,12 @@ import JobAuthorization, { JobAuthorizationModel } from './JobAuthorization';
 import SendVerifPiecesReferenceIds, {
   SendVerifPiecesReferenceIdsInterfaceModel
 } from './SendVerifPiecesReferenceIds';
+import NetWorkStatus, { NetWorkStatusModel } from './NetWorkStatus';
 
 interface StoreModel {
   SendVerifPiecesReferenceIds: SendVerifPiecesReferenceIdsInterfaceModel;
   JobAuthorization: JobAuthorizationModel;
+  NetWorkStatus: NetWorkStatusModel;
   ChatMessages: ChatMessagesModel;
   Preferences: PreferencesModel;
   Offering: OfferingModel;
@@ -22,6 +24,7 @@ interface StoreModel {
 const model: StoreModel = {
   SendVerifPiecesReferenceIds,
   JobAuthorization,
+  NetWorkStatus,
   ChatMessages,
   Preferences,
   Offering,

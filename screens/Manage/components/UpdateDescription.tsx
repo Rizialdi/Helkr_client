@@ -12,6 +12,7 @@ import {
   Dimensions
 } from 'react-native';
 import { DataProxy } from 'apollo-cache';
+import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 interface Props {
@@ -21,7 +22,7 @@ interface Props {
 }
 const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
   const [text, setTextValue] = useState<string>('');
-
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   useEffect(() => {
     setTextValue(previousValue as string);
   }, []);
@@ -90,6 +91,7 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
           />
 
           <Button
+            disabled={!netWorkStatus}
             secondary={previousValue != text}
             onPress={() => {
               previousValue === text ? null : updateOffering();

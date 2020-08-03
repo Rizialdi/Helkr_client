@@ -20,6 +20,7 @@ import { useOfferingByIdQuery } from '../../../graphql';
 import { formatDateAvis } from '../../../utils';
 import UpdateDescription from './UpdateDescription';
 import DeleteOffering from './DeleteOffering';
+import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 
@@ -34,6 +35,8 @@ const ModalItemManageOfferings: FC<Props> = props => {
   const { called, loading, data } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+
   const onModalClose = () => {
     setSelectedButton('');
   };
@@ -75,13 +78,19 @@ const ModalItemManageOfferings: FC<Props> = props => {
       </ScrollView>
       <Block margin={[-20, 20]}>
         <StackedToBottom>
-          <Button secondary onPress={() => setSelectedButton('modifier')}>
+          <Button
+            disabled={!netWorkStatus}
+            secondary
+            onPress={() => setSelectedButton('modifier')}>
             <Text bold center>
               Modifier
             </Text>
           </Button>
 
-          <Button accent onPress={() => setSelectedButton('supprimer')}>
+          <Button
+            disabled={!netWorkStatus}
+            accent
+            onPress={() => setSelectedButton('supprimer')}>
             <Text bold center>
               Supprimer
             </Text>

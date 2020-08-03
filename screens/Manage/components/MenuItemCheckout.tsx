@@ -8,6 +8,7 @@ import {
   Dimensions,
   KeyboardAvoidingView
 } from 'react-native';
+import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
 }
 const MenuItemCheckout: SFC<Props> = ({ children, ...props }) => {
   const [selected, setSelected] = useState<boolean>(false);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
     <KeyboardAvoidingView behavior={'padding'}>
@@ -44,7 +46,7 @@ const MenuItemCheckout: SFC<Props> = ({ children, ...props }) => {
           }}>
           <Button
             title="Soumettre"
-            disabled={!selected}
+            disabled={!selected || !netWorkStatus}
             onPress={() => {
               props.onSubmit();
             }}

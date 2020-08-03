@@ -2,6 +2,7 @@ import React, { SFC, useState } from 'react';
 
 import { View, Button, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
+import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
@@ -9,6 +10,7 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
   ...props
 }) => {
   const [selected, setSelected] = useState<boolean>(false);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
     <KeyboardAvoidingView behavior={'padding'}>
@@ -29,7 +31,7 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
           }}>
           <Button
             title="Soumettre"
-            disabled={!selected}
+            disabled={!selected || !netWorkStatus}
             onPress={() => {
               props.onSubmit();
             }}

@@ -16,6 +16,7 @@ interface Props {
   gray?: boolean;
   vertical?: boolean;
   onPress?: () => void;
+  disabled?: boolean;
 }
 
 const Button: SFC<Props> = ({

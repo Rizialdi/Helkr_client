@@ -1,4 +1,4 @@
-import React, { Component, SFC } from 'react';
+import React, { SFC } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useStoreState } from '../models';

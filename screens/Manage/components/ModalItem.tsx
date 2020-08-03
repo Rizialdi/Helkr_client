@@ -8,6 +8,8 @@ import {
   useCandidateToOfferingMutation
 } from '../../../graphql';
 import { formatDateAvis } from '../../../utils';
+import { useStoreState } from '../../../models';
+
 interface Props {
   id?: string;
 }
@@ -16,6 +18,8 @@ const ModalItem: FC<Props> = props => {
   const { called, loading, data } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
+
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const client = useApolloClient();
   const [applyTo] = useCandidateToOfferingMutation();
@@ -40,6 +44,7 @@ const ModalItem: FC<Props> = props => {
           <Block margin={[20, 20]}>
             <Button
               secondary
+              disabled={!netWorkStatus}
               onPress={() =>
                 applyTo({
                   variables: { id: data?.offeringById?.id as string }

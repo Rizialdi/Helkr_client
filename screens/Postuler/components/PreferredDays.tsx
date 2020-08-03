@@ -9,7 +9,7 @@ import {
   Text,
   StackedToBottom
 } from '../../sharedComponents';
-import { getDayAndDate } from '../../../utils';
+import { DataProxy } from 'apollo-cache';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {
   useChooseEventDayMutation,
@@ -18,8 +18,8 @@ import {
   IsCandidateToDocument,
   IsCandidateToQuery
 } from '../../../graphql';
-import { DataProxy } from 'apollo-cache';
-
+import { useStoreState } from '../../../models';
+import { getDayAndDate } from '../../../utils';
 const { height } = Dimensions.get('screen');
 
 interface Props {
@@ -28,6 +28,8 @@ interface Props {
 }
 const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
   const [clickedDayIdx, setClickedDayIdx] = useState<number | null>(null);
+
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const [choosEventDay, { loading, error }] = useChooseEventDayMutation();
 
@@ -147,7 +149,10 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
             )}
           </View>
           <StackedToBottom margin={[0, 20]}>
-            <Button secondary onPress={() => onSubmit()}>
+            <Button
+              secondary
+              disabled={!netWorkStatus}
+              onPress={() => onSubmit()}>
               {loading ? (
                 <ActivityIndicator size={'small'} />
               ) : (

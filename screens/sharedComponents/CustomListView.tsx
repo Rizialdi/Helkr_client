@@ -37,6 +37,7 @@ const CustomListView: SFC<Props> = ({
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const openToDescription = (id: string, status: string = '') => {
     setSelectedOffering(id);
     setOpenModal(true);
@@ -63,6 +64,7 @@ const CustomListView: SFC<Props> = ({
           const { id } = item;
           return (
             <TouchableOpacity
+              disabled={!netWorkStatus}
               key={index}
               onPress={() =>
                 (item.status && item.status === 'refusée') ||

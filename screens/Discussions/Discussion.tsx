@@ -34,6 +34,7 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
 
   const { user } = useStoreState(state => state.User);
   const { themeColors } = useStoreState(state => state.Preferences);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const { lastMessageReadIds } = useStoreState(state => state.ChatMessages);
   const { setLastMessageReadIds } = useStoreActions(
@@ -94,11 +95,12 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
     ];
   };
 
-  const renderSend = (props: Send['props']) => (
-    <Send {...props} containerStyle={styles.sendBox}>
-      <Feather size={25} color={themeColors.primary} name={'send'} />
-    </Send>
-  );
+  const renderSend = (props: Send['props']) =>
+    netWorkStatus && (
+      <Send {...props} containerStyle={styles.sendBox}>
+        <Feather size={25} color={themeColors.primary} name={'send'} />
+      </Send>
+    );
 
   return (
     <>

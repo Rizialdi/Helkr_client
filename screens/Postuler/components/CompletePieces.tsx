@@ -17,6 +17,7 @@ import { ListOfPieces } from './ModalItemApplyToOffering';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { useAddVerificationpiecesMutation } from '../../../graphql';
 import { Maybe } from '../../../graphql/helpkr-types';
+import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 
@@ -154,6 +155,7 @@ const SecondScreen = ({ ...props }) => {
   const documentList = props.listOfPieces as ListOfPieces;
   const referenceId = props.referenceId as string;
   const [imagesPicked, setImagesPicked] = useState<ImagesPicked>();
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const [
     addPiecesMutation,
     { loading, error }
@@ -260,6 +262,7 @@ const SecondScreen = ({ ...props }) => {
       <Block flex={false} margin={[0, 20]}>
         <StackedToBottom>
           <Button
+            disabled={!netWorkStatus}
             secondary={
               imagesPicked &&
               documentList &&

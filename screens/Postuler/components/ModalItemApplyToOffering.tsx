@@ -54,7 +54,7 @@ const ModalItem: FC<Props> = props => {
   const [applyTo] = useCandidateToOfferingMutation();
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
-
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const isAuthorizedToApply =
     data?.offeringById.referenceId &&
     jobAuthorizations.includes(data?.offeringById.referenceId);
@@ -137,6 +137,7 @@ const ModalItem: FC<Props> = props => {
         <StackedToBottom>
           <Button
             secondary
+            disabled={!netWorkStatus}
             onPress={() =>
               isAuthorizedToApply ? applyToOffering() : setModalOpen(true)
             }>

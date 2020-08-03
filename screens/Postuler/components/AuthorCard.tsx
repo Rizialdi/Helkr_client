@@ -8,7 +8,6 @@ import { useStoreState } from '../../../models';
 import { Linking } from 'expo';
 import Modal from 'react-native-modal';
 import { StatsContainer } from '../../sharedComponents';
-
 const { height } = Dimensions.get('screen');
 interface author {
   id: string;
@@ -20,6 +19,7 @@ interface author {
 }
 export default ({ id, nom, prenom, avatar, numero, address }: author) => {
   const { themeColors } = useStoreState(store => store.Preferences);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const [clicked, setClicked] = useState(false);
   const _pressCall = (numero: string) => {
     const url = `tel://${numero}`;
@@ -66,9 +66,11 @@ export default ({ id, nom, prenom, avatar, numero, address }: author) => {
         onBackdropPress={() => setClicked(false)}
         onSwipeComplete={() => setClicked(false)}>
         <>
-          <View style={styles.modal}>
-            <StatsContainer id={id} offeringAuthorStars />
-          </View>
+          {netWorkStatus && (
+            <View style={styles.modal}>
+              <StatsContainer id={id} offeringAuthorStars />
+            </View>
+          )}
         </>
       </Modal>
     </>

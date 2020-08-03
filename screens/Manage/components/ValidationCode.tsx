@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Block, Button, Text } from '../../sharedComponents';
 import { TextInput, Keyboard } from 'react-native';
-
+import { useStoreState } from '../../../models';
 interface Props {
   currentIndex?: number;
   totalChildren?: number;
@@ -17,6 +17,8 @@ const CompletedOrIssueComponent: FC<Props> = ({
   setIsValidationCodeCorrect
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+
   return (
     <Block flex={false} margin={[20, 20]}>
       <TextInput
@@ -30,6 +32,7 @@ const CompletedOrIssueComponent: FC<Props> = ({
       />
       <Button
         secondary
+        disabled={!netWorkStatus}
         onPress={() => {
           setIsValidationCodeCorrect(true);
           inputValue && true && nextStep && nextStep();
