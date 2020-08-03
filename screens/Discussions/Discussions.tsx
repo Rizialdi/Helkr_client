@@ -14,7 +14,7 @@ import {
   AllChatsAndMessagesQuery
 } from '../../graphql';
 import { useStoreState } from '../../models';
-import { makePseudoName, sortChatMessages } from '../../utils';
+import { makePseudoName, sortChatMessages, formatDate } from '../../utils';
 import {
   Message,
   ChatFragment,
@@ -26,13 +26,13 @@ import {
   Utilisateur
 } from '../../graphql/helpkr-types';
 import Discussion from './Discussion';
-
 const { width } = Dimensions.get('screen');
-
+const HEIGHT = 100;
 type Chat = { __typename?: 'channel' } & ChatFragment;
 interface ItemProps {
   name: string;
-  lastMessage: string;
+  lastMessageText: string;
+  lastMessageDate: string;
   unReadMessageCount: number | null;
   channel: Chat;
   image: string;
@@ -48,7 +48,8 @@ export type SendAMessage = (
 const Item = ({
   name,
   channel,
-  lastMessage,
+  lastMessageText,
+  lastMessageDate,
   unReadMessageCount,
   image,
   sendAMessage
@@ -57,16 +58,20 @@ const Item = ({
     false
   );
   const [dataToChild, setDataToChild] = useState<Chat>();
+  const { themeColors } = useStoreState(state => state.Preferences);
 
   useEffect(() => {
     setDataToChild(channel);
   }, [channel]);
+
+  const colorCondition = !!(unReadMessageCount && unReadMessageCount > 0);
+
   return (
     <>
       <TouchableOpacity
-        style={styles.item}
+        style={styles.item2}
         onPress={() => setOpenDiscussionScreen(true)}>
-        <View style={{ flex: 0.25 }}>
+        <View style={{ flex: 0.22 }}>
           <TouchableOpacity
             style={{
               width: 70,
@@ -78,12 +83,51 @@ const Item = ({
             <ImageComponent image={image} />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 0.75, alignSelf: 'flex-start' }}>
-          <Text style={styles.name}>{name}</Text>
-          <Text style={styles.message}>{lastMessage}</Text>
-          {unReadMessageCount && unReadMessageCount > 0 ? (
-            <Text>{JSON.stringify(unReadMessageCount)}</Text>
-          ) : null}
+        <View
+          style={{
+            flex: 0.78,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingRight: 5
+          }}>
+          <View style={{ flex: 0.85 }}>
+            <View style={styles.secondBlock}>
+              <View>
+                <Text h2>{name}</Text>
+              </View>
+              <View>
+                <Text medium gray2={!colorCondition}>
+                  {lastMessageText}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View
+            style={{
+              flex: 0.15,
+              alignContent: 'center',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <View style={styles.thirdBlock}>
+              <View style={[styles.time]}>
+                <Text center caption>
+                  {formatDate(lastMessageDate)}
+                </Text>
+              </View>
+              <View
+                style={[
+                  styles.messageCount,
+                  colorCondition && { backgroundColor: themeColors.primary }
+                ]}>
+                {colorCondition ? (
+                  <Text center white medium>
+                    {JSON.stringify(unReadMessageCount)}
+                  </Text>
+                ) : null}
+              </View>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
       <Modal
@@ -256,7 +300,8 @@ const Discussions = () => {
             return (
               <Item
                 name={makePseudoName(user.nom, user.prenom)}
-                lastMessage={item?.lastMessage?.text}
+                lastMessageText={item?.lastMessage?.text}
+                lastMessageDate={item.lastMessage.createdAt}
                 channel={retrieveChannelData(data, item.channelId)}
                 unReadMessageCount={item?.unReadMessageCount}
                 image={user.avatar as string}
@@ -293,17 +338,42 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 15,
     marginVertical: 0,
-    borderBottomColor: 'rgba(0,0,0,0.5)',
-    borderBottomWidth: 0.5,
+    borderBottomColor: 'rgba(0,0,0,0.2)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
     width: width,
-    height: 100
+    height: HEIGHT
   },
-  name: {
-    fontFamily: 'josefinRegular',
-    fontSize: 20
+  item2: {
+    flex: 1,
+    flexDirection: 'row',
+    padding: 15,
+    marginVertical: 0,
+    borderBottomColor: 'rgba(0,0,0,0.2)',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: width,
+    height: HEIGHT
   },
-  message: {
-    fontFamily: 'josefinRegular',
-    fontSize: 14
+  secondBlock: {
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    textAlignVertical: 'bottom',
+    height: HEIGHT - 2 * 15,
+    paddingVertical: 7
+  },
+  thirdBlock: {
+    justifyContent: 'space-between',
+    textAlignVertical: 'bottom',
+    height: HEIGHT - 2 * 15,
+    paddingVertical: 7,
+    alignItems: 'center'
+  },
+  name: { backgroundColor: 'red' },
+  message: { backgroundColor: 'yellow' },
+  time: {},
+  messageCount: {
+    borderRadius: 50,
+    height: 22,
+    width: 22,
+    justifyContent: 'center'
   }
 });
