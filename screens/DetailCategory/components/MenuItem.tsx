@@ -44,7 +44,6 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const [openModal, setOpenModal] = useState(false);
 
-  console.log('status', netWorkStatus);
   const onSubmitForm = () => {
     props
       .onSubmit()
@@ -125,9 +124,9 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
       )}
       {openModal && (
         <ModalItemInfos
-          information={'Votre annonce'}
+          information={'Votre mission'}
           description={
-            "Votre annonce vient d'être ajouté à notre liste. Vous serez sous peu contact par des Helkr près à vous aider."
+            "Votre mission vient d'être ajouté à notre liste. Vous serez sous peu contacté par des Helkr prêt à vous aider."
           }
           timer={1}
           callBack={props.openModal}

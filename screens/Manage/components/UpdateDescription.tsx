@@ -60,8 +60,8 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
     updateOfferingMutation({
       variables: { id: id as string, description: text },
       update: updateCache
-    }).then(({ data }) => {
-      if (error) {
+    }).then(({ data, errors }) => {
+      if (error || errors) {
         setErrorModal(true);
       }
       if (data?.updateOffering) {
