@@ -12,20 +12,25 @@ import { useStoreState } from '../../../models';
 
 interface Props {
   id?: string;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModalItem: FC<Props> = props => {
   const { called, loading, data } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
-
+  console.log(props);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const client = useApolloClient();
   const [applyTo] = useCandidateToOfferingMutation();
 
   return (
-    <Layout title={'Details'}>
+    <Layout
+      title={'Details'}
+      iconName="close"
+      callBack={props.setOpenModal}
+      callBackParams={[false]}>
       {(loading && !called) || !data ? (
         <ActivityIndicator size={'large'} />
       ) : (

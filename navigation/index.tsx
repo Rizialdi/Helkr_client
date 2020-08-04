@@ -1,4 +1,5 @@
 import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import {
@@ -8,7 +9,9 @@ import {
 } from '@react-navigation/native';
 import {
   createStackNavigator,
-  TransitionPresets
+  TransitionPresets,
+  StackHeaderProps,
+  Header
 } from '@react-navigation/stack';
 
 import Accueil from '../screens/Accueil';
@@ -33,6 +36,7 @@ import {
   DetailStackParamsList
 } from './Routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Platform } from 'react-native';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -129,6 +133,14 @@ const createBottomTabs = () => {
   );
 };
 
+function CustomHeader(props: StackHeaderProps) {
+  return (
+    <>
+      <Header {...props} />
+    </>
+  );
+}
+
 const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
   return (
     <SafeAreaProvider>
@@ -163,17 +175,21 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
             <MainStack.Screen
               name="Reglages"
               component={Reglages}
-              options={() => ({ headerShown: true, title: '' })}
+              options={() => ({
+                headerShown: false
+              })}
             />
             <MainStack.Screen
               name="Avis"
               component={Avis}
-              options={() => ({ headerShown: true, title: '' })}
+              options={() => ({
+                headerShown: false
+              })}
             />
             <MainStack.Screen
               name="Profile"
               component={Profile}
-              options={() => ({ headerShown: true, title: '' })}
+              options={() => ({ headerShown: false, title: '' })}
             />
           </>
         ) : (
@@ -221,7 +237,9 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
             <MainStack.Screen
               name="Avis"
               component={Avis}
-              options={() => ({ headerShown: true, title: '' })}
+              options={() => ({
+                headerShown: false
+              })}
             />
             <MainStack.Screen
               name="Profile"

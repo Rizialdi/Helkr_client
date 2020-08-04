@@ -4,16 +4,29 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Block from './Block';
 import { StatusBar } from 'expo-status-bar';
 import NetInfo from '@react-native-community/netinfo';
-
+import { AntDesign } from '@expo/vector-icons';
 import Text from './Text';
 import { useStoreState, useStoreActions } from '../../models';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface Props {
   title?: string;
   children: JSX.Element;
+  iconName?: string;
+  callBack?:
+    | (() => void)
+    | React.Dispatch<React.SetStateAction<boolean>>
+    | undefined;
+  callBackParams?: any[];
 }
 
-const Layout: SFC<Props> = ({ title, children }) => {
+const Layout: SFC<Props> = ({
+  title,
+  children,
+  iconName,
+  callBack,
+  callBackParams
+}) => {
   const { themeColors } = useStoreState(state => state.Preferences);
   let [isInternetConnection, setIsInternetConnection] = useState<boolean>(
     false
@@ -46,9 +59,17 @@ const Layout: SFC<Props> = ({ title, children }) => {
       <KeyboardAvoidingView enabled={true} behavior="height">
         {title && (
           <View style={styles.subContainer}>
-            <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-              {title}
-            </Text>
+            <Block flex={false} row center space="between">
+              <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
+                {title}
+              </Text>
+
+              <TouchableOpacity
+                //@ts-ignore
+                onPress={() => callBack && callBack(...callBackParams)}>
+                {iconName && <AntDesign name={iconName || 'meh'} size={30} />}
+              </TouchableOpacity>
+            </Block>
           </View>
         )}
         <View>{children}</View>

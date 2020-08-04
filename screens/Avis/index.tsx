@@ -7,10 +7,8 @@ import {
   View
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 import { useStoreState } from '../../models';
-import { Text } from '../sharedComponents';
+import { Text, Layout } from '../sharedComponents';
 import { ListCard } from './components';
 import { useGetAvisUserQuery } from '../../graphql';
 import { makePseudoName } from '../../utils';
@@ -47,7 +45,11 @@ export default ({ navigation, candidateModalId, route }: Props) => {
   });
 
   return (
-    <SafeAreaView>
+    <Layout
+      title={'Avis'}
+      iconName={'close'}
+      callBack={navigation?.goBack}
+      callBackParams={[]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {loading ? (
           <View
@@ -83,7 +85,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
                         : null
                     }>
                     <ListCard
-                      avatar={avatar}
+                      avatar={avatar || ''}
                       scorer={username}
                       score={score}
                       comment={comment}
@@ -105,7 +107,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   );
 };
 

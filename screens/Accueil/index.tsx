@@ -6,8 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  AsyncStorage,
-  Alert
+  AsyncStorage
 } from 'react-native';
 
 import * as Notifications from 'expo-notifications';

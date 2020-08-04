@@ -43,7 +43,11 @@ const ModalItemManageOfferings: FC<Props> = props => {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Layout title={'Details'}>
+        <Layout
+          title={'Details'}
+          iconName="close"
+          callBack={props.setOpenModal}
+          callBackParams={[false]}>
           {(loading && !called) || !data ? (
             <ActivityIndicator size={'large'} />
           ) : (

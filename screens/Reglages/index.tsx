@@ -12,7 +12,7 @@ import { ImagePicker } from 'expo';
 import { ReactNativeFile } from 'apollo-upload-client';
 
 import { theme } from '../../constants';
-import { Text } from '../sharedComponents';
+import { Text, Block } from '../sharedComponents';
 import { Description, ProfilContainer, Tag } from './components';
 import { useStoreActions, useStoreState } from '../../models';
 import { getFileName } from '../../utils';
@@ -28,6 +28,7 @@ import {
   StackNavigationInterface,
   MainStackParamList
 } from '../../navigation/Routes';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Profile({
   navigation
@@ -47,17 +48,10 @@ export default function Profile({
   const { setTags } = useStoreActions(actions => actions.Offering);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
-  useMemo(() => {
-    (async () => {
-      try {
-        const id = await AsyncStorage.getItem('id');
-        id && setId(id);
-      } catch (error) {
-        throw new Error('Unable to load Credentials');
-      }
-    })();
-  }, []);
-  const id = Id;
+  const { user } = useStoreState(state => state.User);
+
+  const id = user && user.id ? user.id : '';
+
   const {
     data: {
       userById: {
@@ -175,65 +169,69 @@ export default function Profile({
     }
   };
   const color =
-    isModified && !disableSaveButton ? theme.colors.primary : theme.colors.gray;
+    isModified && !disableSaveButton
+      ? theme.colors.secondary
+      : theme.colors.gray;
   return (
     <Layout>
-      <KeyboardAvoidingView enabled={true} behavior="position">
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <>
+        <Block flex={false} row space="between" margin={[14, 14, 25, 12]}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <AntDesign name="left" color={'black'} size={24} />
+          </TouchableOpacity>
+          <Text h2 medium style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
+            Réglages
+          </Text>
           <TouchableOpacity
-            style={styles.titleBar}
             disabled={disableSaveButton || !netWorkStatus}
             onPress={() => isModified && save()}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: color
-              }}>
-              Sauvegarder
-            </Text>
+            <AntDesign name="save" color={color} size={24} />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <ProfilContainer
-              image={image ? image : avatar ? avatar : ''}
-              username={
-                prenom.replace(/^./, prenom[0].toUpperCase()) +
-                ' ' +
-                nom.charAt(0) +
-                '.'
-              }
-              address={address}
-              verified={verified}
-              pro={professional}
-              parentAddressCallback={setAddressParent}
-              parentCallback={setImage}
-            />
-          </TouchableOpacity>
-          <View style={styles.delimiter}></View>
-          <Description
-            description={description}
-            parentCallback={setDescriptionParent}
-          />
-          <View style={styles.delimiter}></View>
-          <View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontWeight: '300',
-                  fontSize: 24,
-                  paddingLeft: 20,
-                  paddingTop: 10
+        </Block>
+        <KeyboardAvoidingView enabled={true} behavior="height">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TouchableOpacity>
+              <ProfilContainer
+                image={image ? image : avatar ? avatar : ''}
+                username={
+                  prenom.replace(/^./, prenom[0].toUpperCase()) +
+                  ' ' +
+                  nom.charAt(0) +
+                  '.'
                 }
-              ]}>
-              Tags
-            </Text>
-            {tags && tags.length > 0 && (
-              <Tag tags={tags} parentCallback={SetTags} />
-            )}
-          </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+                address={address}
+                verified={verified}
+                pro={professional}
+                parentAddressCallback={setAddressParent}
+                parentCallback={setImage}
+              />
+            </TouchableOpacity>
+            <View style={styles.delimiter}></View>
+            <Description
+              description={description}
+              parentCallback={setDescriptionParent}
+            />
+            <View style={styles.delimiter}></View>
+            <View>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    fontWeight: '300',
+                    fontSize: 24,
+                    paddingLeft: 20,
+                    paddingTop: 10
+                  }
+                ]}>
+                Tags
+              </Text>
+              {tags && tags.length > 0 && (
+                <Tag tags={tags} parentCallback={SetTags} />
+              )}
+            </View>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </>
     </Layout>
   );
 }

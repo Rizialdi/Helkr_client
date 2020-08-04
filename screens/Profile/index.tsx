@@ -1,13 +1,5 @@
-import Icon from 'react-native-vector-icons/Octicons';
-import React, { useMemo, useState } from 'react';
-import {
-  ActivityIndicator,
-  AsyncStorage,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import React from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
 import { makePseudoName } from '../../utils';
 import { Text, Layout } from '../sharedComponents';
@@ -22,24 +14,13 @@ import {
   StackNavigationInterface,
   MainStackParamList
 } from '../../navigation/Routes';
+import { useStoreState } from '../../models';
 
 type Props = StackNavigationInterface<MainStackParamList, 'Profile'>;
 
 export default function Profile({ navigation, route: { params } }: Props) {
-  const [Id, setId] = useState<string | null>('');
-
-  useMemo(() => {
-    (async () => {
-      try {
-        const id: string | null = await AsyncStorage.getItem('id');
-        setId(id);
-      } catch (error) {
-        throw new Error('Unable to load Credentials');
-      }
-    })();
-  }, []);
-
-  const id = params && params?.id ? params.id : Id ? Id : '';
+  const { user } = useStoreState(state => state.User);
+  const id = params && params?.id ? params.id : user.id ? user.id : '';
 
   const {
     data: {
@@ -72,7 +53,11 @@ export default function Profile({ navigation, route: { params } }: Props) {
   });
 
   return (
-    <Layout title={'Profil'}>
+    <Layout
+      title={params && params.id ? 'Explorer' : 'Profil'}
+      iconName={params && params.id ? 'close' : 'setting'}
+      callBack={params && params.id ? navigation.goBack : navigation.navigate}
+      callBackParams={params && params.id ? [] : ['Reglages']}>
       <>
         {loading && (
           <View
@@ -86,13 +71,6 @@ export default function Profile({ navigation, route: { params } }: Props) {
           </View>
         )}
         <ScrollView showsVerticalScrollIndicator={true}>
-          {params && params.id ? null : (
-            <TouchableOpacity
-              style={styles.titleBar}
-              onPress={() => navigation.navigate('Reglages')}>
-              <Icon name="gear" size={24} color="#52575D" />
-            </TouchableOpacity>
-          )}
           <ProfilContainer
             image={avatar}
             username={makePseudoName(nom, prenom)}

@@ -12,7 +12,7 @@ interface Props {
   description: string;
   callBackParams?: any[];
   errorReporting?: boolean;
-  callBack?: (a: any) => void;
+  callBack?: (a: string | number[]) => void;
 }
 const ModalItem: SFC<Props> = ({
   timer,
@@ -34,7 +34,8 @@ const ModalItem: SFC<Props> = ({
   }, [modalVisible]);
 
   const onCloseModal = () => {
-    callBack && callBack(callBackParams);
+    //@ts-ignore
+    callBack && callBack(...callBackParams);
     setModalVisible(false);
   };
 

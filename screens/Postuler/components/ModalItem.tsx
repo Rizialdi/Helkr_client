@@ -19,6 +19,7 @@ import EventDay from '../../sharedComponents/EventDay';
 
 interface Props {
   id?: string;
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
   status?: 'acceptée' | 'refusée' | 'en attente';
 }
 
@@ -44,7 +45,11 @@ const ModalItem: FC<Props> = props => {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Layout title={'Details'}>
+        <Layout
+          title={'Details'}
+          iconName="close"
+          callBack={props.setOpenModal}
+          callBackParams={[false]}>
           <>
             {loading || (!called && <ActivityIndicator size={'large'} />)}
             {error && <Text>Une erreur sur le reseau s'est produite</Text>}

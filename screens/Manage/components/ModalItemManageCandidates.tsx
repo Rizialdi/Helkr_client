@@ -46,6 +46,7 @@ const { height } = Dimensions.get('screen');
 
 interface Props {
   id?: string;
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type CandidateCardClickedPart = '' | 'icon';
@@ -156,7 +157,11 @@ const ModalItemManageCandidates: FC<Props> = props => {
 
   return (
     <ScrollView scrollEnabled={true} showsVerticalScrollIndicator={false}>
-      <Layout title={'Details'}>
+      <Layout
+        title={'Details'}
+        iconName="close"
+        callBack={props.setOpenModal}
+        callBackParams={[false]}>
         {(loading && !called) || !data ? (
           <ActivityIndicator size={'large'} />
         ) : (

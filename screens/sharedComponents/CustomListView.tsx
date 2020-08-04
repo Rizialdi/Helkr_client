@@ -42,6 +42,10 @@ const CustomListView: SFC<Props> = ({
     setOpenModal(true);
     setStatus(status);
   };
+  const onOpenModal = () => {
+    setOpenModal(false);
+    setSelectedOffering('');
+  };
   return (
     <Block flex={false}>
       {!data?.length && (
@@ -78,22 +82,15 @@ const CustomListView: SFC<Props> = ({
         }}
       />
       <Modal
-        animationType="fade"
+        animationType="slide"
         hardwareAccelerated={true}
         presentationStyle="overFullScreen"
         visible={openModal}>
         <Block padding={[20, 0]}>
-          <TouchableOpacity
-            onPress={() => {
-              setOpenModal(false);
-              setSelectedOffering('');
-            }}>
-            <Icon name="close" size={24} color={themeColors.black} />
-          </TouchableOpacity>
           {selectedOffering &&
             React.cloneElement(modalItem, {
               id: selectedOffering,
-              setOpenModal: setOpenModal,
+              setOpenModal: onOpenModal,
               status: status
             })}
         </Block>
