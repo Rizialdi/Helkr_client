@@ -11,7 +11,12 @@ import {
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import { Text, StackedToBottom, Button } from '../../sharedComponents';
+import {
+  Text,
+  StackedToBottom,
+  Button,
+  ModalItemInfos
+} from '../../sharedComponents';
 import { useStoreState } from '../../../models';
 import { ExecutionResult } from 'react-apollo';
 import Block from '../../sharedComponents/Block';
@@ -37,18 +42,20 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
 
   const { themeColors } = useStoreState(state => state.Preferences);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+  const [openModal, setOpenModal] = useState(false);
 
+  console.log('status', netWorkStatus);
   const onSubmitForm = () => {
     props
       .onSubmit()
       .then(({ data }) => {
-        data?.addOffering &&
-          Alert.alert(
-            'Votre annonce',
-            "vient d'être ajouté",
-            [{ text: 'OK', onPress: () => props.openModal(false) }],
-            { cancelable: false }
-          );
+        data?.addOffering && setOpenModal(true);
+        // Alert.alert(
+        //   'Votre annonce',
+        //   "vient d'être ajouté",
+        //   [{ text: 'OK', onPress: () => props.openModal(false) }],
+        //   { cancelable: false }
+        // );
       })
       .catch(error => {
         throw new Error(`Ajout offre impossible, ${error}`);
@@ -115,6 +122,17 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
             </Button>
           </StackedToBottom>
         </Block>
+      )}
+      {openModal && (
+        <ModalItemInfos
+          information={'Votre annonce'}
+          description={
+            "Votre annonce vient d'être ajouté à notre liste. Vous serez sous peu contact par des Helkr près à vous aider."
+          }
+          timer={1}
+          callBack={props.openModal}
+          callBackParams={[false]}
+        />
       )}
     </KeyboardAvoidingView>
   );

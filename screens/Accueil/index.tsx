@@ -6,12 +6,13 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  AsyncStorage
+  AsyncStorage,
+  Alert
 } from 'react-native';
 
 import * as Notifications from 'expo-notifications';
 
-import { Block, Layout } from '../sharedComponents';
+import { Block, Layout, ModalItemInfos } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
 import { useStoreState } from '../../models';
 import { BottomStackParamList } from '../../navigation/Routes';
@@ -43,7 +44,7 @@ const Accueil = (
   const [categories, setCategories] = useState<CategoriesInterface | null>();
   const [inputText, setInputText] = useState<string>('');
   const [username, setUsername] = useState<string>('');
-
+  const [firstOpening, setFirstOpening] = useState<boolean>(false);
   const { user } = useStoreState(state => state.User);
 
   const handleInput = () => setInputText('');
@@ -61,6 +62,7 @@ const Accueil = (
           token && tokenUpdate({ variables: { token } });
           await AsyncStorage.setItem('tokenForNotifications', token);
         });
+      firstOpening && setFirstOpening(firstOpening);
     })();
 
     const subscription = Notifications.addNotificationResponseReceivedListener(
@@ -102,6 +104,16 @@ const Accueil = (
               </TouchableOpacity>
             </View>
           </Block>
+          {firstOpening && (
+            <ModalItemInfos
+              information={'Bienvenue'}
+              description={
+                'Nous sommes heureux de vous compter dans nos rangs. Helkr existe pour vous aider afin que vous puissez faire de même. Merci.'
+              }
+              timer={2}
+            />
+          )}
+
           {/* When many cities */}
           {/* <TouchableOpacity
             style={styles.loopTouchable}

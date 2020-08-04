@@ -2,6 +2,7 @@ import Layout from './Layout';
 import TermsOfServices from './TermsOfServices';
 import Text from './Text';
 import Block from './Block';
+import ModalItemInfos from './ModalItemInfos';
 import Button from './Button';
 import TagItem from './TagItem';
 import CustomListView, { dataContent } from './CustomListView';
@@ -28,6 +29,7 @@ export {
   Badge,
   Button,
   TagItem,
+  ModalItemInfos,
   dataContent,
   CustomListView,
   CandidateCard,
