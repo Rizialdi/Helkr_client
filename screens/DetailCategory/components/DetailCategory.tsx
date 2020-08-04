@@ -3,11 +3,11 @@ import { View, StyleSheet, FlatList, Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Text, Layout } from '../sharedComponents';
+import { Text, Layout } from '../../sharedComponents';
 import {
   StackNavigationInterface,
   DetailStackParamsList
-} from '../../navigation/Routes';
+} from '../../../navigation/Routes';
 
 const { width } = Dimensions.get('screen');
 
@@ -25,7 +25,7 @@ const DetailCategory = ({
   navigation,
   route
 }: StackNavigationInterface<DetailStackParamsList, 'DetailCategory'>) => {
-  const category = route.params.category;
+  const { category } = route.params;
 
   return (
     <Layout>
@@ -36,7 +36,7 @@ const DetailCategory = ({
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('DetailItem', {
-                  category: category,
+                  category,
                   categoryItem: item
                 });
               }}>

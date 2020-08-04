@@ -8,17 +8,23 @@ import {
 } from '../../../navigation/Routes';
 import { theme } from '../../../constants';
 import IconSvg from './IconSvg';
+
 const { width } = Dimensions.get('window');
 
 interface Props {
   category: CategoryInterface;
-  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>;
+  navigation: StackNavigationInterface<MainStackParamList>;
 }
 const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
   return (
     <TouchableOpacity
       key={category.id}
-      onPress={() => navigation.navigate('DetailCategory', { category })}>
+      onPress={() =>
+        navigation.navigate('DetailCategory', {
+          screen: 'DetailCategory',
+          params: { category }
+        })
+      }>
       <Card center middle style={styles.category} shadow>
         <Badge margin={[0, 0, 15]} size={70} secondary>
           <IconSvg kind={category.image} />

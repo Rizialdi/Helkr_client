@@ -1,5 +1,6 @@
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { CategoryInterface } from '../screens/Accueil/components/Interfaces';
 
 type Tab = 'tabOne' | 'tabTwo';
 export type BottomStackParamList = {
@@ -11,8 +12,7 @@ export type BottomStackParamList = {
 };
 
 export type MainStackParamList = {
-  DetailCategory: { category: { name: string } };
-  Discussion: undefined;
+  DetailCategory: { screen: keyof DetailStackParamsList; params: any };
   Reglages: undefined;
   Avis: { id: string };
   Profile: undefined | { id: string };
@@ -30,3 +30,8 @@ export interface StackNavigationInterface<
   navigation: StackNavigationProp<ParamList, RouteName>;
   route: RouteProp<ParamList, RouteName>;
 }
+
+export type DetailStackParamsList = {
+  DetailCategory: { category: CategoryInterface };
+  DetailItem: { category: CategoryInterface; categoryItem: string };
+};

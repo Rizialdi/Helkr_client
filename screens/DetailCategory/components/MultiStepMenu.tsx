@@ -13,6 +13,8 @@ import {
   AddOfferingMutationVariables,
   AddOfferingMutationResult
 } from '../../../graphql';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { DetailStackParamsList } from '../../../navigation/Routes';
 
 // todo values object ? array ?
 interface State {
@@ -71,7 +73,7 @@ class MultiStepMenu extends Component<Props, State, any> {
   };
 
   render() {
-    const { children, categoryItem } = this.props;
+    const { children, categoryItem, navigation } = this.props;
     return (
       <View>
         {React.Children.map(children, (child: any, idx: number) => {
@@ -85,6 +87,7 @@ class MultiStepMenu extends Component<Props, State, any> {
               nextStep: this._nextStep,
               prevStep: this._prevStep,
               categoryItem: categoryItem,
+              navigation: navigation,
               onChangeValue: this._onChangeValue
             });
           }
@@ -105,6 +108,7 @@ interface Props {
   addOffering?: (
     options?: MutationFunctionOptions<any, Record<string, any>>
   ) => Promise<ExecutionResult<any>>;
+  navigation: StackNavigationProp<DetailStackParamsList, 'DetailCategory'>;
 }
 
 type CustomChildProps = Props &

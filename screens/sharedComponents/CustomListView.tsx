@@ -37,7 +37,6 @@ const CustomListView: SFC<Props> = ({
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
-  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const openToDescription = (id: string, status: string = '') => {
     setSelectedOffering(id);
     setOpenModal(true);

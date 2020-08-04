@@ -5,8 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  KeyboardAvoidingView,
-  Alert
+  KeyboardAvoidingView
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -20,6 +19,8 @@ import {
 import { useStoreState } from '../../../models';
 import { ExecutionResult } from 'react-apollo';
 import Block from '../../sharedComponents/Block';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { DetailStackParamsList } from '../../../navigation/Routes';
 
 const { height } = Dimensions.get('screen');
 interface Props {
@@ -35,8 +36,9 @@ interface Props {
   onChangeValue: (a: string, b: string) => void;
   onSelected: () => void;
   openModal: (a: boolean) => void;
+  navigation: StackNavigationProp<DetailStackParamsList>;
 }
-const MenuItem: SFC<Props> = ({ children, ...props }) => {
+const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
   const width = (props.currentIndex / props.totalChildren) * 100;
   const [selected, setSelected] = useState<boolean>(false);
 
@@ -49,12 +51,6 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
       .onSubmit()
       .then(({ data }) => {
         data?.addOffering && setOpenModal(true);
-        // Alert.alert(
-        //   'Votre annonce',
-        //   "vient d'être ajouté",
-        //   [{ text: 'OK', onPress: () => props.openModal(false) }],
-        //   { cancelable: false }
-        // );
       })
       .catch(error => {
         throw new Error(`Ajout offre impossible, ${error}`);
@@ -79,7 +75,7 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
           {props.categoryItem}
         </Text>
 
-        <TouchableOpacity onPress={() => props.openModal(false)}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="close" size={24} color={themeColors.defaultTextColor} />
         </TouchableOpacity>
       </View>
@@ -129,8 +125,7 @@ const MenuItem: SFC<Props> = ({ children, ...props }) => {
             "Votre mission vient d'être ajouté à notre liste. Vous serez sous peu contacté par des Helkr prêt à vous aider."
           }
           timer={1}
-          callBack={props.openModal}
-          callBackParams={[false]}
+          callBack={navigation.goBack}
         />
       )}
     </KeyboardAvoidingView>
