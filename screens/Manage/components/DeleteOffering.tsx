@@ -78,14 +78,11 @@ const UpdateDescription: FC<Props> = ({
     }).then(data => {
       if (error) {
         closeModal();
-        //TODO toast change unsuccessful
       }
       if (data.data?.deleteOffering) {
         setOpenGlobalModal && setOpenGlobalModal(false);
-        //TODO toast change successful
       } else {
         closeModal();
-        //TODO toast change unsuccessful
       }
     });
   };

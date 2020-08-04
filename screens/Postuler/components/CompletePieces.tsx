@@ -17,6 +17,7 @@ import { ListOfPieces } from './ModalItemApplyToOffering';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { useAddVerificationpiecesMutation } from '../../../graphql';
 import { Maybe } from '../../../graphql/helpkr-types';
+import { ModalItemInfos } from '../../sharedComponents';
 
 const { height } = Dimensions.get('screen');
 
@@ -155,6 +156,8 @@ const SecondScreen = ({ ...props }) => {
   const referenceId = props.referenceId as string;
   const [imagesPicked, setImagesPicked] = useState<ImagesPicked>();
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
+
   const [
     addPiecesMutation,
     { loading, error }
@@ -217,11 +220,10 @@ const SecondScreen = ({ ...props }) => {
               ...{ [referenceId]: 'enattente' }
             });
           });
-
           props.setOpenModal(false);
         }
         if (errors || error) {
-          // TODO modal error to show
+          setErrorModal(true);
         }
       })
       .catch(err => {
@@ -257,6 +259,18 @@ const SecondScreen = ({ ...props }) => {
             );
           })}
         </Block>
+        {errorModal && (
+          <ModalItemInfos
+            errorReporting
+            information={'Erreur'}
+            description={
+              "Une erreur s'est produite pendant le téléchargement de vos pièces. Veuillez réessayer plus tard."
+            }
+            timer={1}
+            callBack={props.setOpenModal}
+            callBackParams={[false]}
+          />
+        )}
       </ScrollView>
       <Block flex={false} margin={[0, 20]}>
         <StackedToBottom>

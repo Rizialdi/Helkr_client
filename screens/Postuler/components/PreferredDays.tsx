@@ -7,7 +7,8 @@ import {
   Button,
   Card,
   Text,
-  StackedToBottom
+  StackedToBottom,
+  ModalItemInfos
 } from '../../sharedComponents';
 import { DataProxy } from 'apollo-cache';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -28,7 +29,7 @@ interface Props {
 }
 const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
   const [clickedDayIdx, setClickedDayIdx] = useState<number | null>(null);
-
+  const [errorModal, setErrorModal] = useState<boolean>(false);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const [choosEventDay, { loading, error }] = useChooseEventDayMutation();
@@ -80,11 +81,13 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
       variables: { id: offeringId, timestamp: preferredDays[clickedDayIdx] },
       update: updateCache
     })
-      .then(({ data }) => {
+      .then(({ data, errors }) => {
         if (data?.chooseEventDay) {
           // SUCCESS MODAL TODO
-        } else {
-          // ERROR MODAL TODO
+          // Updating the cache automatically closes that
+        }
+        if (errors || error) {
+          setErrorModal(true);
         }
       })
       .catch(err => {
@@ -118,6 +121,19 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
           Noter qu'il peut-être utile d'appeler l'auteur avant de faire ce
           choix.
         </Text>
+      )}
+
+      {errorModal && (
+        <ModalItemInfos
+          errorReporting
+          information={'Erreur'}
+          description={
+            "Une erreur s'est produite au moment de votre choix de jour. Veuillez réessayer plus tard."
+          }
+          timer={1}
+          callBack={setClickedDayIdx}
+          callBackParams={[null]}
+        />
       )}
 
       <Modal

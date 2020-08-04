@@ -16,7 +16,7 @@ import {
   OfferingDetailsOnModal,
   StackedToBottom
 } from '../../sharedComponents';
-import { TagItem } from '../../sharedComponents';
+import { TagItem, ModalItemInfos } from '../../sharedComponents';
 import { formatDate } from '../../../utils';
 import {
   useCandidateToOfferingMutation,
@@ -51,6 +51,7 @@ const ModalItem: FC<Props> = props => {
     }
   });
   const [ModalOpen, setModalOpen] = useState<boolean>(false);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
   const [applyTo] = useCandidateToOfferingMutation();
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
@@ -67,9 +68,9 @@ const ModalItem: FC<Props> = props => {
         try {
           if (data?.candidateToOffering && data.candidateToOffering.success) {
             client.reFetchObservableQueries();
-            // TODO success modal ?
-            if (errors) {
-              // TODO error modal
+            // TODO Update Function
+            if (errors || error) {
+              setErrorModal(true);
             }
           }
         } catch (error) {
@@ -125,10 +126,17 @@ const ModalItem: FC<Props> = props => {
                 <OfferingDetailsOnModal details={data?.offeringById?.details} />
               </Block>
             )}
-            {error && (
-              <Text accent bold>
-                Une erreur reseau s'est produite. Veuillez réessayer plus tard
-              </Text>
+            {errorModal && (
+              <ModalItemInfos
+                errorReporting
+                information={'Erreur'}
+                description={
+                  "Une erreur s'est produite pendant votre candidature. Veuillez réessayer plus tard."
+                }
+                timer={1}
+                callBack={props.setOpenModal}
+                callBackParams={[false]}
+              />
             )}
           </>
         </Layout>

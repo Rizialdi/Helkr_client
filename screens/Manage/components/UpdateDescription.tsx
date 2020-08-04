@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { DataProxy } from 'apollo-cache';
 import { useStoreState } from '../../../models';
+import { ModalItemInfos } from '../../sharedComponents';
 
 const { height } = Dimensions.get('screen');
 interface Props {
@@ -23,6 +24,8 @@ interface Props {
 const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
   const [text, setTextValue] = useState<string>('');
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
+
   useEffect(() => {
     setTextValue(previousValue as string);
   }, []);
@@ -57,17 +60,12 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
     updateOfferingMutation({
       variables: { id: id as string, description: text },
       update: updateCache
-    }).then(data => {
+    }).then(({ data }) => {
       if (error) {
-        closeModal();
-        //TODO toast change unsuccessful
+        setErrorModal(true);
       }
-      if (data.data?.updateOffering) {
+      if (data?.updateOffering) {
         closeModal();
-        //TODO toast change successful
-      } else {
-        closeModal();
-        //TODO toast change unsuccessful
       }
     });
   };
@@ -105,6 +103,17 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
             )}
           </Button>
         </Block>
+        {errorModal && (
+          <ModalItemInfos
+            errorReporting
+            information={'Erreur'}
+            description={
+              "Une erreur s'est produite au moment de la mise à jour de votre description. Veuillez réessayer plus tard."
+            }
+            timer={1}
+            callBack={closeModal}
+          />
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
