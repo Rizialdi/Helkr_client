@@ -1,5 +1,5 @@
 import React, { SFC, useState, useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Alert } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Block from './Block';
 import { StatusBar } from 'expo-status-bar';
@@ -42,11 +42,7 @@ const Layout: SFC<Props> = ({ title, children }) => {
           </Text>
         </Block>
       )}
-      <StatusBar
-        style="light"
-        networkActivityIndicatorVisible={true}
-        animated={true}
-      />
+      <StatusBar style="dark" translucent={true} animated={true} />
       <KeyboardAvoidingView enabled={true} behavior="height">
         {title && (
           <View style={styles.subContainer}>

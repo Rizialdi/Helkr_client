@@ -17,7 +17,6 @@ import { ListOfPieces } from './ModalItemApplyToOffering';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { useAddVerificationpiecesMutation } from '../../../graphql';
 import { Maybe } from '../../../graphql/helpkr-types';
-import { useStoreState } from '../../../models';
 
 const { height } = Dimensions.get('screen');
 

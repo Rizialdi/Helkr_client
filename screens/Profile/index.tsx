@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { makePseudoName } from '../../utils';
 import { Text, Layout } from '../sharedComponents';
@@ -73,7 +72,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
   });
 
   return (
-    <Layout>
+    <Layout title={'Profil'}>
       <>
         {loading && (
           <View

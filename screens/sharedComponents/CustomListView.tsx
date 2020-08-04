@@ -64,7 +64,6 @@ const CustomListView: SFC<Props> = ({
           const { id } = item;
           return (
             <TouchableOpacity
-              disabled={!netWorkStatus}
               key={index}
               onPress={() =>
                 (item.status && item.status === 'refusée') ||
