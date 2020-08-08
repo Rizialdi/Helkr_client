@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Calendar } from '../../sharedComponents';
+import { Calendar, ModalItemInfos } from '../../sharedComponents';
 
 import {
   Text,
@@ -54,9 +54,17 @@ export type CompletedOrIssue = 'completed' | 'issue' | null;
 
 const ModalItemManageCandidates: FC<Props> = props => {
   const [selectedId, setSelectedId] = useState<string>('');
-  const { called, loading, data } = useOfferingByIdQuery({
-    variables: { id: props.id as string }
+  const [Data, setData] = useState<OfferingByIdQuery | undefined>();
+  const { called, loading, data, error } = useOfferingByIdQuery({
+    variables: { id: props.id as string },
+    fetchPolicy: 'cache-and-network'
   });
+
+  useEffect(() => {
+    if (data && !loading && !error) {
+      setData(data);
+    }
+  }, [data]);
 
   const [chooseCandidate] = useChooseCandidateMutation();
   const [isUpdateOnUser, setIsUpdateOnUser] = useState<boolean>(false);
@@ -92,7 +100,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
       variables: { id: props.id }
     }) as OfferingByIdQuery | undefined;
 
-    const selectedCandidate = data?.offeringById.candidates.find(
+    const selectedCandidate = Data?.offeringById.candidates.find(
       item => item.id === selectedId
     );
 
@@ -101,6 +109,7 @@ const ModalItemManageCandidates: FC<Props> = props => {
         if (item.id != props.id) return item;
         return {
           ...item,
+          status: 'validée',
           selectedCandidate
         };
       }
@@ -162,193 +171,210 @@ const ModalItemManageCandidates: FC<Props> = props => {
         iconName="close"
         callBack={props.setOpenModal}
         callBackParams={[false]}>
-        {(loading && !called) || !data ? (
-          <ActivityIndicator size={'large'} />
-        ) : (
-          <Block flex={false} margin={[0, 25]}>
-            <Block margin={[0, -25]} flex={false} row middle space={'around'}>
-              <TagItem tag={data?.offeringById?.type} type />
-              <TagItem tag={data?.offeringById?.category} category />
-              <TagItem
-                tag={formatDateAvis(data?.offeringById?.createdAt)}
-                date
-              />
-            </Block>
-            <Text bold size={16} vertical={[20, 10]}>
-              Description
-            </Text>
-
-            <Text>{data?.offeringById?.description}</Text>
-
-            <Text bold size={16} vertical={[20, 10]}>
-              Categorie
-            </Text>
-
-            <Text>{data?.offeringById?.category}</Text>
-
-            <Text bold size={16} vertical={[20, 10]}>
-              Renseignements
-            </Text>
-
-            <OfferingDetailsOnModal details={data?.offeringById?.details} />
-            <Block flex={false}>
+        <>
+          {(loading && !called) || !data ? (
+            <ActivityIndicator size={'large'} />
+          ) : (
+            <Block flex={false} margin={[0, 25]}>
+              <Block margin={[0, -25]} flex={false} row middle space={'around'}>
+                <TagItem tag={Data?.offeringById?.type} type />
+                <TagItem tag={Data?.offeringById?.category} category />
+                {Data?.offeringById?.createdAt &&
+                  formatDateAvis(Data?.offeringById?.createdAt) && (
+                    <TagItem
+                      tag={formatDateAvis(Data?.offeringById?.createdAt)}
+                      date
+                    />
+                  )}
+              </Block>
               <Text bold size={16} vertical={[20, 10]}>
-                {data?.offeringById.selectedCandidate
-                  ? 'Candidat retenu'
-                  : 'Candidats'}
+                Description
               </Text>
-              {data?.offeringById.selectedCandidate ? (
-                <TouchableOpacity
-                  key={data?.offeringById.selectedCandidate.id}
-                  onPress={() =>
-                    data?.offeringById.selectedCandidate &&
-                    setIsUpdateOnUser(true)
-                  }>
-                  <SelectedCandidateCard
-                    id={data?.offeringById.selectedCandidate.id}
-                    avatar={
-                      data?.offeringById.selectedCandidate.avatar as string
-                    }
-                    average={data?.offeringById.selectedCandidate.moyenne}
-                    professional={
-                      data?.offeringById.selectedCandidate.professional
-                    }
-                  />
-                </TouchableOpacity>
-              ) : data?.offeringById.candidates.length ? (
-                data.offeringById.candidates.map(item => (
+
+              <Text>{Data?.offeringById?.description}</Text>
+
+              <Text bold size={16} vertical={[20, 10]}>
+                Categorie
+              </Text>
+
+              <Text>{Data?.offeringById?.category}</Text>
+
+              <Text bold size={16} vertical={[20, 10]}>
+                Renseignements
+              </Text>
+
+              <OfferingDetailsOnModal details={Data?.offeringById?.details} />
+              <Block flex={false}>
+                <Text bold size={16} vertical={[20, 10]}>
+                  {Data?.offeringById.selectedCandidate
+                    ? 'Candidat retenu'
+                    : 'Candidats'}
+                </Text>
+                {Data?.offeringById.selectedCandidate ? (
                   <TouchableOpacity
-                    key={item.id}
-                    onPress={() => setSelectedId(item.id)}>
-                    <CandidateCard
-                      id={item.id}
-                      avatar={item.avatar as string}
-                      average={item.moyenne}
-                      professional={item.professional}
-                      parentCallback={setCandidateCardClickedPart}
-                      setSelectedId={setSelectedId}
+                    key={Data?.offeringById.selectedCandidate.id}
+                    onPress={() =>
+                      Data?.offeringById.selectedCandidate &&
+                      setIsUpdateOnUser(true)
+                    }>
+                    <SelectedCandidateCard
+                      id={Data?.offeringById.selectedCandidate.id}
+                      avatar={
+                        Data?.offeringById.selectedCandidate.avatar as string
+                      }
+                      average={Data?.offeringById.selectedCandidate.moyenne}
+                      professional={
+                        Data?.offeringById.selectedCandidate.professional
+                      }
                     />
                   </TouchableOpacity>
-                ))
-              ) : (
-                <></>
-              )}
-              {data?.offeringById.eventday && (
-                <EventDay eventday={data?.offeringById.eventday} />
-              )}
-            </Block>
-
-            <Modal
-              isVisible={isUpdateOnUser}
-              animationIn={'slideInUp'}
-              animationOut={'slideOutDown'}
-              useNativeDriver
-              style={styles.modalContainer}
-              backdropColor={'#C1BEC0'}
-              onBackButtonPress={() => setIsUpdateOnUser(false)}
-              onBackdropPress={() => setIsUpdateOnUser(false)}
-              onSwipeComplete={() => setIsUpdateOnUser(false)}>
-              <View style={[styles.modal, { height: height * 0.5 }]}>
-                <Text center bold>
-                  Dites nous tout
-                </Text>
-                <MultiStepMenuCheckout>
-                  <MultiStepMenuCheckout.MenuItemCheckout>
-                    <CompletedOrIssue
-                      setCompletedOrIssue={setCompletedOrIssue}
-                    />
-                  </MultiStepMenuCheckout.MenuItemCheckout>
-                  <MultiStepMenuCheckout.MenuItemCheckout>
-                    {completedOrIssue === 'completed' ? (
-                      <AmountToPay setPriceToPay={setPriceToPay} />
-                    ) : completedOrIssue === 'issue' ? (
-                      <KeyboardAvoidingView behavior={'padding'}>
-                        <ScrollView
-                          alwaysBounceVertical={true}
-                          showsVerticalScrollIndicator={false}
-                          scrollEnabled={true}>
-                          <IssueReporting />
-                        </ScrollView>
-                      </KeyboardAvoidingView>
-                    ) : (
-                      <Text>Vous ne devriez pas etre ici</Text>
-                    )}
-                  </MultiStepMenuCheckout.MenuItemCheckout>
-                  <MultiStepMenuCheckout.MenuItemCheckout>
-                    {completedOrIssue === 'completed' && priceToPay ? (
-                      <ValidationCode
-                        setIsValidationCodeCorrect={setIsValidationCodeCorrect}
+                ) : Data?.offeringById.candidates.length ? (
+                  data.offeringById.candidates.map(item => (
+                    <TouchableOpacity
+                      key={item.id}
+                      onPress={() => setSelectedId(item.id)}>
+                      <CandidateCard
+                        id={item.id}
+                        avatar={item.avatar as string}
+                        average={item.moyenne}
+                        professional={item.professional}
+                        parentCallback={setCandidateCardClickedPart}
+                        setSelectedId={setSelectedId}
                       />
-                    ) : (
-                      <Text>Une erreur s'est produite</Text>
-                    )}
-                  </MultiStepMenuCheckout.MenuItemCheckout>
-                  <MultiStepMenuCheckout.MenuItemCheckout>
-                    {completedOrIssue === 'completed' &&
-                    priceToPay &&
-                    isValidationCodeCorrect ? (
-                      <KeyboardAvoidingView behavior={'padding'}>
-                        <ScrollView
-                          alwaysBounceVertical={true}
-                          showsVerticalScrollIndicator={false}
-                          scrollEnabled={true}>
-                          <DropReview />
-                        </ScrollView>
-                      </KeyboardAvoidingView>
-                    ) : (
-                      <Text>Une erreur s'est produite</Text>
-                    )}
-                  </MultiStepMenuCheckout.MenuItemCheckout>
-                  <MultiStepMenuCheckout.MenuItemCheckout>
-                    {completedOrIssue === 'completed' &&
-                    priceToPay &&
-                    isValidationCodeCorrect ? (
-                      <></>
-                    ) : (
-                      <Text>Une erreur s'est produite</Text>
-                    )}
-                  </MultiStepMenuCheckout.MenuItemCheckout>
-                </MultiStepMenuCheckout>
-              </View>
-            </Modal>
-
-            <Modal
-              isVisible={!!selectedId || candidateCardClickedPart === 'icon'}
-              animationIn={'slideInUp'}
-              animationOut={'slideOutDown'}
-              useNativeDriver
-              style={styles.modalContainer}
-              backdropColor={'#C1BEC0'}
-              onBackButtonPress={() => onModalClose()}
-              onBackdropPress={() => onModalClose()}
-              onSwipeComplete={() => onModalClose()}>
-              <View style={styles.modal}>
-                {candidateCardClickedPart === 'icon' ? (
-                  <>
-                    <Text center bold vertical={25}>
-                      Veuillez choisir 3 jours qui vous conviennent
-                    </Text>
-                    <Calendar parentCallback={setDate} />
-                    {date && Object.keys(date).length === 3 && (
-                      <Block margin={[20, 20]}>
-                        <Button
-                          secondary
-                          disabled={!netWorkStatus}
-                          onPress={() => onSubmit()}>
-                          <Text bold center>
-                            Je chosis ce candidat
-                          </Text>
-                        </Button>
-                      </Block>
-                    )}
-                  </>
+                    </TouchableOpacity>
+                  ))
                 ) : (
-                  netWorkStatus && <Avis candidateModalId={selectedId} />
+                  <></>
                 )}
-              </View>
-            </Modal>
-          </Block>
-        )}
+                {Data?.offeringById.eventday && (
+                  <EventDay eventday={Data?.offeringById.eventday} />
+                )}
+              </Block>
+
+              <Modal
+                isVisible={isUpdateOnUser}
+                animationIn={'slideInUp'}
+                animationOut={'slideOutDown'}
+                useNativeDriver
+                style={styles.modalContainer}
+                backdropColor={'#C1BEC0'}
+                onBackButtonPress={() => setIsUpdateOnUser(false)}
+                onBackdropPress={() => setIsUpdateOnUser(false)}
+                onSwipeComplete={() => setIsUpdateOnUser(false)}>
+                <View style={[styles.modal, { height: height * 0.5 }]}>
+                  <Text center bold>
+                    Dites nous tout
+                  </Text>
+                  <MultiStepMenuCheckout>
+                    <MultiStepMenuCheckout.MenuItemCheckout>
+                      <CompletedOrIssue
+                        setCompletedOrIssue={setCompletedOrIssue}
+                      />
+                    </MultiStepMenuCheckout.MenuItemCheckout>
+                    <MultiStepMenuCheckout.MenuItemCheckout>
+                      {completedOrIssue === 'completed' ? (
+                        <AmountToPay setPriceToPay={setPriceToPay} />
+                      ) : completedOrIssue === 'issue' ? (
+                        <KeyboardAvoidingView behavior={'padding'}>
+                          <ScrollView
+                            alwaysBounceVertical={true}
+                            showsVerticalScrollIndicator={false}
+                            scrollEnabled={true}>
+                            <IssueReporting />
+                          </ScrollView>
+                        </KeyboardAvoidingView>
+                      ) : (
+                        <Text>Vous ne devriez pas etre ici</Text>
+                      )}
+                    </MultiStepMenuCheckout.MenuItemCheckout>
+                    <MultiStepMenuCheckout.MenuItemCheckout>
+                      {completedOrIssue === 'completed' && priceToPay ? (
+                        <ValidationCode
+                          setIsValidationCodeCorrect={
+                            setIsValidationCodeCorrect
+                          }
+                        />
+                      ) : (
+                        <Text>Une erreur s'est produite</Text>
+                      )}
+                    </MultiStepMenuCheckout.MenuItemCheckout>
+                    <MultiStepMenuCheckout.MenuItemCheckout>
+                      {completedOrIssue === 'completed' &&
+                      priceToPay &&
+                      isValidationCodeCorrect ? (
+                        <KeyboardAvoidingView behavior={'padding'}>
+                          <ScrollView
+                            alwaysBounceVertical={true}
+                            showsVerticalScrollIndicator={false}
+                            scrollEnabled={true}>
+                            <DropReview />
+                          </ScrollView>
+                        </KeyboardAvoidingView>
+                      ) : (
+                        <Text>Une erreur s'est produite</Text>
+                      )}
+                    </MultiStepMenuCheckout.MenuItemCheckout>
+                    <MultiStepMenuCheckout.MenuItemCheckout>
+                      {completedOrIssue === 'completed' &&
+                      priceToPay &&
+                      isValidationCodeCorrect ? (
+                        <></>
+                      ) : (
+                        <Text>Une erreur s'est produite</Text>
+                      )}
+                    </MultiStepMenuCheckout.MenuItemCheckout>
+                  </MultiStepMenuCheckout>
+                </View>
+              </Modal>
+
+              <Modal
+                isVisible={!!selectedId || candidateCardClickedPart === 'icon'}
+                animationIn={'slideInUp'}
+                animationOut={'slideOutDown'}
+                useNativeDriver
+                style={styles.modalContainer}
+                backdropColor={'#C1BEC0'}
+                onBackButtonPress={() => onModalClose()}
+                onBackdropPress={() => onModalClose()}
+                onSwipeComplete={() => onModalClose()}>
+                <View style={styles.modal}>
+                  {candidateCardClickedPart === 'icon' ? (
+                    <>
+                      <Text center bold vertical={25}>
+                        Veuillez choisir 3 jours qui vous conviennent
+                      </Text>
+                      <Calendar parentCallback={setDate} />
+                      {date && Object.keys(date).length === 3 && (
+                        <Block margin={[20, 20]}>
+                          <Button
+                            secondary
+                            disabled={!netWorkStatus}
+                            onPress={() => onSubmit()}>
+                            <Text bold center>
+                              Je chosis ce candidat
+                            </Text>
+                          </Button>
+                        </Block>
+                      )}
+                    </>
+                  ) : (
+                    netWorkStatus && <Avis candidateModalId={selectedId} />
+                  )}
+                </View>
+              </Modal>
+            </Block>
+          )}
+          {error && (
+            <ModalItemInfos
+              errorReporting
+              information={'Erreur'}
+              description={
+                'Une erreur est survenue sur le réseau. Veuillez réessayer plus tard'
+              }
+              timer={0.5}
+            />
+          )}
+        </>
       </Layout>
     </ScrollView>
   );

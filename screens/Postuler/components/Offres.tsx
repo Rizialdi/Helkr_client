@@ -68,13 +68,15 @@ const Offres = () => {
   return (
     <>
       {loadingTabOne && <ActivityIndicator />}
-      <CustomListView
-        data={stateData?.incompleteOfferings}
-        emptyMessage={'Aucun tag trouvé.'}
-        modalItem={<ModalItemApplyToOffering />}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
+      {stateData && (
+        <CustomListView
+          data={stateData?.incompleteOfferings}
+          emptyMessage={'Aucun tag trouvé.'}
+          modalItem={<ModalItemApplyToOffering />}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      )}
     </>
   );
 };

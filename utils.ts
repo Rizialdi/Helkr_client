@@ -69,6 +69,7 @@ export const getDayAndDate = (
   timestamp: string = '1595798432136'
 ): (string | number)[] => {
   const date = new Date(parseInt(timestamp));
+  if (!date) return [];
   return [
     daysOfWeek[date.getDay()].slice(0, 3),
     date.getDate(),
@@ -80,6 +81,7 @@ export const plainDayAndDate = (
   timestamp: string = '1595798432136'
 ): (string | number)[] => {
   const date = new Date(parseInt(timestamp));
+  if (!date) return [];
   return [
     daysOfWeek[date.getDay()],
     date.getDate(),
@@ -92,6 +94,7 @@ export const formatDateAvis = (
   timestamp: string | number = '15886987435'
 ): string => {
   const date = new Date(timestamp);
+  if (!date) return '';
   return yearMonths[date.getMonth()].slice(0, 3) + ' ' + date.getFullYear();
 };
 

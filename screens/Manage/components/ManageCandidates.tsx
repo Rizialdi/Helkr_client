@@ -98,6 +98,7 @@ const ManageCandidates = () => {
   useEffect(() => {
     if (!error && data) {
       setStateData(data);
+      console.log('data2evento', data);
     }
   }, [data, loading]);
 
@@ -105,13 +106,15 @@ const ManageCandidates = () => {
     <>
       {loadingTabTwo && <ActivityIndicator />}
 
-      <CustomListView
-        data={stateData?.myIncompleteOfferingWithCandidates}
-        emptyMessage={'Aucun candidat à une offre actuellement'}
-        modalItem={<ModalItemManageCandidates />}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
+      {stateData && (
+        <CustomListView
+          data={stateData?.myIncompleteOfferingWithCandidates}
+          emptyMessage={'Aucun candidat à une offre actuellement'}
+          modalItem={<ModalItemManageCandidates />}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      )}
     </>
   );
 };

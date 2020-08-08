@@ -41,13 +41,15 @@ const ManageOffering = () => {
   return (
     <>
       {loadingTabOne && <ActivityIndicator />}
-      <CustomListView
-        data={stateData?.myIncompleteOffering}
-        emptyMessage={"Vous n'avez aucune offre actuellement"}
-        modalItem={<ModalItemManageOfferings />}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
+      {stateData && (
+        <CustomListView
+          data={stateData?.myIncompleteOffering}
+          emptyMessage={"Vous n'avez aucune offre actuellement"}
+          modalItem={<ModalItemManageOfferings />}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      )}
     </>
   );
 };

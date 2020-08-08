@@ -25,7 +25,7 @@ const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
           params: { category }
         })
       }>
-      <Card center middle style={styles.category} shadow>
+      <Card center middle style={[styles.category]} shadow>
         <Badge margin={[0, 0, 15]} size={70} secondary>
           <IconSvg kind={category.image} />
         </Badge>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     // this should be dynamic based on screen width
     minWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
     maxWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
-    maxHeight: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2
+    maxHeight: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
+    marginVertical: 10
   }
 });

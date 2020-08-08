@@ -38,7 +38,13 @@ const ModalItem: FC<Props> = props => {
           <Block flex={false} row middle space={'around'}>
             <TagItem tag={data?.offeringById?.type} type />
             <TagItem tag={data?.offeringById?.category} category />
-            <TagItem tag={formatDateAvis(data?.offeringById?.createdAt)} date />
+            {data?.offeringById?.createdAt &&
+              formatDateAvis(data?.offeringById?.createdAt) && (
+                <TagItem
+                  tag={formatDateAvis(data?.offeringById?.createdAt)}
+                  date
+                />
+              )}
           </Block>
           <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
             {data?.offeringById?.description}

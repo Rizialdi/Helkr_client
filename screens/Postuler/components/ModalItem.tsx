@@ -63,14 +63,17 @@ const ModalItem: FC<Props> = props => {
                   space={'around'}>
                   <TagItem tag={data?.offeringById?.type} type />
                   <TagItem tag={data?.offeringById?.category} category />
-                  <TagItem
-                    tag={
-                      data?.offeringById.updatedAt
-                        ? formatDateAvis(data?.offeringById?.updatedAt)
-                        : formatDateAvis(data?.offeringById?.createdAt)
-                    }
-                    date
-                  />
+                  {data?.offeringById?.updatedAt &&
+                    formatDateAvis(data?.offeringById?.updatedAt) && (
+                      <TagItem
+                        tag={
+                          data?.offeringById.updatedAt
+                            ? formatDateAvis(data?.offeringById?.updatedAt)
+                            : formatDateAvis(data?.offeringById?.createdAt)
+                        }
+                        date
+                      />
+                    )}
                 </Block>
                 <Text bold size={16} vertical={[20, 10]}>
                   Description

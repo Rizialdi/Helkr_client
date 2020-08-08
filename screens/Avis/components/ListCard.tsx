@@ -38,7 +38,9 @@ export default ({
           {mark[score]}
         </Text>
         <Text style={{ fontSize: 14, marginBottom: 10 }}>{comment}</Text>
-        <Text style={{ fontSize: 10 }}>{formatDateAvis(createdAt)}</Text>
+        {createdAt && formatDateAvis(createdAt) && (
+          <Text style={{ fontSize: 10 }}>{formatDateAvis(createdAt)}</Text>
+        )}
       </View>
       <View>
         <ImageComponent

@@ -34,8 +34,8 @@ const candidateCard: FC<Props> = ({
   return (
     <Card shadow>
       <Block flex={true} row>
-        <View style={{ flex: 1 }}>
-          <ImageComponent image={avatar} style={styles.image} />
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <ImageComponent image={avatar} style={styles.imageItem} />
         </View>
         <View style={{ flex: 3 }}>
           <Block row space={'around'} center>
@@ -60,9 +60,14 @@ const candidateCard: FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  image: { width: '100%', height: '100%' },
+  image: { justifyContent: 'center', padding: 15, borderRadius: 10 },
+  imageItem: {
+    width: 65,
+    height: 65,
+    borderRadius: 35
+  },
   icon: {
-    padding: 15,
+    padding: 50,
     borderRadius: 10
   }
 });

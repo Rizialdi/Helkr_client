@@ -55,16 +55,19 @@ const ModalItemManageOfferings: FC<Props> = props => {
               <Block margin={[0, -25]} flex={false} row middle space={'around'}>
                 <TagItem tag={data?.offeringById?.type} type />
                 <TagItem tag={data?.offeringById?.category} category />
-                <TagItem
-                  tag={
-                    data?.offeringById.updatedAt
-                      ? formatDateAvis(data?.offeringById?.updatedAt)
-                      : data?.offeringById.createdAt
-                      ? formatDateAvis(data?.offeringById?.createdAt)
-                      : ''
-                  }
-                  date
-                />
+                {data?.offeringById?.updatedAt &&
+                  formatDateAvis(data?.offeringById?.updatedAt) && (
+                    <TagItem
+                      tag={
+                        data?.offeringById.updatedAt
+                          ? formatDateAvis(data?.offeringById?.updatedAt)
+                          : data?.offeringById.createdAt
+                          ? formatDateAvis(data?.offeringById?.createdAt)
+                          : ''
+                      }
+                      date
+                    />
+                  )}
               </Block>
               <Text bold size={16} vertical={[20, 10]}>
                 Description

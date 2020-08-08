@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
     paddingVertical: 16 + 4,
-    marginBottom: 15,
-    marginTop: 5
+    marginBottom: 5,
+    marginHorizontal: 5
   },
   shadow: {
     shadowColor: '#000',

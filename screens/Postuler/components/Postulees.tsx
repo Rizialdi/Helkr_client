@@ -69,14 +69,16 @@ const Postulees = () => {
   return (
     <>
       {loadingTabTwo && <ActivityIndicator />}
-      <CustomListView
-        // TODO resolve typescrit linting
-        data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
-        emptyMessage={"Vous n'avez aucune candidature"}
-        modalItem={<ModalItem />}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-      />
+      {stateData && (
+        <CustomListView
+          // TODO resolve typescrit linting
+          data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
+          emptyMessage={"Vous n'avez aucune candidature"}
+          modalItem={<ModalItem />}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      )}
     </>
   );
 };

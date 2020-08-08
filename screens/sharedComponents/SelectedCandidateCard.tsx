@@ -22,7 +22,7 @@ const candidateCard: FC<Props> = ({ professional, average, avatar = null }) => {
   return (
     <Card shadow>
       <Block flex={false} row>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <ImageComponent image={avatar} style={styles.image} />
         </View>
         <View style={{ flex: 3 }}>
@@ -46,7 +46,11 @@ const candidateCard: FC<Props> = ({ professional, average, avatar = null }) => {
 };
 
 const styles = StyleSheet.create({
-  image: { width: '100%', height: '100%' },
+  image: {
+    width: 65,
+    height: 65,
+    borderRadius: 35
+  },
   subContainer: {
     padding: 15,
     borderRadius: 10
