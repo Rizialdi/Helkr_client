@@ -98,7 +98,6 @@ const ManageCandidates = () => {
   useEffect(() => {
     if (!error && data) {
       setStateData(data);
-      console.log('data2evento', data);
     }
   }, [data, loading]);
 

@@ -19,7 +19,7 @@ const ModalItem: FC<Props> = props => {
   const { called, loading, data } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
-  console.log(props);
+
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const client = useApolloClient();

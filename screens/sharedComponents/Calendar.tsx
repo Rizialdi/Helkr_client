@@ -91,9 +91,6 @@ const CalendarComponent: SFC<Props> = ({ parentCallback }) => {
       }}
       markedDates={localDateObject}
       firstDay={1}
-      onDayLongPress={day => {
-        console.log('selected day', day);
-      }}
       monthFormat={'MM yyyy'}
     />
   );

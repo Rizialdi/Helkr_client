@@ -36,7 +36,7 @@ import {
   DetailStackParamsList
 } from './Routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Platform } from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -83,7 +83,7 @@ const Detail = () => {
 const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
-      initialRouteName="Postuler"
+      initialRouteName="Accueil"
       activeColor={theme.colors.primary}
       sceneAnimationEnabled={true}
       backBehavior={'initialRoute'}
@@ -132,14 +132,6 @@ const createBottomTabs = () => {
     </MaterialBottomTabs.Navigator>
   );
 };
-
-function CustomHeader(props: StackHeaderProps) {
-  return (
-    <>
-      <Header {...props} />
-    </>
-  );
-}
 
 const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
   return (
@@ -270,13 +262,32 @@ export default ({ initialState, onStateChange }: Props) => {
 
   const [isLoading, setIsLoading] = useState(true);
 
+  // (async () => {
+  //   await AsyncStorage.clear();
+  //   await AsyncStorage.multiSet([
+  //     ['id', 'ckb9svn8p00000ip99ubjoc01'],
+  //     [
+  //       'token',
+  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja2I5c3ZuOHAwMDAwMGlwOTl1YmpvYzAxIiwiaWF0IjoxNTk2ODk1Nzk3fQ.YzFA6MYj46xF44NsdlUTKKUn8-kjlavLkwIA3ar64Uw'
+  //     ],
+  //     ['prenom', 'Melinda']
+  //   ]);
+  // })();
+
   useEffect(() => {
-    loadUser();
-    loadTags();
-    loadLastMessageReadIds();
-    loadJobAuthorizations();
-    loadsendVerifPiecesReferenceIds();
-    setTimeout(() => setIsLoading(false), 2000);
+    (async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        loadUser();
+        loadTags();
+        loadLastMessageReadIds();
+        loadJobAuthorizations();
+        loadsendVerifPiecesReferenceIds();
+        setTimeout(() => setIsLoading(false), 1000);
+      } else {
+        setTimeout(() => setIsLoading(false), 2000);
+      }
+    })();
   }, []);
 
   if (isLoading) return <BienvenueFirst />;

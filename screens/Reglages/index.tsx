@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
 import {
   AsyncStorage,
@@ -33,7 +33,6 @@ import { AntDesign } from '@expo/vector-icons';
 export default function Profile({
   navigation
 }: StackNavigationInterface<MainStackParamList, 'Reglages'>) {
-  const [Id, setId] = useState<string>('');
   const apolloClient = useApolloClient();
   const [disableSaveButton, setDisableSaveButton] = useState<boolean>(false);
   const [image, setImage] = useState<ImagePicker.ImagePickerResult>(null);
@@ -92,7 +91,10 @@ export default function Profile({
 
   const [isModified, setIsModified] = useState<boolean>(false);
 
-  // TODO check working of this function
+  useEffect(() => {
+    tags && SetTags(tags);
+  }, []);
+
   useEffect(() => {
     setIsModified(
       !(address?.toLowerCase() === addressParent?.toLowerCase()) ||
@@ -111,7 +113,7 @@ export default function Profile({
       tagList && onChangeTags(tagList);
 
       setTimeout(() => {
-        navigation.navigate('Profile');
+        navigation.goBack();
       }, 500);
     } catch (error) {
       throw new Error(error);
@@ -225,9 +227,7 @@ export default function Profile({
                 ]}>
                 Tags
               </Text>
-              {tags && tags.length > 0 && (
-                <Tag tags={tags} parentCallback={SetTags} />
-              )}
+              <Tag tags={tags} parentCallback={SetTags} />
             </View>
           </ScrollView>
         </KeyboardAvoidingView>

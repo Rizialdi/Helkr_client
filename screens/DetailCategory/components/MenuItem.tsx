@@ -5,7 +5,9 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Keyboard,
+  ActivityIndicator
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -44,13 +46,17 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
 
   const { themeColors } = useStoreState(state => state.Preferences);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [submitPressed, setSubmitPressed] = useState<boolean>(false);
+  const [openErrorModal, setOpenErrorModal] = useState<boolean>(false);
 
   const onSubmitForm = () => {
+    Keyboard.dismiss();
     props
       .onSubmit()
-      .then(({ data }) => {
+      .then(({ data, errors }) => {
         data?.addOffering && setOpenModal(true);
+        errors && setOpenErrorModal(true);
       })
       .catch(error => {
         throw new Error(`Ajout offre impossible, ${error}`);
@@ -106,14 +112,19 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
           }}>
           <StackedToBottom margin={[20, 20]}>
             <Button
-              disabled={!netWorkStatus}
+              disabled={!netWorkStatus || submitPressed}
               secondary={netWorkStatus && selected}
               onPress={() => {
                 selected && onSubmitForm();
+                selected && setSubmitPressed(true);
               }}>
-              <Text center bold>
-                Soumettre
-              </Text>
+              {submitPressed ? (
+                <ActivityIndicator size={'small'} />
+              ) : (
+                <Text center bold>
+                  Soumettre
+                </Text>
+              )}
             </Button>
           </StackedToBottom>
         </Block>
@@ -124,7 +135,19 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
           description={
             "Votre mission vient d'être ajouté à notre liste. Vous serez sous peu contacté par des Helkr prêt à vous aider."
           }
-          timer={1}
+          timer={0.5}
+          callBack={navigation.goBack}
+        />
+      )}
+
+      {openErrorModal && (
+        <ModalItemInfos
+          errorReporting
+          information={'Erreur'}
+          description={
+            "Une erreur s'est produite lors de la création de la mission. Veuillez réessayer plus tard."
+          }
+          timer={0.5}
           callBack={navigation.goBack}
         />
       )}

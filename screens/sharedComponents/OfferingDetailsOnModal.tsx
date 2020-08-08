@@ -10,7 +10,7 @@ const OfferingDetailsOnModal: SFC<Props> = ({ details }) => {
   const itemsNotToDisplay: string[] = ['offeringDescription'];
   return (
     <>
-      {details &&
+      {!!(details && details.details) &&
         Object.entries(
           JSON.parse(details?.details) as { [key: string]: string }
         ).map(([key, value], idx) => {
