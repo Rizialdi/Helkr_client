@@ -20,7 +20,7 @@ export default ({ tag }: Props) => (
       margin: 5,
       backgroundColor: 'rgba(175, 158, 123, 0.1)'
     }}>
-    {tag && (
+    {!!tag && (
       <Text
         style={{
           fontFamily: 'HelveticaNeue',

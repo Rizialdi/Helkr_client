@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { Picker } from '@react-native-community/picker';
 
 import { theme } from '../../../constants';
 import { Text } from '../../sharedComponents';
@@ -26,7 +25,6 @@ type labelOrValue = { label: string; value: string };
 export default ({ tags = ['_'], parentCallback }: Props) => {
   const [selected, setSelected] = useState<string>();
   const [concatedList, setConcatedList] = useState<Array<string> | null>(tags);
-  const [value, setValue] = useState();
 
   const onChange = (item: string[]) => {
     setConcatedList(item);
@@ -87,8 +85,13 @@ export default ({ tags = ['_'], parentCallback }: Props) => {
                 color: theme.colors.gray
               }}
               disabled={!!(concatedList && concatedList.length >= 5)}
-              onValueChange={value => setSelected(value)}
+              onValueChange={value => {
+                Platform.OS === 'android'
+                  ? value && onAdd(value)
+                  : setSelected(value);
+              }}
               doneText={'Ajouter'}
+              useNativeAndroidPickerStyle={true}
               onDonePress={() => (selected ? onAdd(selected) : null)}
               items={filterList}
             />

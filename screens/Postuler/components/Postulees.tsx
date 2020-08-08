@@ -68,7 +68,7 @@ const Postulees = () => {
   }, [dataUpdate]);
   return (
     <>
-      {loadingTabTwo && <ActivityIndicator />}
+      {loadingTabTwo && !stateData && <ActivityIndicator />}
       {stateData && (
         <CustomListView
           // TODO resolve typescrit linting

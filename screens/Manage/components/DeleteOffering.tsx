@@ -7,8 +7,11 @@ import RadioForm, {
 } from 'react-native-simple-radio-button';
 import { Block, Text, Button } from '../../sharedComponents';
 import {
+  MyIncompleteOfferingQuery,
   useDeleteOfferingMutation,
-  MyIncompleteOfferingDocument
+  MyIncompleteOfferingDocument,
+  GetUserStatsQuery,
+  GetUserStatsDocument
 } from '../../../graphql';
 import { useStoreState } from '../../../models';
 
@@ -18,7 +21,6 @@ import {
   ScrollView,
   Dimensions
 } from 'react-native';
-import { MyIncompleteOfferingQuery } from '../../../graphql/helpkr-types';
 import { DataProxy } from 'apollo-cache';
 
 const { height } = Dimensions.get('screen');
@@ -38,6 +40,7 @@ const UpdateDescription: FC<Props> = ({
 
   const { themeColors } = useStoreState(state => state.Preferences);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+  const { user } = useStoreState(state => state.User);
 
   const [
     deleteOfferingMutation,
@@ -51,14 +54,15 @@ const UpdateDescription: FC<Props> = ({
   ];
 
   const updateCache = (cache: DataProxy) => {
-    const data = cache.readQuery({
+    const dataMyIncompleteOffering = cache.readQuery({
       query: MyIncompleteOfferingDocument,
       variables: {}
     }) as MyIncompleteOfferingQuery | undefined;
 
+    // Update my icncomplete offerings list
     const newData = {
-      ...data,
-      myIncompleteOffering: data?.myIncompleteOffering.filter(
+      ...dataMyIncompleteOffering,
+      myIncompleteOffering: dataMyIncompleteOffering?.myIncompleteOffering.filter(
         item => item.id !== id
       )
     };
@@ -68,6 +72,31 @@ const UpdateDescription: FC<Props> = ({
       variables: {},
       data: newData
     });
+
+    // Update User stats as well
+    const dataUserStats = cache.readQuery({
+      query: GetUserStatsDocument,
+      variables: { id: user.id }
+    }) as GetUserStatsQuery | undefined;
+
+    if (dataUserStats && dataUserStats.getUserStats) {
+      const newDataUserStats = {
+        ...dataUserStats,
+        getUserStats: {
+          ...dataUserStats?.getUserStats,
+          proposed:
+            dataUserStats?.getUserStats.proposed > 0
+              ? dataUserStats?.getUserStats.proposed - 1
+              : 0
+        }
+      };
+
+      cache.writeQuery({
+        query: GetUserStatsDocument,
+        variables: { id: user.id },
+        data: newDataUserStats
+      });
+    }
   };
 
   const removeOffering = () => {
@@ -156,7 +185,7 @@ const UpdateDescription: FC<Props> = ({
               <ActivityIndicator size={'small'} />
             ) : (
               <Text bold center>
-                Supprimer{' '}
+                Supprimer
               </Text>
             )}
           </Button>

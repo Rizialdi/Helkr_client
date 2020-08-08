@@ -1,4 +1,3 @@
-import Icon from 'react-native-vector-icons/AntDesign';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
@@ -9,9 +8,7 @@ import {
 } from '@react-navigation/native';
 import {
   createStackNavigator,
-  TransitionPresets,
-  StackHeaderProps,
-  Header
+  TransitionPresets
 } from '@react-navigation/stack';
 
 import Accueil from '../screens/Accueil';
@@ -94,7 +91,9 @@ const createBottomTabs = () => {
         component={Manage}
         options={{
           tabBarLabel: 'Gerer',
-          tabBarIcon: () => <Icon name="pluscircleo" size={24} color="black" />
+          tabBarIcon: () => (
+            <AntDesign name="pluscircleo" size={24} color="black" />
+          )
         }}
       />
       <MaterialBottomTabs.Screen
@@ -102,7 +101,7 @@ const createBottomTabs = () => {
         component={Postuler}
         options={{
           tabBarLabel: 'Postuler',
-          tabBarIcon: () => <Icon name="tagso" size={24} color="black" />
+          tabBarIcon: () => <AntDesign name="tagso" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
@@ -110,7 +109,7 @@ const createBottomTabs = () => {
         component={Accueil}
         options={{
           tabBarLabel: 'Accueil',
-          tabBarIcon: () => <Icon name="home" size={24} color="black" />
+          tabBarIcon: () => <AntDesign name="home" size={24} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
@@ -118,7 +117,9 @@ const createBottomTabs = () => {
         component={Discussions}
         options={{
           tabBarLabel: 'Discussions',
-          tabBarIcon: () => <Icon name="message1" size={24} color="black" />
+          tabBarIcon: () => (
+            <AntDesign name="message1" size={24} color="black" />
+          )
         }}
       />
       <MaterialBottomTabs.Screen
@@ -126,7 +127,7 @@ const createBottomTabs = () => {
         component={Profile}
         options={{
           tabBarLabel: 'Profil',
-          tabBarIcon: () => <Icon name="user" size={24} color="black" />
+          tabBarIcon: () => <AntDesign name="user" size={24} color="black" />
         }}
       />
     </MaterialBottomTabs.Navigator>

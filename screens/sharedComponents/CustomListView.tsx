@@ -5,7 +5,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
-import { useStoreState } from '../../models';
 
 export interface dataContent {
   id: string;
@@ -35,7 +34,6 @@ const CustomListView: SFC<Props> = ({
   const [status, setStatus] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const { themeColors } = useStoreState(state => state.Preferences);
   const openToDescription = (id: string, status: string = '') => {
     setSelectedOffering(id);
     setOpenModal(true);

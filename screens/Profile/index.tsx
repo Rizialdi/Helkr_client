@@ -48,8 +48,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
   } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
-    fetchPolicy: 'cache-and-network',
-    pollInterval: 100 * 3600 * 24
+    fetchPolicy: 'cache-and-network'
   });
 
   return (
@@ -94,7 +93,13 @@ export default function Profile({ navigation, route: { params } }: Props) {
               ]}>
               Tags
             </Text>
-            {tags && tags?.length > 0 && <Tag tags={tags} />}
+            {tags && tags?.length > 0 ? (
+              <Tag tags={tags} />
+            ) : (
+              <Text horizontal={25} gray>
+                _
+              </Text>
+            )}
           </View>
         </ScrollView>
       </>

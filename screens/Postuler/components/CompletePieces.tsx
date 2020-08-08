@@ -98,8 +98,8 @@ const FirstScreen = ({ ...props }) => {
 
           <Text vertical={[15, 15]}>
             Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
-            entité tièrce. Elles seront essentiellement utilisées par notre
-            équipe pour la validation de votre profil.
+            entité tièrce. Elles sont essentiellement utilisées par notre équipe
+            pour la validation de votre profil.
           </Text>
         </Block>
       </ScrollView>

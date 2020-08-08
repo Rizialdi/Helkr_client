@@ -5,16 +5,19 @@ import {
   MutationFunctionOptions,
   DataValue
 } from 'react-apollo';
-import { View } from 'react-native';
+import { View, AsyncStorage } from 'react-native';
 
 import MenuItem from './MenuItem';
 import {
   AddOfferingDocument,
   AddOfferingMutationVariables,
-  AddOfferingMutationResult
+  AddOfferingMutationResult,
+  GetUserStatsDocument,
+  GetUserStatsQuery
 } from '../../../graphql';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DetailStackParamsList } from '../../../navigation/Routes';
+import { DataProxy } from 'apollo-cache';
 
 // todo values object ? array ?
 interface State {
@@ -46,6 +49,34 @@ class MultiStepMenu extends Component<Props, State, any> {
     }));
   };
 
+  _update = async (cache: DataProxy) => {
+    const getUserId = async () => {
+      const id = await AsyncStorage.getItem('id');
+      return id || '';
+    };
+
+    const id = await getUserId();
+    if (!id) return;
+    const dataUserStats = cache.readQuery({
+      query: GetUserStatsDocument,
+      variables: { id }
+    }) as GetUserStatsQuery | undefined;
+
+    if (dataUserStats && dataUserStats.getUserStats) {
+      const newDataUserStats = {
+        ...dataUserStats,
+        getUserStats: {
+          ...dataUserStats?.getUserStats,
+          proposed: dataUserStats.getUserStats.proposed + 1
+        }
+      };
+      cache.writeQuery({
+        query: GetUserStatsDocument,
+        variables: { id },
+        data: newDataUserStats
+      });
+    }
+  };
   _onSubmit = () => {
     const {
       categoryName,
@@ -64,7 +95,8 @@ class MultiStepMenu extends Component<Props, State, any> {
             description: values?.offeringDescription,
             details: JSON.stringify(values),
             referenceId: categoryItemReferenceId
-          }
+          },
+          update: this._update
         })
       );
     } catch (error) {

@@ -67,7 +67,7 @@ const Offres = () => {
 
   return (
     <>
-      {loadingTabOne && <ActivityIndicator />}
+      {loadingTabOne && !stateData && <ActivityIndicator />}
       {stateData && (
         <CustomListView
           data={stateData?.incompleteOfferings}

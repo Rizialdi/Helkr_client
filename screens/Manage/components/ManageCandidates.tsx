@@ -103,7 +103,7 @@ const ManageCandidates = () => {
 
   return (
     <>
-      {loadingTabTwo && <ActivityIndicator />}
+      {loadingTabTwo && !stateData && <ActivityIndicator />}
 
       {stateData && (
         <CustomListView

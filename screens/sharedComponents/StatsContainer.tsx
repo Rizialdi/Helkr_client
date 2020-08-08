@@ -28,8 +28,7 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
   } = useGetUserStatsQuery({
     variables: { id },
     errorPolicy: 'ignore',
-    fetchPolicy: 'cache-and-network',
-    pollInterval: 1000 * 3600 * 24
+    fetchPolicy: 'cache-and-network'
   });
 
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
