@@ -34,8 +34,8 @@ const ModalItem: SFC<Props> = ({
   }, [modalVisible]);
 
   const onCloseModal = () => {
-    //@ts-ignore
-    callBack && callBack(...callBackParams);
+    //@ts-ignore // TODO an issue ?
+    callBack && callBack(callBackParams);
     setModalVisible(false);
   };
 

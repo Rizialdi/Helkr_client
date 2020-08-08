@@ -131,7 +131,7 @@ const Item = ({
         </View>
       </TouchableOpacity>
       <Modal
-        animationType="fade"
+        animationType="slide"
         hardwareAccelerated={true}
         presentationStyle="overFullScreen"
         visible={openDiscussionScreen}>

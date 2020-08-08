@@ -91,7 +91,7 @@ const UpdateDescription: FC<Props> = ({
     <KeyboardAvoidingView behavior={'position'}>
       <ScrollView
         style={{
-          height: height * 0.7
+          height: height * 0.4
         }}
         alwaysBounceVertical={true}
         showsHorizontalScrollIndicator={false}

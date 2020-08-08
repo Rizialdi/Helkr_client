@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from './sharedComponents';
-import { StyleSheet, Dimensions, View } from 'react-native';
+import { StyleSheet, Dimensions, View, Text } from 'react-native';
 //@ts-ignore
 import Image from 'react-native-remote-svg';
 
@@ -15,7 +14,7 @@ export class BienvenueFirst extends Component<Props> {
     return (
       <View style={styles.container}>
         <View style={styles.appTitle}>
-          <Text size={48}>Helkr</Text>
+          <Text style={{ fontSize: 48 }}>Helkr</Text>
         </View>
         <View style={styles.presentation}>
           <View>
@@ -24,7 +23,7 @@ export class BienvenueFirst extends Component<Props> {
               style={styles.image}
             />
           </View>
-          <Text style={styles.text} semibold>
+          <Text style={styles.text}>
             Toujours trouver la personne qui vous convient
           </Text>
         </View>
@@ -45,7 +44,8 @@ const styles = StyleSheet.create({
   presentation: { flex: 0.6, alignContent: 'center' },
   text: {
     paddingVertical: 15,
-    fontSize: 16
+    fontSize: 16,
+    fontWeight: '500'
   }
 });
 

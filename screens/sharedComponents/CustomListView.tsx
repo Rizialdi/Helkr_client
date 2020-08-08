@@ -1,4 +1,3 @@
-import Icon from 'react-native-vector-icons/AntDesign';
 import React, { SFC, useState } from 'react';
 import { FlatList, Modal } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';

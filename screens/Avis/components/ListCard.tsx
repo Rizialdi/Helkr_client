@@ -1,8 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { theme } from '../../../constants';
-import { Text } from '../../sharedComponents';
+import { Text, Block } from '../../sharedComponents';
 import { formatDateAvis } from '../../../utils';
 import ImageComponent from '../../sharedComponents/ImageComponent';
 
@@ -12,6 +11,7 @@ interface Mark {
   comment: string;
   createdAt: string;
   avatar: string | undefined;
+  color: string;
 }
 const mark: string[] = [
   'A éviter',
@@ -27,42 +27,38 @@ export default ({
   score = 0,
   comment = 'Agreable',
   createdAt = Date.now().toString(),
-  avatar = ''
+  avatar = '',
+  color
 }: Mark) => (
-  <TouchableOpacity style={styles.container}>
-    <View style={styles.mainLine}>
-      <Text style={{ fontSize: 16, fontWeight: '500' }}>{scorer}</Text>
-
-      <ImageComponent image={avatar} style={styles.image} />
-    </View>
-
-    <View style={{ marginHorizontal: 30 }}>
-      <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 10 }}>
-        {mark[score]}
-      </Text>
-      <Text style={{ fontSize: 14, marginBottom: 10 }}>{comment}</Text>
-      <Text style={{ fontSize: 10 }}>{formatDateAvis(createdAt)}</Text>
-    </View>
+  <>
+    <Block style={styles.container} row space="between">
+      <View style={{}}>
+        <Text style={{ fontSize: 16, fontWeight: '500' }}>{scorer}</Text>
+        <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 10 }}>
+          {mark[score]}
+        </Text>
+        <Text style={{ fontSize: 14, marginBottom: 10 }}>{comment}</Text>
+        <Text style={{ fontSize: 10 }}>{formatDateAvis(createdAt)}</Text>
+      </View>
+      <View>
+        <ImageComponent
+          image={avatar}
+          style={[styles.image, { borderColor: color }]}
+        />
+      </View>
+    </Block>
     <View style={styles.delimiter}></View>
-  </TouchableOpacity>
+  </>
 );
 
 const styles = StyleSheet.create({
-  container: { width: '100%', marginTop: 10 },
-  mainLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginHorizontal: 30
-  },
-
+  container: { marginHorizontal: 30 },
   image: {
-    height: 45,
-    width: 45,
+    height: 55,
+    width: 55,
     borderRadius: 50,
     borderWidth: 2,
-    overflow: 'hidden',
-    borderColor: theme.colors.primary
+    overflow: 'hidden'
   },
   delimiter: {
     borderTopColor: '#DFD8C8',

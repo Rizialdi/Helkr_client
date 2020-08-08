@@ -27,6 +27,7 @@ interface Props {
 export default ({ navigation, candidateModalId, route }: Props) => {
   const Navigation = navigation ? navigation : '';
   const { user } = useStoreState(state => state.User);
+  const { themeColors } = useStoreState(state => state.Preferences);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const routeParams = route && route.params ? route.params : '';
   const userId = candidateModalId
@@ -90,6 +91,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
                       score={score}
                       comment={comment}
                       createdAt={createdAt}
+                      color={themeColors.primary}
                     />
                   </TouchableOpacity>
                 );
