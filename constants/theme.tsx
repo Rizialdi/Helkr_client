@@ -1,3 +1,8 @@
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp
+} from 'react-native-responsive-screen';
+
 const colors = {
   accent: '#F3534A',
   primary: '#0094FF',
@@ -11,21 +16,25 @@ const colors = {
 
 const sizes = {
   // global sizes
-  base: 16,
-  font: 14,
-  radius: 6,
-  padding: 25,
+  twiceTen: wp('4.85%'), //20
+  base: wp('3.87%'), //16
+  htwiceTen: hp('2.7%'), //
+  rtwiceTen: hp('2.7%'), //
+  hbase: hp('2.16%'), //
+  font: wp('3.39%'), //14
+  radius: wp('1.45%'), // 6
+  inouting: wp('6.05%'), // 25
 
   // font sizes
-  h1: 26,
-  h2: 20,
-  h3: 18,
-  title: 18,
-  header: 16,
-  body: 14,
-  caption: 12,
-  small: 10,
-  border: 5
+  h1: wp('6.3%'), //26
+  h2: wp('4.84%'), // 20
+  h3: wp('4.36%'), // 18
+  title: wp('4.36%'), //18
+  header: wp('3.87%'), //16
+  body: wp('3.39%'), //14
+  caption: wp('2.91%'), //12
+  small: wp('2.42%'), //10
+  border: wp('1.21%') //5
 };
 
 const fonts = {

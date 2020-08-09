@@ -1,7 +1,7 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/Octicons';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-
+import { theme } from '../../../constants';
 import { Text, ImageComponent } from '../../sharedComponents';
 
 interface Props {
@@ -36,7 +36,7 @@ export default ({
       )}
     </View>
     <View style={styles.infoContainer}>
-      <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>
+      <Text style={[styles.text, { fontSize: theme.sizes.h3 * 2 }]}>
         {username}
       </Text>
       <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>

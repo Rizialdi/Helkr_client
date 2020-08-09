@@ -8,7 +8,7 @@ import { AntDesign } from '@expo/vector-icons';
 import Text from './Text';
 import { useStoreState, useStoreActions } from '../../models';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { theme } from '../../constants';
 interface Props {
   title?: string;
   children: JSX.Element;
@@ -59,17 +59,28 @@ const Layout: SFC<Props> = ({
       <KeyboardAvoidingView enabled={true} behavior="height">
         {title && (
           <View style={styles.subContainer}>
-            <Block flex={false} row center space="between">
-              <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-                {title}
-              </Text>
+            <>
+              <Block flex={false} row center space="between">
+                <Text
+                  style={{
+                    fontFamily: 'josefinBold',
+                    fontSize: theme.sizes.h1
+                  }}>
+                  {title}
+                </Text>
 
-              <TouchableOpacity
-                //@ts-ignore
-                onPress={() => callBack && callBack(...callBackParams)}>
-                {iconName && <AntDesign name={iconName || 'meh'} size={30} />}
-              </TouchableOpacity>
-            </Block>
+                <TouchableOpacity
+                  //@ts-ignore
+                  onPress={() => callBack && callBack(...callBackParams)}>
+                  {iconName && (
+                    <AntDesign
+                      name={iconName || 'meh'}
+                      size={(theme.sizes.base - 1) * 2}
+                    />
+                  )}
+                </TouchableOpacity>
+              </Block>
+            </>
           </View>
         )}
         <View>{children}</View>
@@ -88,9 +99,9 @@ const styles = StyleSheet.create({
     color: '#52575D'
   },
   subContainer: {
-    marginTop: 40,
-    marginBottom: 20,
-    marginHorizontal: 32
+    marginTop: theme.sizes.htwiceTen * 0.9,
+    marginBottom: theme.sizes.htwiceTen * 0.5,
+    marginHorizontal: theme.sizes.base * 2
   }
 });
 
