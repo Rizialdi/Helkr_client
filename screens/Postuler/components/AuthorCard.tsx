@@ -5,7 +5,7 @@ import { Text, Block, ImageComponent } from '../../sharedComponents';
 import { makePseudoName } from '../../../utils';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { useStoreState } from '../../../models';
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking';
 import Modal from 'react-native-modal';
 import { StatsContainer } from '../../sharedComponents';
 const { height } = Dimensions.get('screen');

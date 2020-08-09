@@ -1,11 +1,12 @@
 import React, { SFC, useState } from 'react';
-import { FlatList, Modal } from 'react-native';
+import { FlatList, Modal, Dimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
 
+const { height } = Dimensions.get('screen');
 export interface dataContent {
   id: string;
   type: string;
@@ -51,13 +52,16 @@ const CustomListView: SFC<Props> = ({
         </Text>
       )}
       <FlatList
+        style={{
+          height: (height * 3.5) / 5
+        }}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        // onEndReached={() => console.log('salut')}
+        onEndReached={() => console.log('salut')}
         onEndReachedThreshold={0}
         pagingEnabled={true}
         alwaysBounceVertical={true}
-        //ListFooterComponent={() => <ActivityIndicator size="small" />}
+        // ListFooterComponent={() => <ActivityIndicator size="small" />}
         keyExtractor={item => item.id}
         data={data}
         renderItem={({ item, index }) => {

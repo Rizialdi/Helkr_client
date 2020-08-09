@@ -59,6 +59,7 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
         errors && setOpenErrorModal(true);
       })
       .catch(error => {
+        error && setOpenErrorModal(true);
         throw new Error(`Ajout offre impossible, ${error}`);
       });
   };

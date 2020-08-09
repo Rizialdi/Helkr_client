@@ -52,58 +52,60 @@ export default function Profile({ navigation, route: { params } }: Props) {
   });
 
   return (
-    <Layout
-      title={params && params.id ? 'Explorer' : 'Profil'}
-      iconName={params && params.id ? 'close' : 'setting'}
-      callBack={params && params.id ? navigation.goBack : navigation.navigate}
-      callBackParams={params && params.id ? [] : ['Reglages']}>
-      <>
-        {loading && (
-          <View
-            style={{
-              zIndex: 99,
-              position: 'absolute',
-              top: '50%',
-              marginHorizontal: '50%'
-            }}>
-            <ActivityIndicator size="large" color="black" />
-          </View>
-        )}
-        <ScrollView showsVerticalScrollIndicator={true}>
-          <ProfilContainer
-            image={avatar}
-            username={makePseudoName(nom, prenom)}
-            address={address}
-            verified={verified}
-            pro={professional}
-          />
-          <StatsContainer id={id} navigation={navigation} />
-          <View style={styles.delimiter}></View>
-          <Description description={description} />
-          <View style={styles.delimiter}></View>
-          <View>
-            <Text
-              style={[
-                styles.text,
-                {
-                  fontWeight: '300',
-                  fontSize: 24,
-                  paddingLeft: 20
-                }
-              ]}>
-              Tags
-            </Text>
-            {tags && tags?.length > 0 ? (
-              <Tag tags={tags} />
-            ) : (
-              <Text horizontal={25} gray>
-                _
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Layout
+        title={params && params.id ? 'Explorer' : 'Profil'}
+        iconName={params && params.id ? 'close' : 'setting'}
+        callBack={params && params.id ? navigation.goBack : navigation.navigate}
+        callBackParams={params && params.id ? [] : ['Reglages']}>
+        <>
+          {loading && (
+            <View
+              style={{
+                zIndex: 99,
+                position: 'absolute',
+                top: '50%',
+                marginHorizontal: '50%'
+              }}>
+              <ActivityIndicator size="large" color="black" />
+            </View>
+          )}
+          <ScrollView showsVerticalScrollIndicator={true}>
+            <ProfilContainer
+              image={avatar}
+              username={makePseudoName(nom, prenom)}
+              address={address}
+              verified={verified}
+              pro={professional}
+            />
+            <StatsContainer id={id} navigation={navigation} />
+            <View style={styles.delimiter}></View>
+            <Description description={description} />
+            <View style={styles.delimiter}></View>
+            <View>
+              <Text
+                style={[
+                  styles.text,
+                  {
+                    fontWeight: '300',
+                    fontSize: 24,
+                    paddingLeft: 20
+                  }
+                ]}>
+                Tags
               </Text>
-            )}
-          </View>
-        </ScrollView>
-      </>
-    </Layout>
+              {tags && tags?.length > 0 ? (
+                <Tag tags={tags} />
+              ) : (
+                <Text horizontal={25} gray>
+                  _
+                </Text>
+              )}
+            </View>
+          </ScrollView>
+        </>
+      </Layout>
+    </ScrollView>
   );
 }
 

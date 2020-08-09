@@ -266,12 +266,12 @@ export default ({ initialState, onStateChange }: Props) => {
   // (async () => {
   //   await AsyncStorage.clear();
   //   await AsyncStorage.multiSet([
-  //     ['id', 'ckb9svn8p00000ip99ubjoc01'],
+  //     ['id', 'ckd2zam8m0000u0p96s31gk9y'],
   //     [
   //       'token',
-  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja2I5c3ZuOHAwMDAwMGlwOTl1YmpvYzAxIiwiaWF0IjoxNTk2ODk1Nzk3fQ.YzFA6MYj46xF44NsdlUTKKUn8-kjlavLkwIA3ar64Uw'
+  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja2QyemFtOG0wMDAwdTBwOTZzMzFnazl5IiwiaWF0IjoxNTk2OTExOTYyfQ.ekN4LPpY14cGVXfDA_2nZ9sWZBkUeXY93L8kN3uQ0tw'
   //     ],
-  //     ['prenom', 'Melinda']
+  //     ['prenom', 'Hooom']
   //   ]);
   // })();
 
@@ -294,7 +294,11 @@ export default ({ initialState, onStateChange }: Props) => {
   if (isLoading) return <BienvenueFirst />;
 
   return (
-    <NavigationContainer {...{ initialState, onStateChange }}>
+    <NavigationContainer
+      {...{
+        initialState,
+        onStateChange
+      }}>
       <MyMainStack token={user && user.token ? user.token : null} />
     </NavigationContainer>
   );
