@@ -17,9 +17,9 @@ import {
   TagItem,
   CandidateCard,
   SelectedCandidateCard,
-  OfferingDetailsOnModal,
-  EventDay
+  OfferingDetailsOnModal
 } from '../../sharedComponents';
+import EventDay from '../../sharedComponents/EventDay';
 import {
   useOfferingByIdQuery,
   useChooseCandidateMutation,

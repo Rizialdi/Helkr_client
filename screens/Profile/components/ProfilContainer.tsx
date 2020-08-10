@@ -1,5 +1,6 @@
 import React from 'react';
 import { Octicons } from '@expo/vector-icons';
+import { useStoreState } from '../../../models';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '../../../constants';
 import { Text, ImageComponent } from '../../sharedComponents';
@@ -18,41 +19,48 @@ export default ({
   address,
   verified = false,
   pro = false
-}: Props) => (
-  <>
-    <View style={{ alignSelf: 'center' }}>
-      <TouchableOpacity style={styles.profileImage}>
-        <ImageComponent {...{ image }} style={styles.image} />
-      </TouchableOpacity>
-      {verified && (
-        <View style={styles.dm}>
-          <Octicons
-            name="verified"
-            size={theme.sizes.twiceTen * 0.9}
-            color="#DFD8DF"
-          />
-        </View>
-      )}
-      {pro && (
-        <View style={styles.verified}>
-          <Octicons
-            name="briefcase"
-            size={theme.sizes.twiceTen * 1.5}
-            color="#DFD8C8"
-          />
-        </View>
-      )}
-    </View>
-    <View style={styles.infoContainer}>
-      <Text style={[styles.text, { fontSize: theme.sizes.h3 * 2 }]}>
-        {username}
-      </Text>
-      <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>
-        {address || '_'}
-      </Text>
-    </View>
-  </>
-);
+}: Props) => {
+  const { themeColors } = useStoreState(state => state.Preferences);
+  return (
+    <>
+      <View style={{ alignSelf: 'center' }}>
+        <TouchableOpacity style={styles.profileImage}>
+          <ImageComponent {...{ image }} style={styles.image} />
+        </TouchableOpacity>
+        {verified && (
+          <View style={[styles.dm, { backgroundColor: themeColors.secondary }]}>
+            <Octicons
+              name="verified"
+              size={theme.sizes.twiceTen * 0.9}
+              color={themeColors.background}
+            />
+          </View>
+        )}
+        {pro && (
+          <View
+            style={[
+              styles.verified,
+              { backgroundColor: themeColors.secondary }
+            ]}>
+            <Octicons
+              name="briefcase"
+              size={theme.sizes.twiceTen * 1.5}
+              color={themeColors.background}
+            />
+          </View>
+        )}
+      </View>
+      <View style={styles.infoContainer}>
+        <Text style={[styles.text, { fontSize: theme.sizes.h3 * 2 }]}>
+          {username}
+        </Text>
+        <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>
+          {address || '_'}
+        </Text>
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   infoContainer: {
@@ -66,7 +74,6 @@ const styles = StyleSheet.create({
   },
 
   dm: {
-    backgroundColor: 'green',
     position: 'absolute',
     top: theme.sizes.hinouting * 0.8,
     width: theme.sizes.inouting * 2,
@@ -81,7 +88,6 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   verified: {
-    backgroundColor: 'green',
     position: 'absolute',
     bottom: 0,
     right: 0,

@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     borderRadius: theme.sizes.border,
-    height: theme.sizes.htwiceTen * 1.92,
+    height: theme.sizes.htwiceTen * 2.4,
     marginVertical: theme.sizes.hinouting * 0.3
   },
   shadow: {

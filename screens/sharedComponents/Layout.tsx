@@ -91,8 +91,8 @@ const Layout: SFC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flex: 1
+    flex: 1,
+    display: 'flex'
   },
   text: {
     fontFamily: 'HelveticaNeue',

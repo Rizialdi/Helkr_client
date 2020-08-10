@@ -52,7 +52,7 @@ const Manage = ({
         ]}>
         <Text
           size={theme.sizes.base}
-          medium
+          bold
           gray={!isActive}
           secondary={isActive}>
           {tab}
@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-
   tab: {
     marginRight: theme.sizes.inouting * 0.56,
     paddingBottom: theme.sizes.hinouting * 0.4

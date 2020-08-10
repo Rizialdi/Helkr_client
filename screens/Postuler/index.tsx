@@ -50,7 +50,7 @@ const Postuler = ({
         ]}>
         <Text
           size={theme.sizes.header}
-          medium
+          bold
           gray={!isActive}
           secondary={isActive}>
           {tab}

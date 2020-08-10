@@ -100,7 +100,7 @@ const createBottomTabs = () => {
         name="Postuler"
         component={Postuler}
         options={{
-          tabBarLabel: 'Postuler',
+          tabBarLabel: 'Naviguer',
           tabBarIcon: () => <AntDesign name="tagso" size={24} color="black" />
         }}
       />

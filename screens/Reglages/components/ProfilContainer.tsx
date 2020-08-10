@@ -4,6 +4,8 @@ import { Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 
+import { useStoreState } from '../../../models';
+
 import { theme } from '../../../constants';
 import { getPermissionAsync } from '../../../utils';
 import { Text, ImageComponent } from '../../sharedComponents';
@@ -32,6 +34,8 @@ export default ({
     setImagePicked
   ] = useState<ImagePicker.ImagePickerResult | null>(null);
   const [text, setText] = useState<string>('');
+
+  const { themeColors } = useStoreState(state => state.Preferences);
 
   useEffect(() => {
     onChange(address || '');
@@ -78,20 +82,24 @@ export default ({
           />
         </TouchableOpacity>
         {verified && (
-          <View style={styles.dm}>
+          <View style={[styles.dm, { backgroundColor: themeColors.secondary }]}>
             <Octicons
               name="verified"
               size={theme.sizes.twiceTen * 0.9}
-              color="#DFD8DF"
+              color={themeColors.background}
             />
           </View>
         )}
         {pro && (
-          <View style={styles.verified}>
+          <View
+            style={[
+              styles.verified,
+              { backgroundColor: themeColors.secondary }
+            ]}>
             <Octicons
               name="briefcase"
               size={theme.sizes.twiceTen * 1.5}
-              color="#DFD8C8"
+              color={themeColors.background}
             />
           </View>
         )}

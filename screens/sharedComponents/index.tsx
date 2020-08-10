@@ -18,7 +18,6 @@ import Input from './Input';
 import ImageComponent from './ImageComponent';
 import StatsContainer from './StatsContainer';
 import AvgContainer from './AvgContainer';
-import EventDay from './EventDay';
 
 export {
   Layout,
@@ -41,6 +40,5 @@ export {
   StackedToBottom,
   ImageComponent,
   StatsContainer,
-  AvgContainer,
-  EventDay
+  AvgContainer
 };

@@ -48,7 +48,7 @@ const CustomListView: SFC<Props> = ({
     <Block flex={false}>
       {!data?.length && (
         <Text
-          medium
+          body
           horizontal={theme.sizes.twiceTen * 1.5}
           vertical={theme.sizes.htwiceTen * 1.5}>
           {emptyMessage}

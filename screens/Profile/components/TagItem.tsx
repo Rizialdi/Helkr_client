@@ -15,8 +15,8 @@ export default ({ tag }: Props) => {
         <View
           style={{
             alignItems: 'center',
-            paddingHorizontal: theme.sizes.hinouting * 0.8,
-            paddingVertical: theme.sizes.inouting * 0.8,
+            paddingHorizontal: theme.sizes.hinouting * 0.4,
+            paddingVertical: theme.sizes.inouting * 0.4,
             borderRadius: theme.sizes.radius,
             marginHorizontal: theme.sizes.hinouting / 5,
             marginVertical: theme.sizes.inouting / 5,
