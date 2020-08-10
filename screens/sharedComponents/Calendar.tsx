@@ -74,8 +74,8 @@ const CalendarComponent: SFC<Props> = ({ parentCallback }) => {
   return (
     <Calendar
       current={dateNow}
-      minDate={dateNow + 2 * 24 * 3600 * 1000}
-      maxDate={dateNow + 7 * 24 * 3600 * 1000}
+      minDate={dateNow + 1 * 24 * 3600 * 1000}
+      maxDate={dateNow + 6 * 24 * 3600 * 1000}
       showWeekNumbers={true}
       onDayPress={day => {
         Object.keys(localDateObject).includes(day.dateString)

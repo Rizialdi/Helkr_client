@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { useStoreState } from '../../models';
 import Text from './Text';
+import { theme } from '../../constants';
 
 interface Props {
   tag: string | undefined;
@@ -70,19 +71,21 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 5,
-    margin: 5
+    paddingHorizontal: theme.sizes.twiceTen / 2,
+    paddingVertical: theme.sizes.htwiceTen / 2,
+    borderRadius: theme.sizes.border,
+    marginHorizontal: theme.sizes.inouting / 5,
+    marginVertical: theme.sizes.hinouting / 5
   },
   containerStatus: {
-    marginHorizontal: 25,
-    marginBottom: 5,
+    marginHorizontal: theme.sizes.inouting,
+    marginBottom: theme.sizes.hinouting / 5,
     alignSelf: 'flex-start'
   },
   text: {
     fontFamily: 'HelveticaNeue',
-    fontSize: 15,
-    marginRight: 5
+    fontSize: theme.sizes.header,
+    marginRight: theme.sizes.inouting / 5
   }
 });
 

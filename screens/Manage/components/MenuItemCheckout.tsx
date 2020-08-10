@@ -1,16 +1,10 @@
-import React, { SFC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { CompletedOrIssue } from './ModalItemManageCandidates';
 
-import {
-  View,
-  Button,
-  StyleSheet,
-  Dimensions,
-  KeyboardAvoidingView
-} from 'react-native';
+import { View, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { useStoreState } from '../../../models';
+import { theme } from '../../../constants';
 
-const { height } = Dimensions.get('screen');
 interface Props {
   children: JSX.Element;
   values: object;
@@ -24,7 +18,7 @@ interface Props {
   onSelected: () => void;
   completedOrIssue: (item: CompletedOrIssue) => void;
 }
-const MenuItemCheckout: SFC<Props> = ({ children, ...props }) => {
+const MenuItemCheckout: FC<Props> = ({ children, ...props }) => {
   const [selected, setSelected] = useState<boolean>(false);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
@@ -42,7 +36,7 @@ const MenuItemCheckout: SFC<Props> = ({ children, ...props }) => {
       {!props.isLast ? null : (
         <View
           style={{
-            marginVertical: height / 4
+            marginVertical: theme.sizes.screenHeight / 4
           }}>
           <Button
             title="Soumettre"
@@ -61,9 +55,9 @@ const styles = StyleSheet.create({
   titleBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
-    marginBottom: 15,
-    marginHorizontal: 16
+    marginTop: theme.sizes.hinouting * 0.96,
+    marginBottom: theme.sizes.hinouting * 0.6,
+    marginHorizontal: theme.sizes.inouting * 0.64
   }
 });
 

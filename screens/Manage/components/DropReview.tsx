@@ -2,16 +2,10 @@ import React, { FC, useState } from 'react';
 import { Block, Button, Text } from '../../sharedComponents';
 import Stars from 'react-native-stars';
 
-import {
-  Dimensions,
-  Keyboard,
-  ScrollView,
-  KeyboardAvoidingView
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Keyboard, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { theme } from '../../../constants';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import TextAreaInput from '../../sharedComponents/TextAreaInput';
-const { height } = Dimensions.get('screen');
 
 interface Props {
   currentIndex?: number;
@@ -30,16 +24,18 @@ const DropReview: FC<Props> = ({ nextStep }) => {
       <ScrollView
         style={{
           flex: 1,
-          height: height * 0.9
+          height: theme.sizes.screenHeight * 0.9
         }}
         alwaysBounceVertical={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
+        <Block
+          flex={false}
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text center bold>
             Merci pour votre confiance.
           </Text>
-          <Text center bold vertical={15}>
+          <Text center bold vertical={theme.sizes.twiceTen * 0.75}>
             Voulez-vous laisser un avis ?
           </Text>
           <Text>
@@ -52,14 +48,16 @@ const DropReview: FC<Props> = ({ nextStep }) => {
             parentCallback={setInputValue}
             placeholder={'Entrez votre avis sur la prestation'}
           />
-          <Block flex={false} margin={[20, 20]}>
+          <Block
+            flex={false}
+            margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
             <Stars
               default={ratingValue}
               //@ts-ignore
               update={(val: any) => setRatingValue(val)}
               count={5}
-              spacing={5}
-              starSize={40}
+              spacing={theme.sizes.border}
+              starSize={theme.sizes.twiceTen * 2}
               fullStar={<Icon name="star" color={theme.colors.secondary} />}
               emptyStar={<Icon name="star-o" />}
             />

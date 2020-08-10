@@ -3,11 +3,12 @@ import { StyleSheet, View } from 'react-native';
 
 import Text from './Text';
 import Block from './Block';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import Card from './Card';
 import ImageComponent from './ImageComponent';
+import { theme } from '../../constants';
 
 interface Props {
   id: string;
@@ -36,7 +37,7 @@ const candidateCard: FC<Props> = ({ professional, average, avatar = null }) => {
                 styles.subContainer,
                 { backgroundColor: themeColors.secondary }
               ]}>
-              <Icon name="message1" size={20} />
+              <AntDesign name="message1" size={theme.sizes.twiceTen} />
             </TouchableOpacity>
           </Block>
         </View>
@@ -47,13 +48,14 @@ const candidateCard: FC<Props> = ({ professional, average, avatar = null }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: 65,
-    height: 65,
-    borderRadius: 35
+    width: theme.sizes.twiceTen * 3.25,
+    height: theme.sizes.htwiceTen * 3.25,
+    borderRadius: theme.sizes.radius * 8
   },
   subContainer: {
-    padding: 15,
-    borderRadius: 10
+    paddingHorizontal: theme.sizes.hinouting * 0.6,
+    paddingVertical: theme.sizes.hinouting * 0.6,
+    borderRadius: theme.sizes.radius * 2
   }
 });
 export default candidateCard;

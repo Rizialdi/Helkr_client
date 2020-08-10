@@ -104,11 +104,11 @@ export default ({ tags = ['_'], parentCallback }: Props) => {
 
 const styles = StyleSheet.create({
   tags: {
-    marginTop: 10,
+    marginTop: theme.sizes.hinouting * 0.4,
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginHorizontal: 20
+    marginHorizontal: theme.sizes.inouting * 0.8
   },
   selector: { marginLeft: 20 }
 });

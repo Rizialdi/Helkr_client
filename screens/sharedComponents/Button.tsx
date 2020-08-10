@@ -2,6 +2,7 @@ import React, { SFC } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useStoreState } from '../../models';
+import { theme } from '../../constants';
 interface Props {
   style?: object;
   opacity?: number;
@@ -88,14 +89,14 @@ export default Button;
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 6,
-    height: 48,
     justifyContent: 'center',
-    marginVertical: 8
+    borderRadius: theme.sizes.border,
+    height: theme.sizes.htwiceTen * 1.92,
+    marginVertical: theme.sizes.hinouting * 0.3
   },
   shadow: {
-    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10
+    shadowRadius: theme.sizes.radius * 1.6,
+    shadowOffset: { width: 0, height: theme.sizes.radius / 3 }
   }
 });

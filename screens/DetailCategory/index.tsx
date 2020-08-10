@@ -1,20 +1,20 @@
 import React from 'react';
-import { View, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Text, Layout } from '../sharedComponents';
+import { useStoreState } from '../../models';
+import { Text } from '../sharedComponents';
 import {
   StackNavigationInterface,
   DetailStackParamsList
 } from '../../navigation/Routes';
-
-const { width } = Dimensions.get('screen');
+import { theme } from '../../constants';
 
 const Item = ({ title }: { title: string }) => {
   return (
     <View style={styles.item}>
-      <Text body semibold transform={'capitalize'}>
+      <Text body semibold transform={'capitalize'} numberOfLines={1}>
         {title}
       </Text>
     </View>
@@ -26,48 +26,35 @@ const DetailCategory = ({
   route
 }: StackNavigationInterface<DetailStackParamsList, 'DetailCategory'>) => {
   const category = route.params.category;
-
+  const { themeColors } = useStoreState(state => state.Preferences);
   return (
-    <Layout>
-      <SafeAreaView>
-        <FlatList
-          data={Object.keys(category.tag)}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('DetailItem', {
-                  category: category,
-                  categoryItem: item
-                });
-              }}>
-              <Item title={item} />
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => item}
-        />
-      </SafeAreaView>
-    </Layout>
+    <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.background }}>
+      <FlatList
+        data={Object.keys(category.tag)}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('DetailItem', {
+                category: category,
+                categoryItem: item
+              });
+            }}>
+            <Item title={item} />
+          </TouchableOpacity>
+        )}
+        keyExtractor={item => item}
+      />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginTop: 10
-  },
   item: {
-    padding: 20,
-    marginVertical: 0,
-    marginHorizontal: 16,
+    paddingHorizontal: theme.sizes.twiceTen * 1.5,
+    paddingVertical: theme.sizes.htwiceTen * 1.5,
     borderBottomColor: 'rgba(0,0,0,0.1)',
-    borderBottomWidth: 0.5,
-    width: width
-  },
-  title: {
-    fontFamily: 'josefinRegular',
-    fontSize: 20
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    width: theme.sizes.screenWidth
   }
 });
 

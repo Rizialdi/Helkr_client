@@ -5,7 +5,6 @@ import {
   useMyIncompleteOfferingQuery,
   MyIncompleteOfferingQuery
 } from '../../../graphql';
-
 import { CustomListView } from '../../sharedComponents';
 import ModalItemManageOfferings from './ModalItemManageOfferings';
 

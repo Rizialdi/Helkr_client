@@ -10,8 +10,9 @@ import {
   storeLastMessageReadIds
 } from '../../utils';
 import { useStoreState, useStoreActions } from '../../models';
-import { ChatFragment } from '../../graphql/helpkr-types';
+import { ChatFragment } from '../../graphql';
 import { SendAMessage } from './Discussions';
+import { theme } from '../../constants';
 
 import 'moment/locale/fr';
 
@@ -98,7 +99,11 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
   const renderSend = (props: Send['props']) =>
     netWorkStatus && (
       <Send {...props} containerStyle={styles.sendBox}>
-        <Feather size={25} color={themeColors.primary} name={'send'} />
+        <Feather
+          size={theme.sizes.twiceTen * 1.25}
+          color={themeColors.primary}
+          name={'send'}
+        />
       </Send>
     );
 
@@ -110,7 +115,8 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
         <View style={styles.container} accessible>
           <NavBar recipient={recipient} toOpen={toOpen} />
           <GiftedChat
-            dateFormat={'d MMM yyyy'}
+            locale={'fr'}
+            dateFormat={'DD MMM YYYY'}
             placeholder={'Ecrivez un message ...'}
             messages={messages}
             onSend={onSend}
@@ -118,7 +124,6 @@ const Discussion = ({ channel, toOpen, sendAMessage }: Props) => {
             onLoadEarlier={onLoadEarlier}
             isLoadingEarlier={loadingEarlier}
             parsePatterns={parsePatterns}
-            locale={'fr'}
             user={{ _id: user.id as string, name: user.token }}
             scrollToBottom={true}
             maxInputLength={250}
@@ -144,6 +149,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    paddingHorizontal: 10
+    paddingHorizontal: theme.sizes.twiceTen / 2
   }
 });

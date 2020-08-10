@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from './sharedComponents';
 //@ts-ignore
 import Image from 'react-native-remote-svg';
-const { width, height } = Dimensions.get('window');
+import { theme } from '../constants';
 
 interface Props {
   style?: object;
@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 20
+    paddingVertical: theme.sizes.hinouting * 0.8
   },
   imageContainer: {
     flex: 0.2,
     width: '100%',
     justifyContent: 'center'
   },
-  image: { width: '100%', height: height / 8 },
+  image: { width: '100%', height: theme.sizes.screenHeight / 8 },
   imagePresentationContainer: {
     flex: 0.6,
     justifyContent: 'center',
@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'josefinLight',
-    fontSize: 12,
-    width: width / 1.7,
+    fontSize: theme.sizes.caption,
+    width: theme.sizes.screenWidth / 1.7,
     textAlign: 'center'
   }
 });

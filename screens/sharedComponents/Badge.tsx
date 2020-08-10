@@ -2,6 +2,7 @@ import React, { SFC } from 'react';
 import { StyleSheet, StyleProp, ViewStyle, Animated } from 'react-native';
 
 import Block, { BlockProps } from './Block';
+import { theme } from '../../constants';
 interface Props extends BlockProps {
   children: JSX.Element;
   style?: object;
@@ -32,8 +33,8 @@ const Badge: SFC<Props> = ({ children, style, size, ...props }) => {
 
 const styles = StyleSheet.create({
   badge: {
-    height: 16,
-    width: 16,
+    height: theme.sizes.hbase,
+    width: theme.sizes.base,
     borderRadius: 5
   }
 });

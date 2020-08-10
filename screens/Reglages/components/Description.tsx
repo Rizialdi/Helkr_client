@@ -23,9 +23,13 @@ export default ({ description, parentCallback }: Props) => {
     <ScrollView>
       <View style={[styles.description]}>
         <Text
+          medium
           style={[
             styles.text,
-            { fontWeight: '300', fontSize: 24, paddingLeft: 20 }
+            {
+              fontSize: theme.sizes.twiceTen * 1.2,
+              paddingLeft: theme.sizes.inouting * 0.8
+            }
           ]}>
           Description
         </Text>
@@ -44,7 +48,7 @@ export default ({ description, parentCallback }: Props) => {
 
 const styles = StyleSheet.create({
   description: {
-    marginTop: 10
+    marginTop: theme.sizes.hinouting * 0.4
   },
   text: {
     fontFamily: 'HelveticaNeue',
@@ -56,7 +60,7 @@ const styles = StyleSheet.create({
     color: '#AEB5BC',
     fontWeight: '500',
     textAlign: 'justify',
-    paddingHorizontal: 20,
-    marginTop: 10
+    paddingHorizontal: theme.sizes.inouting * 0.8,
+    marginTop: theme.sizes.hinouting * 0.4
   }
 });

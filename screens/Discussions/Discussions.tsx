@@ -2,32 +2,27 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   FlatList,
   TouchableOpacity,
   Modal
 } from 'react-native';
-import { Layout, Text, Block, ImageComponent } from '../sharedComponents';
 
-import {
-  useAllChatsAndMessagesQuery,
-  AllChatsAndMessagesQuery
-} from '../../graphql';
+import { Layout, Text, Block, ImageComponent } from '../sharedComponents';
 import { useStoreState } from '../../models';
 import { makePseudoName, sortChatMessages, formatDate } from '../../utils';
 import {
   Message,
   ChatFragment,
-  useCreateMessageMutation
-} from '../../graphql/helpkr-types';
-import {
+  useCreateMessageMutation,
   useNewMessageSubscription,
   useNewChannelSubscription,
+  useAllChatsAndMessagesQuery,
+  AllChatsAndMessagesQuery,
   Utilisateur
-} from '../../graphql/helpkr-types';
+} from '../../graphql';
+import { theme } from '../../constants';
 import Discussion from './Discussion';
-const { width } = Dimensions.get('screen');
-const HEIGHT = 100;
+
 type Chat = { __typename?: 'channel' } & ChatFragment;
 interface ItemProps {
   name: string;
@@ -69,14 +64,14 @@ const Item = ({
   return (
     <>
       <TouchableOpacity
-        style={styles.item2}
+        style={styles.item}
         onPress={() => setOpenDiscussionScreen(true)}>
         <View style={{ flex: 0.22 }}>
           <TouchableOpacity
             style={{
-              width: 70,
-              height: 70,
-              borderRadius: 50,
+              width: theme.sizes.twiceTen * 3.5,
+              height: theme.sizes.htwiceTen * 3.5,
+              borderRadius: theme.sizes.radius * 6,
               overflow: 'hidden',
               margin: 'auto'
             }}>
@@ -88,7 +83,7 @@ const Item = ({
             flex: 0.78,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingRight: 5
+            paddingRight: theme.sizes.inouting / 5
           }}>
           <View style={{ flex: 0.85 }}>
             <View style={styles.secondBlock}>
@@ -110,7 +105,7 @@ const Item = ({
               alignItems: 'center'
             }}>
             <View style={styles.thirdBlock}>
-              <View style={[styles.time]}>
+              <View>
                 <Text center caption>
                   {formatDate(lastMessageDate)}
                 </Text>
@@ -135,7 +130,7 @@ const Item = ({
         hardwareAccelerated={true}
         presentationStyle="overFullScreen"
         visible={openDiscussionScreen}>
-        <Block padding={[20, 0]}>
+        <Block padding={[theme.sizes.inouting * 0.8, 0]}>
           {channel && (
             <Discussion
               channel={dataToChild as ChatFragment}
@@ -313,7 +308,11 @@ const Discussions = () => {
         />
       ) : (
         <Block flex={false}>
-          <Text semibold horizontal={35} vertical={[20, 20]} numberOfLines={1}>
+          <Text
+            semibold
+            horizontal={theme.sizes.twiceTen * 1.75}
+            vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen]}
+            numberOfLines={1}>
             Vous n'avez aucune discussion actuellement.
           </Text>
         </Block>
@@ -325,55 +324,37 @@ const Discussions = () => {
 export default Discussions;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    marginTop: 10
-  },
   item: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 15,
+    paddingHorizontal: theme.sizes.inouting * 0.6,
+    paddingVertical: theme.sizes.hinouting * 0.6,
     marginVertical: 0,
     borderBottomColor: 'rgba(0,0,0,0.2)',
     borderBottomWidth: StyleSheet.hairlineWidth,
-    width: width,
-    height: HEIGHT
-  },
-  item2: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: 15,
-    marginVertical: 0,
-    borderBottomColor: 'rgba(0,0,0,0.2)',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    width: width,
-    height: HEIGHT
+    width: theme.sizes.screenWidth,
+    height: theme.sizes.htwiceTen * 5
   },
   secondBlock: {
     justifyContent: 'space-between',
     alignItems: 'baseline',
     textAlignVertical: 'bottom',
-    height: HEIGHT - 2 * 15,
-    paddingVertical: 7
+    height: theme.sizes.htwiceTen * 3.5,
+    paddingVertical: theme.sizes.hinouting * 0.3
   },
   thirdBlock: {
     justifyContent: 'space-between',
     textAlignVertical: 'bottom',
-    height: HEIGHT - 2 * 15,
-    paddingVertical: 7,
+    height: theme.sizes.htwiceTen * 3.5,
+    paddingVertical: theme.sizes.hinouting * 0.3,
     alignItems: 'center'
   },
   name: { backgroundColor: 'red' },
   message: { backgroundColor: 'yellow' },
-  time: {},
   messageCount: {
-    borderRadius: 50,
-    height: 22,
-    width: 22,
+    borderRadius: theme.sizes.border * 6,
+    width: theme.sizes.inouting * 0.88,
+    height: theme.sizes.hinouting * 0.88,
     justifyContent: 'center'
   }
 });

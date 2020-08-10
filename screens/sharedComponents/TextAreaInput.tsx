@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, StyleProp, ViewStyle } from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import { useStoreState } from '../../models';
+import { theme } from '../../constants';
 interface Props {
   min: number;
   max: number;
@@ -96,7 +97,12 @@ const TextAreaInput: FC<Props> = ({
           blockStyles
         ]}
       />
-      <Text semibold small right horizontal={5} vertical={5}>
+      <Text
+        semibold
+        small
+        right
+        horizontal={theme.sizes.inouting / 5}
+        vertical={theme.sizes.hinouting / 5}>
         {count} / {max}
       </Text>
     </Block>
@@ -105,11 +111,12 @@ const TextAreaInput: FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 5,
+    borderRadius: theme.sizes.border,
     backgroundColor: '#f4f9fa'
   },
   input: {
-    padding: 10,
+    paddingHorizontal: theme.sizes.inouting * 0.4,
+    paddingVertical: theme.sizes.hinouting * 0.4,
     overflow: 'hidden'
   },
   center: {
@@ -122,9 +129,9 @@ const styles = StyleSheet.create({
     textAlign: 'right'
   },
   shadow: {
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 13,
+    shadowOffset: { width: 0, height: theme.sizes.base / 8 },
+    shadowOpacity: StyleSheet.hairlineWidth,
+    shadowRadius: theme.sizes.radius * 2,
     elevation: 2
   }
 });

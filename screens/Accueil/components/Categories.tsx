@@ -8,6 +8,7 @@ import {
   MainStackParamList
 } from '../../../navigation/Routes';
 import { removeAccent } from '../../../utils';
+import { theme } from '../../../constants';
 
 interface Props {
   categories: CategoriesInterface;
@@ -36,13 +37,10 @@ const Categories: SFC<Props> = ({ categories, inputText, navigation }) => {
 export default Categories;
 
 const styles = StyleSheet.create({
-  input: {
-    backgroundColor: 'rgba(238, 240, 246, 0)'
-  },
   categories: {
     flexWrap: 'wrap',
-    marginTop: 20,
-    paddingHorizontal: 16 * 1.5,
-    marginBottom: 16 * 3.5
+    marginTop: theme.sizes.htwiceTen,
+    paddingHorizontal: theme.sizes.base * 1,
+    marginBottom: theme.sizes.hbase * 3.5
   }
 });

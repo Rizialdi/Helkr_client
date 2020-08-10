@@ -3,6 +3,10 @@ import {
   heightPercentageToDP as hp
 } from 'react-native-responsive-screen';
 
+import { Dimensions } from 'react-native';
+
+const { height, width } = Dimensions.get('screen');
+
 const colors = {
   accent: '#F3534A',
   primary: '#0094FF',
@@ -18,12 +22,16 @@ const sizes = {
   // global sizes
   twiceTen: wp('4.85%'), //20
   base: wp('3.87%'), //16
-  htwiceTen: hp('2.7%'), //
-  rtwiceTen: hp('2.7%'), //
-  hbase: hp('2.16%'), //
+  htwiceTen: hp('2.7%'), // 20 horizontally
+  hbase: hp('2.16%'), //  16 horizontally
   font: wp('3.39%'), //14
   radius: wp('1.45%'), // 6
   inouting: wp('6.05%'), // 25
+  hinouting: hp('3.38%'), // 25
+
+  // screen height or width
+  screenHeight: height,
+  screenWidth: width,
 
   // font sizes
   h1: wp('6.3%'), //26

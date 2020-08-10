@@ -9,6 +9,7 @@ import {
 } from '../../../graphql';
 import { formatDateAvis } from '../../../utils';
 import { useStoreState } from '../../../models';
+import { theme } from '../../../constants';
 
 interface Props {
   id?: string;
@@ -46,13 +47,22 @@ const ModalItem: FC<Props> = props => {
                 />
               )}
           </Block>
-          <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
+          <Text
+            style={{
+              marginHorizontal: theme.sizes.base,
+              marginVertical: theme.sizes.hbase
+            }}>
             {data?.offeringById?.description}
           </Text>
-          <Text style={{ marginHorizontal: 30, marginVertical: 15 }}>
+          <Text
+            style={{
+              marginHorizontal: theme.sizes.base,
+              marginVertical: theme.sizes.hbase
+            }}>
             {JSON.stringify(data?.offeringById?.details)}
           </Text>
-          <Block margin={[20, 20]}>
+          <Block
+            margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
             <Button
               secondary
               disabled={!netWorkStatus}

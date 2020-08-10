@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import Block, { BlockProps } from './Block';
 import { useStoreState } from '../../models';
+import { theme } from '../../constants';
 
 interface Props extends BlockProps {
   style?: object;
@@ -32,20 +33,20 @@ const Card: React.FC<Props> = ({ style, shadow, children, ...props }) => {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 10,
-    paddingVertical: 16 + 4,
-    marginBottom: 5,
-    marginHorizontal: 5
+    borderRadius: theme.sizes.radius * 1.6,
+    paddingVertical: theme.sizes.hinouting * 0.8,
+    marginBottom: theme.sizes.hinouting / 5,
+    marginHorizontal: theme.sizes.inouting / 5
   },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 5
+      height: theme.sizes.hinouting / 5
     },
     shadowOpacity: 0.1,
-    shadowRadius: 50.0,
-    elevation: 24
+    shadowRadius: theme.sizes.radius * 8.4,
+    elevation: theme.sizes.twiceTen * 1.2
   }
 });
 

@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 
-import { Text, Block, ImageComponent } from '../../sharedComponents';
+import {
+  Text,
+  Block,
+  ImageComponent,
+  StatsContainer
+} from '../../sharedComponents';
 import { makePseudoName } from '../../../utils';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 import { useStoreState } from '../../../models';
 import * as Linking from 'expo-linking';
 import Modal from 'react-native-modal';
-import { StatsContainer } from '../../sharedComponents';
+import { theme } from '../../../constants';
+
 const { height } = Dimensions.get('screen');
 interface author {
   id: string;
@@ -44,11 +50,12 @@ export default ({ id, nom, prenom, avatar, numero, address }: author) => {
                 onPress={() => _pressCall(numero)}
                 style={{
                   backgroundColor: themeColors.secondary,
-                  padding: 15,
-                  borderRadius: 10,
-                  marginRight: 15
+                  paddingHorizontal: theme.sizes.inouting * 0.6,
+                  paddingVertical: theme.sizes.hinouting * 0.6,
+                  borderRadius: theme.sizes.radius * 1.6,
+                  marginRight: theme.sizes.inouting * 0.6
                 }}>
-                <Icon name="phone" size={20} />
+                <AntDesign name="phone" size={theme.sizes.twiceTen} />
               </TouchableOpacity>
             </Block>
           </View>
@@ -78,31 +85,32 @@ export default ({ id, nom, prenom, avatar, numero, address }: author) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: '100%', marginTop: 10 },
+  container: { width: '100%', marginTop: theme.sizes.hinouting * 0.4 },
   mainLine: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 30
+    marginHorizontal: theme.sizes.inouting * 1.2
   },
 
   image: {
-    height: '100%',
-    width: '100%',
-    borderRadius: 50
+    height: theme.sizes.htwiceTen * 3,
+    width: theme.sizes.twiceTen * 3,
+    borderRadius: theme.sizes.radius * 6,
+    overflow: 'hidden'
   },
   modalContainer: {
     margin: 0,
-    paddingTop: 20,
+    paddingTop: theme.sizes.hinouting * 0.8,
     justifyContent: 'flex-end',
     overflow: 'hidden'
   },
   modal: {
-    paddingHorizontal: 20,
+    paddingHorizontal: theme.sizes.inouting * 0.8,
     flexDirection: 'column',
     height: height * 0.15,
     backgroundColor: 'white',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12
+    borderTopLeftRadius: theme.sizes.border * 2.4,
+    borderTopRightRadius: theme.sizes.border * 2.4
   }
 });

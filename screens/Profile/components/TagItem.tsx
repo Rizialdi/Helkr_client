@@ -15,9 +15,11 @@ export default ({ tag }: Props) => {
         <View
           style={{
             alignItems: 'center',
-            padding: 10,
-            borderRadius: 5,
-            margin: 5,
+            paddingHorizontal: theme.sizes.hinouting * 0.8,
+            paddingVertical: theme.sizes.inouting * 0.8,
+            borderRadius: theme.sizes.radius,
+            marginHorizontal: theme.sizes.hinouting / 5,
+            marginVertical: theme.sizes.inouting / 5,
             backgroundColor: 'rgba(175, 158, 123, 0.1)'
           }}>
           {tag && (
@@ -25,7 +27,7 @@ export default ({ tag }: Props) => {
               style={{
                 fontFamily: 'HelveticaNeue',
                 fontSize: theme.sizes.body * 1.1,
-                marginRight: 5
+                marginRight: theme.sizes.inouting / 5
               }}>
               {tag}
             </Text>

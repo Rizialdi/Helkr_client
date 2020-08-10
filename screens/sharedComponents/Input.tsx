@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, TextInput, TextInputProps } from 'react-native';
-import * as Icon from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 import Text from './Text';
 import Block from './Block';
 import Button from './Button';
 import { useStoreState } from '../../models';
+import { theme } from '../../constants';
 interface Props extends TextInputProps {
   email?: boolean;
   phone?: boolean;
@@ -61,9 +62,9 @@ const Input: React.FC<Props> = ({
         {rightLabel ? (
           rightLabel
         ) : (
-          <Icon.Ionicons
+          <Ionicons
             color={themeColors.gray}
-            size={14 * 1.35}
+            size={theme.sizes.font * 1.35}
             name={!toggleSecure ? 'md-eye' : 'md-eye-off'}
           />
         )}
@@ -120,17 +121,17 @@ const Input: React.FC<Props> = ({
 const styles = StyleSheet.create({
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 6,
-    fontSize: 14,
+    borderRadius: theme.sizes.radius,
+    fontSize: theme.sizes.font,
     fontWeight: '500',
-    height: 16 * 2.5
+    height: theme.sizes.hbase * 2.5
   },
   toggle: {
     position: 'absolute',
     alignItems: 'flex-end',
-    width: 16 * 2,
-    height: 16 * 2,
-    top: 16,
+    width: theme.sizes.base * 2,
+    height: theme.sizes.hbase * 2,
+    top: theme.sizes.hbase,
     right: 0
   }
 });

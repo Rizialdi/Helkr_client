@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 
 import Text from './Text';
 import Block from './Block';
-import Icon from 'react-native-vector-icons/AntDesign';
 import { CandidateCardClickedPart } from '../Manage/components/ModalItemManageCandidates';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import Card from './Card';
 import ImageComponent from './ImageComponent';
+import { theme } from '../../constants';
 
 interface Props {
   id: string;
@@ -50,7 +51,7 @@ const candidateCard: FC<Props> = ({
                 styles.image,
                 { backgroundColor: themeColors.secondary }
               ]}>
-              <Icon name="right" size={20} />
+              <AntDesign name="right" size={theme.sizes.twiceTen} />
             </TouchableOpacity>
           </Block>
         </View>
@@ -60,15 +61,21 @@ const candidateCard: FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  image: { justifyContent: 'center', padding: 15, borderRadius: 10 },
+  image: {
+    justifyContent: 'center',
+    paddingHorizontal: theme.sizes.inouting * 0.6,
+    paddingVertical: theme.sizes.hinouting * 0.6,
+    borderRadius: theme.sizes.radius * 1.7
+  },
   imageItem: {
-    width: 65,
-    height: 65,
-    borderRadius: 35
+    width: theme.sizes.inouting * 2.6,
+    height: theme.sizes.hinouting * 2.6,
+    borderRadius: theme.sizes.radius * 7
   },
   icon: {
-    padding: 50,
-    borderRadius: 10
+    paddingHorizontal: theme.sizes.inouting * 2,
+    paddingVertical: theme.sizes.hinouting * 2,
+    borderRadius: theme.sizes.radius * 1.7
   }
 });
 

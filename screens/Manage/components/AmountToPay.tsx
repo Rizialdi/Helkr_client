@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Block, Button, Text } from '../../sharedComponents';
 import { TextInput, Keyboard } from 'react-native';
+import { theme } from '../../../constants';
 
 interface Props {
   currentIndex?: number;
@@ -15,11 +16,18 @@ interface Props {
 const CompletedOrIssueComponent: FC<Props> = ({ nextStep, setPriceToPay }) => {
   const [inputValue, setInputValue] = useState<string>('');
   return (
-    <Block flex={false} margin={[20, 20]}>
+    <Block
+      flex={false}
+      margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
       <TextInput
         keyboardType={'numeric'}
         placeholder="Entrer le prix"
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        style={{
+          color: 'black',
+          height: theme.sizes.twiceTen * 2,
+          borderColor: 'gray',
+          borderWidth: 1
+        }}
         onChangeText={value => {
           setInputValue(value), setPriceToPay(value);
         }}

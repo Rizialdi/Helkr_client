@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   medium: {
-    fontWeight: '500'
+    fontWeight: '300'
   },
   light: {
     fontWeight: '200'

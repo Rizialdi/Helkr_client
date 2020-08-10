@@ -9,6 +9,7 @@ import {
   StackNavigationInterface,
   BottomStackParamList
 } from '../../navigation/Routes';
+import { theme } from '../../constants';
 
 // import { Offres, Postulees } from './components';
 
@@ -45,11 +46,15 @@ const Manage = ({
           isActive
             ? {
                 borderBottomColor: themeColors.secondary,
-                borderBottomWidth: 2
+                borderBottomWidth: theme.sizes.border / 2
               }
             : null
         ]}>
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
+        <Text
+          size={theme.sizes.base}
+          medium
+          gray={!isActive}
+          secondary={isActive}>
           {tab}
         </Text>
       </TouchableOpacity>
@@ -69,8 +74,8 @@ const Manage = ({
           style={{
             borderBottomColor: themeColors.gray2,
             borderBottomWidth: StyleSheet.hairlineWidth,
-            marginVertical: 10,
-            marginHorizontal: 20
+            marginVertical: theme.sizes.hinouting / 2.5,
+            marginHorizontal: theme.sizes.inouting / 0.8
           }}>
           {tabs.map(tab => renderTab(tab))}
         </Block>
@@ -91,8 +96,8 @@ const styles = StyleSheet.create({
   },
 
   tab: {
-    marginRight: 14,
-    paddingBottom: 10
+    marginRight: theme.sizes.inouting * 0.56,
+    paddingBottom: theme.sizes.hinouting * 0.4
   }
 });
 

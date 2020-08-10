@@ -15,6 +15,7 @@ import {
   MainStackParamList
 } from '../../navigation/Routes';
 import { useStoreState } from '../../models';
+import { theme } from '../../constants';
 
 type Props = StackNavigationInterface<MainStackParamList, 'Profile'>;
 
@@ -64,8 +65,8 @@ export default function Profile({ navigation, route: { params } }: Props) {
               style={{
                 zIndex: 99,
                 position: 'absolute',
-                top: '50%',
-                marginHorizontal: '50%'
+                top: theme.sizes.screenHeight / 2,
+                marginHorizontal: theme.sizes.screenWidth / 2
               }}>
               <ActivityIndicator size="large" color="black" />
             </View>
@@ -84,12 +85,12 @@ export default function Profile({ navigation, route: { params } }: Props) {
             <View style={styles.delimiter}></View>
             <View>
               <Text
+                medium
                 style={[
                   styles.text,
                   {
-                    fontWeight: '300',
-                    fontSize: 24,
-                    paddingLeft: 20
+                    paddingLeft: theme.sizes.twiceTen,
+                    fontSize: theme.sizes.twiceTen * 1.2
                   }
                 ]}>
                 Tags
@@ -97,7 +98,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
               {tags && tags?.length > 0 ? (
                 <Tag tags={tags} />
               ) : (
-                <Text horizontal={25} gray>
+                <Text horizontal={theme.sizes.twiceTen * 1.25} gray>
                   _
                 </Text>
               )}
@@ -117,12 +118,12 @@ const styles = StyleSheet.create({
   titleBar: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 24,
-    marginHorizontal: 16
+    marginTop: theme.sizes.hinouting * 0.96,
+    marginHorizontal: theme.sizes.inouting * 0.64
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
-    borderTopWidth: 0.5,
-    marginTop: 25
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: theme.sizes.hinouting
   }
 });

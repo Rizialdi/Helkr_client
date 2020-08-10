@@ -1,9 +1,9 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, FC } from 'react';
 import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
-
-import { FC } from 'react';
-import { Block, Text } from '../../sharedComponents';
 import { AntDesign } from '@expo/vector-icons';
+
+import { Block, Text } from '../../sharedComponents';
+import { theme } from '../../../constants';
 
 interface Props {
   recipient: string;
@@ -19,11 +19,11 @@ const NavBarCustom: FC<Props> = ({ recipient, toOpen }) => {
     <Block flex={false} center row style={styles.header}>
       <Block left style={{ flex: 1 }} center>
         <TouchableOpacity onPress={() => toOpen(false)}>
-          <AntDesign name="left" size={26} />
+          <AntDesign name="left" size={theme.sizes.twiceTen * 1.3} />
         </TouchableOpacity>
       </Block>
-      <Block style={{ flex: 9 }} padding={[0, 20]}>
-        <Text size={22}> {recipient} </Text>
+      <Block style={{ flex: 9 }} padding={[0, theme.sizes.inouting * 0.8]}>
+        <Text size={theme.sizes.twiceTen * 1.1}> {recipient} </Text>
       </Block>
     </Block>
   );
@@ -33,8 +33,8 @@ export default NavBarCustom;
 
 const styles = StyleSheet.create({
   header: {
-    height: 50,
-    paddingHorizontal: 14,
+    height: theme.sizes.htwiceTen * 2.5,
+    paddingHorizontal: theme.sizes.hinouting * 0.56,
     borderBottomColor: 'gray',
     borderBottomWidth: StyleSheet.hairlineWidth
   }

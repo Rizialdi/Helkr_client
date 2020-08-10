@@ -1,7 +1,7 @@
 import React, { SFC } from 'react';
-import {} from 'react-native';
 import Text from './Text';
 import { capitalize } from '../../utils';
+import { theme } from '../../constants';
 interface Props {
   details: { details: string };
 }
@@ -18,8 +18,12 @@ const OfferingDetailsOnModal: SFC<Props> = ({ details }) => {
             return;
           }
           return (
-            <Text key={idx} regular vertical={3} horizontal={10}>
-              <Text horizontal={20} semibold>
+            <Text
+              key={idx}
+              regular
+              vertical={theme.sizes.inouting * 0.12}
+              horizontal={theme.sizes.twiceTen / 2}>
+              <Text horizontal={theme.sizes.twiceTen} semibold>
                 {'∴ '}
                 {capitalize(key)}
               </Text>

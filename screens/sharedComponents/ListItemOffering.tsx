@@ -5,6 +5,7 @@ import { formatDate, getDayAndDate } from '../../utils';
 import Block from './Block';
 import TagItem from './TagItem';
 import Text from './Text';
+import { theme } from '../../constants';
 
 interface Props {
   offering: {
@@ -35,7 +36,11 @@ export default ({ offering }: Props) => {
           <TagItem tag={offering.status} status />
         </Block>
       ) : offering?.status && eventday ? (
-        <Block flex={false} row space={'between'} margin={[0, 25]}>
+        <Block
+          flex={false}
+          row
+          space={'between'}
+          margin={[0, theme.sizes.inouting]}>
           <TagItem tag={'Rendez-vous'} rdv />
           <TagItem
             tag={`${getDayAndDate(offering?.eventday).join(' ')} `}
@@ -61,8 +66,8 @@ export default ({ offering }: Props) => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    marginTop: 10,
-    marginVertical: 10,
+    marginTop: theme.sizes.htwiceTen / 2,
+    marginVertical: theme.sizes.twiceTen / 2,
     justifyContent: 'space-between',
     alignContent: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -72,13 +77,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 30
+    marginHorizontal: theme.sizes.inouting * 1.2
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
-    borderTopWidth: 0.5,
-    marginTop: 15,
-    marginBottom: 15
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginVertical: theme.sizes.hinouting * 0.6
   },
-  description: { marginHorizontal: 30, marginVertical: 15 }
+  description: {
+    marginHorizontal: theme.sizes.inouting * 1.2,
+    marginVertical: theme.sizes.hinouting * 0.6
+  }
 });

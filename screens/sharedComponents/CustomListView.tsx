@@ -1,12 +1,12 @@
 import React, { SFC, useState } from 'react';
-import { FlatList, Modal, Dimensions } from 'react-native';
+import { FlatList, Modal } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
+import { theme } from '../../constants';
 
-const { height } = Dimensions.get('screen');
 export interface dataContent {
   id: string;
   type: string;
@@ -47,13 +47,16 @@ const CustomListView: SFC<Props> = ({
   return (
     <Block flex={false}>
       {!data?.length && (
-        <Text horizontal={30} medium vertical={30}>
+        <Text
+          medium
+          horizontal={theme.sizes.twiceTen * 1.5}
+          vertical={theme.sizes.htwiceTen * 1.5}>
           {emptyMessage}
         </Text>
       )}
       <FlatList
         style={{
-          height: (height * 3.5) / 5
+          height: (theme.sizes.screenHeight * 3.5) / 5
         }}
         refreshing={refreshing}
         onRefresh={onRefresh}
@@ -87,7 +90,7 @@ const CustomListView: SFC<Props> = ({
         hardwareAccelerated={true}
         presentationStyle="overFullScreen"
         visible={openModal}>
-        <Block padding={[20, 0]}>
+        <Block padding={[theme.sizes.hinouting * 0.8, 0]}>
           {selectedOffering &&
             React.cloneElement(modalItem, {
               id: selectedOffering,

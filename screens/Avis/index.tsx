@@ -1,22 +1,15 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  View
-} from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
-import { Text, Layout } from '../sharedComponents';
+import { Text, Layout, Block } from '../sharedComponents';
 import { ListCard } from './components';
 import { useGetAvisUserQuery } from '../../graphql';
 import { makePseudoName } from '../../utils';
 import { MainStackParamList } from '../../navigation/Routes';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-const { width } = Dimensions.get('window');
+import { theme } from '../../constants';
 
 interface Props {
   navigation?: StackNavigationProp<MainStackParamList, 'Avis'>;
@@ -40,9 +33,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
 
   const { loading, error, data } = useGetAvisUserQuery({
     variables: { userId },
-    errorPolicy: 'ignore',
-    fetchPolicy: 'cache-and-network',
-    pollInterval: 1000 * 3600 * 24
+    fetchPolicy: 'cache-and-network'
   });
 
   return (
@@ -53,14 +44,15 @@ export default ({ navigation, candidateModalId, route }: Props) => {
       callBackParams={[]}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {loading ? (
-          <View
-            style={{
-              marginTop: width / 2
-            }}>
+          <Block
+            flex={false}
+            center
+            middle
+            margin={[theme.sizes.screenHeight / 4, 0]}>
             <ActivityIndicator size="large" color="black" />
-          </View>
+          </Block>
         ) : (
-          <View style={styles.container}>
+          <Block flex={false} center>
             {data && data?.getAvisUser.length ? (
               data?.getAvisUser?.map(avis => {
                 const {
@@ -73,7 +65,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
                 const username = makePseudoName(nom, prenom);
                 return (
                   <TouchableOpacity
-                    style={{ width: width }}
+                    style={{ width: theme.sizes.screenWidth }}
                     key={idAvis}
                     disabled={!netWorkStatus}
                     onPress={() =>
@@ -97,25 +89,18 @@ export default ({ navigation, candidateModalId, route }: Props) => {
                 );
               })
             ) : (
-              <Text bold style={{ marginTop: 25 }}>
+              <Text bold style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
                 Vous n'avez aucun avis pour le moment.
               </Text>
             )}
             {error && (
-              <Text style={{ marginTop: 25 }}>
+              <Text style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
                 Une erreur sur le réseau s'est produite
               </Text>
             )}
-          </View>
+          </Block>
         )}
       </ScrollView>
     </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center'
-  }
-});

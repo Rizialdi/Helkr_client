@@ -1,11 +1,11 @@
 import React, { SFC, useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import Text from './Text';
 import Button from './Button';
 import Block from './Block';
+import { theme } from '../../constants';
 
-const { height } = Dimensions.get('screen');
 interface Props {
   timer: number;
   information: string;
@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
   },
   modal: {
     flexDirection: 'column',
-    marginHorizontal: 30,
-    paddingHorizontal: 25,
-    paddingVertical: 15,
+    marginHorizontal: theme.sizes.htwiceTen * 1.5,
+    paddingHorizontal: theme.sizes.inouting,
+    paddingVertical: theme.sizes.hinouting * 0.6,
     justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    height: height * 0.25,
+    borderRadius: theme.sizes.radius * 2,
+    height: theme.sizes.screenHeight * 0.25,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
+    elevation: theme.sizes.border
   }
 });
 

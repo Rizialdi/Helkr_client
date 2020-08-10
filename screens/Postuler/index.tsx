@@ -9,6 +9,7 @@ import {
   BottomStackParamList,
   StackNavigationInterface
 } from '../../navigation/Routes';
+import { theme } from '../../constants';
 
 //TODO implement infinite scroll when Issue resolved
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
@@ -43,11 +44,15 @@ const Postuler = ({
           isActive
             ? {
                 borderBottomColor: themeColors.secondary,
-                borderBottomWidth: 2
+                borderBottomWidth: theme.sizes.border / 2
               }
             : null
         ]}>
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
+        <Text
+          size={theme.sizes.header}
+          medium
+          gray={!isActive}
+          secondary={isActive}>
           {tab}
         </Text>
       </TouchableOpacity>
@@ -67,8 +72,8 @@ const Postuler = ({
           style={{
             borderBottomColor: themeColors.gray2,
             borderBottomWidth: StyleSheet.hairlineWidth,
-            marginVertical: 10,
-            marginHorizontal: 20
+            marginVertical: theme.sizes.hinouting * 0.4,
+            marginHorizontal: theme.sizes.inouting * 0.8
           }}>
           {tabs.map(tab => renderTab(tab))}
         </Block>
@@ -89,8 +94,8 @@ const styles = StyleSheet.create({
   },
 
   tab: {
-    marginRight: 14,
-    paddingBottom: 10
+    marginRight: theme.sizes.inouting * 0.56,
+    paddingBottom: theme.sizes.hinouting * 0.4
   }
 });
 

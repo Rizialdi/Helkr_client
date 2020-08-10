@@ -2,47 +2,46 @@ import React, { useState, FC, useEffect } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
-  Dimensions,
   View,
   ScrollView,
   KeyboardAvoidingView
 } from 'react-native';
 import Modal from 'react-native-modal';
-import { Calendar, ModalItemInfos } from '../../sharedComponents';
 
 import {
+  Calendar,
+  ModalItemInfos,
   Text,
   Layout,
   Block,
   TagItem,
   CandidateCard,
-  SelectedCandidateCard
+  SelectedCandidateCard,
+  OfferingDetailsOnModal,
+  EventDay
 } from '../../sharedComponents';
-import { useOfferingByIdQuery } from '../../../graphql';
+import {
+  useOfferingByIdQuery,
+  useChooseCandidateMutation,
+  MyIncompleteOfferingWithCandidatesQuery,
+  MyIncompleteOfferingWithCandidatesDocument,
+  OfferingByIdQuery,
+  OfferingByIdDocument
+} from '../../../graphql';
 import { formatDateAvis } from '../../../utils';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Avis from '../../Avis';
 import { LocalDateObject } from '../../sharedComponents/Calendar';
 import Button from '../../sharedComponents/Button';
-import { useChooseCandidateMutation } from '../../../graphql/helpkr-types';
 import MultiStepMenuCheckout from './MultiStepMenuCheckout';
 import CompletedOrIssue from './CompletedOrIssue';
 import AmountToPay from './AmountToPay';
 import ValidationCode from './ValidationCode';
 import DropReview from './DropReview';
 import IssueReporting from './IssueReporting';
-import OfferingDetailsOnModal from '../../sharedComponents/OfferingDetailsOnModal';
-import {
-  MyIncompleteOfferingWithCandidatesQuery,
-  MyIncompleteOfferingWithCandidatesDocument,
-  OfferingByIdQuery,
-  OfferingByIdDocument
-} from '../../../graphql';
 import { DataProxy } from 'apollo-cache';
-import EventDay from '../../sharedComponents/EventDay';
 import { useStoreState } from '../../../models';
-
-const { height } = Dimensions.get('screen');
+import { theme } from '../../../constants';
 
 interface Props {
   id?: string;
@@ -175,8 +174,13 @@ const ModalItemManageCandidates: FC<Props> = props => {
           {(loading && !called) || !data ? (
             <ActivityIndicator size={'large'} />
           ) : (
-            <Block flex={false} margin={[0, 25]}>
-              <Block margin={[0, -25]} flex={false} row middle space={'around'}>
+            <Block flex={false} margin={[0, theme.sizes.inouting]}>
+              <Block
+                margin={[0, -theme.sizes.inouting]}
+                flex={false}
+                row
+                middle
+                space={'around'}>
                 <TagItem tag={Data?.offeringById?.type} type />
                 <TagItem tag={Data?.offeringById?.category} category />
                 {Data?.offeringById?.createdAt &&
@@ -187,25 +191,37 @@ const ModalItemManageCandidates: FC<Props> = props => {
                     />
                   )}
               </Block>
-              <Text bold size={16} vertical={[20, 10]}>
+              <Text
+                bold
+                size={16}
+                vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Description
               </Text>
 
               <Text>{Data?.offeringById?.description}</Text>
 
-              <Text bold size={16} vertical={[20, 10]}>
+              <Text
+                bold
+                size={16}
+                vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Categorie
               </Text>
 
               <Text>{Data?.offeringById?.category}</Text>
 
-              <Text bold size={16} vertical={[20, 10]}>
+              <Text
+                bold
+                size={16}
+                vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Renseignements
               </Text>
 
               <OfferingDetailsOnModal details={Data?.offeringById?.details} />
               <Block flex={false}>
-                <Text bold size={16} vertical={[20, 10]}>
+                <Text
+                  bold
+                  size={16}
+                  vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                   {Data?.offeringById.selectedCandidate
                     ? 'Candidat retenu'
                     : 'Candidats'}
@@ -261,7 +277,11 @@ const ModalItemManageCandidates: FC<Props> = props => {
                 onBackButtonPress={() => setIsUpdateOnUser(false)}
                 onBackdropPress={() => setIsUpdateOnUser(false)}
                 onSwipeComplete={() => setIsUpdateOnUser(false)}>
-                <View style={[styles.modal, { height: height * 0.5 }]}>
+                <View
+                  style={[
+                    styles.modal,
+                    { height: theme.sizes.screenHeight * 0.5 }
+                  ]}>
                   <Text center bold>
                     Dites nous tout
                   </Text>
@@ -340,12 +360,16 @@ const ModalItemManageCandidates: FC<Props> = props => {
                 <View style={styles.modal}>
                   {candidateCardClickedPart === 'icon' ? (
                     <>
-                      <Text center bold vertical={25}>
+                      <Text center bold vertical={theme.sizes.htwiceTen * 1.25}>
                         Veuillez choisir 3 jours qui vous conviennent
                       </Text>
                       <Calendar parentCallback={setDate} />
                       {date && Object.keys(date).length === 3 && (
-                        <Block margin={[20, 20]}>
+                        <Block
+                          margin={[
+                            theme.sizes.hinouting * 0.8,
+                            theme.sizes.inouting * 0.8
+                          ]}>
                           <Button
                             secondary
                             disabled={!netWorkStatus}
@@ -383,16 +407,16 @@ const ModalItemManageCandidates: FC<Props> = props => {
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 0,
-    paddingTop: 20,
+    paddingTop: theme.sizes.hinouting * 0.8,
     justifyContent: 'flex-end',
     overflow: 'hidden'
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.75,
+    height: theme.sizes.screenHeight * 0.75,
     backgroundColor: 'white',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12
+    borderTopLeftRadius: theme.sizes.base * 0.75,
+    borderTopRightRadius: theme.sizes.base * 0.75
   }
 });
 export default ModalItemManageCandidates;

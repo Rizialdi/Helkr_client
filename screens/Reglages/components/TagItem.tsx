@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 
 import { theme } from '../../../constants';
 import { Text } from '../../sharedComponents';
@@ -14,22 +14,24 @@ export default ({ tag }: Props) => (
     style={{
       display: 'flex',
       flexDirection: 'row',
+      backgroundColor: 'rgba(175, 158, 123, 0.1)',
       alignItems: 'center',
-      padding: 10,
-      borderRadius: 5,
-      margin: 5,
-      backgroundColor: 'rgba(175, 158, 123, 0.1)'
+      paddingHorizontal: theme.sizes.hinouting * 0.8,
+      paddingVertical: theme.sizes.inouting * 0.8,
+      borderRadius: theme.sizes.radius,
+      marginHorizontal: theme.sizes.hinouting / 5,
+      marginVertical: theme.sizes.inouting / 5
     }}>
     {!!tag && (
       <Text
         style={{
           fontFamily: 'HelveticaNeue',
           fontSize: theme.sizes.body * 1.1,
-          marginRight: 5
+          marginRight: theme.sizes.inouting / 5
         }}>
         {tag}
       </Text>
     )}
-    <Icon name="close" size={15} color="black" />
+    <AntDesign name="close" size={15} color="black" />
   </View>
 );

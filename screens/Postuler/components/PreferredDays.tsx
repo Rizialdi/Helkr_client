@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Dimensions, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 
 import {
@@ -21,8 +21,7 @@ import {
 } from '../../../graphql';
 import { useStoreState } from '../../../models';
 import { getDayAndDate } from '../../../utils';
-const { height } = Dimensions.get('screen');
-
+import { theme } from '../../../constants';
 interface Props {
   offeringId: string;
   preferredDays: string[];
@@ -103,7 +102,7 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
             <TouchableOpacity key={key} onPress={() => setClickedDayIdx(key)}>
               <Block center>
                 <Card shadow center secondary={key === clickedDayIdx}>
-                  <Text bold vertical={[0, 5]}>
+                  <Text bold vertical={[0, theme.sizes.hinouting / 4]}>
                     {dayOfWeek}
                   </Text>
                   <Text>{day}</Text>
@@ -114,7 +113,6 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
           );
         })}
       </Block>
-
       {!clickedDayIdx && (
         <Text caption align={'justify'}>
           Veuillez cliquer sur une carte pour choisir le jour qui vous convient.
@@ -122,7 +120,6 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
           choix.
         </Text>
       )}
-
       {errorModal && (
         <ModalItemInfos
           errorReporting
@@ -135,7 +132,6 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
           callBackParams={[null]}
         />
       )}
-
       <Modal
         isVisible={clickedDayIdx != null}
         animationIn={'slideInUp'}
@@ -155,7 +151,13 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
                 } ${
                   getDayAndDate(preferredDays[clickedDayIdx])[2]
                 } comme jour de la prestation ?`}</Text>
-                <Text caption align={'justify'} vertical={[20, 10]}>
+                <Text
+                  caption
+                  align={'justify'}
+                  vertical={[
+                    theme.sizes.hinouting * 0.8,
+                    theme.sizes.hinouting * 0.4
+                  ]}>
                   En cliquant sur Je confirme, vous vous engagez à vous
                   presenter chez le client pour la réalisation de la prestation.
                   Le non-respect de cet engagement pourrait entrainer la
@@ -164,7 +166,7 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
               </>
             )}
           </View>
-          <StackedToBottom margin={[0, 20]}>
+          <StackedToBottom margin={[0, theme.sizes.inouting * 0.8]}>
             <Button
               secondary
               disabled={!netWorkStatus}
@@ -187,17 +189,17 @@ const PreferredDays: React.FC<Props> = ({ offeringId, preferredDays }) => {
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 0,
-    paddingTop: 20,
+    paddingTop: theme.sizes.hinouting * 0.8,
     justifyContent: 'flex-end',
     overflow: 'hidden'
   },
   modal: {
-    paddingHorizontal: 20,
+    paddingHorizontal: theme.sizes.inouting * 0.8,
     flexDirection: 'column',
-    height: height * 0.3,
+    height: theme.sizes.screenHeight * 0.3,
     backgroundColor: 'white',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12
+    borderTopLeftRadius: theme.sizes.radius * 2,
+    borderTopRightRadius: theme.sizes.radius * 2
   }
 });
 

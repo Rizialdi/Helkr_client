@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { ImagePicker } from 'expo';
 import { ReactNativeFile } from 'apollo-upload-client';
+import { AntDesign } from '@expo/vector-icons';
 
 import { theme } from '../../constants';
 import { Text, Block } from '../sharedComponents';
@@ -28,7 +29,6 @@ import {
   StackNavigationInterface,
   MainStackParamList
 } from '../../navigation/Routes';
-import { AntDesign } from '@expo/vector-icons';
 
 export default function Profile({
   navigation
@@ -216,13 +216,13 @@ export default function Profile({
             <View style={styles.delimiter}></View>
             <View>
               <Text
+                medium
                 style={[
                   styles.text,
                   {
-                    fontWeight: '300',
-                    fontSize: 24,
-                    paddingLeft: 20,
-                    paddingTop: 10
+                    paddingLeft: theme.sizes.twiceTen,
+                    fontSize: theme.sizes.twiceTen * 1.2,
+                    paddingTop: theme.sizes.hinouting * 0.4
                   }
                 ]}>
                 Tags
@@ -248,18 +248,18 @@ const styles = StyleSheet.create({
   titleBar: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    marginTop: 24,
-    marginHorizontal: 16
+    marginTop: theme.sizes.hinouting * 0.96,
+    marginHorizontal: theme.sizes.inouting * 0.64
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
-    borderTopWidth: 0.5,
-    marginTop: 25
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: theme.sizes.hinouting
   },
   lineStars: {
     flexDirection: 'row',
-    marginTop: 25,
+    marginTop: theme.sizes.hinouting,
     justifyContent: 'space-between',
-    marginHorizontal: 16
+    marginHorizontal: theme.sizes.inouting * 0.64
   }
 });

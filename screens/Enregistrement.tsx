@@ -11,6 +11,7 @@ import {
 
 import gql from 'graphql-tag';
 import Toast from 'react-native-easy-toast';
+//@ts-ignore
 import AwesomeAlert from 'react-native-awesome-alerts';
 import ValidationComponent from 'react-native-form-validator';
 

@@ -5,21 +5,14 @@ import * as ImagePicker from 'expo-image-picker';
 import { useStoreState, useStoreActions } from '../../../models';
 //In addition, you'll also need to enable the iCloud Application Service in your App identifier.
 // DocumentPicker
-import {
-  Dimensions,
-  ScrollView,
-  AsyncStorage,
-  ActivityIndicator
-} from 'react-native';
+import { ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import { getPermissionAsync, getFileName } from '../../../utils';
 import MultiStepMenuCompletePieces from './MultiStepMenuCompletePieces';
 import { ListOfPieces } from './ModalItemApplyToOffering';
 import { ReactNativeFile } from 'apollo-upload-client';
-import { useAddVerificationpiecesMutation } from '../../../graphql';
-import { Maybe } from '../../../graphql/helpkr-types';
+import { useAddVerificationpiecesMutation, Maybe } from '../../../graphql';
 import { ModalItemInfos } from '../../sharedComponents';
-
-const { height } = Dimensions.get('screen');
+import { theme } from '../../../constants';
 
 interface Props {
   listOfPieces: ListOfPieces;
@@ -64,7 +57,9 @@ const FirstScreen = ({ ...props }) => {
   return statusOfApplication === 'enattente' ? (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
+        <Block
+          flex={false}
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text center bold>
             Nous avons pris en compte votre envoi de pièces
           </Text>
@@ -74,7 +69,11 @@ const FirstScreen = ({ ...props }) => {
             type d'offre.
           </Text>
 
-          <Text vertical={[15, 15]}>
+          <Text
+            vertical={[
+              theme.sizes.htwiceTen * 0.75,
+              theme.sizes.htwiceTen * 0.75
+            ]}>
             Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
             entité tièrce. Elles seront essentiellement utilisées par notre
             équipe pour la validation de votre profil.
@@ -85,7 +84,9 @@ const FirstScreen = ({ ...props }) => {
   ) : statusOfApplication === 'refuse' ? (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
+        <Block
+          flex={false}
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text center bold>
             Nous avons pris en compte votre envoi de pièces
           </Text>
@@ -96,7 +97,11 @@ const FirstScreen = ({ ...props }) => {
             préferences.
           </Text>
 
-          <Text vertical={[15, 15]}>
+          <Text
+            vertical={[
+              theme.sizes.hinouting * 0.75,
+              theme.sizes.hinouting * 0.75
+            ]}>
             Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
             entité tièrce. Elles sont essentiellement utilisées par notre équipe
             pour la validation de votre profil.
@@ -107,7 +112,9 @@ const FirstScreen = ({ ...props }) => {
   ) : (
     <>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
+        <Block
+          flex={false}
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text center bold>
             Veuillez completer votre profil afin de pouvoir postuler à une offre
           </Text>
@@ -116,25 +123,31 @@ const FirstScreen = ({ ...props }) => {
             Chez <Text bold> Helkr</Text>, nous mettons un point d'honneur à
             satisfaire et à garantir le service proposé. Pour ce faire, nous
             devons savoir quelques points sur vous et determiner si vos
-            compétences sont en accord avec la mission proposée
+            compétences sont en accord avec la mission proposée.
             {'\n'}
             Vous trouverez ci-dessous une liste de pièces à fournir:
             {'\n'}
           </Text>
           {documentList?.map((item, idx) => (
-            <Text key={idx} vertical={[5, 5]}>
+            <Text
+              key={idx}
+              vertical={[theme.sizes.hinouting / 5, theme.sizes.inouting / 5]}>
               <Text bold>- {item.titre} </Text>
               {item.description}
             </Text>
           ))}
-          <Text vertical={[15, 15]}>
+          <Text
+            vertical={[
+              theme.sizes.hinouting * 0.75,
+              theme.sizes.hinouting * 0.75
+            ]}>
             Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
             entité tièrce. Elles seront essentiellement utilisées par notre
             équipe pour la validation de votre profil.
           </Text>
         </Block>
       </ScrollView>
-      <Block margin={[0, 20]}>
+      <Block margin={[0, theme.sizes.inouting * 0.8]}>
         <StackedToBottom>
           <Button secondary onPress={() => props.nextStep()}>
             <Text bold center>
@@ -235,10 +248,16 @@ const SecondScreen = ({ ...props }) => {
     <>
       <ScrollView
         style={{
-          height: height * 0.75
+          height: theme.sizes.screenHeight * 0.75
         }}
         showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 25, 48 * 1 + 20]}>
+        <Block
+          flex={false}
+          margin={[
+            theme.sizes.inouting * 0.8,
+            theme.sizes.inouting,
+            theme.sizes.hinouting * 4.64
+          ]}>
           <Text center bold vertical={[0, 15]}>
             Veuillez completer votre profil afin de pouvoir postuler à cette
             offre
@@ -252,7 +271,11 @@ const SecondScreen = ({ ...props }) => {
                 gray={!isTrue}
                 secondary={isTrue}
                 onPress={() => pickImage(item.label)}>
-                <Text bold center numberOfLines={1} horizontal={15}>
+                <Text
+                  bold
+                  center
+                  numberOfLines={1}
+                  horizontal={theme.sizes.twiceTen * 0.75}>
                   {!isTrue ? item.titre : 'Modifier'}
                 </Text>
               </Button>
@@ -272,7 +295,7 @@ const SecondScreen = ({ ...props }) => {
           />
         )}
       </ScrollView>
-      <Block flex={false} margin={[0, 20]}>
+      <Block flex={false} margin={[0, theme.sizes.inouting * 0.8]}>
         <StackedToBottom>
           <Button
             disabled={!netWorkStatus}

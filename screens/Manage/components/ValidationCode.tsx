@@ -2,6 +2,8 @@ import React, { FC, useState } from 'react';
 import { Block, Button, Text } from '../../sharedComponents';
 import { TextInput, Keyboard } from 'react-native';
 import { useStoreState } from '../../../models';
+import { theme } from '../../../constants';
+
 interface Props {
   currentIndex?: number;
   totalChildren?: number;
@@ -20,11 +22,15 @@ const CompletedOrIssueComponent: FC<Props> = ({
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
-    <Block flex={false} margin={[20, 20]}>
+    <Block flex={false} margin={[theme.sizes.htwiceTen, theme.sizes.twiceTen]}>
       <TextInput
         keyboardType={'numeric'}
         placeholder="Entrer le code de validation"
-        style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        style={{
+          height: theme.sizes.htwiceTen * 2,
+          borderColor: 'gray',
+          borderWidth: 1
+        }}
         onChangeText={value => {
           setInputValue(value);
         }}

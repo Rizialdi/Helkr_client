@@ -8,14 +8,13 @@ import {
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
-  ScrollView,
-  Dimensions
+  ScrollView
 } from 'react-native';
 import { DataProxy } from 'apollo-cache';
 import { useStoreState } from '../../../models';
 import { ModalItemInfos } from '../../sharedComponents';
+import { theme } from '../../../constants';
 
-const { height } = Dimensions.get('screen');
 interface Props {
   id?: string;
   previousValue?: string;
@@ -74,12 +73,12 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
     <KeyboardAvoidingView behavior={'position'}>
       <ScrollView
         style={{
-          height: height * 0.7
+          height: theme.sizes.screenHeight * 0.7
         }}
         alwaysBounceVertical={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Block margin={[20, 20]}>
+        <Block margin={[theme.sizes.htwiceTen, theme.sizes.twiceTen]}>
           <TextAreaInput
             min={20}
             max={300}

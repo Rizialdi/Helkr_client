@@ -18,10 +18,10 @@ import Input from './Input';
 import ImageComponent from './ImageComponent';
 import StatsContainer from './StatsContainer';
 import AvgContainer from './AvgContainer';
+import EventDay from './EventDay';
 
 export {
   Layout,
-  TermsOfServices,
   Text,
   Input,
   Block,
@@ -29,16 +29,18 @@ export {
   Badge,
   Button,
   TagItem,
-  ModalItemInfos,
-  dataContent,
-  CustomListView,
-  CandidateCard,
-  SelectedCandidateCard,
   Calendar,
+  dataContent,
   TextAreaInput,
+  CandidateCard,
+  CustomListView,
+  ModalItemInfos,
+  TermsOfServices,
+  SelectedCandidateCard,
   OfferingDetailsOnModal,
   StackedToBottom,
   ImageComponent,
   StatsContainer,
-  AvgContainer
+  AvgContainer,
+  EventDay
 };

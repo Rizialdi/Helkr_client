@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Block } from '../../sharedComponents';
 import { formatDateAvis } from '../../../utils';
 import ImageComponent from '../../sharedComponents/ImageComponent';
-
+import { theme } from '../../../constants';
 interface Mark {
   scorer: string;
   score: number;
@@ -32,14 +32,29 @@ export default ({
 }: Mark) => (
   <>
     <Block style={styles.container} row space="between">
-      <View style={{}}>
-        <Text style={{ fontSize: 16, fontWeight: '500' }}>{scorer}</Text>
-        <Text style={{ fontSize: 16, fontWeight: '500', marginBottom: 10 }}>
+      <View>
+        <Text medium style={{ fontSize: theme.sizes.header }}>
+          {scorer}
+        </Text>
+        <Text
+          medium
+          style={{
+            fontSize: theme.sizes.header,
+            marginBottom: theme.sizes.htwiceTen / 2
+          }}>
           {mark[score]}
         </Text>
-        <Text style={{ fontSize: 14, marginBottom: 10 }}>{comment}</Text>
+        <Text
+          style={{
+            fontSize: theme.sizes.body,
+            marginBottom: theme.sizes.htwiceTen / 2
+          }}>
+          {comment}
+        </Text>
         {createdAt && formatDateAvis(createdAt) && (
-          <Text style={{ fontSize: 10 }}>{formatDateAvis(createdAt)}</Text>
+          <Text style={{ fontSize: theme.sizes.small }}>
+            {formatDateAvis(createdAt)}
+          </Text>
         )}
       </View>
       <View>
@@ -54,18 +69,18 @@ export default ({
 );
 
 const styles = StyleSheet.create({
-  container: { marginHorizontal: 30 },
+  container: { marginHorizontal: theme.sizes.base * 1.9 },
   image: {
-    height: 55,
-    width: 55,
-    borderRadius: 50,
-    borderWidth: 2,
+    height: theme.sizes.htwiceTen * 2.75,
+    width: theme.sizes.twiceTen * 2.75,
+    borderRadius: theme.sizes.radius * 15,
+    borderWidth: theme.sizes.border / 4,
     overflow: 'hidden'
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
-    borderTopWidth: 0.5,
-    marginTop: 15,
-    marginBottom: 15
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: theme.sizes.htwiceTen * 0.75,
+    marginBottom: theme.sizes.twiceTen * 0.75
   }
 });

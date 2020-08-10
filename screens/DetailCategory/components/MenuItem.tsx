@@ -4,27 +4,26 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Dimensions,
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 
 import {
   Text,
+  Block,
   StackedToBottom,
   Button,
   ModalItemInfos
 } from '../../sharedComponents';
 import { useStoreState } from '../../../models';
 import { ExecutionResult } from 'react-apollo';
-import Block from '../../sharedComponents/Block';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { DetailStackParamsList } from '../../../navigation/Routes';
+import { theme } from '../../../constants';
 
-const { height } = Dimensions.get('screen');
 interface Props {
   children: JSX.Element;
   values: object;
@@ -64,14 +63,14 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
       });
   };
   return (
-    <KeyboardAvoidingView behavior={'padding'}>
+    <KeyboardAvoidingView behavior={'height'}>
       <View style={styles.titleBar}>
         <TouchableOpacity
           disabled={props.currentIndex === 0}
           onPress={() => props.prevStep()}>
-          <Icon
+          <AntDesign
             name="left"
-            size={24}
+            size={theme.sizes.twiceTen * 1.2}
             color={
               props.currentIndex === 0 ? themeColors.gray : themeColors.black
             }
@@ -83,19 +82,23 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
         </Text>
 
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon name="close" size={24} color={themeColors.defaultTextColor} />
+          <AntDesign
+            name="close"
+            size={theme.sizes.twiceTen * 1.2}
+            color={themeColors.defaultTextColor}
+          />
         </TouchableOpacity>
       </View>
       <View
         style={{
           width: '100%',
-          height: 3,
+          height: theme.sizes.border / 2,
           backgroundColor: themeColors.gray2
         }}>
         <View
           style={{
             width: `${width}%`,
-            height: 3,
+            height: theme.sizes.border / 2,
             backgroundColor: themeColors.secondary
           }}></View>
       </View>
@@ -109,9 +112,9 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
       {!props.isLast ? null : (
         <Block
           style={{
-            marginVertical: height / 4
+            marginVertical: theme.sizes.screenHeight / 5
           }}>
-          <StackedToBottom margin={[20, 20]}>
+          <StackedToBottom margin={[0, theme.sizes.twiceTen]}>
             <Button
               disabled={!netWorkStatus || submitPressed}
               secondary={netWorkStatus && selected}
@@ -160,9 +163,9 @@ const styles = StyleSheet.create({
   titleBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
-    marginBottom: 15,
-    marginHorizontal: 16
+    marginTop: theme.sizes.htwiceTen * 1.2,
+    marginBottom: theme.sizes.htwiceTen * 0.75,
+    marginHorizontal: theme.sizes.base
   }
 });
 

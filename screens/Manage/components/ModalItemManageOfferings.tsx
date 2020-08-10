@@ -1,11 +1,5 @@
 import React, { FC, useState } from 'react';
-import {
-  ScrollView,
-  ActivityIndicator,
-  StyleSheet,
-  Dimensions,
-  View
-} from 'react-native';
+import { ScrollView, ActivityIndicator, StyleSheet, View } from 'react-native';
 import {
   Block,
   Text,
@@ -21,8 +15,7 @@ import { formatDateAvis } from '../../../utils';
 import UpdateDescription from './UpdateDescription';
 import DeleteOffering from './DeleteOffering';
 import { useStoreState } from '../../../models';
-
-const { height } = Dimensions.get('screen');
+import { theme } from '../../../constants';
 
 interface Props {
   id?: string;
@@ -51,8 +44,15 @@ const ModalItemManageOfferings: FC<Props> = props => {
           {(loading && !called) || !data ? (
             <ActivityIndicator size={'large'} />
           ) : (
-            <Block flex={false} margin={[0, 25, 48 * 2 + 20]}>
-              <Block margin={[0, -25]} flex={false} row middle space={'around'}>
+            <Block
+              flex={false}
+              margin={[0, theme.sizes.inouting, theme.sizes.hinouting * 2.8]}>
+              <Block
+                margin={[0, -theme.sizes.inouting]}
+                flex={false}
+                row
+                middle
+                space={'around'}>
                 <TagItem tag={data?.offeringById?.type} type />
                 <TagItem tag={data?.offeringById?.category} category />
                 {data?.offeringById?.updatedAt &&
@@ -69,12 +69,18 @@ const ModalItemManageOfferings: FC<Props> = props => {
                     />
                   )}
               </Block>
-              <Text bold size={16} vertical={[20, 10]}>
+              <Text
+                bold
+                size={theme.sizes.base}
+                vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Description
               </Text>
               <Text>{data?.offeringById?.description}</Text>
 
-              <Text bold size={16} vertical={[20, 10]}>
+              <Text
+                bold
+                size={theme.sizes.base}
+                vertical={[theme.sizes.htwiceTen, theme.sizes.twiceTen / 2]}>
                 Categorie
               </Text>
 
@@ -83,7 +89,7 @@ const ModalItemManageOfferings: FC<Props> = props => {
           )}
         </Layout>
       </ScrollView>
-      <Block margin={[-20, 20]}>
+      <Block margin={[-theme.sizes.htwiceTen, theme.sizes.twiceTen]}>
         <StackedToBottom>
           <Button
             disabled={!netWorkStatus}
@@ -139,16 +145,16 @@ const ModalItemManageOfferings: FC<Props> = props => {
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 0,
-    paddingTop: 20,
+    paddingTop: theme.sizes.hinouting * 0.8,
     justifyContent: 'flex-end',
     overflow: 'hidden'
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.5,
+    height: theme.sizes.screenHeight * 0.5,
     backgroundColor: 'white',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12
+    borderTopLeftRadius: theme.sizes.base * 0.75,
+    borderTopRightRadius: theme.sizes.base * 0.75
   }
 });
 export default ModalItemManageOfferings;

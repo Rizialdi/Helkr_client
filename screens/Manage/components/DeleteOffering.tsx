@@ -1,10 +1,16 @@
 import React, { useState, FC } from 'react';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  ScrollView
+} from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
   RadioButtonLabel
   //@ts-ignore
 } from 'react-native-simple-radio-button';
+
 import { Block, Text, Button } from '../../sharedComponents';
 import {
   MyIncompleteOfferingQuery,
@@ -14,16 +20,9 @@ import {
   GetUserStatsDocument
 } from '../../../graphql';
 import { useStoreState } from '../../../models';
-
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView,
-  Dimensions
-} from 'react-native';
 import { DataProxy } from 'apollo-cache';
+import { theme } from '../../../constants';
 
-const { height } = Dimensions.get('screen');
 interface Props {
   id?: string;
   closeModal: () => void;
@@ -120,12 +119,13 @@ const UpdateDescription: FC<Props> = ({
     <KeyboardAvoidingView behavior={'position'}>
       <ScrollView
         style={{
-          height: height * 0.4
+          height: theme.sizes.screenHeight * 0.4
         }}
         alwaysBounceVertical={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Block margin={[20, 20]}>
+        <Block
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text bold center>
             Nous sommes désolé de l'apprendre
           </Text>
@@ -146,11 +146,11 @@ const UpdateDescription: FC<Props> = ({
                   onPress={() => {
                     setSelectedConfirmation(true);
                   }}
-                  buttonSize={15}
-                  buttonOuterSize={20}
-                  buttonStyle={{ marginLeft: 10 }}
+                  buttonSize={theme.sizes.twiceTen * 0.75}
+                  buttonOuterSize={theme.sizes.twiceTen}
+                  buttonStyle={{ marginLeft: theme.sizes.twiceTen / 2 }}
                   buttonWrapStyle={{
-                    marginTop: 20,
+                    marginTop: theme.sizes.htwiceTen,
                     flex: 0.2
                   }}
                 />
@@ -162,12 +162,13 @@ const UpdateDescription: FC<Props> = ({
                     setSelectedConfirmation(true);
                   }}
                   labelStyle={{
-                    fontSize: 16,
+                    fontSize: theme.sizes.header,
                     color: themeColors.defaultTextColor
                   }}
                   labelWrapStyle={{
                     flex: 0.8,
-                    padding: 20,
+                    paddingHorizontal: theme.sizes.hinouting * 0.8,
+                    paddingVertical: theme.sizes.inouting * 0.8,
                     paddingLeft: 0
                   }}
                 />

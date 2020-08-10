@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Dimensions, View, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 //@ts-ignore
 import Image from 'react-native-remote-svg';
+import { theme } from '../constants';
 
 interface Props {
   navigation?: any;
 }
-
-const { height } = Dimensions.get('screen');
 
 export class BienvenueFirst extends Component<Props> {
   render() {
@@ -37,14 +36,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
-    paddingVertical: 20
+    paddingVertical: theme.sizes.htwiceTen
   },
   appTitle: { flex: 0.4, justifyContent: 'flex-end' },
-  image: { width: '100%', height: height / 3 },
+  image: { width: '100%', height: theme.sizes.screenHeight / 3 },
   presentation: { flex: 0.6, alignContent: 'center' },
   text: {
-    paddingVertical: 15,
-    fontSize: 16,
+    paddingVertical: theme.sizes.hinouting * 0.6,
+    fontSize: theme.sizes.header,
     fontWeight: '500'
   }
 });

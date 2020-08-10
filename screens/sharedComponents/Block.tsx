@@ -2,6 +2,7 @@ import React, { SFC } from 'react';
 import { StyleSheet, View, Animated, StyleProp, ViewStyle } from 'react-native';
 import { useStoreState } from '../../models';
 import { MargInterface, PaddinInterface } from './Interface';
+import { theme } from '../../constants';
 
 export interface BlockProps {
   flex?: boolean;
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   card: {
-    borderRadius: 6
+    borderRadius: theme.sizes.border
   },
   center: {
     alignItems: 'center'
@@ -232,11 +233,11 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 12
+      height: theme.sizes.htwiceTen * 0.6
     },
     shadowOpacity: 0.1,
-    shadowRadius: 16.0,
-    elevation: 24,
+    shadowRadius: theme.sizes.base,
+    elevation: theme.sizes.twiceTen * 1.2,
     backgroundColor: 'yellow'
   }
 });

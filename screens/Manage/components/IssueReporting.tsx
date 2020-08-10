@@ -1,16 +1,16 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text } from '../../sharedComponents';
-
-import { ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native';
-import { useStoreState } from '../../../models';
+import { ScrollView, KeyboardAvoidingView } from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
   RadioButtonLabel
   //@ts-ignore
 } from 'react-native-simple-radio-button';
-import { TextAreaInput } from '../../sharedComponents';
-const { height } = Dimensions.get('screen');
+
+import { useStoreState } from '../../../models';
+import { Block, Button, Text, TextAreaInput } from '../../sharedComponents';
+import { theme } from '../../../constants';
+
 interface Props {
   currentIndex?: number;
   totalChildren?: number;
@@ -41,19 +41,23 @@ const IssueReporting: FC<Props> = () => {
       <ScrollView
         style={{
           flex: 1,
-          height: height * 0.9
+          height: theme.sizes.screenHeight * 0.9
         }}
         alwaysBounceVertical={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <Block flex={false} margin={[20, 20]}>
+        <Block
+          flex={false}
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text bold center>
             Nous sommes très désole de le lire
           </Text>
           <Text bold center>
             Pouvez-vous nous en dire plus ?
           </Text>
-          <Block flex={false} margin={[15, -20]}>
+          <Block
+            flex={false}
+            margin={[theme.sizes.hinouting * 0.6, -theme.sizes.inouting * 0.8]}>
             <RadioForm animation={true}>
               {objValue.map((obj, i) => (
                 <RadioButton labelHorizontal={true} key={i}>
@@ -71,13 +75,13 @@ const IssueReporting: FC<Props> = () => {
                     onPress={() => {
                       setSelectedIssue(obj.value);
                     }}
-                    buttonSize={15}
-                    buttonOuterSize={20}
-                    buttonStyle={{ marginLeft: 10 }}
+                    buttonSize={theme.sizes.twiceTen * 0.75}
+                    buttonOuterSize={theme.sizes.twiceTen}
+                    buttonStyle={{ marginLeft: theme.sizes.twiceTen / 2 }}
                     buttonWrapStyle={{
-                      marginTop: 20,
+                      marginTop: theme.sizes.htwiceTen,
                       flex: 0.2,
-                      borderBottomWidth: 1,
+                      borderBottomWidth: theme.sizes.border / 5,
                       borderBottomColor: themeColors.gray2
                     }}
                   />
@@ -89,14 +93,15 @@ const IssueReporting: FC<Props> = () => {
                       setSelectedIssue(obj.value);
                     }}
                     labelStyle={{
-                      fontSize: 16,
+                      fontSize: theme.sizes.header,
                       color: themeColors.defaultTextColor
                     }}
                     labelWrapStyle={{
                       flex: 0.8,
                       borderBottomWidth: 1,
                       borderBottomColor: themeColors.gray2,
-                      padding: 20,
+                      paddingHorizontal: theme.sizes.inouting * 0.8,
+                      paddingVertical: theme.sizes.hinouting * 0.8,
                       paddingLeft: 0
                     }}
                   />
@@ -104,7 +109,8 @@ const IssueReporting: FC<Props> = () => {
               ))}
             </RadioForm>
           </Block>
-          <Block margin={[15, -10]}>
+          <Block
+            margin={[theme.sizes.hinouting * 0.6, -theme.sizes.inouting * 0.4]}>
             <TextAreaInput
               shadow={true}
               placeholder={'Entrez une description de votre problème.'}
@@ -114,7 +120,7 @@ const IssueReporting: FC<Props> = () => {
           </Block>
           <Button secondary>
             <Text center bold>
-              Envoyer{' '}
+              Envoyer
             </Text>
           </Button>
         </Block>

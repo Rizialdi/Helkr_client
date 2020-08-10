@@ -16,6 +16,7 @@ import {
 import AuthorCard from './AuthorCard';
 import PreferredDays from './PreferredDays';
 import EventDay from '../../sharedComponents/EventDay';
+import { theme } from '../../../constants';
 
 interface Props {
   id?: string;
@@ -51,12 +52,24 @@ const ModalItem: FC<Props> = props => {
           callBack={props.setOpenModal}
           callBackParams={[false]}>
           <>
-            {loading || (!called && <ActivityIndicator size={'large'} />)}
-            {error && <Text>Une erreur sur le reseau s'est produite</Text>}
+            {(loading || !called || !data) && (
+              <Block padding={[theme.sizes.screenHeight / 4, 0]}>
+                <ActivityIndicator size={'large'} />
+              </Block>
+            )}
+            {error && (
+              <Text center>Une erreur sur le reseau s'est produite</Text>
+            )}
             {data && (
-              <Block flex={false} margin={[0, 25, 48 * 2 + 20]}>
+              <Block
+                flex={false}
+                margin={[
+                  0,
+                  theme.sizes.inouting,
+                  theme.sizes.hinouting * 4.64
+                ]}>
                 <Block
-                  margin={[0, -25]}
+                  margin={[0, -theme.sizes.inouting]}
                   flex={false}
                   row
                   middle
@@ -75,18 +88,36 @@ const ModalItem: FC<Props> = props => {
                       />
                     )}
                 </Block>
-                <Text bold size={16} vertical={[20, 10]}>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[
+                    theme.sizes.hinouting * 0.8,
+                    theme.sizes.hinouting * 0.4
+                  ]}>
                   Description
                 </Text>
                 <Text>{data?.offeringById?.description}</Text>
 
-                <Text bold size={16} vertical={[20, 10]}>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[
+                    theme.sizes.hinouting * 0.8,
+                    theme.sizes.hinouting * 0.4
+                  ]}>
                   Categorie
                 </Text>
 
                 <Text horizontal={20}>{data?.offeringById?.category}</Text>
 
-                <Text bold size={16} vertical={[20, 10]}>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[
+                    theme.sizes.hinouting * 0.8,
+                    theme.sizes.hinouting * 0.4
+                  ]}>
                   Renseignements
                 </Text>
 
@@ -94,7 +125,13 @@ const ModalItem: FC<Props> = props => {
 
                 {props.status === 'acceptée' && (
                   <>
-                    <Text bold size={16} vertical={[20, 10]}>
+                    <Text
+                      bold
+                      size={theme.sizes.base}
+                      vertical={[
+                        theme.sizes.hinouting * 0.8,
+                        theme.sizes.hinouting * 0.4
+                      ]}>
                       Auteur
                     </Text>
                     <Card shadow>
@@ -111,7 +148,13 @@ const ModalItem: FC<Props> = props => {
                       <EventDay eventday={data?.offeringById.eventday} />
                     ) : (
                       <>
-                        <Text bold size={16} vertical={[20, 10]}>
+                        <Text
+                          bold
+                          size={theme.sizes.base}
+                          vertical={[
+                            theme.sizes.hinouting * 0.8,
+                            theme.sizes.hinouting * 0.4
+                          ]}>
                           Jours choisis
                         </Text>
                         <PreferredDays

@@ -2,6 +2,8 @@ import React, { FC } from 'react';
 import { Block, Button, Text } from '../../sharedComponents';
 import { CompletedOrIssue } from './ModalItemManageCandidates';
 import { useStoreState } from '../../../models';
+import { theme } from '../../../constants';
+
 interface Props {
   currentIndex?: number;
   totalChildren?: number;
@@ -20,7 +22,9 @@ const CompletedOrIssueComponent: FC<Props> = ({
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
-    <Block flex={false} margin={[20, 20]}>
+    <Block
+      flex={false}
+      margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
       <Button
         secondary
         disabled={!netWorkStatus}

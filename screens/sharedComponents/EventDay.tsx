@@ -1,6 +1,7 @@
 import React, { SFC } from 'react';
 import { Text } from '.';
 import { plainDayAndDate } from '../../utils';
+import { theme } from '../../constants';
 
 interface Props {
   eventday: string;
@@ -8,10 +9,13 @@ interface Props {
 const EventDay: SFC<Props> = ({ eventday }) => {
   return (
     <>
-      <Text bold size={16} vertical={[20, 10]}>
+      <Text
+        bold
+        size={theme.sizes.twiceTen * 0.8}
+        vertical={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.4]}>
         Jour de la prestation
       </Text>
-      <Text horizontal={20} semibold transform={'capitalize'}>
+      <Text horizontal={theme.sizes.twiceTen} semibold transform={'capitalize'}>
         {plainDayAndDate(eventday).join(' ')}
       </Text>
     </>

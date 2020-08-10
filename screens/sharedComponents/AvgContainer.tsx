@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Icon from 'react-native-vector-icons/Octicons';
+import { Octicons } from '@expo/vector-icons';
 
-import { theme } from '../../constants';
 import Text from './Text';
+import { theme } from '../../constants';
 
 interface Props {
   average?: number | null;
@@ -11,11 +11,11 @@ interface Props {
 }
 export default ({ average, done }: Props) => (
   <View style={{ flexDirection: 'row' }}>
-    <Icon name="star" size={25} color="#52575D" />
+    <Octicons name="star" size={theme.sizes.twiceTen * 1.25} color="#52575D" />
     <Text
       style={[
         styles.text,
-        { paddingLeft: 20, fontSize: theme.sizes.base * 1.2 }
+        { paddingLeft: theme.sizes.twiceTen, fontSize: theme.sizes.base * 1.2 }
       ]}>
       {`${average}/5 - ${done} avis`}
     </Text>

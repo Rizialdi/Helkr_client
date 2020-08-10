@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 import AvgContainer from './AvgContainer';
 import { MainStackParamList } from '../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,6 +9,7 @@ import Text from './Text';
 import { useGetUserStatsQuery } from '../../graphql';
 
 import { useStoreState } from '../../models';
+import { theme } from '../../constants';
 
 interface Props {
   id: string;
@@ -37,7 +38,9 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
     <>
       <View style={styles.statsContainer}>
         <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{done}</Text>
+          <Text style={[styles.text, { fontSize: theme.sizes.twiceTen * 1.2 }]}>
+            {done}
+          </Text>
           <Text style={[styles.text, styles.subText]}>Accomplies</Text>
         </View>
         <View
@@ -49,11 +52,17 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
               borderRightWidth: 1
             }
           ]}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{proposed}</Text>
+          <Text style={[styles.text, { fontSize: theme.sizes.twiceTen * 1.2 }]}>
+            {proposed}
+          </Text>
           <Text style={[styles.text, styles.subText]}>Proposées</Text>
         </View>
         <View style={styles.statsBox}>
-          <Text style={[styles.text, { fontSize: 24 }]}>{`${average}/5`}</Text>
+          <Text
+            style={[
+              styles.text,
+              { fontSize: theme.sizes.twiceTen * 1.2 }
+            ]}>{`${average}/5`}</Text>
           <Text style={[styles.text, styles.subText]}>Moyenne</Text>
         </View>
       </View>
@@ -70,7 +79,13 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
               })
             }>
             <AvgContainer average={average} done={done} />
-            {done > 0 && <Icon name="right" size={24} color="#52575D" />}
+            {done > 0 && (
+              <AntDesign
+                name="right"
+                size={theme.sizes.twiceTen * 1.2}
+                color="#52575D"
+              />
+            )}
           </TouchableOpacity>
         </>
       )}
@@ -82,14 +97,14 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     alignSelf: 'center',
-    marginTop: 32
+    marginTop: theme.sizes.hinouting * 1.28
   },
   statsBox: {
     alignItems: 'center',
     flex: 1
   },
   subText: {
-    fontSize: 12,
+    fontSize: theme.sizes.caption,
     color: '#AEB5BC',
     textTransform: 'uppercase',
     fontWeight: '500'
@@ -100,13 +115,13 @@ const styles = StyleSheet.create({
   },
   lineStars: {
     flexDirection: 'row',
-    marginTop: 25,
+    marginTop: theme.sizes.hinouting,
     justifyContent: 'space-between',
-    marginHorizontal: 16
+    marginHorizontal: theme.sizes.inouting * 0.64
   },
   delimiter: {
     borderTopColor: '#DFD8C8',
-    borderTopWidth: 0.5,
-    marginTop: 25
+    borderTopWidth: StyleSheet.hairlineWidth,
+    marginTop: theme.sizes.hinouting
   }
 });

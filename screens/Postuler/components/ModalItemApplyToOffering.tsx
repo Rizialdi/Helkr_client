@@ -1,11 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import {
-  ActivityIndicator,
-  ScrollView,
-  StyleSheet,
-  View,
-  Dimensions
-} from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
 
 import {
@@ -14,9 +8,10 @@ import {
   Layout,
   Text,
   OfferingDetailsOnModal,
-  StackedToBottom
+  StackedToBottom,
+  TagItem,
+  ModalItemInfos
 } from '../../sharedComponents';
-import { TagItem, ModalItemInfos } from '../../sharedComponents';
 import { formatDate } from '../../../utils';
 import {
   useCandidateToOfferingMutation,
@@ -24,15 +19,13 @@ import {
 } from '../../../graphql';
 import CompletePieces from './CompletePieces';
 import { useStoreState } from '../../../models';
-import { mocks } from '../../../constants';
+import { mocks, theme } from '../../../constants';
 import client from '../../../ApolloClient';
 
 interface Props {
   id?: string;
   setOpenModal?: React.Dispatch<React.SetStateAction<Boolean>>;
 }
-
-const { height } = Dimensions.get('screen');
 
 export type ListOfPieces =
   | {
@@ -99,11 +92,19 @@ const ModalItem: FC<Props> = props => {
           callBackParams={[false]}>
           <>
             {(loading && !called) || !data ? (
-              <ActivityIndicator size={'large'} />
+              <Block padding={[theme.sizes.screenHeight / 4, 0]}>
+                <ActivityIndicator size={'large'} />
+              </Block>
             ) : (
-              <Block flex={false} margin={[0, 25, 48 * 1 + 20]}>
+              <Block
+                flex={false}
+                margin={[
+                  0,
+                  theme.sizes.hinouting,
+                  theme.sizes.inouting * 2.75
+                ]}>
                 <Block
-                  margin={[0, -25]}
+                  margin={[0, -theme.sizes.inouting]}
                   flex={false}
                   row
                   middle
@@ -119,12 +120,18 @@ const ModalItem: FC<Props> = props => {
                     date
                   />
                 </Block>
-                <Text bold size={16} vertical={[20, 10]}>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                   Description
                 </Text>
                 <Text>{data?.offeringById?.description}</Text>
 
-                <Text bold size={16} vertical={[20, 10]}>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                   Categorie
                 </Text>
                 <OfferingDetailsOnModal details={data?.offeringById?.details} />
@@ -145,7 +152,8 @@ const ModalItem: FC<Props> = props => {
           </>
         </Layout>
       </ScrollView>
-      <Block margin={[-20, 20]}>
+      <Block
+        margin={[-theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
         <StackedToBottom>
           <Button
             secondary
@@ -190,16 +198,16 @@ const ModalItem: FC<Props> = props => {
 const styles = StyleSheet.create({
   modalContainer: {
     margin: 0,
-    paddingTop: 20,
+    paddingTop: theme.sizes.hinouting * 0.8,
     justifyContent: 'flex-end',
     overflow: 'hidden'
   },
   modal: {
     flexDirection: 'column',
-    height: height * 0.75,
+    height: theme.sizes.screenHeight * 0.75,
     backgroundColor: 'white',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12
+    borderTopLeftRadius: theme.sizes.radius * 2,
+    borderTopRightRadius: theme.sizes.radius * 2
   }
 });
 

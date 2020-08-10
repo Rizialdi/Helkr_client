@@ -1,10 +1,10 @@
 import React, { SFC, useState } from 'react';
+import { View, Button, KeyboardAvoidingView } from 'react-native';
 
-import { View, Button, Dimensions, KeyboardAvoidingView } from 'react-native';
 import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
 import { useStoreState } from '../../../models';
+import { theme } from '../../../constants';
 
-const { height } = Dimensions.get('screen');
 const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
   children,
   ...props
@@ -27,7 +27,7 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
       {!props.isLast ? null : (
         <View
           style={{
-            marginVertical: height / 4
+            marginVertical: theme.sizes.screenHeight / 4
           }}>
           <Button
             title="Soumettre"
