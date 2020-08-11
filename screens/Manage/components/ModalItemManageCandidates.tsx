@@ -54,7 +54,8 @@ export type CompletedOrIssue = 'completed' | 'issue' | null;
 const ModalItemManageCandidates: FC<Props> = props => {
   const [selectedId, setSelectedId] = useState<string>('');
   const [Data, setData] = useState<OfferingByIdQuery | undefined>();
-  const { called, loading, data, error } = useOfferingByIdQuery({
+
+  const { loading, data, error } = useOfferingByIdQuery({
     variables: { id: props.id as string },
     fetchPolicy: 'cache-and-network'
   });
@@ -171,8 +172,15 @@ const ModalItemManageCandidates: FC<Props> = props => {
         callBack={props.setOpenModal}
         callBackParams={[false]}>
         <>
-          {(loading && !called) || !data ? (
-            <ActivityIndicator size={'large'} />
+          {error && (
+            <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
+              Une erreur s'est produite sur le réseau.
+            </Text>
+          )}
+          {loading || !data ? (
+            <Block margin={[theme.sizes.screenHeight / 4, 0]}>
+              <ActivityIndicator size={'large'} />
+            </Block>
           ) : (
             <Block flex={false} margin={[0, theme.sizes.inouting]}>
               <Block

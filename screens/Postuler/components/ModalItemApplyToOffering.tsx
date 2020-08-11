@@ -24,7 +24,7 @@ import client from '../../../ApolloClient';
 
 interface Props {
   id?: string;
-  setOpenModal?: React.Dispatch<React.SetStateAction<Boolean>>;
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type ListOfPieces =
@@ -37,7 +37,7 @@ export type ListOfPieces =
   | undefined;
 
 const ModalItem: FC<Props> = props => {
-  const { data, loading, error, called } = useOfferingByIdQuery({
+  const { data, loading, error } = useOfferingByIdQuery({
     fetchPolicy: 'cache-and-network',
     variables: {
       id: props?.id || ''
@@ -45,6 +45,7 @@ const ModalItem: FC<Props> = props => {
   });
   const [ModalOpen, setModalOpen] = useState<boolean>(false);
   const [errorModal, setErrorModal] = useState<boolean>(false);
+  const [modalOverlaySize, setModalOverlaySize] = useState<number>(0.5);
   const [applyTo] = useCandidateToOfferingMutation();
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
@@ -91,7 +92,12 @@ const ModalItem: FC<Props> = props => {
           callBack={props.setOpenModal}
           callBackParams={[false]}>
           <>
-            {(loading && !called) || !data ? (
+            {error && (
+              <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
+                Une erreur s'est produite sur le réseau.
+              </Text>
+            )}
+            {loading || !data ? (
               <Block padding={[theme.sizes.screenHeight / 4, 0]}>
                 <ActivityIndicator size={'large'} />
               </Block>
@@ -177,7 +183,13 @@ const ModalItem: FC<Props> = props => {
         onBackButtonPress={() => setModalOpen(false)}
         onBackdropPress={() => setModalOpen(false)}
         onSwipeComplete={() => setModalOpen(false)}>
-        <View style={styles.modal}>
+        <View
+          style={[
+            styles.modal,
+            {
+              height: theme.sizes.screenHeight * modalOverlaySize
+            }
+          ]}>
           {!isAuthorizedToApply && (
             <CompletePieces
               listOfPieces={listOfPieces}
@@ -187,6 +199,7 @@ const ModalItem: FC<Props> = props => {
                   React.SetStateAction<Boolean>
                 >
               }
+              setModalOverlaySize={setModalOverlaySize}
             />
           )}
         </View>
@@ -204,7 +217,6 @@ const styles = StyleSheet.create({
   },
   modal: {
     flexDirection: 'column',
-    height: theme.sizes.screenHeight * 0.75,
     backgroundColor: 'white',
     borderTopLeftRadius: theme.sizes.radius * 2,
     borderTopRightRadius: theme.sizes.radius * 2

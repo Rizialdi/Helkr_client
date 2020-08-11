@@ -17,7 +17,7 @@ interface Props {
 }
 
 const ModalItem: FC<Props> = props => {
-  const { called, loading, data } = useOfferingByIdQuery({
+  const { data, loading, error } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
 
@@ -32,62 +32,74 @@ const ModalItem: FC<Props> = props => {
       iconName="close"
       callBack={props.setOpenModal}
       callBackParams={[false]}>
-      {(loading && !called) || !data ? (
-        <ActivityIndicator size={'large'} />
-      ) : (
-        <Block flex={false}>
-          <Block flex={false} row middle space={'around'}>
-            <TagItem tag={data?.offeringById?.type} type />
-            <TagItem tag={data?.offeringById?.category} category />
-            {data?.offeringById?.createdAt &&
-              formatDateAvis(data?.offeringById?.createdAt) && (
-                <TagItem
-                  tag={formatDateAvis(data?.offeringById?.createdAt)}
-                  date
-                />
-              )}
+      <>
+        {error && (
+          <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
+            Une erreur s'est produite sur le réseau.
+          </Text>
+        )}
+        {loading || !data ? (
+          <Block margin={[theme.sizes.screenHeight / 4, 0]}>
+            <ActivityIndicator size={'large'} />
           </Block>
-          <Text
-            style={{
-              marginHorizontal: theme.sizes.base,
-              marginVertical: theme.sizes.hbase
-            }}>
-            {data?.offeringById?.description}
-          </Text>
-          <Text
-            style={{
-              marginHorizontal: theme.sizes.base,
-              marginVertical: theme.sizes.hbase
-            }}>
-            {JSON.stringify(data?.offeringById?.details)}
-          </Text>
-          <Block
-            margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
-            <Button
-              secondary
-              disabled={!netWorkStatus}
-              onPress={() =>
-                applyTo({
-                  variables: { id: data?.offeringById?.id as string }
-                })
-                  .then(({ data }) => data?.candidateToOffering)
-                  .then(data => {
-                    try {
-                      if (data?.success) {
-                        client.reFetchObservableQueries();
-                      }
-                    } catch (error) {
-                      throw new Error(`Impossible de Candidater ${error}`);
-                    }
+        ) : (
+          <Block flex={false}>
+            <Block flex={false} row middle space={'around'}>
+              <TagItem tag={data?.offeringById?.type} type />
+              <TagItem tag={data?.offeringById?.category} category />
+              {data?.offeringById?.createdAt &&
+                formatDateAvis(data?.offeringById?.createdAt) && (
+                  <TagItem
+                    tag={formatDateAvis(data?.offeringById?.createdAt)}
+                    date
+                  />
+                )}
+            </Block>
+            <Text
+              style={{
+                marginHorizontal: theme.sizes.base,
+                marginVertical: theme.sizes.hbase
+              }}>
+              {data?.offeringById?.description}
+            </Text>
+            <Text
+              style={{
+                marginHorizontal: theme.sizes.base,
+                marginVertical: theme.sizes.hbase
+              }}>
+              {JSON.stringify(data?.offeringById?.details)}
+            </Text>
+            <Block
+              margin={[
+                theme.sizes.hinouting * 0.8,
+                theme.sizes.inouting * 0.8
+              ]}>
+              <Button
+                secondary
+                disabled={!netWorkStatus}
+                onPress={() =>
+                  applyTo({
+                    variables: { id: data?.offeringById?.id as string }
                   })
-              }>
-              <Text bold center>
-                Postuler
-              </Text>
-            </Button>
+                    .then(({ data }) => data?.candidateToOffering)
+                    .then(data => {
+                      try {
+                        if (data?.success) {
+                          client.reFetchObservableQueries();
+                        }
+                      } catch (error) {
+                        throw new Error(`Impossible de Candidater ${error}`);
+                      }
+                    })
+                }>
+                <Text bold center>
+                  Postuler
+                </Text>
+              </Button>
+            </Block>
           </Block>
-        </Block>
-      )}
+        )}
+      </>
     </Layout>
   );
 };

@@ -31,7 +31,7 @@ interface Props {
 type ButtonOption = 'modifier' | 'supprimer' | '';
 const ModalItemManageOfferings: FC<Props> = props => {
   const [selectedButton, setSelectedButton] = useState<ButtonOption>();
-  const { called, loading, data } = useOfferingByIdQuery({
+  const { error, loading, data } = useOfferingByIdQuery({
     variables: { id: props.id as string }
   });
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
@@ -47,75 +47,86 @@ const ModalItemManageOfferings: FC<Props> = props => {
           iconName="close"
           callBack={props.setOpenModal}
           callBackParams={[false]}>
-          {(loading && !called) || !data ? (
-            <ActivityIndicator size={'large'} />
-          ) : (
-            <Block
-              flex={false}
-              margin={[0, theme.sizes.inouting, theme.sizes.hinouting * 2.8]}>
-              <Block
-                margin={[0, -theme.sizes.inouting]}
-                flex={false}
-                row
-                middle
-                space={'around'}>
-                <TagItem tag={data?.offeringById?.type} type />
-                <TagItem tag={data?.offeringById?.category} category />
-                {data?.offeringById?.updatedAt &&
-                  formatDateAvis(data?.offeringById?.updatedAt) && (
-                    <TagItem
-                      tag={
-                        data?.offeringById.updatedAt
-                          ? formatDateAvis(data?.offeringById?.updatedAt)
-                          : data?.offeringById.createdAt
-                          ? formatDateAvis(data?.offeringById?.createdAt)
-                          : ''
-                      }
-                      date
-                    />
-                  )}
+          <>
+            {error && (
+              <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
+                Une erreur s'est produite sur le réseau.
+              </Text>
+            )}
+            {loading || !data ? (
+              <Block margin={[theme.sizes.screenHeight / 4, 0]}>
+                <ActivityIndicator size={'large'} />
               </Block>
-              <Text
-                bold
-                size={theme.sizes.base}
-                vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
-                Description
-              </Text>
-              <Text>{data?.offeringById?.description}</Text>
+            ) : (
+              <Block
+                flex={false}
+                margin={[0, theme.sizes.inouting, theme.sizes.hinouting * 2.8]}>
+                <Block
+                  margin={[0, -theme.sizes.inouting]}
+                  flex={false}
+                  row
+                  middle
+                  space={'around'}>
+                  <TagItem tag={data?.offeringById?.type} type />
+                  <TagItem tag={data?.offeringById?.category} category />
+                  {data?.offeringById?.updatedAt &&
+                    formatDateAvis(data?.offeringById?.updatedAt) && (
+                      <TagItem
+                        tag={
+                          data?.offeringById.updatedAt
+                            ? formatDateAvis(data?.offeringById?.updatedAt)
+                            : data?.offeringById.createdAt
+                            ? formatDateAvis(data?.offeringById?.createdAt)
+                            : ''
+                        }
+                        date
+                      />
+                    )}
+                </Block>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
+                  Description
+                </Text>
+                <Text>{data?.offeringById?.description}</Text>
 
-              <Text
-                bold
-                size={theme.sizes.base}
-                vertical={[theme.sizes.htwiceTen, theme.sizes.twiceTen / 2]}>
-                Categorie
-              </Text>
+                <Text
+                  bold
+                  size={theme.sizes.base}
+                  vertical={[theme.sizes.htwiceTen, theme.sizes.twiceTen / 2]}>
+                  Categorie
+                </Text>
 
-              <OfferingDetailsOnModal details={data?.offeringById?.details} />
-            </Block>
-          )}
+                <OfferingDetailsOnModal details={data?.offeringById?.details} />
+              </Block>
+            )}
+          </>
         </Layout>
       </ScrollView>
-      <Block margin={[-theme.sizes.htwiceTen, theme.sizes.twiceTen]}>
-        <StackedToBottom>
-          <Button
-            disabled={!netWorkStatus}
-            secondary
-            onPress={() => setSelectedButton('modifier')}>
-            <Text bold center>
-              Modifier
-            </Text>
-          </Button>
+      {!error && !loading && data && (
+        <Block margin={[-theme.sizes.htwiceTen, theme.sizes.twiceTen]}>
+          <StackedToBottom>
+            <Button
+              disabled={!netWorkStatus}
+              secondary
+              onPress={() => setSelectedButton('modifier')}>
+              <Text bold center>
+                Modifier
+              </Text>
+            </Button>
 
-          <Button
-            disabled={!netWorkStatus}
-            accent
-            onPress={() => setSelectedButton('supprimer')}>
-            <Text bold center>
-              Supprimer
-            </Text>
-          </Button>
-        </StackedToBottom>
-      </Block>
+            <Button
+              disabled={!netWorkStatus}
+              accent
+              onPress={() => setSelectedButton('supprimer')}>
+              <Text bold center>
+                Supprimer
+              </Text>
+            </Button>
+          </StackedToBottom>
+        </Block>
+      )}
       <Modal
         isVisible={!!selectedButton}
         animationIn={'slideInUp'}

@@ -94,8 +94,8 @@ export default ({ navigation, candidateModalId, route }: Props) => {
               </Text>
             )}
             {error && (
-              <Text style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
-                Une erreur sur le réseau s'est produite
+              <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
+                Une erreur s'est produite sur le réseau.
               </Text>
             )}
           </Block>

@@ -12,4 +12,5 @@ export interface MenuItemCompletePiecesProps {
   nextStep: () => void;
   onChangeValue: (a: string, b: string) => void;
   setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
+  setModalOverlaySize: React.Dispatch<React.SetStateAction<number>>;
 }

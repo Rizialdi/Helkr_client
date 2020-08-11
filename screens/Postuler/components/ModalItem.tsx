@@ -25,17 +25,14 @@ interface Props {
 }
 
 const ModalItem: FC<Props> = props => {
-  const {
-    data: dataFromQuery,
-    loading,
-    error,
-    called
-  } = useOfferingByIdPostuleesQuery({
-    fetchPolicy: 'cache-and-network',
-    variables: {
-      id: props?.id || ''
+  const { data: dataFromQuery, loading, error } = useOfferingByIdPostuleesQuery(
+    {
+      fetchPolicy: 'cache-and-network',
+      variables: {
+        id: props?.id || ''
+      }
     }
-  });
+  );
 
   const [data, setData] = useState<OfferingByIdPostuleesQuery | undefined>();
   useEffect(() => {
@@ -52,13 +49,15 @@ const ModalItem: FC<Props> = props => {
           callBack={props.setOpenModal}
           callBackParams={[false]}>
           <>
-            {(loading || !called || !data) && (
+            {error && (
+              <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
+                Une erreur s'est produite sur le réseau.
+              </Text>
+            )}
+            {(loading || !data) && (
               <Block padding={[theme.sizes.screenHeight / 4, 0]}>
                 <ActivityIndicator size={'large'} />
               </Block>
-            )}
-            {error && (
-              <Text center>Une erreur sur le reseau s'est produite</Text>
             )}
             {data && (
               <Block

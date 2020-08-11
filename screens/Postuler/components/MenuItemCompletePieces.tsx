@@ -18,6 +18,7 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
         listOfPieces: props.listOfPieces,
         referenceId: props.referenceId,
         setOpenModal: props.setOpenModal,
+        setModalOverlaySize: props.setModalOverlaySize,
         onChange: props.onChangeValue,
         nextStep: props.nextStep,
         onSelected: setSelected,

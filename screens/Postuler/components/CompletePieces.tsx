@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Block, Button, Text, StackedToBottom } from '../../sharedComponents';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
@@ -18,17 +18,20 @@ interface Props {
   listOfPieces: ListOfPieces;
   referenceId: string;
   setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
+  setModalOverlaySize: React.Dispatch<React.SetStateAction<number>>;
 }
 const CompletePieces: FC<Props> = ({
   listOfPieces,
   referenceId,
-  setOpenModal
+  setOpenModal,
+  setModalOverlaySize
 }) => {
   return (
     <MultiStepMenuCompletePieces
       listOfPieces={listOfPieces}
       referenceId={referenceId}
-      setOpenModal={setOpenModal}>
+      setOpenModal={setOpenModal}
+      setModalOverlaySize={setModalOverlaySize}>
       <MultiStepMenuCompletePieces.MenuItemCompletePieces>
         <FirstScreen />
       </MultiStepMenuCompletePieces.MenuItemCompletePieces>
@@ -52,11 +55,27 @@ const FirstScreen = ({ ...props }) => {
     ).find(([key, _], __) => key === referenceId);
     return didSentDocumentForRef ? didSentDocumentForRef[1] : '';
   };
+
+  const getModalSizeOverlay = (status: string): number => {
+    if (status === 'refuse') {
+      return 0.3;
+    }
+    if (status === 'enattente') return 0.3;
+    return 0.5;
+  };
+
   const statusOfApplication = getStatus(referenceId);
+  useEffect(() => {
+    props.setModalOverlaySize(getModalSizeOverlay(statusOfApplication));
+  }, []);
 
   return statusOfApplication === 'enattente' ? (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          marginBottom: theme.sizes.hinouting * 2
+        }}>
         <Block
           flex={false}
           margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
@@ -83,7 +102,11 @@ const FirstScreen = ({ ...props }) => {
     </>
   ) : statusOfApplication === 'refuse' ? (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          marginBottom: theme.sizes.hinouting * 2
+        }}>
         <Block
           flex={false}
           margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
@@ -111,12 +134,17 @@ const FirstScreen = ({ ...props }) => {
     </>
   ) : (
     <>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          marginBottom: theme.sizes.hinouting * 2
+        }}>
         <Block
           flex={false}
           margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
           <Text center bold>
-            Veuillez completer votre profil afin de pouvoir postuler à une offre
+            Veuillez completer votre profil afin de pouvoir postuler à cette
+            offre
           </Text>
           <Text style={{ textAlign: 'justify' }}>
             {'\n'}
@@ -221,6 +249,7 @@ const SecondScreen = ({ ...props }) => {
           const previousData: Maybe<string> | string =
             (await AsyncStorage.getItem('sendVerifPiecesReferenceIds')) || '';
           const parsedPreviousData = await JSON.parse(previousData);
+          console.log('parsedPreviousData'), parsedPreviousData;
           await AsyncStorage.setItem(
             'sendVerifPiecesReferenceIds',
             JSON.stringify({
@@ -228,6 +257,13 @@ const SecondScreen = ({ ...props }) => {
               ...{ [referenceId]: 'enattente' }
             })
           ).then(() => {
+            console.log(
+              'bouya',
+              JSON.stringify({
+                ...parsedPreviousData,
+                ...{ [referenceId]: 'enattente' }
+              })
+            );
             setsendVerifPiecesReferenceIds({
               ...parsedPreviousData,
               ...{ [referenceId]: 'enattente' }
@@ -237,9 +273,11 @@ const SecondScreen = ({ ...props }) => {
         }
         if (errors || error) {
           setErrorModal(true);
+          console.log('bloom');
         }
       })
       .catch(err => {
+        setErrorModal(true);
         throw new Error(`${error}, ${err}`);
       });
   };
@@ -248,7 +286,7 @@ const SecondScreen = ({ ...props }) => {
     <>
       <ScrollView
         style={{
-          height: theme.sizes.screenHeight * 0.75
+          height: theme.sizes.screenHeight / 2
         }}
         showsVerticalScrollIndicator={false}>
         <Block
@@ -287,7 +325,7 @@ const SecondScreen = ({ ...props }) => {
             errorReporting
             information={'Erreur'}
             description={
-              "Une erreur s'est produite pendant le téléchargement de vos pièces. Veuillez réessayer plus tard."
+              "Une erreur s'est produite pendant l'envoi de vos pièces. Veuillez réessayer plus tard."
             }
             timer={1}
             callBack={props.setOpenModal}

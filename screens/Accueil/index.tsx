@@ -29,8 +29,8 @@ import { firstAppOpening, Payload } from './utils';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: false,
-    shouldPlaySound: false,
+    shouldShowAlert: true,
+    shouldPlaySound: true,
     shouldSetBadge: false
   })
 });

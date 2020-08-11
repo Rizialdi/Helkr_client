@@ -12,6 +12,7 @@ interface Props {
   listOfPieces: ListOfPieces;
   referenceId: string;
   setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
+  setModalOverlaySize: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface State {
@@ -53,6 +54,7 @@ class MultiStepMenuCompletePieces extends Component<Props, State, any> {
               referenceId: this.props.referenceId,
               listOfPieces: this.props.listOfPieces,
               setOpenModal: this.props.setOpenModal,
+              setModalOverlaySize: this.props.setModalOverlaySize,
               isLast: children ? this.state.step === children.length - 1 : true,
               onSubmit: this._onSubmit,
               nextStep: this._nextStep,
