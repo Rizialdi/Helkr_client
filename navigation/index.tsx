@@ -92,7 +92,7 @@ const createBottomTabs = () => {
         options={{
           tabBarLabel: 'Gerer',
           tabBarIcon: () => (
-            <AntDesign name="pluscircleo" size={24} color="black" />
+            <AntDesign name="switcher" size={22} color="black" />
           )
         }}
       />
@@ -101,7 +101,9 @@ const createBottomTabs = () => {
         component={Postuler}
         options={{
           tabBarLabel: 'Naviguer',
-          tabBarIcon: () => <AntDesign name="tagso" size={24} color="black" />
+          tabBarIcon: () => (
+            <AntDesign name="appstore-o" size={22} color="black" />
+          )
         }}
       />
       <MaterialBottomTabs.Screen
@@ -109,7 +111,7 @@ const createBottomTabs = () => {
         component={Accueil}
         options={{
           tabBarLabel: 'Accueil',
-          tabBarIcon: () => <AntDesign name="home" size={24} color="black" />
+          tabBarIcon: () => <AntDesign name="home" size={22} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
@@ -118,7 +120,7 @@ const createBottomTabs = () => {
         options={{
           tabBarLabel: 'Discussions',
           tabBarIcon: () => (
-            <AntDesign name="message1" size={24} color="black" />
+            <AntDesign name="message1" size={22} color="black" />
           )
         }}
       />
@@ -127,7 +129,7 @@ const createBottomTabs = () => {
         component={Profile}
         options={{
           tabBarLabel: 'Profil',
-          tabBarIcon: () => <AntDesign name="user" size={24} color="black" />
+          tabBarIcon: () => <AntDesign name="user" size={22} color="black" />
         }}
       />
     </MaterialBottomTabs.Navigator>
