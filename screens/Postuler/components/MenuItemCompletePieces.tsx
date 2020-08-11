@@ -4,6 +4,7 @@ import { View, Button, KeyboardAvoidingView } from 'react-native';
 import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
 import { useStoreState } from '../../../models';
 import { theme } from '../../../constants';
+import { Block } from '../../sharedComponents';
 
 const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
   children,
@@ -13,22 +14,22 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
-    <KeyboardAvoidingView behavior={'padding'}>
-      {React.cloneElement(children, {
-        listOfPieces: props.listOfPieces,
-        referenceId: props.referenceId,
-        setOpenModal: props.setOpenModal,
-        onChange: props.onChangeValue,
-        nextStep: props.nextStep,
-        onSelected: setSelected,
-        isLast: props.isLast,
-        values: props.values
-      })}
-      {!props.isLast ? null : (
-        <View
-          style={{
-            marginVertical: theme.sizes.screenHeight / 4
-          }}>
+    <View style={{ height: '100%' }}>
+      <View>
+        {React.cloneElement(children, {
+          listOfPieces: props.listOfPieces,
+          referenceId: props.referenceId,
+          setOpenModal: props.setOpenModal,
+          onChange: props.onChangeValue,
+          nextStep: props.nextStep,
+          onSelected: setSelected,
+          isLast: props.isLast,
+          values: props.values
+        })}
+      </View>
+
+      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 0 }}>
+        {!props.isLast ? null : (
           <Button
             title="Soumettre"
             disabled={!selected || !netWorkStatus}
@@ -36,9 +37,9 @@ const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
               props.onSubmit();
             }}
           />
-        </View>
-      )}
-    </KeyboardAvoidingView>
+        )}
+      </View>
+    </View>
   );
 };
 

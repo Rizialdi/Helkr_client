@@ -1,5 +1,11 @@
 import React, { FC, useState, useEffect } from 'react';
-import { StyleSheet, TextInput, StyleProp, ViewStyle } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  StyleProp,
+  ViewStyle,
+  View
+} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import { useStoreState } from '../../models';
@@ -81,7 +87,7 @@ const TextAreaInput: FC<Props> = ({
   ];
 
   return (
-    <Block style={[styles.container, blockStyles]}>
+    <View style={[styles.container, blockStyles]}>
       <TextInput
         maxLength={max}
         multiline={true}
@@ -105,7 +111,7 @@ const TextAreaInput: FC<Props> = ({
         vertical={theme.sizes.hinouting / 5}>
         {count} / {max}
       </Text>
-    </Block>
+    </View>
   );
 };
 

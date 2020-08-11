@@ -2,7 +2,8 @@ import React, { useState, FC } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
+  View
 } from 'react-native';
 import RadioForm, {
   RadioButton,
@@ -116,83 +117,78 @@ const UpdateDescription: FC<Props> = ({
   };
 
   return (
-    <KeyboardAvoidingView behavior={'position'}>
-      <ScrollView
-        style={{
-          height: theme.sizes.screenHeight * 0.4
-        }}
-        alwaysBounceVertical={true}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}>
-        <Block
-          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
-          <Text bold center>
-            Nous sommes désolé de l'apprendre
-          </Text>
-          <RadioForm animation={true}>
-            {objValue.map((obj, i) => (
-              <RadioButton labelHorizontal={true} key={i}>
-                <RadioButtonInput
-                  obj={obj}
-                  index={i}
-                  isSelected={selectedConfirmation}
-                  borderWidth={1}
-                  buttonInnerColor={themeColors.accent}
-                  buttonOuterColor={
-                    obj.value
-                      ? themeColors.accent
-                      : themeColors.defaultTextColor
-                  }
-                  onPress={() => {
-                    setSelectedConfirmation(true);
-                  }}
-                  buttonSize={theme.sizes.twiceTen * 0.75}
-                  buttonOuterSize={theme.sizes.twiceTen}
-                  buttonStyle={{ marginLeft: theme.sizes.twiceTen / 2 }}
-                  buttonWrapStyle={{
-                    marginTop: theme.sizes.htwiceTen,
-                    flex: 0.2
-                  }}
-                />
-                <RadioButtonLabel
-                  obj={obj}
-                  index={i}
-                  labelHorizontal={true}
-                  onPress={() => {
-                    setSelectedConfirmation(true);
-                  }}
-                  labelStyle={{
-                    fontSize: theme.sizes.header,
-                    color: themeColors.defaultTextColor
-                  }}
-                  labelWrapStyle={{
-                    flex: 0.8,
-                    paddingHorizontal: theme.sizes.hinouting * 0.8,
-                    paddingVertical: theme.sizes.inouting * 0.8,
-                    paddingLeft: 0
-                  }}
-                />
-              </RadioButton>
-            ))}
-          </RadioForm>
-
-          <Button
-            accent={selectedConfirmation}
-            disabled={!netWorkStatus}
-            onPress={() => {
-              selectedConfirmation ? removeOffering() : null;
-            }}>
-            {loading ? (
-              <ActivityIndicator size={'small'} />
-            ) : (
-              <Text bold center>
-                Supprimer
-              </Text>
-            )}
-          </Button>
-        </Block>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    <View
+      style={{
+        height: '100%'
+      }}>
+      <Block margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
+        <Text bold center>
+          Nous sommes désolé de l'apprendre
+        </Text>
+        <RadioForm animation={true}>
+          {objValue.map((obj, i) => (
+            <RadioButton labelHorizontal={true} key={i}>
+              <RadioButtonInput
+                obj={obj}
+                index={i}
+                isSelected={selectedConfirmation}
+                borderWidth={1}
+                buttonInnerColor={themeColors.accent}
+                buttonOuterColor={
+                  obj.value ? themeColors.accent : themeColors.defaultTextColor
+                }
+                onPress={() => {
+                  setSelectedConfirmation(true);
+                }}
+                buttonSize={theme.sizes.twiceTen * 0.75}
+                buttonOuterSize={theme.sizes.twiceTen}
+                buttonStyle={{ marginLeft: theme.sizes.twiceTen / 2 }}
+                buttonWrapStyle={{
+                  marginTop: theme.sizes.htwiceTen,
+                  flex: 0.2
+                }}
+              />
+              <RadioButtonLabel
+                obj={obj}
+                index={i}
+                labelHorizontal={true}
+                onPress={() => {
+                  setSelectedConfirmation(true);
+                }}
+                labelStyle={{
+                  fontSize: theme.sizes.header,
+                  color: themeColors.defaultTextColor
+                }}
+                labelWrapStyle={{
+                  flex: 0.8,
+                  paddingHorizontal: theme.sizes.hinouting * 0.8,
+                  paddingVertical: theme.sizes.inouting * 0.8,
+                  paddingLeft: 0
+                }}
+              />
+            </RadioButton>
+          ))}
+        </RadioForm>
+      </Block>
+      <Block
+        margin={[0, theme.sizes.twiceTen]}
+        style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 0 }}>
+        <Button
+          accent={selectedConfirmation}
+          disabled={!netWorkStatus}
+          onPress={() => {
+            selectedConfirmation ? removeOffering() : null;
+          }}>
+          {loading ? (
+            <ActivityIndicator size={'small'} />
+          ) : (
+            <Text bold center>
+              Supprimer
+            </Text>
+          )}
+        </Button>
+      </Block>
+    </View>
   );
 };
 

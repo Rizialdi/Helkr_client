@@ -1,5 +1,11 @@
 import React, { FC, useState } from 'react';
-import { ScrollView, ActivityIndicator, StyleSheet, View } from 'react-native';
+import {
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  KeyboardAvoidingView
+} from 'react-native';
 import {
   Block,
   Text,
@@ -120,23 +126,34 @@ const ModalItemManageOfferings: FC<Props> = props => {
         onBackButtonPress={() => onModalClose()}
         onBackdropPress={() => onModalClose()}
         onSwipeComplete={() => onModalClose()}>
-        <View style={styles.modal}>
-          {selectedButton === 'modifier' ? (
-            <UpdateDescription
-              id={data?.offeringById.id}
-              closeModal={onModalClose}
-              previousValue={data?.offeringById.description}
-            />
-          ) : selectedButton === 'supprimer' ? (
-            <DeleteOffering
-              id={data?.offeringById.id}
-              closeModal={onModalClose}
-              setOpenGlobalModal={props.setOpenModal}
-            />
-          ) : (
-            <Text>Vous ne devriez pas etre içi</Text>
-          )}
-        </View>
+        <KeyboardAvoidingView behavior={'padding'}>
+          <View
+            style={[
+              styles.modal,
+              {
+                height:
+                  selectedButton === 'modifier'
+                    ? theme.sizes.screenHeight * 0.4
+                    : theme.sizes.screenHeight * 0.25
+              }
+            ]}>
+            {selectedButton === 'modifier' ? (
+              <UpdateDescription
+                id={data?.offeringById.id}
+                closeModal={onModalClose}
+                previousValue={data?.offeringById.description}
+              />
+            ) : selectedButton === 'supprimer' ? (
+              <DeleteOffering
+                id={data?.offeringById.id}
+                closeModal={onModalClose}
+                setOpenGlobalModal={props.setOpenModal}
+              />
+            ) : (
+              <Text>Vous ne devriez pas etre içi</Text>
+            )}
+          </View>
+        </KeyboardAvoidingView>
       </Modal>
     </>
   );
@@ -151,7 +168,7 @@ const styles = StyleSheet.create({
   },
   modal: {
     flexDirection: 'column',
-    height: theme.sizes.screenHeight * 0.5,
+
     backgroundColor: 'white',
     borderTopLeftRadius: theme.sizes.base * 0.75,
     borderTopRightRadius: theme.sizes.base * 0.75
