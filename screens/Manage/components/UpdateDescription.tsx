@@ -7,8 +7,6 @@ import {
 } from '../../../graphql';
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView,
   View,
   TouchableWithoutFeedback,
   Keyboard
