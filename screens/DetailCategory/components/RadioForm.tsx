@@ -1,5 +1,5 @@
 import React, { SFC, useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Keyboard, ActivityIndicator } from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -7,9 +7,15 @@ import RadioForm, {
   //@ts-ignore
 } from 'react-native-simple-radio-button';
 
+import { Button, ModalItemInfos } from '../../sharedComponents';
+
 import { Text, TextAreaInput, Block } from '../../sharedComponents';
 import { useStoreState } from '../../../models';
 import { theme } from '../../../constants';
+import { ExecutionResult } from 'react-apollo';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { DetailStackParamsList } from '../../../navigation/Routes';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 type valuesInterface = {
   [name: string]: string;
@@ -23,6 +29,8 @@ interface Props {
   nextStep?: () => void;
   onSelected?: (a: boolean) => void;
   onChange?: (a: string, b: string) => void;
+  onSubmit: () => Promise<ExecutionResult<any>>;
+  navigation: StackNavigationProp<DetailStackParamsList>;
 }
 
 const CustomRadioForm: SFC<Props> = ({
@@ -32,7 +40,9 @@ const CustomRadioForm: SFC<Props> = ({
   nextStep,
   onChange,
   onSelected,
-  radio_props
+  navigation,
+  radio_props,
+  onSubmit
 }) => {
   values && values[name] && onSelected && onSelected(true);
   values?.offeringDescription?.length
@@ -40,14 +50,38 @@ const CustomRadioForm: SFC<Props> = ({
     : onSelected && onSelected(false);
 
   const { themeColors } = useStoreState(state => state.Preferences);
-
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
   const [description, setDescription] = useState<string>('');
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [submitPressed, setSubmitPressed] = useState<boolean>(false);
+  const [openErrorModal, setOpenErrorModal] = useState<boolean>(false);
+
+  const onSubmitForm = () => {
+    Keyboard.dismiss();
+
+    onSubmit()
+      .then(({ data, errors }) => {
+        data?.addOffering && setOpenModal(true);
+        errors && setOpenErrorModal(true);
+      })
+      .catch(error => {
+        error && setOpenErrorModal(true);
+        throw new Error(`Ajout offre impossible, ${error}`);
+      });
+  };
 
   useEffect(() => {
     onChange && onChange('offeringDescription', description);
   }, [description]);
+
   return (
-    <View style={{ marginTop: theme.sizes.htwiceTen }}>
+    <View
+      style={{
+        marginTop: theme.sizes.htwiceTen,
+        backgroundColor: themeColors.background,
+        height: '100%'
+      }}>
       <Text
         h2
         transform={'capitalize'}
@@ -115,14 +149,76 @@ const CustomRadioForm: SFC<Props> = ({
             ))}
           </RadioForm>
         ) : (
-          <Block margin={[0, theme.sizes.base * 1]}>
-            <TextAreaInput
-              min={20}
-              max={200}
-              parentCallback={setDescription}
-              placeholder={'Decrivez votre mission içi.'}
-            />
-          </Block>
+          <>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View
+                style={{
+                  height: '95%',
+                  paddingBottom: theme.sizes.hinouting * 1.4
+                }}>
+                <Block margin={[0, theme.sizes.base * 1]}>
+                  <TextAreaInput
+                    min={20}
+                    max={200}
+                    parentCallback={setDescription}
+                    placeholder={'Decrivez votre mission içi.'}
+                  />
+                </Block>
+
+                <Block
+                  margin={[0, theme.sizes.twiceTen]}
+                  style={{
+                    flex: 1,
+                    justifyContent: 'flex-end'
+                  }}>
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      !!description && onSubmitForm();
+                      !!description && setSubmitPressed(true);
+                    }}>
+                    <Button
+                      disabled={!netWorkStatus || submitPressed}
+                      secondary={netWorkStatus && !!description}
+                      onPress={() => {
+                        !!description && onSubmitForm();
+                        !!description && setSubmitPressed(true);
+                      }}>
+                      {submitPressed ? (
+                        <ActivityIndicator size={'small'} />
+                      ) : (
+                        <Text center bold>
+                          Soumettre
+                        </Text>
+                      )}
+                    </Button>
+                  </TouchableWithoutFeedback>
+                </Block>
+              </View>
+            </TouchableWithoutFeedback>
+
+            {openModal && (
+              <ModalItemInfos
+                information={'Votre mission'}
+                description={
+                  "Votre mission vient d'être ajouté à notre liste. Vous serez sous peu contacté par des Helkr prêt à vous aider."
+                }
+                timer={0.5}
+                callBack={navigation.goBack}
+              />
+            )}
+
+            {openErrorModal && (
+              <ModalItemInfos
+                errorReporting
+                information={'Erreur'}
+                description={
+                  "Une erreur s'est produite lors de la création de la mission. Veuillez réessayer plus tard."
+                }
+                timer={0.5}
+                callBack={navigation.goBack}
+              />
+            )}
+          </>
         )}
       </View>
     </View>

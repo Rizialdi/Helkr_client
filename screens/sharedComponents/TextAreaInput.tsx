@@ -6,7 +6,6 @@ import {
   ViewStyle,
   View
 } from 'react-native';
-import Block from './Block';
 import Text from './Text';
 import { useStoreState } from '../../models';
 import { theme } from '../../constants';

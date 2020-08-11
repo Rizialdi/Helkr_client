@@ -1,10 +1,5 @@
 import React, { useState, FC } from 'react';
-import {
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView,
-  View
-} from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
