@@ -5,6 +5,9 @@ export default gql`
   subscription onOfferingAdded($tags: [String!]!) {
     onOfferingAdded(tags: $tags) {
       ...offering
+      author {
+        id
+      }
     }
   }
   ${offering}

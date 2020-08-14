@@ -23,34 +23,34 @@ export default function Profile({ navigation, route: { params } }: Props) {
   const { user } = useStoreState(state => state.User);
   const id = params && params?.id ? params.id : user.id ? user.id : '';
 
-  const {
-    data: {
-      userById: {
-        nom,
-        tags,
-        prenom,
-        avatar,
-        address,
-        description,
-        verified,
-        professional
-      } = {
-        nom: 'John',
-        prenom: 'Doe',
-        tags: ['_'],
-        avatar: null,
-        address: '_',
-        description: '_',
-        verified: false,
-        professional: false
-      }
-    } = {},
-    loading
-  } = useUserByIdQuery({
+  const { data, loading } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network'
   });
+
+  const {
+    nom,
+    tags,
+    prenom,
+    avatar,
+    address,
+    description,
+    verified,
+    professional
+  } =
+    data && data.userById
+      ? data.userById
+      : {
+          nom: 'John',
+          prenom: 'Doe',
+          tags: ['_'],
+          avatar: null,
+          address: '_',
+          description: '_',
+          verified: false,
+          professional: false
+        };
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -98,7 +98,10 @@ export default function Profile({ navigation, route: { params } }: Props) {
               {tags && tags?.length > 0 ? (
                 <Tag tags={tags} />
               ) : (
-                <Text horizontal={theme.sizes.twiceTen * 1.25} gray>
+                <Text
+                  horizontal={theme.sizes.twiceTen * 1.25}
+                  vertical={[0, theme.sizes.hbase]}
+                  gray>
                   _
                 </Text>
               )}

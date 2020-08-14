@@ -18,6 +18,7 @@ import { Description, ProfilContainer, Tag } from './components';
 import { useStoreActions, useStoreState } from '../../models';
 import { getFileName } from '../../utils';
 import Layout from '../sharedComponents/Layout';
+import { ActivityIndicator } from 'react-native';
 import {
   useAddressUpdateMutation,
   useAvatarUploadMutation,
@@ -48,36 +49,39 @@ export default function Profile({
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const { user } = useStoreState(state => state.User);
+  const { themeColors } = useStoreState(state => state.Preferences);
 
   const id = user && user.id ? user.id : '';
 
-  const {
-    data: {
-      userById: {
-        nom,
-        tags,
-        prenom,
-        avatar,
-        address,
-        description,
-        verified,
-        professional
-      } = {
-        nom: 'John',
-        prenom: 'Doe',
-        tags: [],
-        avatar: null,
-        address: '',
-        description: '_',
-        verified: false,
-        professional: false
-      }
-    } = {}
-  } = useUserByIdQuery({
+  const { data, loading } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network'
   });
+
+  const {
+    nom,
+    tags,
+    prenom,
+    avatar,
+    address,
+    description,
+    verified,
+    professional
+  } =
+    data && data.userById
+      ? data.userById
+      : {
+          nom: 'John',
+          prenom: 'Doe',
+          tags: ['_'],
+          avatar: null,
+          address: '_',
+          description: '_',
+          verified: false,
+          professional: false
+        };
+
   const type = image ? `image/${String(image?.uri).split('.')[1]}` : '';
 
   let pictureUrl: ReactNativeFile | null =
@@ -175,64 +179,79 @@ export default function Profile({
       ? theme.colors.secondary
       : theme.colors.gray;
   return (
-    <Layout>
-      <>
-        <Block flex={false} row space="between" margin={[14, 14, 25, 12]}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <AntDesign name="left" color={'black'} size={24} />
-          </TouchableOpacity>
-          <Text h2 medium style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-            Réglages
-          </Text>
-          <TouchableOpacity
-            disabled={disableSaveButton || !netWorkStatus}
-            onPress={() => isModified && save()}>
-            <AntDesign name="save" color={color} size={24} />
-          </TouchableOpacity>
-        </Block>
-        <KeyboardAvoidingView enabled={true} behavior="height">
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity>
-              <ProfilContainer
-                image={image ? image : avatar ? avatar : ''}
-                username={
-                  prenom.replace(/^./, prenom[0].toUpperCase()) +
-                  ' ' +
-                  nom.charAt(0) +
-                  '.'
-                }
-                address={address}
-                verified={verified}
-                pro={professional}
-                parentAddressCallback={setAddressParent}
-                parentCallback={setImage}
-              />
-            </TouchableOpacity>
-            <View style={styles.delimiter}></View>
-            <Description
-              description={description}
-              parentCallback={setDescriptionParent}
-            />
-            <View style={styles.delimiter}></View>
-            <View>
-              <Text
-                medium
-                style={[
-                  styles.text,
-                  {
-                    paddingLeft: theme.sizes.twiceTen,
-                    fontSize: theme.sizes.twiceTen * 1.2,
-                    paddingTop: theme.sizes.hinouting * 0.4
-                  }
-                ]}>
-                Tags
-              </Text>
-              <Tag tags={tags} parentCallback={SetTags} />
-            </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </>
-    </Layout>
+    <>
+      {loading && <ActivityIndicator size={'small'} />}
+      {data && data.userById && (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            height: theme.sizes.screenHeight,
+            backgroundColor: themeColors.background
+          }}>
+          <Layout>
+            <>
+              <Block flex={false} row space="between" margin={[14, 14, 25, 12]}>
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                  <AntDesign name="left" color={'black'} size={24} />
+                </TouchableOpacity>
+                <Text
+                  h2
+                  medium
+                  style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
+                  Réglages
+                </Text>
+                <TouchableOpacity
+                  disabled={disableSaveButton || !netWorkStatus}
+                  onPress={() => isModified && save()}>
+                  <AntDesign name="save" color={color} size={24} />
+                </TouchableOpacity>
+              </Block>
+              <KeyboardAvoidingView enabled={true} behavior="height">
+                <ScrollView showsVerticalScrollIndicator={false}>
+                  <TouchableOpacity>
+                    <ProfilContainer
+                      image={image ? image : avatar ? avatar : ''}
+                      username={
+                        prenom.replace(/^./, prenom[0].toUpperCase()) +
+                        ' ' +
+                        nom.charAt(0) +
+                        '.'
+                      }
+                      address={address}
+                      verified={verified}
+                      pro={professional}
+                      parentAddressCallback={setAddressParent}
+                      parentCallback={setImage}
+                    />
+                  </TouchableOpacity>
+                  <View style={styles.delimiter}></View>
+                  <Description
+                    description={description}
+                    parentCallback={setDescriptionParent}
+                  />
+                  <View style={styles.delimiter}></View>
+                  <View>
+                    <Text
+                      medium
+                      style={[
+                        styles.text,
+                        {
+                          paddingLeft: theme.sizes.twiceTen,
+                          fontSize: theme.sizes.twiceTen * 1.2,
+                          paddingTop: theme.sizes.hinouting * 0.4
+                        }
+                      ]}>
+                      Tags
+                    </Text>
+                    <Tag tags={tags} parentCallback={SetTags} />
+                  </View>
+                </ScrollView>
+              </KeyboardAvoidingView>
+            </>
+          </Layout>
+        </ScrollView>
+      )}
+    </>
   );
 }
 

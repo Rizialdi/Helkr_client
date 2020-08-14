@@ -15,6 +15,7 @@ const Offres = () => {
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const { tags } = useStoreState(state => state.Offering);
+  const { user } = useStoreState(state => state.User);
 
   const { data, loading, error, client } = useIncompleteOfferingsQuery({
     fetchPolicy: 'cache-and-network',
@@ -54,8 +55,13 @@ const Offres = () => {
       dataNewOffering &&
       stateData?.incompleteOfferings &&
       dataNewOffering?.onOfferingAdded &&
-      !errorNewOffering
+      !errorNewOffering &&
+      dataNewOffering.onOfferingAdded.author.id != user.id
     ) {
+      console.log(
+        'dataNewOffering.onOfferingAdded',
+        dataNewOffering.onOfferingAdded
+      );
       setStateData({
         incompleteOfferings: [
           dataNewOffering?.onOfferingAdded,

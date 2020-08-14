@@ -129,6 +129,7 @@ export type Mutation = {
   notificationsTokenUpdate: Scalars['Boolean'];
   registerUser: AuthPayload;
   removeAuthorizedCategories: Scalars['Boolean'];
+  statusChangeToDenyAuthorization: Scalars['Boolean'];
   tagsUpdate: Scalars['Boolean'];
   updateOffering: Scalars['Boolean'];
 };
@@ -136,7 +137,7 @@ export type Mutation = {
 
 export type MutationAddAuthorizedCategoriesArgs = {
   authorizedcategory: Scalars['String'];
-  id?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
 };
 
 
@@ -233,7 +234,13 @@ export type MutationRegisterUserArgs = {
 
 
 export type MutationRemoveAuthorizedCategoriesArgs = {
-  id?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  referenceId: Scalars['String'];
+};
+
+
+export type MutationStatusChangeToDenyAuthorizationArgs = {
+  id: Scalars['String'];
   referenceId: Scalars['String'];
 };
 
@@ -316,7 +323,7 @@ export type Query = {
   myIncompleteOfferingWithCandidates: Array<Offering>;
   offeringById: Offering;
   offeringsUser: Array<Offering>;
-  userById: Utilisateur;
+  userById?: Maybe<Utilisateur>;
   users: Array<Utilisateur>;
 };
 
@@ -436,7 +443,7 @@ export type SubscriptionUpdatedEventDayArgs = {
 export type Tags = {
   __typename?: 'tags';
   id: Scalars['String'];
-  tags: Array<Scalars['String']>;
+  tags: Scalars['String'];
   userid?: Maybe<Scalars['String']>;
   utilisateur?: Maybe<Utilisateur>;
 };
@@ -917,10 +924,10 @@ export type UserByIdQueryVariables = Exact<{
 
 export type UserByIdQuery = (
   { __typename?: 'Query' }
-  & { userById: (
+  & { userById?: Maybe<(
     { __typename?: 'utilisateur' }
     & Pick<Utilisateur, 'nom' | 'tags' | 'prenom' | 'avatar' | 'address' | 'verified' | 'description' | 'professional'>
-  ) }
+  )> }
 );
 
 export type GetVerificationPiecesQueryVariables = Exact<{
@@ -985,6 +992,10 @@ export type OnOfferingAddedSubscription = (
   { __typename?: 'Subscription' }
   & { onOfferingAdded: (
     { __typename?: 'offering' }
+    & { author: (
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'id'>
+    ) }
     & OfferingFragment
   ) }
 );
@@ -2036,6 +2047,9 @@ export const OnOfferingAddedDocument = gql`
     subscription onOfferingAdded($tags: [String!]!) {
   onOfferingAdded(tags: $tags) {
     ...offering
+    author {
+      id
+    }
   }
 }
     ${OfferingFragmentDoc}`;

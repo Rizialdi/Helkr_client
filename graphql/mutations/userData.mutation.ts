@@ -19,7 +19,7 @@ export const addressUpdate = gql`
 `;
 
 export const tagsUpdate = gql`
-  mutation tagsUpdate($tags: String!) {
+  mutation tagsUpdate($tags: [String!]!) {
     tagsUpdate(tags: $tags)
   }
 `;

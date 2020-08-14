@@ -58,7 +58,9 @@ export default ({ offering }: Props) => {
           date
         />
       </Block>
-      <Text style={styles.description}>{description}</Text>
+      <Text style={styles.description} numberOfLines={2}>
+        {description}
+      </Text>
     </Block>
   );
 };

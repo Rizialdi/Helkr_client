@@ -1,8 +1,8 @@
 import Constants from 'expo-constants';
+import { Updates } from 'expo';
 import { Platform, AsyncStorage } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
-import { Restart } from 'fiction-expo-restart';
 import { getPermissionAsync } from '../../utils';
 import {
   StackNavigationInterface,
@@ -72,7 +72,7 @@ export const navigationOnNotification = (
       navigation.navigation.navigate('Discussions');
       break;
     case 'Reload':
-      Restart();
+      Updates.reload();
       navigation.navigation.navigate('Accueil');
       break;
     default:
