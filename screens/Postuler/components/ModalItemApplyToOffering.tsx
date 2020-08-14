@@ -81,7 +81,7 @@ const ModalItem: FC<Props> = props => {
       );
       setListOfPieces(listOfPieces);
     }
-  }, []);
+  }, [isAuthorizedToApply]);
 
   return (
     <>

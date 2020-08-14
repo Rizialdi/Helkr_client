@@ -390,7 +390,12 @@ const ModalItemManageCandidates: FC<Props> = props => {
                       )}
                     </>
                   ) : (
-                    netWorkStatus && <Avis candidateModalId={selectedId} />
+                    netWorkStatus && (
+                      <Avis
+                        candidateModalId={selectedId}
+                        onOfferingDetailsForCandidate
+                      />
+                    )
                   )}
                 </View>
               </Modal>

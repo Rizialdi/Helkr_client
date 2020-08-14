@@ -58,9 +58,10 @@ const FirstScreen = ({ ...props }) => {
 
   const getModalSizeOverlay = (status: string): number => {
     if (status === 'refuse') {
-      return 0.3;
+      return 0.32;
     }
     if (status === 'enattente') return 0.3;
+    if (status === 'accepte') return 0.3;
     return 0.5;
   };
 
@@ -82,7 +83,9 @@ const FirstScreen = ({ ...props }) => {
           <Text center bold>
             Nous avons pris en compte votre envoi de pièces
           </Text>
-          <Text style={{ textAlign: 'justify' }}>
+          <Text
+            style={{ textAlign: 'justify' }}
+            vertical={[theme.sizes.border * 1.5, 0]}>
             Notre équipe est actuellement en cours d'analyse de votre profil.
             Vous serez informé sous peu de la validation de votre profil pour ce
             type d'offre.
@@ -113,7 +116,9 @@ const FirstScreen = ({ ...props }) => {
           <Text center bold>
             Nous avons pris en compte votre envoi de pièces
           </Text>
-          <Text style={{ textAlign: 'justify' }}>
+          <Text
+            style={{ textAlign: 'justify' }}
+            vertical={[theme.sizes.border * 1.5, 0]}>
             Après analyse de votre profil et des pièces fournies, nous sommes au
             regret de vous informé que vous ne pourrez pas postuler à ce type
             d'offre. Veuillez essayer avec une autre offre et changer vos
@@ -125,7 +130,39 @@ const FirstScreen = ({ ...props }) => {
               theme.sizes.hinouting * 0.75,
               theme.sizes.hinouting * 0.75
             ]}>
-            Sachez qu'aucune de ces pièces n'est / ne sera transmise à une
+            Sachez qu'aucune de vos pièces n'est / ne sera transmise à une
+            entité tièrce. Elles sont essentiellement utilisées par notre équipe
+            pour la validation de votre profil.
+          </Text>
+        </Block>
+      </ScrollView>
+    </>
+  ) : statusOfApplication === 'accepte' ? (
+    <>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          marginBottom: theme.sizes.hinouting * 2
+        }}>
+        <Block
+          flex={false}
+          margin={[theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
+          <Text center bold>
+            Nous avons pris en compte votre envoi de pièces
+          </Text>
+          <Text
+            style={{ textAlign: 'justify' }}
+            vertical={[theme.sizes.border * 1.5, 0]}>
+            Votre profil a été validé pour ce type de mission. Veuillez fermer
+            et recharger votre application.
+          </Text>
+
+          <Text
+            vertical={[
+              theme.sizes.hinouting * 0.75,
+              theme.sizes.hinouting * 0.75
+            ]}>
+            Sachez qu'aucune de vos pièces n'est / ne sera transmise à une
             entité tièrce. Elles sont essentiellement utilisées par notre équipe
             pour la validation de votre profil.
           </Text>
@@ -146,7 +183,9 @@ const FirstScreen = ({ ...props }) => {
             Veuillez completer votre profil afin de pouvoir postuler à cette
             offre
           </Text>
-          <Text style={{ textAlign: 'justify' }}>
+          <Text
+            style={{ textAlign: 'justify' }}
+            vertical={[theme.sizes.border * 1.5, 0]}>
             {'\n'}
             Chez <Text bold> Helkr</Text>, nous mettons un point d'honneur à
             satisfaire et à garantir le service proposé. Pour ce faire, nous
@@ -247,9 +286,9 @@ const SecondScreen = ({ ...props }) => {
       .then(async ({ data, errors }) => {
         if (data?.addVerificationpieces) {
           const previousData: Maybe<string> | string =
-            (await AsyncStorage.getItem('sendVerifPiecesReferenceIds')) || '';
+            (await AsyncStorage.getItem('sendVerifPiecesReferenceIds')) || '{}';
+
           const parsedPreviousData = await JSON.parse(previousData);
-          console.log('parsedPreviousData'), parsedPreviousData;
           await AsyncStorage.setItem(
             'sendVerifPiecesReferenceIds',
             JSON.stringify({
@@ -257,13 +296,6 @@ const SecondScreen = ({ ...props }) => {
               ...{ [referenceId]: 'enattente' }
             })
           ).then(() => {
-            console.log(
-              'bouya',
-              JSON.stringify({
-                ...parsedPreviousData,
-                ...{ [referenceId]: 'enattente' }
-              })
-            );
             setsendVerifPiecesReferenceIds({
               ...parsedPreviousData,
               ...{ [referenceId]: 'enattente' }
@@ -273,7 +305,6 @@ const SecondScreen = ({ ...props }) => {
         }
         if (errors || error) {
           setErrorModal(true);
-          console.log('bloom');
         }
       })
       .catch(err => {

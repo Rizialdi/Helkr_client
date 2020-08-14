@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import { Text, Layout, Block } from '../sharedComponents';
@@ -15,9 +15,15 @@ interface Props {
   navigation?: StackNavigationProp<MainStackParamList, 'Avis'>;
   route?: RouteProp<MainStackParamList, 'Avis'>;
   candidateModalId?: string;
+  onOfferingDetailsForCandidate?: boolean;
 }
 
-export default ({ navigation, candidateModalId, route }: Props) => {
+export default ({
+  navigation,
+  candidateModalId,
+  route,
+  onOfferingDetailsForCandidate
+}: Props) => {
   const Navigation = navigation ? navigation : '';
   const { user } = useStoreState(state => state.User);
   const { themeColors } = useStoreState(state => state.Preferences);
@@ -38,8 +44,8 @@ export default ({ navigation, candidateModalId, route }: Props) => {
 
   return (
     <Layout
-      title={'Avis'}
-      iconName={'close'}
+      title={onOfferingDetailsForCandidate ? '' : 'Avis'}
+      iconName={onOfferingDetailsForCandidate ? '' : 'close'}
       callBack={navigation?.goBack}
       callBackParams={[]}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -90,7 +96,7 @@ export default ({ navigation, candidateModalId, route }: Props) => {
               })
             ) : (
               <Text bold style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
-                Vous n'avez aucun avis pour le moment.
+                Ce prestataire n'a aucun avis pour le moment.
               </Text>
             )}
             {error && (

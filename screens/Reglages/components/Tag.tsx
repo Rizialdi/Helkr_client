@@ -12,6 +12,7 @@ const tagList = [
   'Epicier',
   'Garagiste',
   'Ménagère',
+  'Néttoyage',
   'Réparation',
   'Ménage'
 ];

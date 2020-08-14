@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import { Platform, AsyncStorage } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import * as Notifications from 'expo-notifications';
+import { Restart } from 'fiction-expo-restart';
 import { getPermissionAsync } from '../../utils';
 import {
   StackNavigationInterface,
@@ -41,7 +42,8 @@ type screenToRedirect =
   | 'Candidats'
   | 'Mes Offres'
   | 'Offres'
-  | 'Discussions';
+  | 'Discussions'
+  | 'Reload';
 
 export interface Payload {
   screenToRedirect: screenToRedirect;
@@ -68,6 +70,10 @@ export const navigationOnNotification = (
       break;
     case 'Discussions':
       navigation.navigation.navigate('Discussions');
+      break;
+    case 'Reload':
+      Restart();
+      navigation.navigation.navigate('Accueil');
       break;
     default:
       navigation.navigation.navigate('Accueil');

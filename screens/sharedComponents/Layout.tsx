@@ -57,7 +57,7 @@ const Layout: SFC<Props> = ({
       )}
       <StatusBar style="dark" translucent={true} animated={true} />
       <KeyboardAvoidingView enabled={true} behavior="height">
-        {title && (
+        {!!title && (
           <View style={styles.subContainer}>
             <>
               <Block flex={false} row center space="between">
