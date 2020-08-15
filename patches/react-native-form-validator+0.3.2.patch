@@ -1,13 +1,22 @@
+diff --git a/node_modules/react-native-form-validator/defaultMessages.js b/node_modules/react-native-form-validator/defaultMessages.ts
+similarity index 100%
+rename from node_modules/react-native-form-validator/defaultMessages.js
+rename to node_modules/react-native-form-validator/defaultMessages.ts
+diff --git a/node_modules/react-native-form-validator/defaultRules.js b/node_modules/react-native-form-validator/defaultRules.ts
+similarity index 100%
+rename from node_modules/react-native-form-validator/defaultRules.js
+rename to node_modules/react-native-form-validator/defaultRules.ts
 diff --git a/node_modules/react-native-form-validator/index.js b/node_modules/react-native-form-validator/index.d.ts
-similarity index 90%
+similarity index 53%
 rename from node_modules/react-native-form-validator/index.js
 rename to node_modules/react-native-form-validator/index.d.ts
-index 86128b7..0b5bb92 100644
+index 86128b7..d15457a 100644
 --- a/node_modules/react-native-form-validator/index.js
 +++ b/node_modules/react-native-form-validator/index.d.ts
-@@ -2,12 +2,12 @@
+@@ -1,36 +1,34 @@
+ 'use strict';
  
- import PropTypes from 'prop-types';
+-import PropTypes from 'prop-types';
  import { Component } from 'react';
 -import defaultMessages from './defaultMessages';
 -import defaultRules from './defaultRules';
@@ -15,14 +24,150 @@ index 86128b7..0b5bb92 100644
 +import defaultRules from 'react-native-form-validator/defaultRules';
  
 -export default class ValidationComponent extends Component {
-+export default class ValidationComponent extends Component<Props>{
- 
+-
 -  constructor(props) {
+-      super(props);
+-      // array to store error on each fields
+-      // ex:
+-      // [{ fieldName: "name", messages: ["The field name is required."] }]
+-      this.errors = [];
+-      // Retrieve props
+-      this.deviceLocale = props.deviceLocale || 'en'; // ex: en, fr
+-      this.rules = props.rules || defaultRules; // rules for Validation
+-      this.messages = props.messages || defaultMessages;
+-      this.state = { error: false };
++export default class ValidationComponent extends Component<Props> {
 +  constructor(props: Props) {
-       super(props);
-       // array to store error on each fields
-       // ex:
-@@ -133,9 +133,8 @@ export default class ValidationComponent extends Component {
++    super(props);
++    // array to store error on each fields
++    // ex:
++    // [{ fieldName: "name", messages: ["The field name is required."] }]
++    this.errors = [];
++    // Retrieve props
++    this.deviceLocale = props.deviceLocale || 'en'; // ex: en, fr
++    this.rules = props.rules || defaultRules; // rules for Validation
++    this.messages = props.messages || defaultMessages;
++    this.state = { error: false };
+   }
+ 
+   /*
+-  * Method validate to verify if each children respect the validator rules
+-  * Fields example (Array) :
+-  * fields = {
+-  *  input1: {
+-  *    required:true,
+-  *     numbers:true,
+-  *     maxLength:5
+-  *  }
+-  *}
+-  */
++   * Method validate to verify if each children respect the validator rules
++   * Fields example (Array) :
++   * fields = {
++   *  input1: {
++   *    required:true,
++   *     numbers:true,
++   *     maxLength:5
++   *  }
++   *}
++   */
+   validate(fields) {
+     // Reset errors
+     this._resetErrors();
+@@ -42,19 +40,22 @@ export default class ValidationComponent extends Component {
+         // Check rule for current field
+         this._checkRules(key, rules, this.state[key]);
+       }
+-    };
++    }
+     return this.isFormValid();
+   }
+ 
+   // Method to check rules on a spefific field
+   _checkRules(fieldName, rules, value) {
+-    if (!value && !rules.required ) {
++    if (!value && !rules.required) {
+       return; // if value is empty AND its not required by the rules, no need to check any other rules
+     }
+     for (const key of Object.keys(rules)) {
+-      const isRuleFn = (typeof this.rules[key] == "function");
+-      const isRegExp = (this.rules[key] instanceof RegExp);
+-      if ((isRuleFn && !this.rules[key](rules[key], value)) || (isRegExp && !this.rules[key].test(value))) {
++      const isRuleFn = typeof this.rules[key] == 'function';
++      const isRegExp = this.rules[key] instanceof RegExp;
++      if (
++        (isRuleFn && !this.rules[key](rules[key], value)) ||
++        (isRegExp && !this.rules[key].test(value))
++      ) {
+         this._addError(fieldName, key, rules[key], isRuleFn);
+       }
+     }
+@@ -64,8 +65,10 @@ export default class ValidationComponent extends Component {
+   // ex:
+   // [{ fieldName: "name", messages: ["The field name is required."] }]
+   _addError(fieldName, rule, value, isFn) {
+-    value = rule == 'minlength'? value-1 : value;
+-    const errMsg = this.messages[this.deviceLocale][rule].replace("{0}", fieldName).replace("{1}", value);
++    value = rule == 'minlength' ? value - 1 : value;
++    const errMsg = this.messages[this.deviceLocale][rule]
++      .replace('{0}', fieldName)
++      .replace('{1}', value);
+     let [error] = this.errors.filter(err => err.fieldName === fieldName);
+     // error already exists
+     if (error) {
+@@ -92,7 +95,7 @@ export default class ValidationComponent extends Component {
+ 
+   // Method to check if the field is in error
+   isFieldInError(fieldName) {
+-    return (this.errors.filter(err => err.fieldName === fieldName).length > 0);
++    return this.errors.filter(err => err.fieldName === fieldName).length > 0;
+   }
+ 
+   isFormValid() {
+@@ -101,41 +104,40 @@ export default class ValidationComponent extends Component {
+ 
+   // Return an object where the keys are the field names and the value is an array with the rules that failed validation
+   getFailedRules() {
+-    let failedRulesPerField = {}
++    let failedRulesPerField = {};
+     for (let index = 0; index < this.errors.length; index++) {
+       let error = this.errors[index];
+-      failedRulesPerField[error.fieldName] = error.failedRules
++      failedRulesPerField[error.fieldName] = error.failedRules;
+     }
+-    return failedRulesPerField
++    return failedRulesPerField;
+   }
+ 
+   // Return the rules that failed validation for the given field
+   getFailedRulesInField(fieldName) {
+-    const foundError = this.errors.find(err => err.fieldName === fieldName)
++    const foundError = this.errors.find(err => err.fieldName === fieldName);
+     if (!foundError) {
+-      return []
++      return [];
+     }
+-    return foundError.failedRules
++    return foundError.failedRules;
+   }
+ 
+   // Concatenate each error messages
+-  getErrorMessages(separator="\n") {
+-    return this.errors.map((err) => err.messages.join(separator)).join(separator);
++  getErrorMessages(separator = '\n') {
++    return this.errors.map(err => err.messages.join(separator)).join(separator);
+   }
+ 
+   // Method to return errors on a specific field
+   getErrorsInField(fieldName) {
+-    const foundError = this.errors.find(err => err.fieldName === fieldName)
++    const foundError = this.errors.find(err => err.fieldName === fieldName);
+     if (!foundError) {
+-      return []
++      return [];
+     }
+-    return foundError.messages
++    return foundError.messages;
    }
  }
  
@@ -31,8 +176,9 @@ index 86128b7..0b5bb92 100644
 -  deviceLocale: PropTypes.string, // Used for language locale
 -  rules: PropTypes.object, // rules for validations
 -  messages : PropTypes.object // messages for validation errors
+-}
 +type Props = {
-+  deviceLocale: string, 
-+  rules: object, 
-+  messages : object 
- }
++  deviceLocale: string;
++  rules: object;
++  messages: object;
++};
