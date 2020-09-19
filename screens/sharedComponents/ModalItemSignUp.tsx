@@ -14,6 +14,7 @@ interface Props {
   callBackParams?: any[];
   errorReporting?: boolean;
   callBack?: (a: string | number[]) => void;
+  aroundClick: () => void;
 }
 const ModalItem: SFC<Props> = ({
   timer,
@@ -21,6 +22,7 @@ const ModalItem: SFC<Props> = ({
   description,
   buttonMessage,
   callBack,
+  aroundClick,
   callBackParams,
   errorReporting
 }) => {
@@ -49,9 +51,18 @@ const ModalItem: SFC<Props> = ({
       useNativeDriver
       style={styles.modalContainer}
       backdropColor={'#C1BEC0'}
-      onBackButtonPress={() => onCloseModal()}
-      onBackdropPress={() => onCloseModal()}
-      onSwipeComplete={() => onCloseModal()}>
+      onBackButtonPress={() => {
+        aroundClick();
+        setModalVisible(false);
+      }}
+      onBackdropPress={() => {
+        aroundClick();
+        setModalVisible(false);
+      }}
+      onSwipeComplete={() => {
+        aroundClick();
+        setModalVisible(false);
+      }}>
       <View style={[styles.modal]}>
         <Text bold h3 center>
           {information}

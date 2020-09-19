@@ -6,6 +6,7 @@ type Tab = 'tabOne' | 'tabTwo';
 export type BottomStackParamList = {
   Accueil: undefined;
   Gerer: undefined | { tab: Tab };
+  SignIn: undefined;
   Postuler: undefined | { tab: Tab };
   Discussions: undefined;
   Profile: undefined;
@@ -16,11 +17,12 @@ export type MainStackParamList = {
   Reglages: undefined;
   Avis: { id: string };
   Profile: undefined | { id: string };
-  Enregistrement: undefined;
-  Identification: undefined;
-  Verification: undefined;
   Screen: undefined;
-  PrincipalView: BottomStackParamList;
+  LoadedUserData: { token: string; id: string; nom: string; prenom: string };
+  RegisterPhoneNumber: undefined;
+  RegisterPhoneNumberVerification: { phoneNumberToVerify: string };
+  RegisterUsername: { phoneNumberToVerify: string };
+  PrincipalView: { screen: keyof BottomStackParamList };
 };
 
 export interface StackNavigationInterface<

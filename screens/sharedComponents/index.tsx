@@ -3,6 +3,7 @@ import TermsOfServices from './TermsOfServices';
 import Text from './Text';
 import Block from './Block';
 import ModalItemInfos from './ModalItemInfos';
+import ModalItemSignUp from './ModalItemSignUp';
 import Button from './Button';
 import TagItem from './TagItem';
 import CustomListView, { dataContent } from './CustomListView';
@@ -18,6 +19,7 @@ import Input from './Input';
 import ImageComponent from './ImageComponent';
 import StatsContainer from './StatsContainer';
 import AvgContainer from './AvgContainer';
+import InputValidator from '../SignIn/components/InputValidator';
 
 export {
   Layout,
@@ -34,6 +36,8 @@ export {
   CandidateCard,
   CustomListView,
   ModalItemInfos,
+  ModalItemSignUp,
+  InputValidator,
   TermsOfServices,
   SelectedCandidateCard,
   OfferingDetailsOnModal,

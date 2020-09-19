@@ -49,10 +49,21 @@ const ModalItem: FC<Props> = props => {
   const [applyTo] = useCandidateToOfferingMutation();
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
+  const [isAuthorizedToApply, setIsAuthorized] = useState<boolean>(false);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
-  const isAuthorizedToApply =
-    data?.offeringById.referenceId &&
-    jobAuthorizations.includes(data?.offeringById.referenceId);
+
+  useEffect(() => {
+    if (
+      data?.offeringById.referenceId &&
+      jobAuthorizations &&
+      jobAuthorizations.includes(data?.offeringById.referenceId)
+    ) {
+      setIsAuthorized(true);
+    } else {
+      const list = mocks.getListofPieces(data?.offeringById.referenceId);
+      setListOfPieces(list);
+    }
+  }, [data, jobAuthorizations]);
 
   const applyToOffering = () => {
     applyTo({
@@ -73,15 +84,6 @@ const ModalItem: FC<Props> = props => {
       })
       .then(() => props.setOpenModal && props.setOpenModal(false));
   };
-
-  useEffect(() => {
-    if (!isAuthorizedToApply) {
-      const listOfPieces = mocks.getListofPieces(
-        data?.offeringById.referenceId
-      );
-      setListOfPieces(listOfPieces);
-    }
-  }, [isAuthorizedToApply]);
 
   return (
     <>
@@ -196,7 +198,7 @@ const ModalItem: FC<Props> = props => {
               referenceId={data?.offeringById.referenceId as string}
               setOpenModal={
                 props.setOpenModal as React.Dispatch<
-                  React.SetStateAction<Boolean>
+                  React.SetStateAction<boolean>
                 >
               }
               setModalOverlaySize={setModalOverlaySize}

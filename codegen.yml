@@ -1,6 +1,6 @@
 # TODO Change this path to refer to a running graphql endpoint
 # TODO Ensure authentication on your api endpoint
-schema: ../server/helpkr.graphql #http://localhost:4000 #
+schema: ../Helkr_server/helpkr.graphql #http://localhost:4000 #
 
 documents: './graphql/**/*.{tsx,ts}'
 overwrite: true

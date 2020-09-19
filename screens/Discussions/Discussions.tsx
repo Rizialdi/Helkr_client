@@ -150,7 +150,7 @@ const Discussions = () => {
 
   const [data, setData] = useState<AllChatsAndMessagesQuery>();
 
-  let allChatUsersAndLastMessage: Array<{
+  const allChatUsersAndLastMessage: {
     channelId: string;
     userFiltered: {
       __typename?: 'utilisateur' | undefined;
@@ -163,9 +163,9 @@ const Discussions = () => {
       __typename?: 'message' | undefined;
     } & Pick<Message, 'text' | 'id' | 'createdAt' | 'sentById'>;
     unReadMessageCount: number | null;
-  }> = [];
+  }[] = [];
 
-  let channelIds: string[] = [];
+  const channelIds: string[] = [];
 
   const { data: dataAllChats, loading, error } = useAllChatsAndMessagesQuery({
     fetchPolicy: 'cache-and-network',

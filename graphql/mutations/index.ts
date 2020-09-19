@@ -5,6 +5,7 @@ export { default as chooseCandidate } from './chooseCandidate.mutation';
 export { default as updateOffering } from './updateOffering.mutation';
 export { default as deleteOffering } from './deleteOffering.mutation';
 export { default as addVerificationPieces } from './addVerificationPieces.mutation';
+export { default as registerUser } from './registerUser.mutation';
 
 export {
   addressUpdate,

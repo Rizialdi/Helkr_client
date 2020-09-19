@@ -2,6 +2,8 @@
 export { default as avis } from './avis.query';
 export { default as offering } from './offering.query';
 export { default as userById } from './userById.query';
+export { default as authStepOne } from './authStepOne.query';
+export { default as authStepTwo } from './authStepTwo.query';
 export { default as userStats } from './getUserStats.query';
 export { default as isCandidateTo } from './isCandidateTo.query';
 export { default as incompleteOfferings } from './incompleteOfferings.query';

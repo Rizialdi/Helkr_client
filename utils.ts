@@ -12,6 +12,11 @@ import {
   Offering
 } from './graphql/helpkr-types';
 
+// media Utils
+
+import * as Location from 'expo-location';
+import * as ImagePicker from 'expo-image-picker';
+
 export const yearMonths: string[] = [
   'janvier',
   'fevrier',
@@ -43,15 +48,15 @@ export const formatDate = (
   const time = new Date(timestamp);
   const difference = Date.now() / 1000 - time.valueOf() / 1000;
   // Calculate the number of days
-  var days = Math.floor(difference / 86400);
+  const days = Math.floor(difference / 86400);
   // Calculate the number of months
-  var mois = Math.floor(days / 30);
+  const mois = Math.floor(days / 30);
   // After deducting the days calculate the number of hours
-  var hours = Math.floor((difference - days * 86400) / 3600);
+  const hours = Math.floor((difference - days * 86400) / 3600);
   // After days and hours , how many minutes are passed
-  var minutes = Math.floor((difference - days * 86400 - hours * 3600) / 60);
+  const minutes = Math.floor((difference - days * 86400 - hours * 3600) / 60);
   // Finally how many seconds left after removing days, hours and minutes.
-  var secs = Math.floor(
+  const secs = Math.floor(
     difference - days * 86400 - hours * 3600 - minutes * 60
   );
 
@@ -66,7 +71,7 @@ export const formatDate = (
 };
 
 export const getDayAndDate = (
-  timestamp: string = '1595798432136'
+  timestamp = '1595798432136'
 ): (string | number)[] => {
   const date = new Date(parseInt(timestamp));
   if (!date) return [];
@@ -78,7 +83,7 @@ export const getDayAndDate = (
 };
 
 export const plainDayAndDate = (
-  timestamp: string = '1595798432136'
+  timestamp = '1595798432136'
 ): (string | number)[] => {
   const date = new Date(parseInt(timestamp));
   if (!date) return [];
@@ -112,7 +117,7 @@ interface IDictionary<TValue> {
 }
 
 export const formattingTextMessages = (channel: ChatFragment) => {
-  let users: IDictionary<User> = {};
+  const users: IDictionary<User> = {};
 
   channel.users.map(user => {
     users[user.id] = {
@@ -142,7 +147,7 @@ export const storeLastMessageReadIds = async (
   })();
 };
 
-type chatAndMessagesArray = Array<{
+type chatAndMessagesArray = {
   channelId: string;
   userFiltered: {
     __typename?: 'utilisateur' | undefined;
@@ -155,7 +160,7 @@ type chatAndMessagesArray = Array<{
     __typename?: 'message' | undefined;
   } & Pick<Message, 'text' | 'id' | 'createdAt' | 'sentById'>;
   unReadMessageCount: number | null;
-}>;
+}[];
 
 export const sortChatMessages = (
   array: chatAndMessagesArray
@@ -235,14 +240,9 @@ export const sortPostuleeOnInterest = (array: Offering[] = []) => {
   ];
 };
 
-// media Utils
-
-import * as Location from 'expo-location';
-import * as ImagePicker from 'expo-image-picker';
-
 export default getPermissionAsync;
 
-export async function getLocationAsync(onSend: any) {
+export async function getLocationAsync(onSend: any): Promise<string | void> {
   if (await getPermissionAsync(Permissions.LOCATION)) {
     const location = await Location.getCurrentPositionAsync({});
     if (location) {
@@ -251,7 +251,7 @@ export async function getLocationAsync(onSend: any) {
   }
 }
 
-export async function pickImageAsync(onSend: any) {
+export async function pickImageAsync(onSend: any): Promise<string | void> {
   if (await getPermissionAsync(Permissions.CAMERA_ROLL)) {
     const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -265,7 +265,7 @@ export async function pickImageAsync(onSend: any) {
   }
 }
 
-export async function takePictureAsync(onSend: any) {
+export const takePictureAsync = async (onSend: any): Promise<string | void> => {
   if (await getPermissionAsync(Permissions.CAMERA)) {
     const result = await ImagePicker.launchCameraAsync({
       allowsEditing: true,
@@ -277,8 +277,33 @@ export async function takePictureAsync(onSend: any) {
       return result.uri;
     }
   }
-}
+};
 
 export const removeAccent = (str: string): string => {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 };
+
+export const storeCredentials = ({
+  id,
+  prenom,
+  token
+}: StoreCredentialsProps): void => {
+  (async (): Promise<void> => {
+    try {
+      await AsyncStorage.clear();
+      await AsyncStorage.multiSet([
+        ['id', id],
+        ['token', token],
+        ['prenom', prenom]
+      ]);
+    } catch (error) {
+      throw error;
+    }
+  })();
+};
+
+interface StoreCredentialsProps {
+  id: string;
+  token: string;
+  prenom: string;
+}

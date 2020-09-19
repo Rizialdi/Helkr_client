@@ -17,14 +17,16 @@ import BienvenueFirst from '../screens/BienvenueFirst';
 import DetailCategory from '../screens/DetailCategory';
 import DetailItem from '../screens/DetailCategory/components/DetailItem';
 import { Discussions } from '../screens/Discussions';
-import Enregistrement from '../screens/Enregistrement';
-import Identification from '../screens/Identification';
 import Manage from '../screens/Manage';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
 import Reglages from '../screens/Reglages';
-import Screen from '../screens/Screen';
-import Verification from '../screens/Verification';
+import {
+  LoadedUserData,
+  RegisterPhoneNumber,
+  RegisterUsername,
+  RegisterPhoneNumberVerification
+} from '../screens/SignIn';
 import { useStoreActions, useStoreState } from '../models';
 import { theme } from '../constants';
 import {
@@ -140,7 +142,6 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
   return (
     <SafeAreaProvider>
       <MainStack.Navigator
-        initialRouteName="Screen"
         headerMode="screen"
         screenOptions={{
           headerTintColor: 'black',
@@ -189,25 +190,38 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
           </>
         ) : (
           <>
-            <MainStack.Screen
+            {/* <MainStack.Screen
               name="Screen"
               component={Screen}
               options={{ headerShown: false }}
+            /> */}
+            <MainStack.Screen
+              name="RegisterPhoneNumber"
+              component={RegisterPhoneNumber}
+              options={{
+                headerShown: false
+              }}
             />
             <MainStack.Screen
-              name="Enregistrement"
-              component={Enregistrement}
-              options={{ headerShown: false }}
+              name="RegisterPhoneNumberVerification"
+              component={RegisterPhoneNumberVerification}
+              options={{
+                headerShown: false
+              }}
             />
             <MainStack.Screen
-              name="Identification"
-              component={Identification}
-              options={{ headerShown: false }}
+              name="RegisterUsername"
+              component={RegisterUsername}
+              options={{
+                headerShown: false
+              }}
             />
             <MainStack.Screen
-              name="Verification"
-              component={Verification}
-              options={{ headerShown: false }}
+              name="LoadedUserData"
+              component={LoadedUserData}
+              options={{
+                headerShown: false
+              }}
             />
             <MainStack.Screen
               name="PrincipalView"
@@ -227,7 +241,9 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
             <MainStack.Screen
               name="Reglages"
               component={Reglages}
-              options={() => ({ headerShown: true, title: '' })}
+              options={() => ({
+                headerShown: false
+              })}
             />
             <MainStack.Screen
               name="Avis"
@@ -239,7 +255,7 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
             <MainStack.Screen
               name="Profile"
               component={Profile}
-              options={() => ({ headerShown: true, title: '' })}
+              options={() => ({ headerShown: false, title: '' })}
             />
           </>
         )}
@@ -267,14 +283,14 @@ export default ({ initialState, onStateChange }: Props) => {
 
   // (async () => {
   //   await AsyncStorage.clear();
-  //   await AsyncStorage.multiSet([
-  //     ['id', 'ckd2zam8m0000u0p96s31gk9y'],
-  //     [
-  //       'token',
-  //       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja2QyemFtOG0wMDAwdTBwOTZzMzFnazl5IiwiaWF0IjoxNTk2OTExOTYyfQ.ekN4LPpY14cGVXfDA_2nZ9sWZBkUeXY93L8kN3uQ0tw'
-  //     ],
-  //     ['prenom', 'Hooom']
-  //   ]);
+  //   // await AsyncStorage.multiSet([
+  //   //   ['id', 'ckd2zam8m0000u0p96s31gk9y'],
+  //   //   [
+  //   //     'token',
+  //   //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJja2QyemFtOG0wMDAwdTBwOTZzMzFnazl5IiwiaWF0IjoxNTk2OTExOTYyfQ.ekN4LPpY14cGVXfDA_2nZ9sWZBkUeXY93L8kN3uQ0tw'
+  //   //   ],
+  //   //   ['prenom', 'Hooom']
+  //   // ]);
   // })();
 
   useEffect(() => {

@@ -11,7 +11,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { theme } from '../../constants';
 interface Props {
   title?: string;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   iconName?: string;
   callBack?:
     | (() => void)
@@ -28,7 +28,7 @@ const Layout: SFC<Props> = ({
   callBackParams
 }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
-  let [isInternetConnection, setIsInternetConnection] = useState<boolean>(
+  const [isInternetConnection, setIsInternetConnection] = useState<boolean>(
     false
   );
 
@@ -92,7 +92,8 @@ const Layout: SFC<Props> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    display: 'flex'
+    display: 'flex',
+    width: theme.sizes.screenWidth
   },
   text: {
     fontFamily: 'HelveticaNeue',

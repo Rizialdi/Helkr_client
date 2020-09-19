@@ -26,6 +26,7 @@ import {
 
 import { useNotificationsTokenUpdateMutation } from '../../graphql';
 import { firstAppOpening, Payload } from './utils';
+import { CommonActions } from '@react-navigation/native';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -61,7 +62,28 @@ const Accueil = (
           token && tokenUpdate({ variables: { token } });
           await AsyncStorage.setItem('tokenForNotifications', token);
         });
-      firstOpening && setFirstOpening(firstOpening);
+      if (firstOpening) {
+        setFirstOpening(firstOpening);
+
+        navigation.navigation.dispatch(state => {
+          // Remove the home route from the stack
+          const routes = state.routes.filter(
+            r =>
+              ![
+                'RegisterPhoneNumber',
+                'RegisterPhoneNumberVerification',
+                'RegisterUsername',
+                'LoadedUserData'
+              ].includes(r.name)
+          );
+
+          return CommonActions.reset({
+            ...state,
+            routes,
+            index: 2
+          });
+        });
+      }
     })();
 
     const subscription = Notifications.addNotificationResponseReceivedListener(
@@ -109,7 +131,7 @@ const Accueil = (
               description={
                 'Nous sommes heureux de vous compter dans nos rangs. Helkr existe pour vous aider afin que vous puissez faire de même. Merci.'
               }
-              timer={2}
+              timer={1}
             />
           )}
 

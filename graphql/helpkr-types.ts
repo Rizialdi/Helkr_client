@@ -3,8 +3,7 @@ import gql from 'graphql-tag';
 import * as ApolloReactCommon from '@apollo/react-common';
 import * as ApolloReactHooks from '@apollo/react-hooks';
 export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
-
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -308,6 +307,8 @@ export type Query = {
   allChatsAndMessages: Array<Channel>;
   allOfferings: Array<Offering>;
   allUsersToken: Array<Notificationstoken>;
+  AUTH_STEP_ONE: Step_One_Response;
+  AUTH_STEP_TWO: Step_Two_Response;
   channel: Channel;
   channels: Array<Channel>;
   getAuthorizedCategories: Authorizedcategories;
@@ -330,6 +331,18 @@ export type Query = {
 
 export type QueryAllOfferingsArgs = {
   filters: Array<Scalars['String']>;
+};
+
+
+export type QueryAuth_Step_OneArgs = {
+  numero: Scalars['String'];
+};
+
+
+export type QueryAuth_Step_TwoArgs = {
+  id: Scalars['String'];
+  numero: Scalars['String'];
+  token: Scalars['String'];
 };
 
 
@@ -398,6 +411,21 @@ export type Stats = {
   average: Scalars['Float'];
   done: Scalars['Int'];
   proposed: Scalars['Int'];
+};
+
+export type Step_One_Response = {
+  __typename?: 'STEP_ONE_RESPONSE';
+  id: Scalars['String'];
+  status: Scalars['String'];
+};
+
+export type Step_Two_Response = {
+  __typename?: 'STEP_TWO_RESPONSE';
+  id?: Maybe<Scalars['String']>;
+  nom?: Maybe<Scalars['String']>;
+  prenom?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
+  token?: Maybe<Scalars['String']>;
 };
 
 export type Subscription = {
@@ -700,6 +728,25 @@ export type DeleteOfferingMutation = (
   & Pick<Mutation, 'deleteOffering'>
 );
 
+export type RegisterUserMutationVariables = Exact<{
+  nom: Scalars['String'];
+  prenom: Scalars['String'];
+  numero: Scalars['String'];
+}>;
+
+
+export type RegisterUserMutation = (
+  { __typename?: 'Mutation' }
+  & { registerUser: (
+    { __typename?: 'AuthPayload' }
+    & Pick<AuthPayload, 'token'>
+    & { user: (
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'id' | 'prenom'>
+    ) }
+  ) }
+);
+
 export type NotificationsTokenUpdateMutationVariables = Exact<{
   token: Scalars['String'];
 }>;
@@ -770,6 +817,34 @@ export type AllChatsAndMessagesQuery = (
     { __typename?: 'channel' }
     & ChatFragment
   )> }
+);
+
+export type AuthStepOneQueryVariables = Exact<{
+  numero: Scalars['String'];
+}>;
+
+
+export type AuthStepOneQuery = (
+  { __typename?: 'Query' }
+  & { AUTH_STEP_ONE: (
+    { __typename?: 'STEP_ONE_RESPONSE' }
+    & Pick<Step_One_Response, 'id' | 'status'>
+  ) }
+);
+
+export type AuthStepTwoQueryVariables = Exact<{
+  id: Scalars['String'];
+  token: Scalars['String'];
+  numero: Scalars['String'];
+}>;
+
+
+export type AuthStepTwoQuery = (
+  { __typename?: 'Query' }
+  & { AUTH_STEP_TWO: (
+    { __typename?: 'STEP_TWO_RESPONSE' }
+    & Pick<Step_Two_Response, 'id' | 'nom' | 'token' | 'prenom' | 'success'>
+  ) }
 );
 
 export type GetAuthorizedCategoriesQueryVariables = Exact<{
@@ -1305,6 +1380,44 @@ export function useDeleteOfferingMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type DeleteOfferingMutationHookResult = ReturnType<typeof useDeleteOfferingMutation>;
 export type DeleteOfferingMutationResult = ApolloReactCommon.MutationResult<DeleteOfferingMutation>;
 export type DeleteOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOfferingMutation, DeleteOfferingMutationVariables>;
+export const RegisterUserDocument = gql`
+    mutation registerUser($nom: String!, $prenom: String!, $numero: String!) {
+  registerUser(nom: $nom, prenom: $prenom, numero: $numero) {
+    token
+    user {
+      id
+      prenom
+    }
+  }
+}
+    `;
+export type RegisterUserMutationFn = ApolloReactCommon.MutationFunction<RegisterUserMutation, RegisterUserMutationVariables>;
+
+/**
+ * __useRegisterUserMutation__
+ *
+ * To run a mutation, you first call `useRegisterUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerUserMutation, { data, loading, error }] = useRegisterUserMutation({
+ *   variables: {
+ *      nom: // value for 'nom'
+ *      prenom: // value for 'prenom'
+ *      numero: // value for 'numero'
+ *   },
+ * });
+ */
+export function useRegisterUserMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<RegisterUserMutation, RegisterUserMutationVariables>) {
+        return ApolloReactHooks.useMutation<RegisterUserMutation, RegisterUserMutationVariables>(RegisterUserDocument, baseOptions);
+      }
+export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
+export type RegisterUserMutationResult = ApolloReactCommon.MutationResult<RegisterUserMutation>;
+export type RegisterUserMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
 export const NotificationsTokenUpdateDocument = gql`
     mutation notificationsTokenUpdate($token: String!) {
   notificationsTokenUpdate(token: $token)
@@ -1518,6 +1631,79 @@ export function useAllChatsAndMessagesLazyQuery(baseOptions?: ApolloReactHooks.L
 export type AllChatsAndMessagesQueryHookResult = ReturnType<typeof useAllChatsAndMessagesQuery>;
 export type AllChatsAndMessagesLazyQueryHookResult = ReturnType<typeof useAllChatsAndMessagesLazyQuery>;
 export type AllChatsAndMessagesQueryResult = ApolloReactCommon.QueryResult<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>;
+export const AuthStepOneDocument = gql`
+    query authStepOne($numero: String!) {
+  AUTH_STEP_ONE(numero: $numero) {
+    id
+    status
+  }
+}
+    `;
+
+/**
+ * __useAuthStepOneQuery__
+ *
+ * To run a query within a React component, call `useAuthStepOneQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthStepOneQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthStepOneQuery({
+ *   variables: {
+ *      numero: // value for 'numero'
+ *   },
+ * });
+ */
+export function useAuthStepOneQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AuthStepOneQuery, AuthStepOneQueryVariables>) {
+        return ApolloReactHooks.useQuery<AuthStepOneQuery, AuthStepOneQueryVariables>(AuthStepOneDocument, baseOptions);
+      }
+export function useAuthStepOneLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AuthStepOneQuery, AuthStepOneQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AuthStepOneQuery, AuthStepOneQueryVariables>(AuthStepOneDocument, baseOptions);
+        }
+export type AuthStepOneQueryHookResult = ReturnType<typeof useAuthStepOneQuery>;
+export type AuthStepOneLazyQueryHookResult = ReturnType<typeof useAuthStepOneLazyQuery>;
+export type AuthStepOneQueryResult = ApolloReactCommon.QueryResult<AuthStepOneQuery, AuthStepOneQueryVariables>;
+export const AuthStepTwoDocument = gql`
+    query authStepTwo($id: String!, $token: String!, $numero: String!) {
+  AUTH_STEP_TWO(id: $id, token: $token, numero: $numero) {
+    id
+    nom
+    token
+    prenom
+    success
+  }
+}
+    `;
+
+/**
+ * __useAuthStepTwoQuery__
+ *
+ * To run a query within a React component, call `useAuthStepTwoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAuthStepTwoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAuthStepTwoQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      token: // value for 'token'
+ *      numero: // value for 'numero'
+ *   },
+ * });
+ */
+export function useAuthStepTwoQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AuthStepTwoQuery, AuthStepTwoQueryVariables>) {
+        return ApolloReactHooks.useQuery<AuthStepTwoQuery, AuthStepTwoQueryVariables>(AuthStepTwoDocument, baseOptions);
+      }
+export function useAuthStepTwoLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AuthStepTwoQuery, AuthStepTwoQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<AuthStepTwoQuery, AuthStepTwoQueryVariables>(AuthStepTwoDocument, baseOptions);
+        }
+export type AuthStepTwoQueryHookResult = ReturnType<typeof useAuthStepTwoQuery>;
+export type AuthStepTwoLazyQueryHookResult = ReturnType<typeof useAuthStepTwoLazyQuery>;
+export type AuthStepTwoQueryResult = ApolloReactCommon.QueryResult<AuthStepTwoQuery, AuthStepTwoQueryVariables>;
 export const GetAuthorizedCategoriesDocument = gql`
     query getAuthorizedCategories($id: String) {
   getAuthorizedCategories(id: $id) {
