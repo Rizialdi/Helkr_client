@@ -8,22 +8,17 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { InitialState } from '@react-navigation/native';
 import Constants from 'expo-constants';
 
-const NAVIGATION_STATE_KEY = `NAVIGATION_STATE_KEY-${Constants.manifest.sdkVersion}`;
-
 import store from './models';
 import Navigation from './navigation';
 
 import client from './ApolloClient';
 import { AsyncStorage } from 'react-native';
 
+const NAVIGATION_STATE_KEY = `NAVIGATION_STATE_KEY-${Constants.manifest.sdkVersion}`;
+
 const icons = [
   require('./assets/icons/house.svg'),
   require('./assets/icons/student.svg'),
-  require('./assets/icons/phone1.svg'),
-  require('./assets/icons/phone1-1.svg'),
-  require('./assets/icons/phone1-2.svg'),
-  require('./assets/icons/reglages.svg'),
-  require('./assets/icons/marksymbol.svg'),
   require('./assets/images/defaultUserImage.png')
 ];
 

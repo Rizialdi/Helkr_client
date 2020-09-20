@@ -13,7 +13,6 @@ import {
 
 import Accueil from '../screens/Accueil';
 import Avis from '../screens/Avis';
-import BienvenueFirst from '../screens/BienvenueFirst';
 import DetailCategory from '../screens/DetailCategory';
 import DetailItem from '../screens/DetailCategory/components/DetailItem';
 import { Discussions } from '../screens/Discussions';
@@ -21,6 +20,7 @@ import Manage from '../screens/Manage';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
 import Reglages from '../screens/Reglages';
+import OnBoarding from '../screens/OnBoarding';
 import {
   LoadedUserData,
   RegisterPhoneNumber,
@@ -36,6 +36,7 @@ import {
 } from './Routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AsyncStorage } from 'react-native';
+import { BienvenueFirst } from '../screens/BienvenueFirst';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -142,6 +143,7 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
   return (
     <SafeAreaProvider>
       <MainStack.Navigator
+        initialRouteName={token ? 'PrincipalView' : 'OnBoarding'}
         headerMode="screen"
         screenOptions={{
           headerTintColor: 'black',
@@ -190,11 +192,11 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
           </>
         ) : (
           <>
-            {/* <MainStack.Screen
-              name="Screen"
-              component={Screen}
+            <MainStack.Screen
+              name="OnBoarding"
+              component={OnBoarding}
               options={{ headerShown: false }}
-            /> */}
+            />
             <MainStack.Screen
               name="RegisterPhoneNumber"
               component={RegisterPhoneNumber}

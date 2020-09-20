@@ -17,7 +17,7 @@ export type MainStackParamList = {
   Reglages: undefined;
   Avis: { id: string };
   Profile: undefined | { id: string };
-  Screen: undefined;
+  OnBoarding: undefined;
   LoadedUserData: { token: string; id: string; nom: string; prenom: string };
   RegisterPhoneNumber: undefined;
   RegisterPhoneNumberVerification: { phoneNumberToVerify: string };

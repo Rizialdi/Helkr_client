@@ -481,34 +481,36 @@ export const getListofPieces = (id: string | null = '') => {
 };
 
 const illustrations = [
-  { id: 1 },
   {
-    id: 2,
-    source: require('../assets/icons/phone1.svg'),
+    id: 1,
     textP: 'Formulez votre demande de services',
     textS:
       'Repondez à un simple formulaire pour preciser votre demande de services'
   },
   {
-    id: 3,
-    source: require('../assets/icons/phone1-1.svg'),
-    textP: 'Obtenez des suggestions de profil',
+    id: 2,
+    textP: 'Recevez des propositions de professionels',
     textS:
-      'Les avis d’autres utilisateurs permettent de vous faire une idée de l’agent'
+      'Chaque agent vous presente un proposition en fonction de vos reponses au formulaire'
+  },
+  {
+    id: 3,
+    textP: "Faites le choix d'un prestataire",
+    textS:
+      'Les avis d’autres utilisateurs permettent de vous faire une idée du prestataire et de sa fiabilité'
   },
   {
     id: 4,
-    source: require('../assets/icons/phone1-2.svg'),
-    textP: 'Convenez d’un lieu de rendez-vous',
+    textP: 'Regler le montant de la prestation',
     textS:
-      'Repondez à un simple formulaire pour preciser votre demande de services'
+      "Notez que votre paiement n'est percu par le prestataire qu'une fois le service realisé"
   },
   {
     id: 5,
-    source: require('../assets/icons/phone1-2.svg'),
-    textP: 'Convenez d’un lieu de rendez-vous',
+    textP: 'Votre avis nous interesse',
     textS:
-      'Repondez à un simple formulaire pour preciser votre demande de services'
+      'Evaluer le prestataire sur le service effectué en donnant votre avis et une note'
   }
 ];
+
 export { accueil, illustrations };

@@ -17,10 +17,10 @@ export class BienvenueFirst extends Component<Props> {
         </View>
         <View style={styles.presentation}>
           <View>
-            <Image
+            {/* <Image
               source={require('../assets/icons/marksymbol.svg')}
               style={styles.image}
-            />
+            /> */}
           </View>
           <Text style={styles.text}>
             Toujours trouver la personne qui vous convient
