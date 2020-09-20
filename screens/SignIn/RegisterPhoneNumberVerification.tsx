@@ -14,6 +14,7 @@ import {
   StackNavigationInterface,
   MainStackParamList
 } from '../../navigation/Routes';
+import { useStoreState } from '../../models';
 
 const { width } = Dimensions.get('screen');
 
@@ -24,6 +25,8 @@ const RegisterPhoneNumberVerification = ({
   MainStackParamList,
   'RegisterPhoneNumberVerification'
 >): JSX.Element => {
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+
   const numberToVerify = route.params.phoneNumberToVerify
     ? route.params.phoneNumberToVerify
     : '';
@@ -90,7 +93,7 @@ const RegisterPhoneNumberVerification = ({
               placeholder="789 - 485"
             />
             <Button
-              disabled={called}
+              disabled={called || !netWorkStatus}
               secondary
               onPress={(): void => {
                 Keyboard.dismiss();

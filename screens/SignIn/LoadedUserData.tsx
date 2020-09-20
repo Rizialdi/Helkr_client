@@ -7,7 +7,7 @@ import {
   StackNavigationInterface,
   MainStackParamList
 } from '../../navigation/Routes';
-import { useStoreActions } from '../../models';
+import { useStoreActions, useStoreState } from '../../models';
 
 const { width } = Dimensions.get('screen');
 
@@ -21,6 +21,7 @@ const LoadedUserData = ({
   const [loading, setLoading] = useState<boolean>(false);
   const { token, id, nom, prenom } = route.params;
   const { setUser } = useStoreActions(actions => actions.User);
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   return (
     <View style={{ flex: 1, width: width }}>
@@ -42,7 +43,7 @@ const LoadedUserData = ({
             Prenoms: <Text bold>{prenom}</Text>
           </Text>
           <Button
-            disabled={loading}
+            disabled={loading || !netWorkStatus}
             secondary
             onPress={(): void => {
               Keyboard.dismiss();

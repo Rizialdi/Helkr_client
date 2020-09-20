@@ -9,6 +9,7 @@ import { FormData } from './components/validation';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainStackParamList } from '../../navigation/Routes';
+import { useStoreState } from '../../models';
 
 const { width } = Dimensions.get('screen');
 
@@ -24,6 +25,8 @@ const RegisterPhoneNumber: SFC<Props> = ({ navigation }) => {
   const [phoneNumberToVerify, setPhoneNumberToVerify] = useState<string | null>(
     null
   );
+
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const onSubmitNumberVerification = (data: FormData): void => {
     setOpenAlert(true);
@@ -53,7 +56,7 @@ const RegisterPhoneNumber: SFC<Props> = ({ navigation }) => {
               placeholder="0024107558164"
             />
             <Button
-              disabled={openAlert}
+              disabled={openAlert || !netWorkStatus}
               secondary
               onPress={(): void => {
                 Keyboard.dismiss();

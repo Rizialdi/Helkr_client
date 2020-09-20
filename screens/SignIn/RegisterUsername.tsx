@@ -11,7 +11,7 @@ import {
 } from '../../navigation/Routes';
 import { useRegisterUserMutation } from '../../graphql';
 import { storeCredentials } from '../../utils';
-import { useStoreActions } from '../../models';
+import { useStoreActions, useStoreState } from '../../models';
 
 const { width } = Dimensions.get('screen');
 
@@ -22,6 +22,8 @@ const RegisterUsername = ({
   MainStackParamList,
   'RegisterUsername'
 >): JSX.Element => {
+  const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+
   const [registerUser, { loading, data, error }] = useRegisterUserMutation({
     fetchPolicy: 'no-cache'
   });
@@ -86,7 +88,7 @@ const RegisterUsername = ({
               placeholder="Charles"
             />
             <Button
-              disabled={loading}
+              disabled={loading || !netWorkStatus}
               secondary
               onPress={(): void => {
                 Keyboard.dismiss();
