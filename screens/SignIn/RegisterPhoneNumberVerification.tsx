@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, View, Dimensions, Keyboard } from 'react-native';
 import { useForm } from 'react-hook-form';
 
-import { Button, Layout, Text, ModalItemInfos } from '../sharedComponents';
+import { Button, Text, ModalItemInfos } from '../sharedComponents';
 import { theme } from '../../constants';
-import { Form, InputValidator, validation } from './components';
+import { Form, InputValidator, validation, SignInLayout } from './components';
 import { FormData } from './components/validation';
 import {
   useAuthStepTwoLazyQuery,
@@ -67,7 +67,7 @@ const RegisterPhoneNumberVerification = ({
 
   return (
     <View style={{ flex: 1, width: width }}>
-      <Layout title={'Enregistrement'}>
+      <SignInLayout title={'Enregistrement'}>
         <View
           style={{
             paddingHorizontal: theme.sizes.base * 2,
@@ -75,8 +75,7 @@ const RegisterPhoneNumberVerification = ({
           }}>
           <Text bold>Veuillez verifier le {numberToVerify}</Text>
           <Text small>
-            Veuillez entrer le code de validation envoyé sur votre mobile
-            {`\n`}.
+            Veuillez entrer le code de validation envoyé sur votre mobile.
           </Text>
           <Form
             {...{
@@ -155,7 +154,7 @@ const RegisterPhoneNumberVerification = ({
               })
             : null}
         </View>
-      </Layout>
+      </SignInLayout>
     </View>
   );
 };

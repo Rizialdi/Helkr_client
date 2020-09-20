@@ -106,7 +106,7 @@ const TermsOfServices = () => {
 
 const styles = StyleSheet.create({
   text: { marginBottom: theme.sizes.header },
-  container: { marginVertical: theme.sizes.hinouting }
+  container: { marginVertical: theme.sizes.hinouting * 0.5 }
 });
 
 export default TermsOfServices;

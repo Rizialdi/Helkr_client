@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
-import { Button, Layout, Text } from '../sharedComponents';
+import { Button, Text } from '../sharedComponents';
 import { theme } from '../../constants';
-import { Form, InputValidator, validation } from './components';
+import { Form, InputValidator, validation, SignInLayout } from './components';
 import { FormData } from './components/validation';
 import { useForm } from 'react-hook-form';
 import {
@@ -56,7 +56,7 @@ const RegisterUsername = ({
   console.log('error', error);
   return (
     <View style={{ flex: 1, width: width }}>
-      <Layout title={'Enregistrement'}>
+      <SignInLayout title={'Enregistrement'}>
         <View
           style={{
             paddingHorizontal: theme.sizes.base * 2,
@@ -114,7 +114,7 @@ const RegisterUsername = ({
               screen: 'Accueil'
             })}
         </View>
-      </Layout>
+      </SignInLayout>
     </View>
   );
 };

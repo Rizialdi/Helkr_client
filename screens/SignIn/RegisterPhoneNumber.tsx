@@ -2,9 +2,9 @@ import React, { useState, SFC } from 'react';
 import { ActivityIndicator, View, Dimensions, Keyboard } from 'react-native';
 import { useForm } from 'react-hook-form';
 
-import { Button, ModalItemSignUp, Layout, Text } from '../sharedComponents';
+import { Button, ModalItemSignUp, Text } from '../sharedComponents';
 import { theme } from '../../constants';
-import { Form, InputValidator, validation } from './components';
+import { Form, InputValidator, validation, SignInLayout } from './components';
 import { FormData } from './components/validation';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -35,7 +35,7 @@ const RegisterPhoneNumber: SFC<Props> = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, width: width }}>
-      <Layout title={'Enregistrement'}>
+      <SignInLayout title={'Enregistrement'}>
         <View
           style={{
             paddingHorizontal: theme.sizes.base * 2,
@@ -89,7 +89,7 @@ const RegisterPhoneNumber: SFC<Props> = ({ navigation }) => {
             />
           )}
         </View>
-      </Layout>
+      </SignInLayout>
     </View>
   );
 };

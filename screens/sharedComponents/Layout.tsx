@@ -9,7 +9,7 @@ import Text from './Text';
 import { useStoreState, useStoreActions } from '../../models';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { theme } from '../../constants';
-interface Props {
+export interface LayoutProps {
   title?: string;
   children: JSX.Element | JSX.Element[];
   iconName?: string;
@@ -20,7 +20,7 @@ interface Props {
   callBackParams?: any[];
 }
 
-const Layout: SFC<Props> = ({
+const Layout: SFC<LayoutProps> = ({
   title,
   children,
   iconName,

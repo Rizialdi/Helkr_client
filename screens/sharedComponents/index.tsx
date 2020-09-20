@@ -1,4 +1,4 @@
-import Layout from './Layout';
+import Layout, { LayoutProps } from './Layout';
 import TermsOfServices from './TermsOfServices';
 import Text from './Text';
 import Block from './Block';
@@ -23,6 +23,7 @@ import InputValidator from '../SignIn/components/InputValidator';
 
 export {
   Layout,
+  LayoutProps,
   Text,
   Input,
   Block,

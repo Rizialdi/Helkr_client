@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
-import { Button, Layout, Text } from '../sharedComponents';
+import { Button, Text } from '../sharedComponents';
 import { theme } from '../../constants';
 import { storeCredentials } from '../../utils';
 import {
@@ -8,6 +8,7 @@ import {
   MainStackParamList
 } from '../../navigation/Routes';
 import { useStoreActions, useStoreState } from '../../models';
+import { SignInLayout } from './components';
 
 const { width } = Dimensions.get('screen');
 
@@ -25,7 +26,7 @@ const LoadedUserData = ({
 
   return (
     <View style={{ flex: 1, width: width }}>
-      <Layout title={'Vérification'}>
+      <SignInLayout title={'Vérification'}>
         <View
           style={{
             paddingHorizontal: theme.sizes.base * 2,
@@ -64,7 +65,7 @@ const LoadedUserData = ({
             )}
           </Button>
         </View>
-      </Layout>
+      </SignInLayout>
     </View>
   );
 };

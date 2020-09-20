@@ -2,7 +2,6 @@ import React, { useState, useMemo, useRef } from 'react';
 import {
   Dimensions,
   StyleSheet,
-  Text,
   View,
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -10,6 +9,7 @@ import {
   ScrollView
 } from 'react-native';
 
+import { Text } from '../sharedComponents';
 import { Dots, MarkPresentation, OnBoardingTemplate } from './components';
 import { mocks, theme } from '../../constants';
 import {
@@ -113,7 +113,7 @@ export default function App({
                 ? scrollTo(pagePosition + 1)
                 : navigation.navigate('RegisterPhoneNumber')
             }>
-            <Text style={[styles.text, { color: themeColors.white }]}>
+            <Text bold>
               {pagePosition === 1
                 ? 'Demarrer'
                 : illustrations && pagePosition === illustrations.length + 1
@@ -154,9 +154,5 @@ const styles = StyleSheet.create({
     width: width,
     paddingHorizontal: width * 0.05,
     flexDirection: 'row'
-  },
-  text: {
-    textTransform: 'uppercase',
-    fontSize: 15
   }
 });
