@@ -55,9 +55,9 @@ export default Category;
 const styles = StyleSheet.create({
   category: {
     // this should be dynamic based on screen width
-    minWidth: (width - theme.sizes.inouting * 2 - theme.sizes.base) / 2,
-    maxWidth: (width - theme.sizes.inouting * 2 - theme.sizes.base) / 2,
-    maxHeight: (width - theme.sizes.inouting * 2 - theme.sizes.base) / 2,
+    minWidth: (width - theme.sizes.inouting * 2) / 2,
+    maxWidth: (width - theme.sizes.inouting * 2) / 2,
+    maxHeight: (width - theme.sizes.inouting * 2) / 2,
     marginVertical: theme.sizes.htwiceTen / 1.5
   }
 });

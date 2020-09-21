@@ -112,6 +112,7 @@ const Accueil = (
               <TextInput
                 style={{ flex: 1, marginLeft: 10, ...styles.input }}
                 defaultValue={inputText}
+                placeholder={'Essayer Répassage'}
                 onChangeText={text => setInputText(text)}
               />
               <TouchableOpacity
@@ -162,7 +163,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'space-between',
-    marginHorizontal: 23,
     marginVertical: 10,
     height: 40
   },

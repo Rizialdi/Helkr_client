@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
-    width: theme.sizes.screenWidth
+    width: '100%'
   },
   text: {
     fontFamily: 'HelveticaNeue',

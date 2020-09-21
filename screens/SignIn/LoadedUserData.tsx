@@ -60,7 +60,7 @@ const LoadedUserData = ({
               <ActivityIndicator size="small" />
             ) : (
               <Text bold center>
-                Continuer
+                Confirmer
               </Text>
             )}
           </Button>

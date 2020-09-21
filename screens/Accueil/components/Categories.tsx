@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   categories: {
     flexWrap: 'wrap',
     marginTop: theme.sizes.htwiceTen,
-    paddingHorizontal: theme.sizes.base * 1,
+    paddingHorizontal: theme.sizes.base * 0.8,
     marginBottom: theme.sizes.hbase * 3.5
   }
 });

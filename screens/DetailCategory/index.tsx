@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { AntDesign } from '@expo/vector-icons';
 import { useStoreState } from '../../models';
 import { Text } from '../sharedComponents';
 import {
@@ -17,6 +17,7 @@ const Item = ({ title }: { title: string }) => {
       <Text body semibold transform={'capitalize'} numberOfLines={1}>
         {title}
       </Text>
+      <AntDesign name="up" size={15} />
     </View>
   );
 };
@@ -50,6 +51,9 @@ const DetailCategory = ({
 
 const styles = StyleSheet.create({
   item: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: theme.sizes.twiceTen * 1.5,
     paddingVertical: theme.sizes.htwiceTen * 1.5,
     borderBottomColor: 'rgba(0,0,0,0.1)',

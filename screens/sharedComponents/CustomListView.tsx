@@ -35,7 +35,7 @@ const CustomListView: SFC<Props> = ({
   const [status, setStatus] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const openToDescription = (id: string, status: string = '') => {
+  const openToDescription = (id: string, status = '') => {
     setSelectedOffering(id);
     setOpenModal(true);
     setStatus(status);
@@ -60,7 +60,7 @@ const CustomListView: SFC<Props> = ({
         }}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        onEndReached={() => console.log('salut')}
+        onEndReached={() => console.log('Fin atteinte')}
         onEndReachedThreshold={0}
         pagingEnabled={true}
         alwaysBounceVertical={true}

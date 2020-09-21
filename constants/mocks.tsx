@@ -41,10 +41,10 @@ const listeDePieces = [
 const listeDePiecesObligatoires = [1, 2];
 const accueil: CategoriesInterface = [
   {
-    id: 'Maison',
+    id: 'Maisodn',
     name: 'Maison',
     tag: {
-      Réparation: {
+      'Peinture & Revetement ': {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -82,7 +82,7 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Néttoyage: {
+      Plomberie: {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
@@ -104,7 +104,162 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Réttoyage: {
+      'Mobilier & Décoration': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      Electricité: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      }
+    },
+    image: 'house'
+  },
+  {
+    id: 'Maison',
+    name: 'Cours/Conseils',
+    tag: {
+      'Graphisme & Design': {
+        referenceId: 'cb92efe392377fce4c29e18a820b2019',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
+        detailQuestions: {
+          foyer: [
+            { label: 'foyer1', value: 'foyer 1' },
+            { label: 'foyer2', value: 'foyer2' }
+          ],
+          assiette: [
+            { label: 'assiette1', value: 'assiette1' },
+            { label: 'assiette2', value: 'assiette2' }
+          ],
+          tomate: [
+            { label: 'tomate1', value: 'tomate1' },
+            { label: 'tomate2', value: 'tomate2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ],
+          foyer2: [
+            { label: 'foyer1', value: 'foyer 1' },
+            { label: 'foyer2', value: 'foyer2' }
+          ],
+          assiette2: [
+            { label: 'assiette1', value: 'assiette1' },
+            { label: 'assiette2', value: 'assiette2' }
+          ],
+          tomate2: [
+            { label: 'tomate1', value: 'tomate1' },
+            { label: 'tomate2', value: 'tomate2' }
+          ],
+          marmite2: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      'Marketing Digital': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      'Programmation & Tech': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      Business: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      'Rédaction & Traduction': {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
@@ -131,9 +286,9 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Maison2',
-    name: 'Maison2',
+    name: 'Aide à domicile',
     tag: {
-      Réparation: {
+      Babysitting: {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -171,7 +326,73 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Néttoyage: {
+      'Ménage & Repassage': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      'Couture & Retouche': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      Gardiennage: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      'Services à la personne': {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
@@ -198,9 +419,9 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Maison3',
-    name: 'Maison3',
+    name: 'Soins du corps',
     tag: {
-      Réparation: {
+      'Coiffure & Barbe': {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -238,7 +459,29 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Néttoyage: {
+      'Manucure & Pédicure': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      'Maquillage & Tatouage': {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
@@ -265,9 +508,9 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Cours',
-    name: 'Cours',
+    name: 'Transport ',
     tag: {
-      Réparation: {
+      Démenagement: {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -305,7 +548,7 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Néttoyage: {
+      Livraison: {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
@@ -332,9 +575,9 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Cours2',
-    name: 'Cours2',
+    name: 'Evénementiel',
     tag: {
-      Réparation: {
+      Photographie: {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -372,7 +615,51 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Néttoyage: {
+      'Wedding planner': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      Cuisine: {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      Fleuriste: {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {
@@ -399,9 +686,9 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Cours3',
-    name: 'Cours3',
+    name: 'Multimédia',
     tag: {
-      Réparation: {
+      Ordinateur: {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -439,7 +726,29 @@ const accueil: CategoriesInterface = [
           ]
         }
       },
-      Néttoyage: {
+      'Smartphone & Tablette': {
+        referenceId: '660c0b9df522d1c7a442640e91592730',
+        pieces: [...listeDePiecesObligatoires, 1, 3, 4],
+        detailQuestions: {
+          Utilite: [
+            { label: 'balai 1', value: 'balai 1' },
+            { label: 'serpiere 2', value: 'serpiere 2' }
+          ],
+          frequence: [
+            { label: '1 fois par semaine', value: '1 fois par semaine' },
+            { label: '4 fois par semaine', value: '4 fois par semaine' }
+          ],
+          description: [
+            { label: 'description 1', value: 'description 1' },
+            { label: 'description 2', value: 'description 2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      },
+      Télévision: {
         referenceId: '660c0b9df522d1c7a442640e91592730',
         pieces: [...listeDePiecesObligatoires, 1, 3, 4],
         detailQuestions: {

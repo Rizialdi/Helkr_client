@@ -68,7 +68,7 @@ export default function App({
         }
       ]}>
       <ScrollView
-        style={{ flex: 1 }}
+        style={{ flex: 1, minWidth: '100%' }}
         onScroll={onScrollHandler}
         alwaysBounceHorizontal={true}
         horizontal
