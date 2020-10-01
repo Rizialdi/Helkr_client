@@ -15,6 +15,7 @@ import { theme } from '../../constants';
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
 
 const Postuler = ({
+  navigation,
   route: { params }
 }: StackNavigationInterface<BottomStackParamList, 'Postuler'>) => {
   const tabs = ['Offres', 'Postulées'];
@@ -78,8 +79,8 @@ const Postuler = ({
           {tabs.map(tab => renderTab(tab))}
         </Block>
         <Block flex={false}>
-          {activeTab === tabs[0] && <Offres />}
-          {activeTab === tabs[1] && <Postulees />}
+          {activeTab === tabs[0] && <Offres {...{ navigation }} />}
+          {activeTab === tabs[1] && <Postulees {...{ navigation }} />}
         </Block>
       </>
     </Layout>

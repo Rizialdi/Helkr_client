@@ -24,7 +24,13 @@ import OnBoarding from '../screens/OnBoarding';
 import {
   MyOfferingsModal,
   MyCandidateToOffering
-} from '../screens/DetailOffering';
+} from '../screens/Manage/components';
+
+import {
+  OfferingsListModal,
+  MyAppliedOfferingModal
+} from '../screens/Postuler/components';
+
 import {
   LoadedUserData,
   RegisterPhoneNumber,
@@ -85,8 +91,6 @@ const DetailCategoryScreens = () => {
   );
 };
 
-//----------------------------------
-
 const DetailOfferingPresentation = createStackNavigator<
   DetailOfferingParamsList
 >();
@@ -118,6 +122,28 @@ const DetailOfferingScreens = () => {
       <DetailOfferingPresentation.Screen
         name="MyCandidateToOffering"
         component={MyCandidateToOffering}
+        options={() => ({
+          headerShown: true,
+          title: 'Detail',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+      <DetailOfferingPresentation.Screen
+        name="OfferingsListModal"
+        component={OfferingsListModal}
+        options={() => ({
+          headerShown: true,
+          title: 'Detail',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+      <DetailOfferingPresentation.Screen
+        name="MyAppliedOfferingModal"
+        component={MyAppliedOfferingModal}
         options={() => ({
           headerShown: true,
           title: 'Detail',

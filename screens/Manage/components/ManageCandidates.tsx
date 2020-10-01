@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SFC } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { useStoreState } from '../../../models';
 import { CustomListView } from '../../sharedComponents';
-import ModalItemManageCandidates from './ModalItemManageCandidates';
 import {
   OfferingByIdQuery,
   OfferingByIdDocument,
@@ -12,8 +11,14 @@ import {
   useMyIncompleteOfferingWithCandidatesQuery
 } from '../../../graphql';
 import { cache } from '../../../ApolloClient';
+import { MainStackParamList } from '../../../navigation/Routes';
+import { StackNavigationProp } from '@react-navigation/stack';
 
-const ManageCandidates = ({ navigation }) => {
+interface Props {
+  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
+}
+
+const ManageCandidates: SFC<Props> = ({ navigation }) => {
   const {
     user: { id: userId }
   } = useStoreState(state => state.User);
@@ -29,7 +34,7 @@ const ManageCandidates = ({ navigation }) => {
     shouldResubscribe: true
   });
 
-  const updateOfferingEventDay = (id: string, eventday: string) => {
+  const updateOfferingEventDay = (id: string, eventday: string): void => {
     if (!id) return;
 
     const offeringById = cache.readQuery({
@@ -86,9 +91,9 @@ const ManageCandidates = ({ navigation }) => {
   });
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    !refreshing && setRefreshing(true);
     client.reFetchObservableQueries().then(() => setRefreshing(false));
-  }, [refreshing]);
+  }, [refreshing, client]);
 
   useEffect(() => {
     setLoadingTabTwo(loading);
@@ -98,7 +103,7 @@ const ManageCandidates = ({ navigation }) => {
     if (!error && data) {
       setStateData(data);
     }
-  }, [data, loading]);
+  }, [data, loading, error]);
 
   return (
     <>
@@ -108,7 +113,6 @@ const ManageCandidates = ({ navigation }) => {
         <CustomListView
           data={stateData?.myIncompleteOfferingWithCandidates}
           emptyMessage={'Aucun candidat à une offre actuellement'}
-          modalItem={<ModalItemManageCandidates />}
           refreshing={refreshing}
           onRefresh={onRefresh}
           navigation={navigation}

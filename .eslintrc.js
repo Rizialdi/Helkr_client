@@ -8,21 +8,22 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
     sourceType: 'module' // Allows for the use of imports
-  },
+  },'plugins': [
+    'react-hooks'
+  ],
   rules: {
     'prettier/prettier': 'error',
     'no-shadow': 'warn',
-    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+    'no-unused-vars': ['error', { 'vars': 'all', 'args': 'after-used', 'ignoreRestSiblings': false }],
     '@typescript-eslint/explicit-member-accessibility': 'error',
-    '@typescript-eslint/explicit-function-return-type': 'error',
-    "indent": "off",
-    '@typescript-eslint/indent': ['error', "tab"],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
     '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/no-object-literal-type-assertion': 'error',
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/strict-null-checks": "error"
+    '@typescript-eslint/no-explicit-any': 'error',
+    '@typescript-eslint/strict-null-checks': 'error',
+    'react-hooks/rules-of-hooks': 'error', 
+    'react-hooks/exhaustive-deps': 'warn' 
   }
 };
 

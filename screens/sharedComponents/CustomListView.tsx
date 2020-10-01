@@ -1,15 +1,13 @@
-import React, { SFC, useState } from 'react';
-import { FlatList, Modal } from 'react-native';
+import React, { SFC } from 'react';
+import { FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
 import { theme } from '../../constants';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
+import { MainStackParamList } from '../../navigation/Routes';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface DataContent {
   id: string;
@@ -26,42 +24,49 @@ interface Props {
   data?: DataContent[];
   onRefresh: () => void;
   emptyMessage: string;
-  modalItem: JSX.Element;
+  modalToOpen: 'ManageCandidates' | 'ManageOffering' | 'Postulees' | 'Offres';
   refreshing: boolean;
-  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>;
+  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
 }
 const CustomListView: SFC<Props> = ({
   data,
   onRefresh,
   emptyMessage,
-  modalItem,
   refreshing,
   navigation,
-  modalToOpen = ''
+  modalToOpen
 }) => {
-  const [selectedOffering, setSelectedOffering] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-  const [openModal, setOpenModal] = useState<boolean>(false);
+  const openToDescription = (id: string): void => {
+    if (!modalToOpen) return;
 
-  const openToDescription = (id: string, status = '') => {
-    !!modalToOpen
-      ? navigation.navigate('DetailOffering', {
+    switch (modalToOpen) {
+      case 'ManageCandidates':
+        navigation.navigate('DetailOffering', {
           screen: 'MyCandidateToOffering',
           params: { id }
-        })
-      : navigation.navigate('DetailOffering', {
+        });
+        break;
+      case 'ManageOffering':
+        navigation.navigate('DetailOffering', {
           screen: 'MyOfferingsModal',
           params: { id }
         });
+        break;
+      case 'Postulees':
+        navigation.navigate('DetailOffering', {
+          screen: 'MyAppliedOfferingModal',
+          params: { id }
+        });
+        break;
+      default:
+        navigation.navigate('DetailOffering', {
+          screen: 'OfferingsListModal',
+          params: { id }
+        });
+        break;
+    }
+  };
 
-    // setSelectedOffering(id);
-    // setOpenModal(true);
-    // setStatus(status);
-  };
-  const onOpenModal = () => {
-    // setOpenModal(false);
-    // setSelectedOffering('');
-  };
   return (
     <Block flex={false}>
       {!data?.length && (
@@ -78,24 +83,22 @@ const CustomListView: SFC<Props> = ({
         }}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        onEndReached={() => console.log('Fin atteinte')}
+        onEndReached={(): void => console.log('Fin atteinte')}
         onEndReachedThreshold={0}
         pagingEnabled={true}
         alwaysBounceVertical={true}
         // ListFooterComponent={() => <ActivityIndicator size="small" />}
-        keyExtractor={item => item.id}
+        keyExtractor={(item): string => item.id}
         data={data}
-        renderItem={({ item, index }) => {
+        renderItem={({ item, index }): JSX.Element => {
           const { id } = item;
           return (
             <TouchableOpacity
               key={index}
-              onPress={() =>
+              onPress={(): void | null =>
                 (item.status && item.status === 'refusée') ||
                 (item.status && item.status === 'terminée')
                   ? null
-                  : item.status
-                  ? openToDescription(id, item.status)
                   : openToDescription(id)
               }>
               <ListItemOffering offering={item} />
@@ -103,20 +106,6 @@ const CustomListView: SFC<Props> = ({
           );
         }}
       />
-      <Modal
-        animationType="slide"
-        hardwareAccelerated={true}
-        presentationStyle="overFullScreen"
-        visible={openModal}>
-        <Block padding={[theme.sizes.hinouting * 0.8, 0]}>
-          {selectedOffering &&
-            React.cloneElement(modalItem, {
-              id: selectedOffering,
-              setOpenModal: onOpenModal,
-              status: status
-            })}
-        </Block>
-      </Modal>
     </Block>
   );
 };

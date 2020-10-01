@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { SFC, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import ModalItemApplyToOffering from './ModalItemApplyToOffering';
 import { useStoreState } from '../../../models';
 import { CustomListView } from '../../sharedComponents';
 import {
@@ -9,8 +8,14 @@ import {
   useIncompleteOfferingsQuery,
   useOnOfferingAddedSubscription
 } from '../../../graphql';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainStackParamList } from '../../../navigation/Routes';
 
-const Offres = () => {
+interface Props {
+  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
+}
+
+const Offres: SFC<Props> = ({ navigation }) => {
   const [stateData, setStateData] = useState<IncompleteOfferingsQuery>();
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -31,9 +36,9 @@ const Offres = () => {
   });
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    !refreshing && setRefreshing(true);
     client.reFetchObservableQueries().then(() => setRefreshing(false));
-  }, [refreshing]);
+  }, [refreshing, client]);
 
   useEffect(() => {
     setLoadingTabOne(true);
@@ -78,9 +83,10 @@ const Offres = () => {
         <CustomListView
           data={stateData?.incompleteOfferings}
           emptyMessage={'Aucun tag trouvé.'}
-          modalItem={<ModalItemApplyToOffering />}
+          modalToOpen={'Offres'}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          navigation={navigation}
         />
       )}
     </>

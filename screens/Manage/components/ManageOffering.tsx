@@ -6,7 +6,6 @@ import {
   MyIncompleteOfferingQuery
 } from '../../../graphql';
 import { CustomListView } from '../../sharedComponents';
-import ModalItemManageOfferings from './ModalItemManageOfferings';
 import {
   StackNavigationInterface,
   MainStackParamList
@@ -26,9 +25,9 @@ const ManageOffering: FC<Props> = ({ navigation }) => {
   });
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    !refreshing && setRefreshing(true);
     client.reFetchObservableQueries().then(() => setRefreshing(false));
-  }, [refreshing]);
+  }, [refreshing, client]);
 
   useEffect(() => {
     setLoadingTabOne(loading);
@@ -47,7 +46,7 @@ const ManageOffering: FC<Props> = ({ navigation }) => {
         <CustomListView
           data={stateData?.myIncompleteOffering}
           emptyMessage={"Vous n'avez aucune offre actuellement"}
-          modalItem={<ModalItemManageOfferings />}
+          modalToOpen={'ManageOffering'}
           refreshing={refreshing}
           onRefresh={onRefresh}
           navigation={navigation}

@@ -13,8 +13,14 @@ export type BottomStackParamList = {
 };
 
 export type MainStackParamList = {
-  DetailCategory: { screen: keyof DetailStackParamsList; params: any };
-  DetailOffering: { screen: keyof DetailOfferingParamsList; params: any };
+  DetailCategory: {
+    screen: keyof DetailStackParamsList;
+    params: { [key: string]: string | number };
+  };
+  DetailOffering: {
+    screen: keyof DetailOfferingParamsList;
+    params: { [key: string]: string | number };
+  };
   Reglages: undefined;
   Avis: { id: string };
   Profile: undefined | { id: string };
@@ -30,8 +36,8 @@ export interface StackNavigationInterface<
   ParamList extends ParamListBase,
   RouteName extends keyof ParamList = string
 > {
-  navigation: StackNavigationProp<ParamList, RouteName>;
   route: RouteProp<ParamList, RouteName>;
+  navigation: StackNavigationProp<ParamList, RouteName>;
 }
 
 export type DetailStackParamsList = {
@@ -41,5 +47,7 @@ export type DetailStackParamsList = {
 
 export type DetailOfferingParamsList = {
   MyOfferingsModal: { id: string };
+  OfferingsListModal: { id: string };
   MyCandidateToOffering: { id: string };
+  MyAppliedOfferingModal: { id: string };
 };

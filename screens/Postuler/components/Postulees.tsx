@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, SFC } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import ModalItem from './ModalItem';
 import { useStoreState } from '../../../models';
 import { CustomListView, DataContent } from '../../sharedComponents';
 import {
@@ -10,8 +9,14 @@ import {
   useUpdateAppliedToSubscription
 } from '../../../graphql';
 import { sortPostuleeOnInterest } from '../../../utils';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainStackParamList } from '../../../navigation/Routes';
 
-const Postulees = () => {
+interface Props {
+  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
+}
+
+const Postulees: SFC<Props> = ({ navigation }) => {
   const [stateData, setStateData] = useState<IsCandidateToQuery>();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -74,9 +79,10 @@ const Postulees = () => {
           // TODO resolve typescrit linting
           data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
           emptyMessage={"Vous n'avez aucune candidature"}
-          modalItem={<ModalItem />}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          navigation={navigation}
+          modalToOpen={'Postulees'}
         />
       )}
     </>
