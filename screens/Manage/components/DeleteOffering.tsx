@@ -22,13 +22,9 @@ import { theme } from '../../../constants';
 interface Props {
   id?: string;
   closeModal: () => void;
-  setOpenGlobalModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  navigationBack: () => void;
 }
-const UpdateDescription: FC<Props> = ({
-  id,
-  closeModal,
-  setOpenGlobalModal
-}) => {
+const UpdateDescription: FC<Props> = ({ id, closeModal, navigationBack }) => {
   const [selectedConfirmation, setSelectedConfirmation] = useState<boolean>(
     false
   );
@@ -104,7 +100,8 @@ const UpdateDescription: FC<Props> = ({
         closeModal();
       }
       if (data.data?.deleteOffering) {
-        setOpenGlobalModal && setOpenGlobalModal(false);
+        closeModal();
+        navigationBack();
       } else {
         closeModal();
       }

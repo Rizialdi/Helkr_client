@@ -22,6 +22,10 @@ import Profile from '../screens/Profile';
 import Reglages from '../screens/Reglages';
 import OnBoarding from '../screens/OnBoarding';
 import {
+  MyOfferingsModal,
+  MyCandidateToOffering
+} from '../screens/DetailOffering';
+import {
   LoadedUserData,
   RegisterPhoneNumber,
   RegisterUsername,
@@ -37,6 +41,7 @@ import {
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AsyncStorage } from 'react-native';
 import { BienvenueFirst } from '../screens/BienvenueFirst';
+import { DetailOfferingParamsList } from './Routes';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -45,7 +50,7 @@ const MaterialBottomTabs = createMaterialBottomTabNavigator<
 
 const DetailModalPresentation = createStackNavigator<DetailStackParamsList>();
 
-const Detail = () => {
+const DetailCategoryScreens = () => {
   return (
     <DetailModalPresentation.Navigator
       mode="modal"
@@ -79,6 +84,53 @@ const Detail = () => {
     </DetailModalPresentation.Navigator>
   );
 };
+
+//----------------------------------
+
+const DetailOfferingPresentation = createStackNavigator<
+  DetailOfferingParamsList
+>();
+
+const DetailOfferingScreens = () => {
+  return (
+    <DetailOfferingPresentation.Navigator
+      mode="modal"
+      screenOptions={({ route, navigation }) => ({
+        ...TransitionPresets.ModalPresentationIOS,
+        cardOverlayEnabled: true,
+        gestureEnabled: true,
+        headerStatusBarHeight:
+          navigation.dangerouslyGetState().routes.indexOf(route) > 0
+            ? 0
+            : undefined
+      })}>
+      <DetailOfferingPresentation.Screen
+        name="MyOfferingsModal"
+        component={MyOfferingsModal}
+        options={() => ({
+          headerShown: true,
+          title: 'Detail',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+      <DetailOfferingPresentation.Screen
+        name="MyCandidateToOffering"
+        component={MyCandidateToOffering}
+        options={() => ({
+          headerShown: true,
+          title: 'Detail',
+          headerTitleAlign: 'left',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+    </DetailOfferingPresentation.Navigator>
+  );
+};
+
+//----------------------------------
 
 const createBottomTabs = () => {
   return (
@@ -165,7 +217,14 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
             />
             <MainStack.Screen
               name="DetailCategory"
-              component={Detail}
+              component={DetailCategoryScreens}
+              options={() => ({
+                headerShown: false
+              })}
+            />
+            <MainStack.Screen
+              name="DetailOffering"
+              component={DetailOfferingScreens}
               options={() => ({
                 headerShown: false
               })}
@@ -234,8 +293,8 @@ const MyMainStack: React.SFC<{ token: string | null }> = ({ token }) => {
               }}
             />
             <MainStack.Screen
-              name="DetailCategory"
-              component={Detail}
+              name="DetailOffering"
+              component={DetailOfferingScreens}
               options={() => ({
                 headerShown: false
               })}

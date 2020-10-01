@@ -6,8 +6,12 @@ import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
 import { theme } from '../../constants';
+import {
+  StackNavigationInterface,
+  MainStackParamList
+} from '../../navigation/Routes';
 
-export interface dataContent {
+export interface DataContent {
   id: string;
   type: string;
   description: string;
@@ -15,34 +19,48 @@ export interface dataContent {
   createdAt: string;
   completed: boolean;
   status?: string | null | undefined;
+  modalToOpen: string;
 }
 
 interface Props {
-  data?: dataContent[];
+  data?: DataContent[];
   onRefresh: () => void;
   emptyMessage: string;
   modalItem: JSX.Element;
   refreshing: boolean;
+  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>;
 }
 const CustomListView: SFC<Props> = ({
   data,
   onRefresh,
   emptyMessage,
   modalItem,
-  refreshing
+  refreshing,
+  navigation,
+  modalToOpen = ''
 }) => {
   const [selectedOffering, setSelectedOffering] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const openToDescription = (id: string, status = '') => {
-    setSelectedOffering(id);
-    setOpenModal(true);
-    setStatus(status);
+    !!modalToOpen
+      ? navigation.navigate('DetailOffering', {
+          screen: 'MyCandidateToOffering',
+          params: { id }
+        })
+      : navigation.navigate('DetailOffering', {
+          screen: 'MyOfferingsModal',
+          params: { id }
+        });
+
+    // setSelectedOffering(id);
+    // setOpenModal(true);
+    // setStatus(status);
   };
   const onOpenModal = () => {
-    setOpenModal(false);
-    setSelectedOffering('');
+    // setOpenModal(false);
+    // setSelectedOffering('');
   };
   return (
     <Block flex={false}>

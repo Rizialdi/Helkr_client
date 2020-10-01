@@ -3,7 +3,7 @@ import { ActivityIndicator } from 'react-native';
 
 import ModalItem from './ModalItem';
 import { useStoreState } from '../../../models';
-import { CustomListView, dataContent } from '../../sharedComponents';
+import { CustomListView, DataContent } from '../../sharedComponents';
 import {
   IsCandidateToQuery,
   useIsCandidateToQuery,
@@ -51,7 +51,7 @@ const Postulees = () => {
       dataUpdate?.updateAppliedTo &&
       !errorUpdate
     ) {
-      const updatedStatus: dataContent[] = stateData?.isCandidateTo
+      const updatedStatus: DataContent[] = stateData?.isCandidateTo
         .filter(offering => offering.id === dataUpdate?.updateAppliedTo?.id)
         .map(offering => {
           return { ...offering, status: dataUpdate?.updateAppliedTo?.status };

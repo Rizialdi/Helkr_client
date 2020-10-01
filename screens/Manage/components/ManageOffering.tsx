@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import {
@@ -7,18 +7,21 @@ import {
 } from '../../../graphql';
 import { CustomListView } from '../../sharedComponents';
 import ModalItemManageOfferings from './ModalItemManageOfferings';
+import {
+  StackNavigationInterface,
+  MainStackParamList
+} from '../../../navigation/Routes';
 
-const ManageOffering = () => {
+interface Props {
+  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>;
+}
+
+const ManageOffering: FC<Props> = ({ navigation }) => {
   const [stateData, setStateData] = useState<MyIncompleteOfferingQuery>();
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const {
-    data,
-    loading: loading,
-    error: error,
-    client
-  } = useMyIncompleteOfferingQuery({
+  const { data, loading, error, client } = useMyIncompleteOfferingQuery({
     fetchPolicy: 'cache-and-network'
   });
 
@@ -35,7 +38,7 @@ const ManageOffering = () => {
     if (!error && data) {
       setStateData(data);
     }
-  }, [data, loading]);
+  }, [data, error, loading]);
 
   return (
     <>
@@ -47,6 +50,7 @@ const ManageOffering = () => {
           modalItem={<ModalItemManageOfferings />}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          navigation={navigation}
         />
       )}
     </>

@@ -6,7 +6,7 @@ import ModalItemInfos from './ModalItemInfos';
 import ModalItemSignUp from './ModalItemSignUp';
 import Button from './Button';
 import TagItem from './TagItem';
-import CustomListView, { dataContent } from './CustomListView';
+import CustomListView, { DataContent } from './CustomListView';
 import CandidateCard from './CandidateCard';
 import SelectedCandidateCard from './SelectedCandidateCard';
 import Calendar from './Calendar';
@@ -32,7 +32,7 @@ export {
   Button,
   TagItem,
   Calendar,
-  dataContent,
+  DataContent,
   TextAreaInput,
   CandidateCard,
   CustomListView,

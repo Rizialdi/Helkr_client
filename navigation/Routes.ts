@@ -14,6 +14,7 @@ export type BottomStackParamList = {
 
 export type MainStackParamList = {
   DetailCategory: { screen: keyof DetailStackParamsList; params: any };
+  DetailOffering: { screen: keyof DetailOfferingParamsList; params: any };
   Reglages: undefined;
   Avis: { id: string };
   Profile: undefined | { id: string };
@@ -36,4 +37,9 @@ export interface StackNavigationInterface<
 export type DetailStackParamsList = {
   DetailCategory: { category: CategoryInterface };
   DetailItem: { category: CategoryInterface; categoryItem: string };
+};
+
+export type DetailOfferingParamsList = {
+  MyOfferingsModal: { id: string };
+  MyCandidateToOffering: { id: string };
 };

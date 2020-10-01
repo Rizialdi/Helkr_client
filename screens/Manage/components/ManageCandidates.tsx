@@ -13,7 +13,7 @@ import {
 } from '../../../graphql';
 import { cache } from '../../../ApolloClient';
 
-const ManageCandidates = () => {
+const ManageCandidates = ({ navigation }) => {
   const {
     user: { id: userId }
   } = useStoreState(state => state.User);
@@ -79,7 +79,7 @@ const ManageCandidates = () => {
   const {
     data,
     loading,
-    error: error,
+    error,
     client
   } = useMyIncompleteOfferingWithCandidatesQuery({
     fetchPolicy: 'cache-and-network'
@@ -111,6 +111,8 @@ const ManageCandidates = () => {
           modalItem={<ModalItemManageCandidates />}
           refreshing={refreshing}
           onRefresh={onRefresh}
+          navigation={navigation}
+          modalToOpen={'ManageCandidates'}
         />
       )}
     </>

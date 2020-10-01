@@ -17,7 +17,8 @@ import { theme } from '../../constants';
 // cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
 
 const Manage = ({
-  route: { params }
+  route: { params },
+  navigation
 }: StackNavigationInterface<BottomStackParamList, 'Gerer'>) => {
   const tabs = ['Mes Offres', 'Candidats'];
   const [activeTab, setActiveTab] = useState<string>('');
@@ -35,7 +36,7 @@ const Manage = ({
       : null;
   }, [params]);
 
-  const renderTab = (tab: string) => {
+  const renderTab = (tab: string): JSX.Element => {
     const isActive = activeTab == tab;
     return (
       <TouchableOpacity
@@ -80,8 +81,8 @@ const Manage = ({
           {tabs.map(tab => renderTab(tab))}
         </Block>
         <Block flex={false}>
-          {activeTab === tabs[0] && <ManageOffering />}
-          {activeTab === tabs[1] && <ManageCandidates />}
+          {activeTab === tabs[0] && <ManageOffering {...{ navigation }} />}
+          {activeTab === tabs[1] && <ManageCandidates {...{ navigation }} />}
         </Block>
       </>
     </Layout>
