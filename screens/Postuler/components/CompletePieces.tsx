@@ -17,7 +17,7 @@ import { theme } from '../../../constants';
 interface Props {
   listOfPieces: ListOfPieces;
   referenceId: string;
-  setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
+  setOpenModal: () => void;
   setModalOverlaySize: React.Dispatch<React.SetStateAction<number>>;
 }
 const CompletePieces: FC<Props> = ({
@@ -49,7 +49,7 @@ const FirstScreen = ({ ...props }) => {
   const { sendVerifPiecesReferenceIds } = useStoreState(
     store => store.SendVerifPiecesReferenceIds
   );
-  const getStatus = (referenceId: string = '') => {
+  const getStatus = (referenceId = '') => {
     const didSentDocumentForRef = Object.entries(
       sendVerifPiecesReferenceIds
     ).find(([key, _], __) => key === referenceId);
@@ -246,7 +246,7 @@ const SecondScreen = ({ ...props }) => {
   const pickImage = async (label: string) => {
     if (await getPermissionAsync(Permissions.CAMERA_ROLL)) {
       try {
-        let result = await ImagePicker.launchImageLibraryAsync({
+        const result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [4, 3],
@@ -301,7 +301,7 @@ const SecondScreen = ({ ...props }) => {
               ...{ [referenceId]: 'enattente' }
             });
           });
-          props.setOpenModal(false);
+          props.setOpenModal();
         }
         if (errors || error) {
           setErrorModal(true);
@@ -360,7 +360,6 @@ const SecondScreen = ({ ...props }) => {
             }
             timer={1}
             callBack={props.setOpenModal}
-            callBackParams={[false]}
           />
         )}
       </ScrollView>

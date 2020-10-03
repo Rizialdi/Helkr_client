@@ -11,7 +11,7 @@ interface Props {
   children: JSX.Element[];
   listOfPieces: ListOfPieces;
   referenceId: string;
-  setOpenModal: React.Dispatch<React.SetStateAction<Boolean>>;
+  setOpenModal: () => void;
   setModalOverlaySize: React.Dispatch<React.SetStateAction<number>>;
 }
 

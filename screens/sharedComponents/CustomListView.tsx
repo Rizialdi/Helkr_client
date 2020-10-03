@@ -36,7 +36,7 @@ const CustomListView: SFC<Props> = ({
   navigation,
   modalToOpen
 }) => {
-  const openToDescription = (id: string): void => {
+  const openToDescription = (id: string, status: string): void => {
     if (!modalToOpen) return;
 
     switch (modalToOpen) {
@@ -55,7 +55,7 @@ const CustomListView: SFC<Props> = ({
       case 'Postulees':
         navigation.navigate('DetailOffering', {
           screen: 'MyAppliedOfferingModal',
-          params: { id }
+          params: { id, status }
         });
         break;
       default:
@@ -91,15 +91,15 @@ const CustomListView: SFC<Props> = ({
         keyExtractor={(item): string => item.id}
         data={data}
         renderItem={({ item, index }): JSX.Element => {
-          const { id } = item;
+          const { id, status } = item;
           return (
             <TouchableOpacity
               key={index}
               onPress={(): void | null =>
-                (item.status && item.status === 'refusée') ||
-                (item.status && item.status === 'terminée')
+                (status && status === 'refusée') ||
+                (status && status === 'terminée')
                   ? null
-                  : openToDescription(id)
+                  : openToDescription(id, status || '')
               }>
               <ListItemOffering offering={item} />
             </TouchableOpacity>
