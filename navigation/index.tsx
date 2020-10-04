@@ -15,6 +15,7 @@ import Accueil from '../screens/Accueil';
 import Avis from '../screens/Avis';
 import DetailCategory from '../screens/DetailCategory';
 import DetailItem from '../screens/DetailCategory/components/DetailItem';
+import JoinOrFindAJobber from '../screens/DetailCategory/components/JoinOrFindAJobber';
 import { Discussions } from '../screens/Discussions';
 import Manage from '../screens/Manage';
 import Postuler from '../screens/Postuler';
@@ -76,7 +77,7 @@ const DetailCategoryScreens = () => {
           headerShown: true,
           title: route.params.category.name,
           headerTitleAlign: 'left',
-          headerTitleStyle: { fontSize: 20 },
+          headerTitleStyle: { fontSize: 18 },
           headerTintColor: 'black'
         })}
       />
@@ -85,6 +86,17 @@ const DetailCategoryScreens = () => {
         component={DetailItem}
         options={() => ({
           headerShown: false
+        })}
+      />
+      <DetailModalPresentation.Screen
+        name="JoinOrFindAJobber"
+        component={JoinOrFindAJobber}
+        options={({ route }) => ({
+          headerShown: true,
+          headerTitle: route.params.categoryItem,
+          headerTitleStyle: { fontSize: 18 },
+          headerTintColor: 'black',
+          animationEnabled: true
         })}
       />
     </DetailModalPresentation.Navigator>

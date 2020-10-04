@@ -25,7 +25,10 @@ const Item = ({ title }: { title: string }) => {
 const DetailCategory = ({
   navigation,
   route
-}: StackNavigationInterface<DetailStackParamsList, 'DetailCategory'>) => {
+}: StackNavigationInterface<
+  DetailStackParamsList,
+  'DetailCategory'
+>): JSX.Element => {
   const category = route.params.category;
   const { themeColors } = useStoreState(state => state.Preferences);
   return (
@@ -35,7 +38,7 @@ const DetailCategory = ({
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('DetailItem', {
+              navigation.navigate('JoinOrFindAJobber', {
                 category: category,
                 categoryItem: item
               });

@@ -16,6 +16,12 @@ export type Scalars = {
   Json: any;
 };
 
+export type AddJobberTagResponse = {
+  __typename?: 'AddJobberTagResponse';
+  added: Scalars['Boolean'];
+  max: Scalars['Boolean'];
+};
+
 export type Authorizedcategories = {
   __typename?: 'authorizedcategories';
   id: Scalars['String'];
@@ -129,6 +135,7 @@ export type Mutation = {
   registerUser: AuthPayload;
   removeAuthorizedCategories: Scalars['Boolean'];
   statusChangeToDenyAuthorization: Scalars['Boolean'];
+  tagsAddJobber: AddJobberTagResponse;
   tagsUpdate: Scalars['Boolean'];
   updateOffering: Scalars['Boolean'];
 };
@@ -241,6 +248,11 @@ export type MutationRemoveAuthorizedCategoriesArgs = {
 export type MutationStatusChangeToDenyAuthorizationArgs = {
   id: Scalars['String'];
   referenceId: Scalars['String'];
+};
+
+
+export type MutationTagsAddJobberArgs = {
+  tag: Scalars['String'];
 };
 
 
@@ -744,6 +756,19 @@ export type RegisterUserMutation = (
       { __typename?: 'utilisateur' }
       & Pick<Utilisateur, 'id' | 'prenom'>
     ) }
+  ) }
+);
+
+export type TagsAddJobberMutationVariables = Exact<{
+  tag: Scalars['String'];
+}>;
+
+
+export type TagsAddJobberMutation = (
+  { __typename?: 'Mutation' }
+  & { tagsAddJobber: (
+    { __typename?: 'AddJobberTagResponse' }
+    & Pick<AddJobberTagResponse, 'max' | 'added'>
   ) }
 );
 
@@ -1418,6 +1443,39 @@ export function useRegisterUserMutation(baseOptions?: ApolloReactHooks.MutationH
 export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
 export type RegisterUserMutationResult = ApolloReactCommon.MutationResult<RegisterUserMutation>;
 export type RegisterUserMutationOptions = ApolloReactCommon.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
+export const TagsAddJobberDocument = gql`
+    mutation tagsAddJobber($tag: String!) {
+  tagsAddJobber(tag: $tag) {
+    max
+    added
+  }
+}
+    `;
+export type TagsAddJobberMutationFn = ApolloReactCommon.MutationFunction<TagsAddJobberMutation, TagsAddJobberMutationVariables>;
+
+/**
+ * __useTagsAddJobberMutation__
+ *
+ * To run a mutation, you first call `useTagsAddJobberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useTagsAddJobberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [tagsAddJobberMutation, { data, loading, error }] = useTagsAddJobberMutation({
+ *   variables: {
+ *      tag: // value for 'tag'
+ *   },
+ * });
+ */
+export function useTagsAddJobberMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<TagsAddJobberMutation, TagsAddJobberMutationVariables>) {
+        return ApolloReactHooks.useMutation<TagsAddJobberMutation, TagsAddJobberMutationVariables>(TagsAddJobberDocument, baseOptions);
+      }
+export type TagsAddJobberMutationHookResult = ReturnType<typeof useTagsAddJobberMutation>;
+export type TagsAddJobberMutationResult = ApolloReactCommon.MutationResult<TagsAddJobberMutation>;
+export type TagsAddJobberMutationOptions = ApolloReactCommon.BaseMutationOptions<TagsAddJobberMutation, TagsAddJobberMutationVariables>;
 export const NotificationsTokenUpdateDocument = gql`
     mutation notificationsTokenUpdate($token: String!) {
   notificationsTokenUpdate(token: $token)

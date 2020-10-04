@@ -16,6 +16,7 @@ import {
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
+import { CategoryInterface } from './screens/Accueil/components/Interfaces';
 
 export const yearMonths: string[] = [
   'janvier',
@@ -300,6 +301,16 @@ export const storeCredentials = ({
       throw error;
     }
   })();
+};
+
+export const getReferenceIdOnCategory = (
+  category: CategoryInterface,
+  categoryItem: string
+): string => {
+  const result = Object.entries(category.tag).filter(
+    i => i[0] === categoryItem
+  );
+  return result[0][1].referenceId;
 };
 
 interface StoreCredentialsProps {

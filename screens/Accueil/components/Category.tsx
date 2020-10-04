@@ -34,14 +34,21 @@ const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
         </Badge>
         <Text
           medium
+          numberOfLines={1}
           vertical={[0, theme.sizes.htwiceTen / 4]}
-          style={{ fontFamily: 'josefinRegular', fontSize: theme.sizes.h3 }}>
+          style={{
+            fontFamily: 'HelveticaNeue',
+            fontSize: theme.sizes.h3
+          }}>
           {category.name}
         </Text>
         <Text
           gray
           caption
           numberOfLines={1}
+          style={{
+            fontFamily: 'HelveticaNeue'
+          }}
           horizontal={theme.sizes.htwiceTen / 2}>
           {Object.keys(category.tag).join(', ')}
         </Text>

@@ -10,7 +10,10 @@ import {
 const DetailItem = ({
   navigation,
   route
-}: StackNavigationInterface<DetailStackParamsList, 'DetailItem'>) => {
+}: StackNavigationInterface<
+  DetailStackParamsList,
+  'DetailItem'
+>): JSX.Element => {
   const { category, categoryItem } = route.params;
 
   return (
@@ -26,7 +29,7 @@ const DetailItem = ({
               <MultiStepMenu.Item key={idx} openModal={() => null}>
                 <RadioForm
                   name={item}
-                  radio_props={category.tag[categoryItem].detailQuestions[item]}
+                  radioProps={category.tag[categoryItem].detailQuestions[item]}
                 />
               </MultiStepMenu.Item>
             )

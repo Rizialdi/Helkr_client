@@ -112,7 +112,7 @@ const ManageCandidates: SFC<Props> = ({ navigation }) => {
       {stateData && (
         <CustomListView
           data={stateData?.myIncompleteOfferingWithCandidates}
-          emptyMessage={'Aucun candidat à une offre actuellement'}
+          emptyMessage={'Aucun candidat à une offre actuellement.'}
           refreshing={refreshing}
           onRefresh={onRefresh}
           navigation={navigation}

@@ -145,13 +145,14 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
         </>
       </ScrollView>
       <Block
-        margin={[-theme.sizes.hinouting * 0.8, theme.sizes.inouting * 0.8]}>
+        margin={[-theme.sizes.hinouting * 0.1, theme.sizes.inouting * 0.8]}>
         <StackedToBottom>
           <Button
             secondary
             disabled={!netWorkStatus}
-            onPress={() =>
-              isAuthorizedToApply ? applyToOffering() : setModalOpen(true)
+            onPress={
+              () => null
+              // isAuthorizedToApply ? applyToOffering() : setModalOpen(true)
             }>
             <Text bold center>
               Postuler

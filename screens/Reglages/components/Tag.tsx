@@ -1,66 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Platform } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { theme } from '../../../constants';
 import { Text } from '../../sharedComponents';
 import TagItem from './TagItem';
-
-const tagList = [
-  'Boulanger',
-  'Chauffeur',
-  'Epicier',
-  'Garagiste',
-  'Ménagère',
-  'Néttoyage',
-  'Réparation',
-  'Ménage'
-];
+import { getItemNameOnReferenceId } from '../../../constants/mocks';
 
 interface Props {
   tags?: string[] | null;
   parentCallback: (a: string[]) => void;
 }
 
-type labelOrValue = { label: string; value: string };
-export default ({ tags = ['_'], parentCallback }: Props) => {
-  const [selected, setSelected] = useState<string>();
-  const [concatedList, setConcatedList] = useState<Array<string> | null>(tags);
+export default ({ tags = ['_'], parentCallback }: Props): JSX.Element => {
+  const [concatedList, setConcatedList] = useState<string[] | null>(tags);
 
-  const onChange = (item: string[]) => {
+  const onChange = (item: string[]): void => {
     setConcatedList(item);
     parentCallback(item);
   };
 
-  const onAdd = (item: string) => {
-    concatedList && onChange([...concatedList, item]);
+  const onRemove = (item: string): void => {
+    concatedList && onChange(concatedList.filter(elm => elm !== item));
   };
-
-  const onRemove = (item: string) => {
-    concatedList && onChange(concatedList.filter(elm => elm != item));
-  };
-
-  let filterList: labelOrValue[] = [];
-  if (concatedList) {
-    filterList = tagList
-      .filter(x => !concatedList.includes(x))
-      .map(item => {
-        return { label: item, value: item };
-      });
-  }
 
   useEffect(() => {
     tags && setConcatedList(tags);
   }, [tags]);
-  useEffect(() => {
-    if (concatedList) {
-      filterList = tagList
-        .filter(x => !concatedList.includes(x))
-        .map(item => {
-          return { label: item, value: item };
-        });
-    }
-  }, [concatedList]);
 
   return (
     <>
@@ -68,35 +33,14 @@ export default ({ tags = ['_'], parentCallback }: Props) => {
         {concatedList &&
           concatedList?.length > 0 &&
           concatedList?.map((item, key) => (
-            <TouchableOpacity key={key} onPress={() => onRemove(item)}>
-              <TagItem tag={item} />
+            <TouchableOpacity key={key} onPress={(): void => onRemove(item)}>
+              <TagItem tag={getItemNameOnReferenceId(item)} />
             </TouchableOpacity>
           ))}
       </View>
       <View style={styles.selector}>
-        {concatedList && concatedList.length >= 5 ? (
-          <Text>Maximum atteint</Text>
-        ) : (
-          <>
-            <RNPickerSelect
-              value={selected}
-              placeholder={{
-                label: 'Ajouter des tags ...',
-                value: '',
-                color: theme.colors.gray
-              }}
-              disabled={!!(concatedList && concatedList.length >= 5)}
-              onValueChange={value => {
-                Platform.OS === 'android'
-                  ? value && onAdd(value)
-                  : setSelected(value);
-              }}
-              doneText={'Ajouter'}
-              useNativeAndroidPickerStyle={true}
-              onDonePress={() => (selected ? onAdd(selected) : null)}
-              items={filterList}
-            />
-          </>
+        {concatedList && concatedList.length > 3 && (
+          <Text>Maximum de tags atteint.</Text>
         )}
       </View>
     </>

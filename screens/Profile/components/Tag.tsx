@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import TagItem from './TagItem';
 import { theme } from '../../../constants';
+import { getItemNameOnReferenceId } from '../../../constants/mocks';
 
 interface Props {
   tags?: string[];
@@ -11,7 +12,7 @@ interface Props {
 export default ({ tags }: Props) => (
   <View style={styles.tags}>
     {tags?.map((item, key) => (
-      <TagItem key={key} tag={item} />
+      <TagItem key={key} tag={getItemNameOnReferenceId(item)} />
     ))}
   </View>
 );

@@ -38,7 +38,7 @@ const TagItem: SFC<Props> = ({
 
   const statusStyles: { [key: string]: { [key: string]: string } } = {
     'en attente': {
-      backgroundColor: themeColors.primary
+      backgroundColor: themeColors.gray2
     },
     refusée: { backgroundColor: themeColors.accent },
     acceptée: { backgroundColor: themeColors.secondary },
@@ -71,15 +71,15 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: theme.sizes.twiceTen / 2,
-    paddingVertical: theme.sizes.htwiceTen / 2,
+    paddingHorizontal: theme.sizes.twiceTen / 4,
+    paddingVertical: theme.sizes.htwiceTen / 4,
     borderRadius: theme.sizes.border,
     marginHorizontal: theme.sizes.inouting / 5,
     marginVertical: theme.sizes.hinouting / 5
   },
   containerStatus: {
     marginHorizontal: theme.sizes.inouting,
-    marginBottom: theme.sizes.hinouting / 5,
+    marginBottom: theme.sizes.hinouting / 10,
     alignSelf: 'flex-start'
   },
   text: {

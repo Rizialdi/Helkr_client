@@ -25,12 +25,12 @@ interface Props {
   name: string;
   values?: valuesInterface;
   isLast?: boolean;
-  radio_props?: Array<{ label: string; value: string }>;
+  radioProps?: { label: string; value: string }[];
   nextStep?: () => void;
   onSelected?: (a: boolean) => void;
   onChange?: (a: string, b: string) => void;
-  onSubmit: () => Promise<ExecutionResult<any>>;
-  navigation: StackNavigationProp<DetailStackParamsList>;
+  onSubmit?: () => Promise<ExecutionResult<any>>;
+  navigation?: StackNavigationProp<DetailStackParamsList>;
 }
 
 const CustomRadioForm: SFC<Props> = ({
@@ -41,7 +41,7 @@ const CustomRadioForm: SFC<Props> = ({
   onChange,
   onSelected,
   navigation,
-  radio_props,
+  radioProps,
   onSubmit
 }) => {
   values && values[name] && onSelected && onSelected(true);
@@ -60,15 +60,16 @@ const CustomRadioForm: SFC<Props> = ({
   const onSubmitForm = () => {
     Keyboard.dismiss();
 
-    onSubmit()
-      .then(({ data, errors }) => {
-        data?.addOffering && setOpenModal(true);
-        errors && setOpenErrorModal(true);
-      })
-      .catch(error => {
-        error && setOpenErrorModal(true);
-        throw new Error(`Ajout offre impossible, ${error}`);
-      });
+    onSubmit &&
+      onSubmit()
+        .then(({ data, errors }) => {
+          data?.addOffering && setOpenModal(true);
+          errors && setOpenErrorModal(true);
+        })
+        .catch(error => {
+          error && setOpenErrorModal(true);
+          throw new Error(`Ajout offre impossible, ${error}`);
+        });
   };
 
   useEffect(() => {
@@ -92,7 +93,7 @@ const CustomRadioForm: SFC<Props> = ({
         {!isLast ? (
           <RadioForm animation={true}>
             {/* To create radio buttons, loop through your array of options */}
-            {radio_props?.map((obj, i) => (
+            {radioProps?.map((obj, i) => (
               <RadioButton labelHorizontal={true} key={i}>
                 {/*  You can set RadioButtonLabel before RadioButtonInput */}
 
@@ -196,7 +197,7 @@ const CustomRadioForm: SFC<Props> = ({
               </View>
             </TouchableWithoutFeedback>
 
-            {openModal && (
+            {openModal && navigation && (
               <ModalItemInfos
                 information={'Votre mission'}
                 description={
@@ -207,7 +208,7 @@ const CustomRadioForm: SFC<Props> = ({
               />
             )}
 
-            {openErrorModal && (
+            {openErrorModal && navigation && (
               <ModalItemInfos
                 errorReporting
                 information={'Erreur'}

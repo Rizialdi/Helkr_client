@@ -45,7 +45,7 @@ const ManageOffering: FC<Props> = ({ navigation }) => {
       {stateData && (
         <CustomListView
           data={stateData?.myIncompleteOffering}
-          emptyMessage={"Vous n'avez aucune offre actuellement"}
+          emptyMessage={"Vous n'avez aucune offre en attente actuellement."}
           modalToOpen={'ManageOffering'}
           refreshing={refreshing}
           onRefresh={onRefresh}

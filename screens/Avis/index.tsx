@@ -101,7 +101,8 @@ export default ({
             )}
             {error && (
               <Text center style={{ marginTop: theme.sizes.htwiceTen * 1.25 }}>
-                Une erreur s'est produite sur le réseau.
+                Une erreur s'est produite sur le réseau. Veuillez réessayer plus
+                tard.
               </Text>
             )}
           </Block>

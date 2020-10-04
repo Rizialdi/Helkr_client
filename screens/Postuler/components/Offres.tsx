@@ -43,7 +43,7 @@ const Offres: SFC<Props> = ({ navigation }) => {
   useEffect(() => {
     setLoadingTabOne(true);
     client.reFetchObservableQueries().then(() => setLoadingTabOne(false));
-  }, [tags]);
+  }, [client, tags]);
 
   useEffect(() => {
     setLoadingTabOne(loading);
@@ -53,7 +53,7 @@ const Offres: SFC<Props> = ({ navigation }) => {
     if (!error) {
       setStateData(data);
     }
-  }, [data, loading]);
+  }, [data, error, loading]);
 
   useEffect(() => {
     if (
@@ -61,12 +61,8 @@ const Offres: SFC<Props> = ({ navigation }) => {
       stateData?.incompleteOfferings &&
       dataNewOffering?.onOfferingAdded &&
       !errorNewOffering &&
-      dataNewOffering.onOfferingAdded.author.id != user.id
+      dataNewOffering.onOfferingAdded.author.id !== user.id
     ) {
-      console.log(
-        'dataNewOffering.onOfferingAdded',
-        dataNewOffering.onOfferingAdded
-      );
       setStateData({
         incompleteOfferings: [
           dataNewOffering?.onOfferingAdded,
@@ -74,7 +70,12 @@ const Offres: SFC<Props> = ({ navigation }) => {
         ]
       });
     }
-  }, [dataNewOffering]);
+  }, [
+    dataNewOffering,
+    errorNewOffering,
+    stateData?.incompleteOfferings,
+    user.id
+  ]);
 
   return (
     <>
@@ -82,7 +83,11 @@ const Offres: SFC<Props> = ({ navigation }) => {
       {stateData && (
         <CustomListView
           data={stateData?.incompleteOfferings}
-          emptyMessage={'Aucun tag trouvé.'}
+          emptyMessage={
+            tags.length
+              ? "Aucune mission pour vos tags n'est trouvée."
+              : "Veuillez tout d'abord ajouter des tags dans vos préférences."
+          }
           modalToOpen={'Offres'}
           refreshing={refreshing}
           onRefresh={onRefresh}

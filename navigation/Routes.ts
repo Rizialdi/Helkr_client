@@ -43,6 +43,7 @@ export interface StackNavigationInterface<
 export type DetailStackParamsList = {
   DetailCategory: { category: CategoryInterface };
   DetailItem: { category: CategoryInterface; categoryItem: string };
+  JoinOrFindAJobber: { category: CategoryInterface; categoryItem: string };
 };
 
 export type DetailOfferingParamsList = {

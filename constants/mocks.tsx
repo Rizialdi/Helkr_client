@@ -1,4 +1,5 @@
 import { CategoriesInterface } from '../screens/Accueil/components/Interfaces';
+
 const listeDePieces = [
   {
     id: 1,
@@ -41,10 +42,10 @@ const listeDePieces = [
 const listeDePiecesObligatoires = [1, 2];
 const accueil: CategoriesInterface = [
   {
-    id: 'Maisodn',
+    id: 'Maison',
     name: 'Maison',
     tag: {
-      'Peinture & Revetement ': {
+      'Peinture & Revetement': {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
         pieces: [...listeDePiecesObligatoires, 1, 3],
         detailQuestions: {
@@ -153,7 +154,7 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Maison',
-    name: 'Cours/Conseils',
+    name: 'Cours & Conseils',
     tag: {
       'Graphisme & Design': {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
@@ -419,7 +420,7 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Maison3',
-    name: 'Soins du corps',
+    name: 'Soin du corps',
     tag: {
       'Coiffure & Barbe': {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
@@ -508,7 +509,7 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Cours',
-    name: 'Transport ',
+    name: 'Transports',
     tag: {
       Démenagement: {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
@@ -575,7 +576,7 @@ const accueil: CategoriesInterface = [
   },
   {
     id: 'Cours2',
-    name: 'Evénementiel',
+    name: 'Evenementiel',
     tag: {
       Photographie: {
         referenceId: 'cb92efe392377fce4c29e18a820b2019',
@@ -787,6 +788,25 @@ export const getListofPieces = (id: string | null = '') => {
     return matchingItem && matchingItem?.pieces?.includes(id as never);
   });
   return toReturn;
+};
+
+export const getItemNameOnReferenceId = (
+  referenceId: string | null = ''
+): string => {
+  if (!referenceId) return '';
+  const matchingCategory = accueil.find(({ tag }) => {
+    return Object.values(tag).find(value => value?.referenceId === referenceId);
+  });
+
+  if (!matchingCategory) return '';
+  const matchingItem = Object.values([matchingCategory?.tag])[0];
+
+  if (!matchingItem) return '';
+  const result = Object.entries(matchingItem).filter(
+    ([_, value]) => value.referenceId === referenceId
+  );
+
+  return result[0][0];
 };
 
 const illustrations = [

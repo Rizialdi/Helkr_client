@@ -313,7 +313,7 @@ const Discussions = () => {
             horizontal={theme.sizes.twiceTen * 1.75}
             vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen]}
             numberOfLines={1}>
-            Vous n'avez aucune discussion actuellement.
+            Vous n'avez aucune demande actuellement.
           </Text>
         </Block>
       )}
