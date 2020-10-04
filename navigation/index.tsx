@@ -125,8 +125,8 @@ const DetailOfferingScreens = () => {
         component={MyOfferingsModal}
         options={() => ({
           headerShown: true,
-          title: 'Detail',
-          headerTitleAlign: 'left',
+          title: 'Détails',
+          headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'
         })}
@@ -136,8 +136,8 @@ const DetailOfferingScreens = () => {
         component={MyCandidateToOffering}
         options={() => ({
           headerShown: true,
-          title: 'Detail',
-          headerTitleAlign: 'left',
+          title: 'Détails',
+          headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'
         })}
@@ -147,8 +147,8 @@ const DetailOfferingScreens = () => {
         component={OfferingsListModal}
         options={() => ({
           headerShown: true,
-          title: 'Detail',
-          headerTitleAlign: 'left',
+          title: 'Détails',
+          headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'
         })}
@@ -158,8 +158,8 @@ const DetailOfferingScreens = () => {
         component={MyAppliedOfferingModal}
         options={() => ({
           headerShown: true,
-          title: 'Detail',
-          headerTitleAlign: 'left',
+          title: 'Détails',
+          headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'
         })}

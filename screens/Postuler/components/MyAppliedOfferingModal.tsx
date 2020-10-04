@@ -83,16 +83,6 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
                     />
                   )}
               </Block>
-              <Text
-                bold
-                size={theme.sizes.base}
-                vertical={[
-                  theme.sizes.hinouting * 0.8,
-                  theme.sizes.hinouting * 0.4
-                ]}>
-                Description
-              </Text>
-              <Text>{data?.offeringById?.description}</Text>
 
               <Text
                 bold
@@ -101,7 +91,7 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
                   theme.sizes.hinouting * 0.8,
                   theme.sizes.hinouting * 0.4
                 ]}>
-                Categorie
+                Catégorie
               </Text>
 
               <Text horizontal={20}>{data?.offeringById?.category}</Text>
@@ -115,6 +105,17 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
                 ]}>
                 Renseignements
               </Text>
+
+              <Text
+                bold
+                size={theme.sizes.base}
+                vertical={[
+                  theme.sizes.hinouting * 0.8,
+                  theme.sizes.hinouting * 0.4
+                ]}>
+                Description
+              </Text>
+              <Text>{data?.offeringById?.description}</Text>
 
               <OfferingDetailsOnModal details={data?.offeringById?.details} />
 

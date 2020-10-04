@@ -16,7 +16,6 @@ import {
   Calendar,
   ModalItemInfos,
   Text,
-  Layout,
   Block,
   TagItem,
   CandidateCard,
@@ -204,20 +203,12 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
                   />
                 )}
             </Block>
-            <Text
-              bold
-              size={16}
-              vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
-              Description
-            </Text>
-
-            <Text>{Data?.offeringById?.description}</Text>
 
             <Text
               bold
               size={16}
               vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
-              Categorie
+              Catégorie
             </Text>
 
             <Text>{Data?.offeringById?.category}</Text>
@@ -230,6 +221,15 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
             </Text>
 
             <OfferingDetailsOnModal details={Data?.offeringById?.details} />
+
+            <Text
+              bold
+              size={16}
+              vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
+              Description
+            </Text>
+
+            <Text>{Data?.offeringById?.description}</Text>
             <Block flex={false}>
               <Text
                 bold
