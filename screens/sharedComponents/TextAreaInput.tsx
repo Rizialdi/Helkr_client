@@ -9,6 +9,7 @@ import {
 import Text from './Text';
 import { useStoreState } from '../../models';
 import { theme } from '../../constants';
+import { Keyboard } from 'react-native';
 interface Props {
   min: number;
   max: number;
@@ -30,6 +31,7 @@ interface Props {
   white?: boolean;
   gray?: boolean;
   value?: string;
+  number?: boolean;
   parentCallback?: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -54,6 +56,7 @@ const TextAreaInput: FC<Props> = ({
   animated,
   style,
   children,
+  number,
   parentCallback,
   ...props
 }) => {
@@ -85,6 +88,8 @@ const TextAreaInput: FC<Props> = ({
     style // rewrite predefined styles
   ];
 
+  const inputType = number ? 'numeric' : 'default';
+
   return (
     <View style={[styles.container, blockStyles]}>
       <TextInput
@@ -92,8 +97,12 @@ const TextAreaInput: FC<Props> = ({
         multiline={true}
         value={value}
         placeholder={placeholder}
+        returnKeyType={'done'}
+        keyboardType={inputType}
+        onSubmitEditing={() => Keyboard.dismiss()}
         onChangeText={value => {
-          setValue(value), setCount(value.length);
+          setValue(value);
+          setCount(value.length);
           parentCallback && parentCallback(value);
         }}
         style={[

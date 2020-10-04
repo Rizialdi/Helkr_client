@@ -89,7 +89,7 @@ const RegisterPhoneNumberVerification = ({
               name="verificationCode"
               label={'Code de vérification'}
               phone
-              placeholder="789 - 485"
+              placeholder="789485"
             />
             <Button
               disabled={called || !netWorkStatus}

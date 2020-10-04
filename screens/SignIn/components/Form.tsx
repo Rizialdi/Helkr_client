@@ -55,9 +55,10 @@ export default ({
                       ? Inputs.current[i + 1].focus()
                       : Inputs.current[i].blur();
                   },
-                  //onBlur: () => triggerValidation(child.props.name),
+                  // onBlur: () => triggerValidation(child.props.name),
                   blurOnSubmit: false,
                   name: child.props.name,
+                  returnKeyType: Inputs.current[i + 1] ? 'next' : 'done',
                   key: child.props.name,
                   error: errors[child.props.name]
                 }

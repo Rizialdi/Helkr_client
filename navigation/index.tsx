@@ -28,6 +28,7 @@ import {
 } from '../screens/Manage/components';
 
 import {
+  MakeAnOffer,
   OfferingsListModal,
   MyAppliedOfferingModal
 } from '../screens/Postuler/components';
@@ -148,6 +149,17 @@ const DetailOfferingScreens = () => {
         options={() => ({
           headerShown: true,
           title: 'Détails',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+      <DetailOfferingPresentation.Screen
+        name="MakeAnOffer"
+        component={MakeAnOffer}
+        options={() => ({
+          headerShown: true,
+          title: 'Faire une proposition',
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'

@@ -6,7 +6,6 @@ import {
   useOfferingByIdQuery,
   useCandidateToOfferingMutation
 } from '../../../graphql';
-import { ListOfPieces } from './ModalItemApplyToOffering';
 import { useStoreState } from 'easy-peasy';
 import { mocks, theme } from '../../../constants';
 import client from '../../../ApolloClient';
@@ -30,6 +29,16 @@ interface Props {
     'OfferingsListModal'
   >;
 }
+
+type ListOfPieces =
+  | {
+      id: number;
+      label: string;
+      titre: string;
+      description: string;
+    }[]
+  | undefined;
+
 const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
   const { data, loading, error } = useOfferingByIdQuery({
     fetchPolicy: 'cache-and-network',
@@ -46,7 +55,6 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
   const [isAuthorizedToApply, setIsAuthorized] = useState<boolean>(false);
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
-  console.log('jobAuthorizations', jobAuthorizations);
   useEffect(() => {
     if (
       data?.offeringById.referenceId &&
@@ -161,11 +169,19 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
             secondary
             disabled={!netWorkStatus}
             onPress={
-              () => null
+              () =>
+                navigation?.navigate('MakeAnOffer', {
+                  id: route?.params.id,
+                  type: data?.offeringById?.type,
+                  category: data?.offeringById?.category,
+                  date: data?.offeringById.updatedAt
+                    ? data?.offeringById?.updatedAt
+                    : data?.offeringById.createdAt
+                })
               // isAuthorizedToApply ? applyToOffering() : setModalOpen(true)
             }>
             <Text bold center>
-              Postuler
+              Faire une proposition
             </Text>
           </Button>
         </StackedToBottom>

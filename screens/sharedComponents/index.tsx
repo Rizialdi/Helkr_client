@@ -11,6 +11,7 @@ import CandidateCard from './CandidateCard';
 import SelectedCandidateCard from './SelectedCandidateCard';
 import Calendar from './Calendar';
 import TextAreaInput from './TextAreaInput';
+import TextAreaInputValidator from './TextAreaInputValidator';
 import OfferingDetailsOnModal from './OfferingDetailsOnModal';
 import StackedToBottom from './StackedToBottom';
 import Badge from './Badge';
@@ -42,6 +43,7 @@ export {
   TermsOfServices,
   SelectedCandidateCard,
   OfferingDetailsOnModal,
+  TextAreaInputValidator,
   StackedToBottom,
   ImageComponent,
   StatsContainer,

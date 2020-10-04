@@ -40,7 +40,7 @@ export default function Profile({
   const [addressParent, setAddressParent] = useState<string>('');
   const [descriptionParent, setDescriptionParent] = useState<string>('');
   // TODO solve not setTags allowed
-  const [tagList, SetTags] = useState<Array<string>>([]);
+  const [tagList, SetTags] = useState<string[]>([]);
   const [uploadFileMutation] = useAvatarUploadMutation();
   const [descriptionMutation] = useDescriptionUpdateMutation();
   const [addressMutation] = useAddressUpdateMutation();
@@ -84,7 +84,7 @@ export default function Profile({
 
   const type = image ? `image/${String(image?.uri).split('.')[1]}` : '';
 
-  let pictureUrl: ReactNativeFile | null =
+  const pictureUrl: ReactNativeFile | null =
     image && image?.base64
       ? new ReactNativeFile({
           uri: `data:${type};base64,${image?.base64}`,
@@ -97,7 +97,7 @@ export default function Profile({
 
   useEffect(() => {
     tags && SetTags(tags);
-  }, []);
+  }, [tags]);
 
   useEffect(() => {
     setIsModified(
@@ -106,7 +106,15 @@ export default function Profile({
         !(JSON.stringify(tagList?.sort()) === JSON.stringify(tags?.sort())) ||
         !!image
     );
-  }, [image, addressParent, descriptionParent, tagList]);
+  }, [
+    image,
+    addressParent,
+    descriptionParent,
+    tagList,
+    address,
+    description,
+    tags
+  ]);
 
   const save = () => {
     try {
@@ -156,13 +164,6 @@ export default function Profile({
 
   const storeTags = async (array: string[]) => {
     setTags(array);
-    (async () => {
-      try {
-        await AsyncStorage.setItem('tags', JSON.stringify(array));
-      } catch (error) {
-        throw new Error('tags storage failed');
-      }
-    })();
   };
 
   const onChangeTags = (array: string[]) => {

@@ -27,6 +27,14 @@ const offering: OfferingModel = {
   }),
   setTags: action((state, tags) => {
     state.tags = tags;
+
+    (async (): Promise<void> => {
+      try {
+        await AsyncStorage.setItem('tags', JSON.stringify(tags));
+      } catch (error) {
+        throw new Error('tags storage failed');
+      }
+    })();
   })
 };
 

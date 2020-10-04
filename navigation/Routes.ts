@@ -48,6 +48,7 @@ export type DetailStackParamsList = {
 
 export type DetailOfferingParamsList = {
   MyOfferingsModal: { id: string };
+  MakeAnOffer: { id: string; type: string; category: string; date: string };
   OfferingsListModal: { id: string };
   MyCandidateToOffering: { id: string };
   MyAppliedOfferingModal: { id: string; status: string };
