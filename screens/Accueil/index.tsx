@@ -112,7 +112,7 @@ const Accueil = (
               <TextInput
                 style={{ flex: 1, marginLeft: 10, ...styles.input }}
                 defaultValue={inputText}
-                placeholder={'Essayer Répassage'}
+                placeholder={'Essayer "Répassage"'}
                 onChangeText={text => setInputText(text)}
               />
               <TouchableOpacity

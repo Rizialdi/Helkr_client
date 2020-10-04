@@ -128,6 +128,15 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
                 vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Categorie
               </Text>
+              <Text>{data?.offeringById?.category}</Text>
+
+              <Text
+                bold
+                size={16}
+                vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
+                Renseignements
+              </Text>
+
               <OfferingDetailsOnModal details={data?.offeringById?.details} />
             </Block>
           )}
