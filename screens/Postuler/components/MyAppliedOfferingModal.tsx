@@ -1,6 +1,7 @@
 import React, { SFC, useState, useEffect } from 'react';
-import { ScrollView, ActivityIndicator } from 'react-native';
+import { ScrollView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
+
 import { DetailOfferingParamsList } from '../../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 import {
@@ -18,6 +19,7 @@ import { theme } from '../../../constants';
 import { formatDateAvis } from '../../../utils';
 import AuthorCard from './AuthorCard';
 import EventDay from '../../sharedComponents/EventDay';
+import { OfferingLoadingIndicator } from '../../sharedComponents';
 import PreferredDays from './PreferredDays';
 
 interface Props {
@@ -55,8 +57,8 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
             </Text>
           )}
           {loading && !data && (
-            <Block padding={[theme.sizes.screenHeight / 4, 0]}>
-              <ActivityIndicator size={'large'} />
+            <Block padding={[theme.sizes.base, theme.sizes.base * 1.5]}>
+              <OfferingLoadingIndicator />
             </Block>
           )}
           {data && (
@@ -117,6 +119,13 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
                 Description
               </Text>
               <Text horizontal={20}>{data?.offeringById?.description}</Text>
+
+              {route?.params.status !== 'acceptée' && (
+                <Text vertical={[20, 10]}>
+                  Vous recevrez plus d'informations si vous êtes accepté(e) pour
+                  cette mission.{' '}
+                </Text>
+              )}
 
               {route?.params.status === 'acceptée' && (
                 <>

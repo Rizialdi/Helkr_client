@@ -14,7 +14,8 @@ import {
   Button,
   TagItem,
   OfferingDetailsOnModal,
-  StackedToBottom
+  StackedToBottom,
+  OfferingLoadingIndicator
 } from '../../sharedComponents';
 import { useOfferingByIdQuery } from '../../../graphql';
 import { formatDateAvis } from '../../../utils';
@@ -58,8 +59,8 @@ const MyOfferinsgModal: SFC<Props> = ({ route, navigation }) => {
             </Text>
           )}
           {loading || !data ? (
-            <Block margin={[theme.sizes.screenHeight / 4, 0]}>
-              <ActivityIndicator size={'large'} />
+            <Block padding={[theme.sizes.base, theme.sizes.base * 1.5]}>
+              <OfferingLoadingIndicator />
             </Block>
           ) : (
             <Block

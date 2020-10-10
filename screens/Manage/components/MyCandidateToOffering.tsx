@@ -4,7 +4,6 @@ import { DetailOfferingParamsList } from '../../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import {
-  ActivityIndicator,
   StyleSheet,
   View,
   ScrollView,
@@ -20,7 +19,8 @@ import {
   TagItem,
   CandidateCard,
   SelectedCandidateCard,
-  OfferingDetailsOnModal
+  OfferingDetailsOnModal,
+  OfferingLoadingIndicator
 } from '../../sharedComponents';
 import EventDay from '../../sharedComponents/EventDay';
 import {
@@ -182,8 +182,8 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
           </Text>
         )}
         {loading || !data ? (
-          <Block margin={[theme.sizes.screenHeight / 4, 0]}>
-            <ActivityIndicator size={'large'} />
+          <Block padding={[theme.sizes.base, theme.sizes.base * 1.5]}>
+            <OfferingLoadingIndicator />
           </Block>
         ) : (
           <Block flex={false} margin={[0, theme.sizes.inouting]}>

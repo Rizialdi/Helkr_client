@@ -18,6 +18,7 @@ import Badge from './Badge';
 import Card from './Card';
 import Input from './Input';
 import ImageComponent from './ImageComponent';
+import OfferingLoadingIndicator from './OfferingLoadingIndicator';
 import StatsContainer from './StatsContainer';
 import AvgContainer from './AvgContainer';
 import InputValidator from '../SignIn/components/InputValidator';
@@ -43,6 +44,7 @@ export {
   TermsOfServices,
   SelectedCandidateCard,
   OfferingDetailsOnModal,
+  OfferingLoadingIndicator,
   TextAreaInputValidator,
   StackedToBottom,
   ImageComponent,

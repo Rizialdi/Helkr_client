@@ -2,25 +2,21 @@ import React, { SFC, useState, useEffect } from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { DetailOfferingParamsList } from '../../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  useOfferingByIdQuery,
-  useCandidateToOfferingMutation
-} from '../../../graphql';
+import { useOfferingByIdQuery } from '../../../graphql';
 import { useStoreState } from 'easy-peasy';
 import { mocks, theme } from '../../../constants';
-import client from '../../../ApolloClient';
 import {
   Block,
   Text,
   TagItem,
   OfferingDetailsOnModal,
-  ModalItemInfos,
   StackedToBottom,
-  Button
+  Button,
+  OfferingLoadingIndicator
 } from '../../sharedComponents';
 import { formatDate } from '../../../utils';
 import CompletePieces from './CompletePieces';
-import { ActivityIndicator, View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 interface Props {
   route?: RouteProp<DetailOfferingParamsList, 'OfferingsListModal'>;
@@ -76,8 +72,8 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
             </Text>
           )}
           {loading || !data ? (
-            <Block padding={[theme.sizes.screenHeight / 4, 0]}>
-              <ActivityIndicator size={'large'} />
+            <Block padding={[theme.sizes.base, theme.sizes.base * 1.5]}>
+              <OfferingLoadingIndicator />
             </Block>
           ) : (
             <Block
