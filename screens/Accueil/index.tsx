@@ -38,7 +38,7 @@ Notifications.setNotificationHandler({
 
 const Accueil = (
   navigation: StackNavigationInterface<BottomStackParamList, 'Accueil'>
-) => {
+): JSX.Element => {
   const [tokenUpdate] = useNotificationsTokenUpdateMutation();
 
   const [categories, setCategories] = useState<CategoriesInterface | null>();
@@ -46,24 +46,42 @@ const Accueil = (
   const [username, setUsername] = useState<string>('');
   const [firstOpening, setFirstOpening] = useState<boolean>(false);
   const { user } = useStoreState(state => state.User);
+  const [placeholder, setPlaceholder] = useState<string>('Babysitting');
 
-  const handleInput = () => setInputText('');
+  useEffect(() => {
+    const steps = [
+      'Répassage',
+      'Peinture',
+      'Coiffure',
+      'Photographie',
+      'Démenagement',
+      'Livraison'
+    ];
+
+    const filteredStep = steps.filter(item => item !== placeholder);
+    const rand = Math.round(Math.abs(Math.random()) * (steps.length - 2));
+
+    const timer = setTimeout(() => setPlaceholder(filteredStep[rand]), 3000);
+    return (): void => clearTimeout(timer);
+  }, [placeholder]);
+
+  const handleInput = (): void => setInputText('');
 
   useMemo(() => {
     setCategories(mocks.accueil);
     user && user.prenom && setUsername(user.prenom);
-  }, []);
+  }, [user]);
 
   useEffect(() => {
-    (async () => {
-      const firstOpening = await firstAppOpening();
-      firstOpening &&
+    (async (): Promise<void> => {
+      const firstOpeninG = await firstAppOpening();
+      firstOpeninG &&
         registerForPushNotificationsAsync().then(async token => {
           token && tokenUpdate({ variables: { token } });
           await AsyncStorage.setItem('tokenForNotifications', token);
         });
-      if (firstOpening) {
-        setFirstOpening(firstOpening);
+      if (firstOpeninG) {
+        setFirstOpening(firstOpeninG);
 
         navigation.navigation.dispatch(state => {
           // Remove the home route from the stack
@@ -93,8 +111,8 @@ const Accueil = (
         navigationOnNotification(navigation, payload);
       }
     );
-    return () => subscription.remove();
-  }, [navigation]);
+    return (): void => subscription.remove();
+  }, [navigation, tokenUpdate]);
 
   return (
     <Layout>
@@ -112,12 +130,12 @@ const Accueil = (
               <TextInput
                 style={{ flex: 1, marginLeft: 10, ...styles.input }}
                 defaultValue={inputText}
-                placeholder={'Essayer "Répassage"'}
-                onChangeText={text => setInputText(text)}
+                placeholder={'Essayer '.concat('"', placeholder, '"')}
+                onChangeText={(text): void => setInputText(text)}
               />
               <TouchableOpacity
                 style={styles.touchable}
-                onPress={() => handleInput()}>
+                onPress={(): void => handleInput()}>
                 {inputText ? (
                   <Icon name="close" size={16} color="black" />
                 ) : (
