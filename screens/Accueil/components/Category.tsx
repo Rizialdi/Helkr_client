@@ -29,7 +29,7 @@ const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
         <Badge
           margin={[0, 0, theme.sizes.hbase / 2]}
           size={theme.sizes.twiceTen * 3.5}
-          secondary>
+          style={{ backgroundColor: '#F8F8F8' }}>
           <IconSvg kind={category.image} />
         </Badge>
         <Text

@@ -153,7 +153,7 @@ const accueil: CategoriesInterface = [
     image: 'house'
   },
   {
-    id: 'Maison',
+    id: 'Course',
     name: 'Cours & Conseils',
     tag: {
       'Graphisme & Design': {
@@ -283,7 +283,7 @@ const accueil: CategoriesInterface = [
         }
       }
     },
-    image: 'house'
+    image: 'course'
   },
   {
     id: 'Maison2',
@@ -416,7 +416,7 @@ const accueil: CategoriesInterface = [
         }
       }
     },
-    image: 'house'
+    image: 'homehelp'
   },
   {
     id: 'Maison3',
@@ -505,10 +505,10 @@ const accueil: CategoriesInterface = [
         }
       }
     },
-    image: 'house'
+    image: 'bodycare'
   },
   {
-    id: 'Cours',
+    id: 'Transports',
     name: 'Transports',
     tag: {
       Démenagement: {
@@ -572,10 +572,10 @@ const accueil: CategoriesInterface = [
         }
       }
     },
-    image: 'student'
+    image: 'transport'
   },
   {
-    id: 'Cours2',
+    id: 'Evenementiel',
     name: 'Evenementiel',
     tag: {
       Photographie: {
@@ -683,10 +683,10 @@ const accueil: CategoriesInterface = [
         }
       }
     },
-    image: 'student'
+    image: 'event'
   },
   {
-    id: 'Cours3',
+    id: 'Multimedia',
     name: 'Multimédia',
     tag: {
       Ordinateur: {
@@ -772,7 +772,52 @@ const accueil: CategoriesInterface = [
         }
       }
     },
-    image: 'student'
+    image: 'multimedia'
+  },
+  {
+    id: 'Ideas',
+    name: 'Idées',
+    tag: {
+      Ordinateur: {
+        referenceId: 'cb92efe392377fce4c29e18a820b2019',
+        pieces: [...listeDePiecesObligatoires, 1, 3],
+        detailQuestions: {
+          foyer: [
+            { label: 'foyer1', value: 'foyer 1' },
+            { label: 'foyer2', value: 'foyer2' }
+          ],
+          assiette: [
+            { label: 'assiette1', value: 'assiette1' },
+            { label: 'assiette2', value: 'assiette2' }
+          ],
+          tomate: [
+            { label: 'tomate1', value: 'tomate1' },
+            { label: 'tomate2', value: 'tomate2' }
+          ],
+          marmite: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ],
+          foyer2: [
+            { label: 'foyer1', value: 'foyer 1' },
+            { label: 'foyer2', value: 'foyer2' }
+          ],
+          assiette2: [
+            { label: 'assiette1', value: 'assiette1' },
+            { label: 'assiette2', value: 'assiette2' }
+          ],
+          tomate2: [
+            { label: 'tomate1', value: 'tomate1' },
+            { label: 'tomate2', value: 'tomate2' }
+          ],
+          marmite2: [
+            { label: 'bool', value: 'bool' },
+            { label: 'bool', value: 'bbol' }
+          ]
+        }
+      }
+    },
+    image: 'ideas'
   }
 ];
 

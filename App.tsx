@@ -16,18 +16,14 @@ import { AsyncStorage } from 'react-native';
 
 const NAVIGATION_STATE_KEY = `NAVIGATION_STATE_KEY-${Constants.manifest.sdkVersion}`;
 
-const icons = [
-  require('./assets/icons/house.svg'),
-  require('./assets/icons/student.svg'),
-  require('./assets/images/defaultUserImage.png')
-];
+const icons = [require('./assets/images/defaultUserImage.png')];
 
 interface Props {
   skipLoadingScreen?: boolean;
 }
 
-const handleResourcesAsync = async () => {
-  (async () => {
+const handleResourcesAsync = async (): Promise<void[]> => {
+  (async (): Promise<void> => {
     await Font.loadAsync({
       josefinBold: require('./assets/fonts/JosefinSans-Bold.ttf'),
       josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
@@ -54,7 +50,7 @@ const App: SFC<Props> = ({ skipLoadingScreen }) => {
   const [isLoadingComplete, setIsLoadingComplete] = useState<boolean>(false);
 
   useEffect(() => {
-    const restoreState = async () => {
+    const restoreState = async (): Promise<void> => {
       try {
         const savedStateString = await AsyncStorage.getItem(
           NAVIGATION_STATE_KEY

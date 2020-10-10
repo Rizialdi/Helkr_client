@@ -7,7 +7,15 @@ export interface CategoryInterface {
   image: IconSvg;
 }
 
-export type IconSvg = 'house' | 'student';
+export type IconSvg =
+  | 'house'
+  | 'course'
+  | 'homehelp'
+  | 'bodycare'
+  | 'transport'
+  | 'multimedia'
+  | 'event'
+  | 'ideas';
 
 interface Tag {
   referenceId: string;

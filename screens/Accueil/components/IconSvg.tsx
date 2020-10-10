@@ -1,16 +1,46 @@
 import React, { SFC } from 'react';
-import { HouseSvg, StudentSvg } from '../../../assets/icons';
+import {
+  IdeasSvg,
+  EventSvg,
+  HouseSvg,
+  CourseSvg,
+  HomeHelpSvg,
+  BodyCareSvg,
+  TransportSvg,
+  MultimediaSvg
+} from '../../../assets/icons';
 
 interface Props {
-  kind: 'house' | 'student';
+  kind:
+    | 'house'
+    | 'course'
+    | 'homehelp'
+    | 'bodycare'
+    | 'transport'
+    | 'multimedia'
+    | 'event'
+    | 'ideas';
 }
+
 const Icon: SFC<Props> = ({ kind, ...props }) => {
   return (
     <>
       {kind === 'house' ? (
         <HouseSvg {...props} />
-      ) : kind === 'student' ? (
-        <StudentSvg {...props} />
+      ) : kind === 'course' ? (
+        <CourseSvg {...props} />
+      ) : kind === 'homehelp' ? (
+        <HomeHelpSvg {...props} />
+      ) : kind === 'bodycare' ? (
+        <BodyCareSvg {...props} />
+      ) : kind === 'transport' ? (
+        <TransportSvg {...props} />
+      ) : kind === 'event' ? (
+        <EventSvg {...props} />
+      ) : kind === 'multimedia' ? (
+        <MultimediaSvg {...props} />
+      ) : kind === 'ideas' ? (
+        <IdeasSvg {...props} />
       ) : null}
     </>
   );
