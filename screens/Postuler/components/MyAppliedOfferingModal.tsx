@@ -54,7 +54,7 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
               Une erreur s'est produite sur le réseau.
             </Text>
           )}
-          {(loading || !data) && (
+          {loading && !data && (
             <Block padding={[theme.sizes.screenHeight / 4, 0]}>
               <ActivityIndicator size={'large'} />
             </Block>
@@ -105,6 +105,7 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
                 ]}>
                 Renseignements
               </Text>
+              <OfferingDetailsOnModal details={data?.offeringById?.details} />
 
               <Text
                 bold
@@ -115,9 +116,7 @@ const MyAppliedOfferingMod: SFC<Props> = ({ route }) => {
                 ]}>
                 Description
               </Text>
-              <Text>{data?.offeringById?.description}</Text>
-
-              <OfferingDetailsOnModal details={data?.offeringById?.details} />
+              <Text horizontal={20}>{data?.offeringById?.description}</Text>
 
               {route?.params.status === 'acceptée' && (
                 <>

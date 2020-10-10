@@ -94,7 +94,7 @@ const MyOfferinsgModal: SFC<Props> = ({ route, navigation }) => {
                 vertical={[theme.sizes.htwiceTen, theme.sizes.twiceTen / 2]}>
                 Catégorie
               </Text>
-              <Text>{data?.offeringById?.category}</Text>
+              <Text horizontal={20}>{data?.offeringById?.category}</Text>
 
               <Text
                 bold
@@ -110,7 +110,7 @@ const MyOfferinsgModal: SFC<Props> = ({ route, navigation }) => {
                 vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Description
               </Text>
-              <Text>{data?.offeringById?.description}</Text>
+              <Text horizontal={20}>{data?.offeringById?.description}</Text>
             </Block>
           )}
         </Block>

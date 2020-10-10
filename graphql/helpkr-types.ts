@@ -175,6 +175,8 @@ export type MutationAvatarUploadArgs = {
 
 export type MutationCandidateToOfferingArgs = {
   id: Scalars['String'];
+  message: Scalars['String'];
+  priceRange: Scalars['String'];
 };
 
 
@@ -684,6 +686,8 @@ export type AddVerificationpiecesMutation = (
 
 export type CandidateToOfferingMutationVariables = Exact<{
   id: Scalars['String'];
+  message: Scalars['String'];
+  priceRange: Scalars['String'];
 }>;
 
 
@@ -1249,8 +1253,8 @@ export type AddVerificationpiecesMutationHookResult = ReturnType<typeof useAddVe
 export type AddVerificationpiecesMutationResult = ApolloReactCommon.MutationResult<AddVerificationpiecesMutation>;
 export type AddVerificationpiecesMutationOptions = ApolloReactCommon.BaseMutationOptions<AddVerificationpiecesMutation, AddVerificationpiecesMutationVariables>;
 export const CandidateToOfferingDocument = gql`
-    mutation candidateToOffering($id: String!) {
-  candidateToOffering(id: $id) {
+    mutation candidateToOffering($id: String!, $message: String!, $priceRange: String!) {
+  candidateToOffering(id: $id, message: $message, priceRange: $priceRange) {
     success
   }
 }
@@ -1271,6 +1275,8 @@ export type CandidateToOfferingMutationFn = ApolloReactCommon.MutationFunction<C
  * const [candidateToOfferingMutation, { data, loading, error }] = useCandidateToOfferingMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      message: // value for 'message'
+ *      priceRange: // value for 'priceRange'
  *   },
  * });
  */

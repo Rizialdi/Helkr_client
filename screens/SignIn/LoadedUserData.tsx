@@ -38,10 +38,10 @@ const LoadedUserData = ({
             Helkr ne partage aucune information avec des entités tièrces.
           </Text>
           <Text vertical={[20, 0]}>
-            Noms: <Text bold>{nom}</Text>
+            Nom(s): <Text bold>{nom}</Text>
           </Text>
           <Text vertical={[20, 10]}>
-            Prenoms: <Text bold>{prenom}</Text>
+            Prenom(s): <Text bold>{prenom}</Text>
           </Text>
           <Button
             disabled={loading || !netWorkStatus}

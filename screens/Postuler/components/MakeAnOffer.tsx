@@ -1,12 +1,13 @@
-import React, { SFC } from 'react';
-import { View, ScrollView, Keyboard } from 'react-native';
+import React, { SFC, useState } from 'react';
+import { View, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
 import {
   Block,
   Text,
   TextAreaInputValidator,
   StackedToBottom,
   TagItem,
-  Button
+  Button,
+  ModalItemInfos
 } from '../../sharedComponents';
 import { RouteProp } from '@react-navigation/native';
 import { DetailOfferingParamsList } from '../../../navigation/Routes';
@@ -22,7 +23,8 @@ import { useForm } from 'react-hook-form';
 import { FormDataOffer } from './makeAnOfferValidation';
 import { Form } from '../../SignIn/components';
 import validation from './makeAnOfferValidation';
-
+import { useCandidateToOfferingMutation } from '../../../graphql';
+import client from '../../../ApolloClient';
 interface Props {
   route?: RouteProp<DetailOfferingParamsList, 'OfferingsListModal'>;
   navigation?: StackNavigationProp<
@@ -33,13 +35,37 @@ interface Props {
 
 const MakeAnOffer: SFC<Props> = ({ navigation, route }) => {
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
+  const [errorModal, setErrorModal] = useState<boolean>(false);
+  const [applyTo, { data, loading, error }] = useCandidateToOfferingMutation();
+
   const { handleSubmit, register, setValue, errors } = useForm<FormDataOffer>({
     mode: 'onChange',
     reValidateMode: 'onChange'
   });
 
   const onSubmitOffer = (form: FormDataOffer): void => {
-    console.log('remi, form', form);
+    applyTo({
+      variables: {
+        id: route?.params.id as string,
+        message: form.message,
+        priceRange: form.estimation
+      }
+    }).then(({ data, errors: submissionError }) => {
+      try {
+        if (data?.candidateToOffering && data.candidateToOffering.success) {
+          client.reFetchObservableQueries();
+          //   TODO Update Function
+        }
+
+        if (submissionError || error) {
+          setErrorModal(true);
+        }
+      } catch (err) {
+        throw new Error(`Impossible de Candidater ${err}`);
+      }
+    });
+    // .then(() => navigation?.goBack())
+    // .then(() => navigation?.goBack());
   };
   return (
     <View style={{ backgroundColor: 'white', flex: 1 }}>
@@ -86,6 +112,30 @@ const MakeAnOffer: SFC<Props> = ({ navigation, route }) => {
           </Block>
         </TouchableWithoutFeedback>
       </ScrollView>
+
+      {errorModal && (
+        <ModalItemInfos
+          errorReporting
+          information={'Erreur'}
+          description={
+            "Une erreur s'est produite pendant votre candidature. Veuillez réessayer plus tard."
+          }
+          timer={1}
+          callBack={navigation?.goBack}
+        />
+      )}
+
+      {/* {data?.candidateToOffering.success && (
+        <ModalItemInfos
+          information={'Envoyé'}
+          description={'Proposition envoyée pour cette offre.'}
+          timer={1}
+          callBack={() => navigation?.pop(5)}
+        />
+      )} */}
+
+      {data?.candidateToOffering.success && navigation?.pop(2)}
+
       <Block
         margin={[-theme.sizes.hinouting * 0.1, theme.sizes.inouting * 0.8]}>
         <StackedToBottom>
@@ -93,9 +143,13 @@ const MakeAnOffer: SFC<Props> = ({ navigation, route }) => {
             disabled={!netWorkStatus}
             onPress={handleSubmit(onSubmitOffer)}>
             <Button secondary>
-              <Text bold center>
-                Envoyez
-              </Text>
+              {loading ? (
+                <ActivityIndicator size={'small'} />
+              ) : (
+                <Text bold center>
+                  Envoyez
+                </Text>
+              )}
             </Button>
           </TouchableOpacity>
         </StackedToBottom>

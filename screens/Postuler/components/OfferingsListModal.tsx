@@ -47,9 +47,7 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
     }
   });
   const [ModalOpen, setModalOpen] = useState<boolean>(false);
-  const [errorModal, setErrorModal] = useState<boolean>(false);
   const [modalOverlaySize, setModalOverlaySize] = useState<number>(0.5);
-  const [applyTo] = useCandidateToOfferingMutation();
   const [listOfPieces, setListOfPieces] = useState<ListOfPieces>();
   const { jobAuthorizations } = useStoreState(store => store.JobAuthorization);
   const [isAuthorizedToApply, setIsAuthorized] = useState<boolean>(false);
@@ -67,26 +65,6 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
       setListOfPieces(list);
     }
   }, [data, jobAuthorizations]);
-
-  const applyToOffering = () => {
-    applyTo({
-      variables: { id: data?.offeringById?.id as string }
-    })
-      .then(({ data, errors }) => {
-        try {
-          if (data?.candidateToOffering && data.candidateToOffering.success) {
-            client.reFetchObservableQueries();
-            // TODO Update Function
-            if (errors || error) {
-              setErrorModal(true);
-            }
-          }
-        } catch (error) {
-          throw new Error(`Impossible de Candidater ${error}`);
-        }
-      })
-      .then(() => navigation?.goBack());
-  };
 
   return (
     <View style={{ backgroundColor: 'white', flex: 1 }}>
@@ -129,7 +107,7 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
                 vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Catégorie
               </Text>
-              <Text>{data?.offeringById?.category}</Text>
+              <Text horizontal={20}>{data?.offeringById?.category}</Text>
 
               <Text
                 bold
@@ -146,19 +124,8 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
                 vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 Description
               </Text>
-              <Text>{data?.offeringById?.description}</Text>
+              <Text horizontal={20}>{data?.offeringById?.description}</Text>
             </Block>
-          )}
-          {errorModal && (
-            <ModalItemInfos
-              errorReporting
-              information={'Erreur'}
-              description={
-                "Une erreur s'est produite pendant votre candidature. Veuillez réessayer plus tard."
-              }
-              timer={1}
-              callBack={navigation?.goBack}
-            />
           )}
         </>
       </ScrollView>
@@ -171,9 +138,9 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
             onPress={
               () =>
                 navigation?.navigate('MakeAnOffer', {
-                  id: route?.params.id,
-                  type: data?.offeringById?.type,
-                  category: data?.offeringById?.category,
+                  id: route?.params.id as string,
+                  type: data?.offeringById?.type as string,
+                  category: data?.offeringById?.category as string,
                   date: data?.offeringById.updatedAt
                     ? data?.offeringById?.updatedAt
                     : data?.offeringById.createdAt

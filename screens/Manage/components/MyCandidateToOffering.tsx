@@ -211,7 +211,7 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
               Catégorie
             </Text>
 
-            <Text>{Data?.offeringById?.category}</Text>
+            <Text horizontal={20}>{Data?.offeringById?.category}</Text>
 
             <Text
               bold
@@ -229,15 +229,15 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
               Description
             </Text>
 
-            <Text>{Data?.offeringById?.description}</Text>
+            <Text horizontal={20}>{Data?.offeringById?.description}</Text>
             <Block flex={false}>
               <Text
                 bold
                 size={16}
                 vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 {Data?.offeringById.selectedCandidate
-                  ? 'Candidat retenu'
-                  : 'Candidats'}
+                  ? 'Proposition retenue'
+                  : 'Proposition'}
               </Text>
               {Data?.offeringById.selectedCandidate ? (
                 <TouchableOpacity

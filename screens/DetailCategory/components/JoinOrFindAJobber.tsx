@@ -60,7 +60,7 @@ const JoinOrFindAJobber = ({
   });
 
   return (
-    <Block padding={[20, 20]} middle>
+    <Block padding={[20, 20]} middle white>
       <Text center vertical={[20, 20]}>
         Voulez-vous devenir prestataire pour cette catégorie ?
       </Text>
