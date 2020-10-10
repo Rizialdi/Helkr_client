@@ -119,8 +119,7 @@ const Accueil = (
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          paddingVertical: theme.sizes.base * 2,
-          backgroundColor: 'white'
+          paddingVertical: theme.sizes.base * 2
         }}>
         {username && <UserWelcome {...{ username }} />}
         <View style={styles.container}>

@@ -13,14 +13,14 @@ const { width } = Dimensions.get('window');
 
 interface Props {
   category: CategoryInterface;
-  navigation: StackNavigationInterface<MainStackParamList>;
+  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>;
 }
-const Category: SFC<Props> = ({ category, navigation: { navigation } }) => {
+const Category: SFC<Props> = ({ category, navigation }) => {
   return (
     <TouchableOpacity
       key={category.id}
       onPress={() =>
-        navigation.navigate('DetailCategory', {
+        navigation.navigation.navigate('DetailCategory', {
           screen: 'DetailCategory',
           params: { category }
         })
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
     minWidth: (width - theme.sizes.inouting * 2) / 2,
     maxWidth: (width - theme.sizes.inouting * 2) / 2,
     maxHeight: (width - theme.sizes.inouting * 2) / 2,
-    marginVertical: theme.sizes.htwiceTen / 1.5
+    marginVertical: theme.sizes.htwiceTen / 2
   }
 });

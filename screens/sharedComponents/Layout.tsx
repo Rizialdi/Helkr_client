@@ -44,8 +44,7 @@ const Layout: SFC<LayoutProps> = ({
   }, []);
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: themeColors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: 'white' }]}>
       {isInternetConnection ? (
         <></>
       ) : (
