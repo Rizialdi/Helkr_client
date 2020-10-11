@@ -1,7 +1,17 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { SvgUri } from 'react-native-svg';
-import { Mark, Phone1, Phone2, Phone3 } from '../../../assets/icons';
+import {
+  Mark,
+  Phone1,
+  Phone2,
+  Phone3,
+  CreateOfferingSvg,
+  ReceivePropositionSvg,
+  MakeMoneySvg,
+  SortCandidatesSvg,
+  MakeCommentSvg
+} from '../../../assets/icons';
 import { theme } from '../../../constants';
 
 interface Props {
@@ -19,17 +29,15 @@ const OnBoardingTemplate: FC<Props> = ({ idx, textP, textS }) => {
       </View>
       <View style={styles.imagePresentationContainer}>
         {idx === 1 ? (
-          <Phone1 width={275} height={275} />
+          <CreateOfferingSvg width={350} height={350} />
         ) : idx === 2 ? (
-          <Phone2 width={275} height={275} />
+          <ReceivePropositionSvg width={350} height={350} />
         ) : idx === 3 ? (
-          <Phone3 width={275} height={275} />
+          <SortCandidatesSvg width={350} height={350} />
+        ) : idx === 4 ? (
+          <MakeMoneySvg width={350} height={350} />
         ) : (
-          <SvgUri
-            width="100%"
-            height="100%"
-            uri="http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
-          />
+          <MakeCommentSvg width={350} height={350} />
         )}
       </View>
       <View

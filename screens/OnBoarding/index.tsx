@@ -34,7 +34,7 @@ export default function App({
   const { themeColors } = useStoreState(state => state.Preferences);
   const [pagePosition, setPagePosition] = useState<number>(1);
 
-  const scrollTo = (position: number) => {
+  const scrollTo = (position: number): void => {
     setPagePosition(position);
     if (scroll.current) {
       scroll.current.scrollTo({
@@ -44,7 +44,9 @@ export default function App({
     }
   };
 
-  const onScrollHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+  const onScrollHandler = (
+    event: NativeSyntheticEvent<NativeScrollEvent>
+  ): void => {
     const scrollViewX = event.nativeEvent.contentOffset.x;
     if (scrollViewX % width === 0) {
       scrollTo(scrollViewX / width + 1);
@@ -72,10 +74,10 @@ export default function App({
         onScroll={onScrollHandler}
         alwaysBounceHorizontal={true}
         horizontal
-        pagingEnabled
+        pagingEnabled={true}
         snapToInterval={width}
         decelerationRate="fast"
-        bounces={false}
+        bounces={true}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={1}
         ref={scroll}>
@@ -108,7 +110,7 @@ export default function App({
         <View>
           <TouchableOpacity
             style={[styles.button, { backgroundColor: themeColors.secondary }]}
-            onPress={() =>
+            onPress={(): void =>
               illustrations && pagePosition < illustrations.length + 1
                 ? scrollTo(pagePosition + 1)
                 : navigation.navigate('RegisterPhoneNumber')

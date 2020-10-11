@@ -59,8 +59,10 @@ const accueil = [
   ideas
 ];
 
-export const getListofPieces = (id: string | null = '') => {
-  if (!id) return;
+export const getListofPieces = (
+  id: string | null = ''
+): typeof listeDePieces | null => {
+  if (!id) return null;
   const matchingCategory = accueil.find(({ tag }) => {
     return Object.values(tag).find(value => value?.referenceId === id);
   });
@@ -103,19 +105,19 @@ const illustrations = [
     id: 2,
     textP: 'Recevez des propositions de professionels',
     textS:
-      'Chaque agent vous presente un proposition en fonction de vos reponses au formulaire'
+      'Chaque agent vous presente une proposition adaptée à vos renseignements'
   },
   {
     id: 3,
     textP: "Faites le choix d'un prestataire",
     textS:
-      'Les avis d’autres utilisateurs permettent de vous faire une idée du prestataire et de sa fiabilité'
+      "Choisissez votre prestataire en fonction de ses notes et des commentaires d'autres utilisateurs"
   },
   {
     id: 4,
-    textP: 'Regler le montant de la prestation',
+    textP: 'Reglez le montant de la prestation',
     textS:
-      "Notez que votre paiement n'est percu par le prestataire qu'une fois le service realisé"
+      'Faites des économies en choisissant le candidat adapté à votre budget'
   },
   {
     id: 5,
