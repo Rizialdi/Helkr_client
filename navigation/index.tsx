@@ -24,7 +24,8 @@ import Reglages from '../screens/Reglages';
 import OnBoarding from '../screens/OnBoarding';
 import {
   MyOfferingsModal,
-  MyCandidateToOffering
+  MyCandidateToOffering,
+  DetailsOnOfferingProposition
 } from '../screens/Manage/components';
 
 import {
@@ -171,6 +172,17 @@ const DetailOfferingScreens = () => {
         options={() => ({
           headerShown: true,
           title: 'Détails',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+      <DetailOfferingPresentation.Screen
+        name="DetailsOnOfferingProposition"
+        component={DetailsOnOfferingProposition}
+        options={() => ({
+          headerShown: true,
+          title: 'Proposition',
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'

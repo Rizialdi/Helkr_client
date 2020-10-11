@@ -52,4 +52,10 @@ export type DetailOfferingParamsList = {
   OfferingsListModal: { id: string };
   MyCandidateToOffering: { id: string };
   MyAppliedOfferingModal: { id: string; status: string };
+  DetailsOnOfferingProposition: {
+    userId: string;
+    offeringId: string;
+    avatar: string | null | undefined;
+    professional: boolean;
+  };
 };

@@ -57,7 +57,7 @@ interface Props {
 export type CandidateCardClickedPart = '' | 'icon';
 export type CompletedOrIssue = 'completed' | 'issue' | null;
 
-const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
+const MyCandidatesToOffering: SFC<Props> = ({ route, navigation }) => {
   const [selectedId, setSelectedId] = useState<string>('');
   const [Data, setData] = useState<OfferingByIdQuery | undefined>();
 
@@ -237,7 +237,7 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
                 vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen / 2]}>
                 {Data?.offeringById.selectedCandidate
                   ? 'Proposition retenue'
-                  : 'Proposition'}
+                  : 'Propositions'}
               </Text>
               {Data?.offeringById.selectedCandidate ? (
                 <TouchableOpacity
@@ -261,7 +261,14 @@ const MyCandidatesToOffering: SFC<Props> = ({ route }) => {
                 data.offeringById.candidates.map(item => (
                   <TouchableOpacity
                     key={item.id}
-                    onPress={() => setSelectedId(item.id)}>
+                    onPress={(): void =>
+                      navigation?.navigate('DetailsOnOfferingProposition', {
+                        userId: item.id,
+                        offeringId: route?.params.id as string,
+                        avatar: item.avatar,
+                        professional: !!item.professional
+                      })
+                    }>
                     <CandidateCard
                       id={item.id}
                       avatar={item.avatar as string}

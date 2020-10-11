@@ -1,9 +1,9 @@
 import React, { SFC } from 'react';
-import { Image } from 'react-native';
+import { Image, ImageStyle } from 'react-native';
 
 interface Props {
   image?: string | null;
-  style?: object;
+  style?: ImageStyle;
 }
 const ImageComponent: SFC<Props> = ({ image, style }) => {
   return (

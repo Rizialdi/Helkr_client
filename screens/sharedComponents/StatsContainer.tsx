@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import AvgContainer from './AvgContainer';
-import { MainStackParamList } from '../../navigation/Routes';
+import {
+  MainStackParamList,
+  DetailOfferingParamsList
+} from '../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import Text from './Text';
@@ -14,7 +17,12 @@ import { theme } from '../../constants';
 interface Props {
   id: string;
   offeringAuthorStars?: boolean;
-  navigation?: StackNavigationProp<MainStackParamList, 'Profile'>;
+  navigation?:
+    | StackNavigationProp<MainStackParamList, 'Profile'>
+    | StackNavigationProp<
+        DetailOfferingParamsList,
+        'DetailsOnOfferingProposition'
+      >;
 }
 
 export default ({ id, offeringAuthorStars, navigation }: Props) => {
@@ -72,8 +80,9 @@ export default ({ id, offeringAuthorStars, navigation }: Props) => {
           <TouchableOpacity
             style={styles.lineStars}
             disabled={done === 0 || !netWorkStatus}
-            onPress={() =>
+            onPress={(): void =>
               navigation &&
+              //@ts-ignore
               navigation.navigate('Avis', {
                 id: id
               })

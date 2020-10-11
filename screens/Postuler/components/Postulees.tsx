@@ -78,7 +78,7 @@ const Postulees: SFC<Props> = ({ navigation }) => {
         <CustomListView
           // TODO resolve typescrit linting
           data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
-          emptyMessage={"Vous n'avez aucune candidature"}
+          emptyMessage={"Vous n'avez aucune candidature."}
           refreshing={refreshing}
           onRefresh={onRefresh}
           navigation={navigation}

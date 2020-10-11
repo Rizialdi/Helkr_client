@@ -316,6 +316,14 @@ export type OfferingWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
 };
 
+export type PropositionToOffering = {
+  __typename?: 'propositionToOffering';
+  candidateUsername: Scalars['String'];
+  descriptionPrestataire?: Maybe<Scalars['String']>;
+  message: Scalars['String'];
+  priceRange: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   allChatsAndMessages: Array<Channel>;
@@ -338,6 +346,7 @@ export type Query = {
   myIncompleteOfferingWithCandidates: Array<Offering>;
   offeringById: Offering;
   offeringsUser: Array<Offering>;
+  propositionToOfferingDetails: PropositionToOffering;
   userById?: Maybe<Utilisateur>;
   users: Array<Utilisateur>;
 };
@@ -407,6 +416,12 @@ export type QueryOfferingByIdArgs = {
 
 export type QueryOfferingsUserArgs = {
   numero: Scalars['String'];
+};
+
+
+export type QueryPropositionToOfferingDetailsArgs = {
+  offeringId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 
@@ -1018,6 +1033,20 @@ export type OfferingByIdPostuleesQuery = (
       & UserFragment
     ) }
     & OfferingFragment
+  ) }
+);
+
+export type PropositionToOfferingDetailsQueryVariables = Exact<{
+  userId: Scalars['String'];
+  offeringId: Scalars['String'];
+}>;
+
+
+export type PropositionToOfferingDetailsQuery = (
+  { __typename?: 'Query' }
+  & { propositionToOfferingDetails: (
+    { __typename?: 'propositionToOffering' }
+    & Pick<PropositionToOffering, 'message' | 'priceRange' | 'candidateUsername' | 'descriptionPrestataire'>
   ) }
 );
 
@@ -2132,6 +2161,43 @@ export function useOfferingByIdPostuleesLazyQuery(baseOptions?: ApolloReactHooks
 export type OfferingByIdPostuleesQueryHookResult = ReturnType<typeof useOfferingByIdPostuleesQuery>;
 export type OfferingByIdPostuleesLazyQueryHookResult = ReturnType<typeof useOfferingByIdPostuleesLazyQuery>;
 export type OfferingByIdPostuleesQueryResult = ApolloReactCommon.QueryResult<OfferingByIdPostuleesQuery, OfferingByIdPostuleesQueryVariables>;
+export const PropositionToOfferingDetailsDocument = gql`
+    query propositionToOfferingDetails($userId: String!, $offeringId: String!) {
+  propositionToOfferingDetails(userId: $userId, offeringId: $offeringId) {
+    message
+    priceRange
+    candidateUsername
+    descriptionPrestataire
+  }
+}
+    `;
+
+/**
+ * __usePropositionToOfferingDetailsQuery__
+ *
+ * To run a query within a React component, call `usePropositionToOfferingDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePropositionToOfferingDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePropositionToOfferingDetailsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      offeringId: // value for 'offeringId'
+ *   },
+ * });
+ */
+export function usePropositionToOfferingDetailsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<PropositionToOfferingDetailsQuery, PropositionToOfferingDetailsQueryVariables>) {
+        return ApolloReactHooks.useQuery<PropositionToOfferingDetailsQuery, PropositionToOfferingDetailsQueryVariables>(PropositionToOfferingDetailsDocument, baseOptions);
+      }
+export function usePropositionToOfferingDetailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<PropositionToOfferingDetailsQuery, PropositionToOfferingDetailsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<PropositionToOfferingDetailsQuery, PropositionToOfferingDetailsQueryVariables>(PropositionToOfferingDetailsDocument, baseOptions);
+        }
+export type PropositionToOfferingDetailsQueryHookResult = ReturnType<typeof usePropositionToOfferingDetailsQuery>;
+export type PropositionToOfferingDetailsLazyQueryHookResult = ReturnType<typeof usePropositionToOfferingDetailsLazyQuery>;
+export type PropositionToOfferingDetailsQueryResult = ApolloReactCommon.QueryResult<PropositionToOfferingDetailsQuery, PropositionToOfferingDetailsQueryVariables>;
 export const UserByIdDocument = gql`
     query userById($id: String!) {
   userById(id: $id) {
