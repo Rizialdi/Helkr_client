@@ -127,4 +127,10 @@ const illustrations = [
   }
 ];
 
-export { accueil, illustrations };
+const cities = [
+  { key: 'sQ5YwH75Qn', section: true, label: 'Villes' },
+  { key: '8JddFCWMQu', label: 'Libreville' },
+  { key: 'Quec2EAk5u', label: 'Franceville' },
+  { key: 'XsKMSgPSd4', label: 'Port-Gentil' }
+];
+export { accueil, illustrations, cities };

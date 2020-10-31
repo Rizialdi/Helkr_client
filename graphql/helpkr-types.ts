@@ -235,6 +235,7 @@ export type MutationNotificationsTokenUpdateArgs = {
 
 
 export type MutationRegisterUserArgs = {
+  address: Scalars['String'];
   nom: Scalars['String'];
   numero: Scalars['String'];
   prenom: Scalars['String'];
@@ -763,6 +764,7 @@ export type RegisterUserMutationVariables = Exact<{
   nom: Scalars['String'];
   prenom: Scalars['String'];
   numero: Scalars['String'];
+  address: Scalars['String'];
 }>;
 
 
@@ -1441,8 +1443,8 @@ export type DeleteOfferingMutationHookResult = ReturnType<typeof useDeleteOfferi
 export type DeleteOfferingMutationResult = ApolloReactCommon.MutationResult<DeleteOfferingMutation>;
 export type DeleteOfferingMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOfferingMutation, DeleteOfferingMutationVariables>;
 export const RegisterUserDocument = gql`
-    mutation registerUser($nom: String!, $prenom: String!, $numero: String!) {
-  registerUser(nom: $nom, prenom: $prenom, numero: $numero) {
+    mutation registerUser($nom: String!, $prenom: String!, $numero: String!, $address: String!) {
+  registerUser(nom: $nom, prenom: $prenom, numero: $numero, address: $address) {
     token
     user {
       id
@@ -1469,6 +1471,7 @@ export type RegisterUserMutationFn = ApolloReactCommon.MutationFunction<Register
  *      nom: // value for 'nom'
  *      prenom: // value for 'prenom'
  *      numero: // value for 'numero'
+ *      address: // value for 'address'
  *   },
  * });
  */

@@ -16,7 +16,7 @@ import Avis from '../screens/Avis';
 import DetailCategory from '../screens/DetailCategory';
 import DetailItem from '../screens/DetailCategory/components/DetailItem';
 import JoinOrFindAJobber from '../screens/DetailCategory/components/JoinOrFindAJobber';
-import { Discussions } from '../screens/Discussions';
+import Demandes from '../screens/Demandes';
 import Manage from '../screens/Manage';
 import Postuler from '../screens/Postuler';
 import Profile from '../screens/Profile';
@@ -45,12 +45,14 @@ import { theme } from '../constants';
 import {
   MainStackParamList,
   BottomStackParamList,
-  DetailStackParamsList
+  DetailStackParamsList,
+  DemandesParamsList
 } from './Routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AsyncStorage } from 'react-native';
 import { BienvenueFirst } from '../screens/BienvenueFirst';
 import { DetailOfferingParamsList } from './Routes';
+import { QueryDetails } from '../screens/Demandes/components';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -108,6 +110,44 @@ const DetailCategoryScreens = () => {
 const DetailOfferingPresentation = createStackNavigator<
   DetailOfferingParamsList
 >();
+
+const DemandesPresentation = createStackNavigator<DemandesParamsList>();
+
+const DemandesScreens = () => {
+  return (
+    <DemandesPresentation.Navigator
+      mode="modal"
+      initialRouteName={'Demandes'}
+      screenOptions={({ route, navigation }) => ({
+        ...TransitionPresets.ModalPresentationIOS,
+        cardOverlayEnabled: true,
+        gestureEnabled: true,
+        headerStatusBarHeight:
+          navigation.dangerouslyGetState().routes.indexOf(route) > 0
+            ? 0
+            : undefined
+      })}>
+      <DemandesPresentation.Screen
+        name="Demandes"
+        component={Demandes}
+        options={() => ({
+          headerShown: false
+        })}
+      />
+      <DemandesPresentation.Screen
+        name="QueryDetails"
+        component={QueryDetails}
+        options={() => ({
+          headerShown: true,
+          title: 'Détails',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+    </DemandesPresentation.Navigator>
+  );
+};
 
 const DetailOfferingScreens = () => {
   return (
@@ -232,12 +272,12 @@ const createBottomTabs = () => {
         }}
       />
       <MaterialBottomTabs.Screen
-        name="Discussions"
-        component={Discussions}
+        name="Demandes"
+        component={DemandesScreens}
         options={{
-          tabBarLabel: 'Discussions',
+          tabBarLabel: 'Demandes',
           tabBarIcon: () => (
-            <AntDesign name="message1" size={22} color="black" />
+            <AntDesign name="notification" size={22} color="black" />
           )
         }}
       />

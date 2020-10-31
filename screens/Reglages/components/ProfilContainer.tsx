@@ -9,6 +9,8 @@ import { useStoreState } from '../../../models';
 import { theme } from '../../../constants';
 import { getPermissionAsync } from '../../../utils';
 import { Text, ImageComponent } from '../../sharedComponents';
+import ModalSelector from 'react-native-modal-selector';
+import { cities } from '../../../constants/mocks';
 
 interface Props {
   image: string;
@@ -113,20 +115,38 @@ export default ({
           {username}
         </Text>
 
-        <TextInput
-          style={[
-            styles.text,
-            {
-              color: '#AEB5BC',
-              fontSize: theme.sizes.twiceTen * 0.7,
-              width: '100%'
-            }
-          ]}
-          maxLength={30}
-          placeholder={text ? text : 'Ajouter une addresse.'}
-          value={text ? text : ''}
-          onChangeText={text => onChange(text)}
-        />
+        <ModalSelector
+          data={cities}
+          cancelTextStyle={{ fontWeight: 'bold' }}
+          optionTextStyle={{
+            color: theme.colors.black,
+            fontSize: theme.fonts.body.fontSize,
+            fontWeight: 'bold'
+          }}
+          optionStyle={{ padding: 20 }}
+          optionContainerStyle={{ backgroundColor: '#fff' }}
+          cancelText={'Fermer'}
+          cancelStyle={{
+            backgroundColor: theme.colors.secondary,
+            padding: 15
+          }}
+          scrollViewAccessibilityLabel={'Scrollable options'}
+          cancelButtonAccessibilityLabel={'Cancel Button'}
+          onChange={option => onChange(option.label)}>
+          <TextInput
+            style={[
+              styles.text,
+              {
+                color: '#AEB5BC',
+                fontSize: theme.sizes.twiceTen * 0.7,
+                width: '100%'
+              }
+            ]}
+            maxLength={30}
+            placeholder={text ? text : 'Ajouter une addresse.'}
+            value={text ? text : ''}
+          />
+        </ModalSelector>
       </View>
     </>
   );

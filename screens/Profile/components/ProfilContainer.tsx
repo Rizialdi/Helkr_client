@@ -55,7 +55,7 @@ export default ({
           {username}
         </Text>
         <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>
-          {address || '_'}
+          {`${address?.charAt(0).toUpperCase()}${address?.slice(1)}` || '_'}
         </Text>
       </View>
     </>

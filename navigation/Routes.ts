@@ -8,7 +8,7 @@ export type BottomStackParamList = {
   Gerer: undefined | { tab: Tab };
   SignIn: undefined;
   Postuler: undefined | { tab: Tab };
-  Discussions: undefined;
+  Demandes: undefined;
   Profile: undefined;
 };
 
@@ -58,4 +58,9 @@ export type DetailOfferingParamsList = {
     avatar: string | null | undefined;
     professional: boolean;
   };
+};
+
+export type DemandesParamsList = {
+  Demandes: undefined;
+  QueryDetails: { id: string };
 };

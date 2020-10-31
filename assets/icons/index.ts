@@ -11,6 +11,7 @@ export { default as BodyCareSvg } from './BodyCareSvg';
 export { default as TransportSvg } from './TransportSvg';
 export { default as MakeMoneySvg } from './MakeMoneySvg';
 export { default as MultimediaSvg } from './MultimediaSvg';
+export { default as EmptyQueryBox } from './EmptyQueryBox';
 export { default as MakeCommentSvg } from './MakeCommentSvg';
 export { default as SortCandidatesSvg } from './SortCandidatesSvg';
 export { default as CreateOfferingSvg } from './CreateOfferingSvg';

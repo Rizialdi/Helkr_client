@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
 import { Button, Text } from '../sharedComponents';
-import { theme } from '../../constants';
+import { theme, mocks } from '../../constants';
 import { Form, InputValidator, validation, SignInLayout } from './components';
 import { FormData } from './components/validation';
 import { useForm } from 'react-hook-form';
@@ -12,6 +12,7 @@ import {
 import { useRegisterUserMutation } from '../../graphql';
 import { storeCredentials } from '../../utils';
 import { useStoreActions, useStoreState } from '../../models';
+import ModalSelector from 'react-native-modal-selector';
 
 const { width } = Dimensions.get('screen');
 
@@ -28,6 +29,9 @@ const RegisterUsername = ({
     fetchPolicy: 'no-cache'
   });
 
+  const [cities, setCities] = useState<Array<any>>(['']);
+  const [city, setCity] = useState<string>('');
+
   const { setUser } = useStoreActions(actions => actions.User);
 
   const { handleSubmit, register, setValue, errors } = useForm<FormData>({
@@ -37,9 +41,12 @@ const RegisterUsername = ({
 
   const numero = route.params.phoneNumberToVerify;
 
+  console.log('bbb', city);
+
   const onSubmitName = (formData: FormData): void => {
     const { nom, prenom } = formData;
-    numero && registerUser({ variables: { nom, prenom, numero } });
+    numero &&
+      registerUser({ variables: { nom, prenom, numero, address: city } });
   };
 
   useEffect(() => {
@@ -53,7 +60,10 @@ const RegisterUsername = ({
     }
   }, [data, setUser]);
 
-  console.log('error', error);
+  useMemo(() => {
+    setCities(mocks.cities);
+  }, []);
+
   return (
     <View style={{ flex: 1, width: width }}>
       <SignInLayout title={'Enregistrement'}>
@@ -87,8 +97,35 @@ const RegisterUsername = ({
               label={'Prénom'}
               placeholder="Charles"
             />
+            <ModalSelector
+              data={cities}
+              cancelTextStyle={{ fontWeight: 'bold' }}
+              optionTextStyle={{
+                color: theme.colors.black,
+                fontSize: theme.fonts.body.fontSize,
+                fontWeight: 'bold'
+              }}
+              optionStyle={{ padding: 20 }}
+              optionContainerStyle={{ backgroundColor: '#fff' }}
+              cancelText={'Fermer'}
+              cancelStyle={{
+                backgroundColor: theme.colors.secondary,
+                padding: 15
+              }}
+              scrollViewAccessibilityLabel={'Scrollable options'}
+              cancelButtonAccessibilityLabel={'Cancel Button'}
+              onChange={option => setCity(option.label)}>
+              <InputValidator
+                key={'city'}
+                name={'city'}
+                label={'Ville'}
+                value={city}
+                placeholder={'Libreville'}
+              />
+            </ModalSelector>
+
             <Button
-              disabled={loading || !netWorkStatus}
+              disabled={loading || !netWorkStatus || !city}
               secondary
               onPress={(): void => {
                 Keyboard.dismiss();

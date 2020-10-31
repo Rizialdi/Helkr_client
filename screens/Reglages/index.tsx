@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
 import {
-  AsyncStorage,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -218,7 +217,9 @@ export default function Profile({
                         nom.charAt(0) +
                         '.'
                       }
-                      address={address}
+                      address={`${address
+                        ?.charAt(0)
+                        .toUpperCase()}${address?.slice(1)}`}
                       verified={verified}
                       pro={professional}
                       parentAddressCallback={setAddressParent}
