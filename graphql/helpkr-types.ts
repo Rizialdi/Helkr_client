@@ -12,8 +12,8 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
-  JSON: any;
   Json: any;
+  JSON: any;
 };
 
 export type AddJobberTagResponse = {
@@ -56,56 +56,18 @@ export type CandidateToOfferingSuccess = {
   success: Scalars['Boolean'];
 };
 
-export type Channel = {
-  __typename?: 'channel';
+
+export type Demande = {
+  __typename?: 'demande';
   createdAt: Scalars['DateTime'];
   id: Scalars['String'];
-  messages: Array<Message>;
-  users: Array<Utilisateur>;
-};
-
-
-export type ChannelMessagesArgs = {
-  after?: Maybe<MessageWhereUniqueInput>;
-  before?: Maybe<MessageWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type ChannelUsersArgs = {
-  after?: Maybe<UtilisateurWhereUniqueInput>;
-  before?: Maybe<UtilisateurWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-export type ChannelWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-};
-
-export type CreateChannel = {
-  __typename?: 'createChannel';
-  channel: Channel;
-  success: Scalars['Boolean'];
-};
-
-
-
-
-export type Message = {
-  __typename?: 'message';
-  channel?: Maybe<Channel>;
-  channelId?: Maybe<Scalars['String']>;
-  createdAt: Scalars['DateTime'];
-  id: Scalars['String'];
+  message: Scalars['String'];
+  receivedById?: Maybe<Scalars['String']>;
+  sentBy?: Maybe<Utilisateur>;
   sentById?: Maybe<Scalars['String']>;
-  text: Scalars['String'];
 };
 
-export type MessageWhereUniqueInput = {
-  id?: Maybe<Scalars['String']>;
-};
+
 
 export type Moyenne = {
   __typename?: 'moyenne';
@@ -127,8 +89,7 @@ export type Mutation = {
   chooseEventDay: Scalars['Boolean'];
   completeOffering: Scalars['Boolean'];
   createAvis: Scalars['Boolean'];
-  createChannel: CreateChannel;
-  createMessage: Scalars['Boolean'];
+  createDemande: Scalars['Boolean'];
   deleteOffering: Scalars['Boolean'];
   descriptionUpdate: Scalars['Boolean'];
   notificationsTokenUpdate: Scalars['Boolean'];
@@ -207,15 +168,9 @@ export type MutationCreateAvisArgs = {
 };
 
 
-export type MutationCreateChannelArgs = {
+export type MutationCreateDemandeArgs = {
+  message: Scalars['String'];
   recipient: Scalars['String'];
-};
-
-
-export type MutationCreateMessageArgs = {
-  channelId?: Maybe<Scalars['String']>;
-  recipient?: Maybe<Scalars['String']>;
-  text: Scalars['String'];
 };
 
 
@@ -327,13 +282,13 @@ export type PropositionToOffering = {
 
 export type Query = {
   __typename?: 'Query';
-  allChatsAndMessages: Array<Channel>;
   allOfferings: Array<Offering>;
   allUsersToken: Array<Notificationstoken>;
   AUTH_STEP_ONE: Step_One_Response;
   AUTH_STEP_TWO: Step_Two_Response;
-  channel: Channel;
-  channels: Array<Channel>;
+  demandes: Array<Demande>;
+  demandesenvoyees: Array<Demande>;
+  demandesrecues: Array<Demande>;
   getAuthorizedCategories: Authorizedcategories;
   getAvisUser: Array<Avis>;
   getSendVerificationPiecesReferenceIdsAndStatus: Scalars['String'];
@@ -342,7 +297,6 @@ export type Query = {
   getVerificationPieces: Verificationpieces;
   incompleteOfferings: Array<Offering>;
   isCandidateTo: Array<Offering>;
-  messages: Array<Message>;
   myIncompleteOffering: Array<Offering>;
   myIncompleteOfferingWithCandidates: Array<Offering>;
   offeringById: Offering;
@@ -367,11 +321,6 @@ export type QueryAuth_Step_TwoArgs = {
   id: Scalars['String'];
   numero: Scalars['String'];
   token: Scalars['String'];
-};
-
-
-export type QueryChannelArgs = {
-  id: Scalars['String'];
 };
 
 
@@ -461,8 +410,7 @@ export type Step_Two_Response = {
 export type Subscription = {
   __typename?: 'Subscription';
   newAvis: Avis;
-  newChannel: Channel;
-  newMessage: Message;
+  newDemande: Demande;
   onOfferingAdded: Offering;
   updateAppliedTo: UpdateAppliedToType;
   updatedEventDay: UpdateSelectedEventDay;
@@ -474,13 +422,8 @@ export type SubscriptionNewAvisArgs = {
 };
 
 
-export type SubscriptionNewChannelArgs = {
-  userId: Scalars['String'];
-};
-
-
-export type SubscriptionNewMessageArgs = {
-  channelIds: Array<Scalars['String']>;
+export type SubscriptionNewDemandeArgs = {
+  recipientId: Scalars['String'];
 };
 
 
@@ -530,11 +473,9 @@ export type Utilisateur = {
   avatar?: Maybe<Scalars['String']>;
   avisgave: Array<Avis>;
   avisreceived: Array<Avis>;
-  channels: Array<Channel>;
   completedofferings: Array<Offering>;
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  messages: Array<Message>;
   moyenne: Scalars['Int'];
   nom: Scalars['String'];
   numero: Scalars['String'];
@@ -563,25 +504,9 @@ export type UtilisateurAvisreceivedArgs = {
 };
 
 
-export type UtilisateurChannelsArgs = {
-  after?: Maybe<ChannelWhereUniqueInput>;
-  before?: Maybe<ChannelWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
 export type UtilisateurCompletedofferingsArgs = {
   after?: Maybe<OfferingWhereUniqueInput>;
   before?: Maybe<OfferingWhereUniqueInput>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-};
-
-
-export type UtilisateurMessagesArgs = {
-  after?: Maybe<MessageWhereUniqueInput>;
-  before?: Maybe<MessageWhereUniqueInput>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
 };
@@ -642,21 +567,9 @@ export type AvisFragment = (
   ) }
 );
 
-export type ChatFragment = (
-  { __typename?: 'channel' }
-  & Pick<Channel, 'id' | 'createdAt'>
-  & { messages: Array<(
-    { __typename?: 'message' }
-    & MessageFragment
-  )>, users: Array<(
-    { __typename?: 'utilisateur' }
-    & UserFragment
-  )> }
-);
-
-export type MessageFragment = (
-  { __typename?: 'message' }
-  & Pick<Message, 'id' | 'text' | 'createdAt' | 'sentById'>
+export type DemandeFragment = (
+  { __typename?: 'demande' }
+  & Pick<Demande, 'sentById' | 'message' | 'createdAt'>
 );
 
 export type OfferingFragment = (
@@ -736,18 +649,6 @@ export type ChooseEventDayMutationVariables = Exact<{
 export type ChooseEventDayMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'chooseEventDay'>
-);
-
-export type CreateMessageMutationVariables = Exact<{
-  channelId?: Maybe<Scalars['String']>;
-  recipient?: Maybe<Scalars['String']>;
-  text: Scalars['String'];
-}>;
-
-
-export type CreateMessageMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'createMessage'>
 );
 
 export type DeleteOfferingMutationVariables = Exact<{
@@ -854,17 +755,6 @@ export type TagsUpdateMutation = (
   & Pick<Mutation, 'tagsUpdate'>
 );
 
-export type AllChatsAndMessagesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type AllChatsAndMessagesQuery = (
-  { __typename?: 'Query' }
-  & { allChatsAndMessages: Array<(
-    { __typename?: 'channel' }
-    & ChatFragment
-  )> }
-);
-
 export type AuthStepOneQueryVariables = Exact<{
   numero: Scalars['String'];
 }>;
@@ -920,6 +810,21 @@ export type GetAvisUserQuery = (
       { __typename?: 'utilisateur' }
       & ScorerFragment
     ) }
+  )> }
+);
+
+export type DemandesrecuesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DemandesrecuesQuery = (
+  { __typename?: 'Query' }
+  & { demandesrecues: Array<(
+    { __typename?: 'demande' }
+    & { sentBy?: Maybe<(
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'nom' | 'prenom' | 'avatar' | 'numero' | 'address'>
+    )> }
+    & DemandeFragment
   )> }
 );
 
@@ -1091,30 +996,20 @@ export type NewAvisSubscription = (
   ) }
 );
 
-export type NewChannelSubscriptionVariables = Exact<{
-  userId: Scalars['String'];
+export type NewDemandeSubscriptionVariables = Exact<{
+  recipientId: Scalars['String'];
 }>;
 
 
-export type NewChannelSubscription = (
+export type NewDemandeSubscription = (
   { __typename?: 'Subscription' }
-  & { newChannel: (
-    { __typename?: 'channel' }
-    & ChatFragment
-  ) }
-);
-
-export type NewMessageSubscriptionVariables = Exact<{
-  channelIds: Array<Scalars['String']>;
-}>;
-
-
-export type NewMessageSubscription = (
-  { __typename?: 'Subscription' }
-  & { newMessage: (
-    { __typename?: 'message' }
-    & Pick<Message, 'channelId'>
-    & MessageFragment
+  & { newDemande: (
+    { __typename?: 'demande' }
+    & { sentBy?: Maybe<(
+      { __typename?: 'utilisateur' }
+      & Pick<Utilisateur, 'nom' | 'prenom' | 'avatar' | 'numero' | 'address'>
+    )> }
+    & DemandeFragment
   ) }
 );
 
@@ -1180,27 +1075,13 @@ export const AvisFragmentDoc = gql`
   }
 }
     ${UserFragmentDoc}`;
-export const MessageFragmentDoc = gql`
-    fragment message on message {
-  id
-  text
-  createdAt
+export const DemandeFragmentDoc = gql`
+    fragment demande on demande {
   sentById
+  message
+  createdAt
 }
     `;
-export const ChatFragmentDoc = gql`
-    fragment chat on channel {
-  id
-  messages {
-    ...message
-  }
-  createdAt
-  users {
-    ...user
-  }
-}
-    ${MessageFragmentDoc}
-${UserFragmentDoc}`;
 export const OfferingFragmentDoc = gql`
     fragment offering on offering {
   id
@@ -1380,38 +1261,6 @@ export function useChooseEventDayMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type ChooseEventDayMutationHookResult = ReturnType<typeof useChooseEventDayMutation>;
 export type ChooseEventDayMutationResult = ApolloReactCommon.MutationResult<ChooseEventDayMutation>;
 export type ChooseEventDayMutationOptions = ApolloReactCommon.BaseMutationOptions<ChooseEventDayMutation, ChooseEventDayMutationVariables>;
-export const CreateMessageDocument = gql`
-    mutation createMessage($channelId: String, $recipient: String, $text: String!) {
-  createMessage(channelId: $channelId, recipient: $recipient, text: $text)
-}
-    `;
-export type CreateMessageMutationFn = ApolloReactCommon.MutationFunction<CreateMessageMutation, CreateMessageMutationVariables>;
-
-/**
- * __useCreateMessageMutation__
- *
- * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
- *   variables: {
- *      channelId: // value for 'channelId'
- *      recipient: // value for 'recipient'
- *      text: // value for 'text'
- *   },
- * });
- */
-export function useCreateMessageMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateMessageMutation, CreateMessageMutationVariables>) {
-        return ApolloReactHooks.useMutation<CreateMessageMutation, CreateMessageMutationVariables>(CreateMessageDocument, baseOptions);
-      }
-export type CreateMessageMutationHookResult = ReturnType<typeof useCreateMessageMutation>;
-export type CreateMessageMutationResult = ApolloReactCommon.MutationResult<CreateMessageMutation>;
-export type CreateMessageMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateMessageMutation, CreateMessageMutationVariables>;
 export const DeleteOfferingDocument = gql`
     mutation deleteOffering($id: String!) {
   deleteOffering(id: $id)
@@ -1695,38 +1544,6 @@ export function useTagsUpdateMutation(baseOptions?: ApolloReactHooks.MutationHoo
 export type TagsUpdateMutationHookResult = ReturnType<typeof useTagsUpdateMutation>;
 export type TagsUpdateMutationResult = ApolloReactCommon.MutationResult<TagsUpdateMutation>;
 export type TagsUpdateMutationOptions = ApolloReactCommon.BaseMutationOptions<TagsUpdateMutation, TagsUpdateMutationVariables>;
-export const AllChatsAndMessagesDocument = gql`
-    query allChatsAndMessages {
-  allChatsAndMessages {
-    ...chat
-  }
-}
-    ${ChatFragmentDoc}`;
-
-/**
- * __useAllChatsAndMessagesQuery__
- *
- * To run a query within a React component, call `useAllChatsAndMessagesQuery` and pass it any options that fit your needs.
- * When your component renders, `useAllChatsAndMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useAllChatsAndMessagesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useAllChatsAndMessagesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>) {
-        return ApolloReactHooks.useQuery<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>(AllChatsAndMessagesDocument, baseOptions);
-      }
-export function useAllChatsAndMessagesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>) {
-          return ApolloReactHooks.useLazyQuery<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>(AllChatsAndMessagesDocument, baseOptions);
-        }
-export type AllChatsAndMessagesQueryHookResult = ReturnType<typeof useAllChatsAndMessagesQuery>;
-export type AllChatsAndMessagesLazyQueryHookResult = ReturnType<typeof useAllChatsAndMessagesLazyQuery>;
-export type AllChatsAndMessagesQueryResult = ApolloReactCommon.QueryResult<AllChatsAndMessagesQuery, AllChatsAndMessagesQueryVariables>;
 export const AuthStepOneDocument = gql`
     query authStepOne($numero: String!) {
   AUTH_STEP_ONE(numero: $numero) {
@@ -1872,6 +1689,45 @@ export function useGetAvisUserLazyQuery(baseOptions?: ApolloReactHooks.LazyQuery
 export type GetAvisUserQueryHookResult = ReturnType<typeof useGetAvisUserQuery>;
 export type GetAvisUserLazyQueryHookResult = ReturnType<typeof useGetAvisUserLazyQuery>;
 export type GetAvisUserQueryResult = ApolloReactCommon.QueryResult<GetAvisUserQuery, GetAvisUserQueryVariables>;
+export const DemandesrecuesDocument = gql`
+    query demandesrecues {
+  demandesrecues {
+    ...demande
+    sentBy {
+      nom
+      prenom
+      avatar
+      numero
+      address
+    }
+  }
+}
+    ${DemandeFragmentDoc}`;
+
+/**
+ * __useDemandesrecuesQuery__
+ *
+ * To run a query within a React component, call `useDemandesrecuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDemandesrecuesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDemandesrecuesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDemandesrecuesQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<DemandesrecuesQuery, DemandesrecuesQueryVariables>) {
+        return ApolloReactHooks.useQuery<DemandesrecuesQuery, DemandesrecuesQueryVariables>(DemandesrecuesDocument, baseOptions);
+      }
+export function useDemandesrecuesLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<DemandesrecuesQuery, DemandesrecuesQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<DemandesrecuesQuery, DemandesrecuesQueryVariables>(DemandesrecuesDocument, baseOptions);
+        }
+export type DemandesrecuesQueryHookResult = ReturnType<typeof useDemandesrecuesQuery>;
+export type DemandesrecuesLazyQueryHookResult = ReturnType<typeof useDemandesrecuesLazyQuery>;
+export type DemandesrecuesQueryResult = ApolloReactCommon.QueryResult<DemandesrecuesQuery, DemandesrecuesQueryVariables>;
 export const GetSendVerificationPiecesReferenceIdsAndStatusDocument = gql`
     query getSendVerificationPiecesReferenceIdsAndStatus($id: String!) {
   getSendVerificationPiecesReferenceIdsAndStatus(id: $id)
@@ -2303,65 +2159,42 @@ export function useNewAvisSubscription(baseOptions?: ApolloReactHooks.Subscripti
       }
 export type NewAvisSubscriptionHookResult = ReturnType<typeof useNewAvisSubscription>;
 export type NewAvisSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewAvisSubscription>;
-export const NewChannelDocument = gql`
-    subscription newChannel($userId: String!) {
-  newChannel(userId: $userId) {
-    ...chat
+export const NewDemandeDocument = gql`
+    subscription NewDemande($recipientId: String!) {
+  newDemande(recipientId: $recipientId) {
+    ...demande
+    sentBy {
+      nom
+      prenom
+      avatar
+      numero
+      address
+    }
   }
 }
-    ${ChatFragmentDoc}`;
+    ${DemandeFragmentDoc}`;
 
 /**
- * __useNewChannelSubscription__
+ * __useNewDemandeSubscription__
  *
- * To run a query within a React component, call `useNewChannelSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewChannelSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useNewDemandeSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewDemandeSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useNewChannelSubscription({
+ * const { data, loading, error } = useNewDemandeSubscription({
  *   variables: {
- *      userId: // value for 'userId'
+ *      recipientId: // value for 'recipientId'
  *   },
  * });
  */
-export function useNewChannelSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<NewChannelSubscription, NewChannelSubscriptionVariables>) {
-        return ApolloReactHooks.useSubscription<NewChannelSubscription, NewChannelSubscriptionVariables>(NewChannelDocument, baseOptions);
+export function useNewDemandeSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<NewDemandeSubscription, NewDemandeSubscriptionVariables>) {
+        return ApolloReactHooks.useSubscription<NewDemandeSubscription, NewDemandeSubscriptionVariables>(NewDemandeDocument, baseOptions);
       }
-export type NewChannelSubscriptionHookResult = ReturnType<typeof useNewChannelSubscription>;
-export type NewChannelSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewChannelSubscription>;
-export const NewMessageDocument = gql`
-    subscription NewMessage($channelIds: [String!]!) {
-  newMessage(channelIds: $channelIds) {
-    ...message
-    channelId
-  }
-}
-    ${MessageFragmentDoc}`;
-
-/**
- * __useNewMessageSubscription__
- *
- * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNewMessageSubscription({
- *   variables: {
- *      channelIds: // value for 'channelIds'
- *   },
- * });
- */
-export function useNewMessageSubscription(baseOptions?: ApolloReactHooks.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
-        return ApolloReactHooks.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, baseOptions);
-      }
-export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
-export type NewMessageSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewMessageSubscription>;
+export type NewDemandeSubscriptionHookResult = ReturnType<typeof useNewDemandeSubscription>;
+export type NewDemandeSubscriptionResult = ApolloReactCommon.SubscriptionResult<NewDemandeSubscription>;
 export const OnOfferingAddedDocument = gql`
     subscription onOfferingAdded($tags: [String!]!) {
   onOfferingAdded(tags: $tags) {

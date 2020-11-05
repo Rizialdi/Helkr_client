@@ -1,13 +1,5 @@
 import React, { SFC } from 'react';
-import {
-  StyleSheet,
-  View,
-  Animated,
-  StyleProp,
-  ViewStyle,
-  TouchableOpacity,
-  Keyboard
-} from 'react-native';
+import { StyleSheet, View, Animated, StyleProp, ViewStyle } from 'react-native';
 import { useStoreState } from '../../models';
 import { MargInterface, PaddinInterface } from './Interface';
 import { theme } from '../../constants';

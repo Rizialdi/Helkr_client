@@ -1,7 +1,6 @@
 import React, { SFC, useState } from 'react';
 import {
   ScrollView,
-  ActivityIndicator,
   KeyboardAvoidingView,
   StyleSheet,
   View

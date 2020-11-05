@@ -1,11 +1,23 @@
-import React, { FC } from 'react';
-import { Layout, Block, Text } from '../sharedComponents';
-import { FlatList } from 'react-native';
-import { makePseudoName } from '../../utils';
+import React, { useEffect } from 'react';
+import {
+  Layout,
+  Block,
+  Text,
+  DemandesLoadingIndicator,
+  Button,
+  StackedToBottom
+} from '../sharedComponents';
+import { FlatList, View } from 'react-native';
+import { makePseudoName, sortDemandes } from '../../utils';
 import { theme } from '../../constants';
 import Item from './components/Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EmptyQueryBox } from '../../assets/icons';
+import { useStoreState } from '../../models/index';
+import {
+  useDemandesrecuesQuery,
+  useNewDemandeSubscription
+} from '../../graphql';
 import {
   StackNavigationInterface,
   DemandesParamsList
@@ -14,44 +26,85 @@ import {
 const Demandes = ({
   navigation
 }: StackNavigationInterface<DemandesParamsList, 'Demandes'>) => {
-  const data = [
-    {
-      name: 'Stat',
-      surname: 'Remi',
-      messageText: 'Statis',
-      messageDate: '2020-09-20'
-    },
-    {
-      name: 'Di',
-      surname: 'bnoi',
-      messageText: 'Statis',
-      messageDate: '2020-10-20'
-    }
-  ];
+  const { data, loading, called, client, refetch } = useDemandesrecuesQuery({
+    fetchPolicy: 'cache-and-network'
+  });
+
+  const {
+    user: { id: userId }
+  } = useStoreState(state => state.User);
+
+  const {
+    loading: loadingNewDemande,
+    data: dataNewDemande
+  } = useNewDemandeSubscription({
+    fetchPolicy: 'network-only',
+    variables: { recipientId: userId || '' }
+  });
+
+  useEffect(() => {
+    dataNewDemande && demandes?.demandesrecues.length
+      ? setDemandes({
+          ...demandes,
+          demandesrecues: [
+            ...demandes?.demandesrecues,
+            dataNewDemande.newDemande
+          ]
+        })
+      : dataNewDemande &&
+        !demandes?.demandesrecues.length &&
+        setDemandes({
+          ...demandes,
+          demandesrecues: [dataNewDemande.newDemande]
+        });
+  }, [dataNewDemande]);
+
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
+  const [demandes, setDemandes] = React.useState<typeof data | null>(null);
+
+  const onRefresh = React.useCallback(() => {
+    !refreshing && setRefreshing(true);
+    client.reFetchObservableQueries().then(() => setRefreshing(false));
+  }, [refreshing, client]);
+
+  React.useEffect(() => {
+    setDemandes(data);
+  }, [data]);
+
   return (
     <Layout title={'Demandes'}>
-      <Block flex={false}>
-        {data ? (
+      <Block flex={false} margin={[theme.sizes.inouting / 2, 0]}>
+        {(loading || loadingNewDemande) && !demandes?.demandesrecues.length ? (
+          <DemandesLoadingIndicator />
+        ) : called && !!demandes?.demandesrecues.length ? (
           <FlatList
-            data={data}
+            data={sortDemandes(demandes?.demandesrecues)}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            style={{
+              height: (theme.sizes.screenHeight * 4) / 5
+            }}
+            pagingEnabled={true}
+            alwaysBounceVertical={true}
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('QueryDetails', { id: '1' })
+                    navigation.navigate('QueryDetails', { item: item })
                   }>
                   <Item
-                    name={makePseudoName(item.name, item.surname)}
-                    messageText={item?.messageText}
-                    messageDate={item.messageDate}
-                    image={
-                      'https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Famour.2Fcoaching-amoureux.2Fcest-quoi-belle-femme-temoignages-43206.2F14682626-1-fre-FR.2Fc-est-quoi-une-belle-femme-temoignages.2Ejpg/1200x900/quality/80/crop-from/center/c-est-quoi-une-belle-femme-temoignages.jpeg'
-                    }
+                    name={makePseudoName(
+                      item.sentBy?.nom as string,
+                      item.sentBy?.prenom as string
+                    )}
+                    messageText={item?.message}
+                    messageDate={item.createdAt}
+                    image={item?.sentBy?.avatar}
                   />
                 </TouchableOpacity>
               );
             }}
-            keyExtractor={item => item.name}
+            keyExtractor={item => `${item.createdAt} - ${item.sentBy?.prenom}`}
           />
         ) : (
           <Block flex={false}>
@@ -61,8 +114,23 @@ const Demandes = ({
               numberOfLines={1}>
               Vous n'avez aucune demande actuellement.
             </Text>
-            <Block center padding={[theme.sizes.screenHeight / 7, 0]}>
+            <Block
+              flex={false}
+              center
+              padding={[theme.sizes.screenHeight / 7, 0]}>
               <EmptyQueryBox />
+
+              <StackedToBottom>
+                <View style={{ paddingHorizontal: theme.sizes.hinouting }}>
+                  <TouchableOpacity onPress={() => refetch()}>
+                    <Button secondary>
+                      <Text center bold>
+                        Refraichir
+                      </Text>
+                    </Button>
+                  </TouchableOpacity>
+                </View>
+              </StackedToBottom>
             </Block>
           </Block>
         )}

@@ -22,10 +22,10 @@ import OfferingLoadingIndicator from './OfferingLoadingIndicator';
 import StatsContainer from './StatsContainer';
 import AvgContainer from './AvgContainer';
 import InputValidator from '../SignIn/components/InputValidator';
+import DemandesLoadingIndicator from './DemandesLoadingIndicator';
 
 export {
   Layout,
-  LayoutProps,
   Text,
   Input,
   Block,
@@ -34,6 +34,7 @@ export {
   Button,
   TagItem,
   Calendar,
+  LayoutProps,
   DataContent,
   TextAreaInput,
   CandidateCard,
@@ -45,6 +46,7 @@ export {
   SelectedCandidateCard,
   OfferingDetailsOnModal,
   OfferingLoadingIndicator,
+  DemandesLoadingIndicator,
   TextAreaInputValidator,
   StackedToBottom,
   ImageComponent,

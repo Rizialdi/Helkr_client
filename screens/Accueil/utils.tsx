@@ -43,7 +43,8 @@ type screenToRedirect =
   | 'Mes Offres'
   | 'Offres'
   | 'Discussions'
-  | 'Reload';
+  | 'Reload'
+  | 'Demandes';
 
 export interface Payload {
   screenToRedirect: screenToRedirect;
@@ -68,8 +69,8 @@ export const navigationOnNotification = (
     case 'Offres':
       navigation.navigation.navigate('Postuler', { tab });
       break;
-    case 'Discussions':
-      navigation.navigation.navigate('Discussions');
+    case 'Demandes':
+      navigation.navigation.navigate('Demandes');
       break;
     case 'Reload':
       Updates.reload();

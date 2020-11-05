@@ -1,10 +1,9 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  fragment message on message {
-    id
-    text
-    createdAt
+  fragment demande on demande {
     sentById
+    message
+    createdAt
   }
 `;

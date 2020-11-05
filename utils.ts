@@ -2,21 +2,14 @@ import * as Linking from 'expo-linking';
 import { Alert } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import * as Permissions from 'expo-permissions';
-import { User } from 'react-native-gifted-chat';
-
-import { chatMessagesContextInterface } from './models/ChatMessages';
-import {
-  ChatFragment,
-  Utilisateur,
-  Message,
-  Offering
-} from './graphql/helpkr-types';
+import { Offering } from './graphql/helpkr-types';
 
 // media Utils
 
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
 import { CategoryInterface } from './screens/Accueil/components/Interfaces';
+import { queryDetailsItem } from './navigation/Routes';
 
 export const yearMonths: string[] = [
   'janvier',
@@ -52,14 +45,6 @@ export const formatDate = (
   const days = Math.floor(difference / 86400);
   // Calculate the number of months
   const mois = Math.floor(days / 30);
-  // After deducting the days calculate the number of hours
-  const hours = Math.floor((difference - days * 86400) / 3600);
-  // After days and hours , how many minutes are passed
-  const minutes = Math.floor((difference - days * 86400 - hours * 3600) / 60);
-  // Finally how many seconds left after removing days, hours and minutes.
-  const secs = Math.floor(
-    difference - days * 86400 - hours * 3600 - minutes * 60
-  );
 
   const elapsedTime =
     days > 30
@@ -113,69 +98,16 @@ export const inputSanitization = (text: string) =>
 export const getFileName = (chaine: string) =>
   String(chaine).split('/')[String(chaine).split('/').length - 1];
 
-interface IDictionary<TValue> {
-  [id: string]: TValue;
-}
-
-export const formattingTextMessages = (channel: ChatFragment) => {
-  const users: IDictionary<User> = {};
-
-  channel.users.map(user => {
-    users[user.id] = {
-      _id: user.id,
-      name: makePseudoName(user.nom, user.prenom),
-      avatar: user.avatar || require('./assets/images/defaultUserImage.png')
-    };
-  });
-
-  const newMessages = channel.messages.map(message => {
-    const { id: _id, text, createdAt, sentById } = message;
-    return { _id, text, createdAt, user: users[sentById as string] };
-  });
-
-  return newMessages;
-};
-
-export const storeLastMessageReadIds = async (
-  array: chatMessagesContextInterface[]
-) => {
-  (async () => {
-    try {
-      await AsyncStorage.setItem('lastMessageReadIds', JSON.stringify(array));
-    } catch (error) {
-      throw new Error('lastMessageReadIds storage failed');
-    }
-  })();
-};
-
-type chatAndMessagesArray = {
-  channelId: string;
-  userFiltered: {
-    __typename?: 'utilisateur' | undefined;
-  } & {
-    __typename?: 'utilisateur' | undefined;
-  } & Pick<Utilisateur, 'id' | 'prenom' | 'nom' | 'avatar'>;
-  lastMessage: {
-    __typename?: 'message' | undefined;
-  } & {
-    __typename?: 'message' | undefined;
-  } & Pick<Message, 'text' | 'id' | 'createdAt' | 'sentById'>;
-  unReadMessageCount: number | null;
-}[];
-
-export const sortChatMessages = (
-  array: chatAndMessagesArray
-): chatAndMessagesArray => {
-  const sortedChatMessages = array.sort(
-    (a, b) =>
-      new Date(b.lastMessage.createdAt).getTime() -
-      new Date(a.lastMessage.createdAt).getTime()
+export const sortDemandes = (
+  array: Array<queryDetailsItem>
+): Array<queryDetailsItem> => {
+  const sortedDemandes = array.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
-
-  return sortedChatMessages;
+  return sortedDemandes;
 };
 
-export const capitalize = (str: string) => {
+export const capitalize = (str: string | null) => {
   if (typeof str !== 'string') return '';
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
@@ -190,7 +122,7 @@ export const getPermissionAsync = async (
     Permissions.NOTIFICATIONS != permission &&
       Alert.alert(
         'Action impossible 😞',
-        `Si vous voulez utiliser cette fonctionnailté, vous devrez permettre l'activation de ${permissionName} dans les réglages de votre téléphone.`,
+        `Si vous voulez utiliser cette fonctionnalité, vous devrez permettre l'activation de ${permissionName} dans les réglages de votre téléphone.`,
         [
           {
             text: 'Allons Y',

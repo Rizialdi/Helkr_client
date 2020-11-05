@@ -7,6 +7,7 @@ export { default as authStepOne } from './authStepOne.query';
 export { default as authStepTwo } from './authStepTwo.query';
 export { default as userStats } from './getUserStats.query';
 export { default as isCandidateTo } from './isCandidateTo.query';
+export { default as demanderecues } from './demanderecues.queries';
 export { default as incompleteOfferings } from './incompleteOfferings.query';
 export { default as myIncompleteOffering } from './myIncompleteOffering.query';
 export { default as myIncompleteOfferingWithCandidates } from './myIncompleteOfferingWithCandidates.query';

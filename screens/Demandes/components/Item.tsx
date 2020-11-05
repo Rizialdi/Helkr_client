@@ -6,14 +6,25 @@ import { theme } from '../../../constants';
 
 interface ItemProps {
   name: string;
-  messageText: string;
+  messageText?: string;
+  address?: string;
+  queryDetail?: boolean;
   messageDate: string;
-  image: string;
+  image: string | null | undefined;
 }
-const Item = ({ name, messageText, messageDate, image }: ItemProps) => {
+const Item = ({
+  name,
+  messageText,
+  messageDate,
+  image,
+  queryDetail,
+  address
+}: ItemProps) => {
   return (
     <>
-      <TouchableOpacity style={styles.item} onPress={() => {}}>
+      <TouchableOpacity
+        style={[styles.item, queryDetail && { borderBottomColor: '#fff' }]}
+        onPress={() => {}}>
         <View style={{ flex: 0.22 }}>
           <TouchableOpacity
             style={{
@@ -39,9 +50,15 @@ const Item = ({ name, messageText, messageDate, image }: ItemProps) => {
                 <Text h2>{name}</Text>
               </View>
               <View>
-                <Text medium gray2={false} numberOfLines={1}>
-                  {messageText}
-                </Text>
+                {!queryDetail ? (
+                  <Text medium gray2={false} numberOfLines={1}>
+                    {messageText}
+                  </Text>
+                ) : (
+                  <Text medium gray2={false}>
+                    {address}
+                  </Text>
+                )}
               </View>
             </View>
           </View>

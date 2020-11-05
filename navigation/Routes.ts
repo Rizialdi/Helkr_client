@@ -1,6 +1,7 @@
 import { ParamListBase, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CategoryInterface } from '../screens/Accueil/components/Interfaces';
+import { Utilisateur, Demande } from '../graphql/helpkr-types';
 
 type Tab = 'tabOne' | 'tabTwo';
 export type BottomStackParamList = {
@@ -62,5 +63,16 @@ export type DetailOfferingParamsList = {
 
 export type DemandesParamsList = {
   Demandes: undefined;
-  QueryDetails: { id: string };
+  QueryDetails: {
+    item: queryDetailsItem;
+  };
 };
+
+export type queryDetailsItem = { __typename?: 'demande' | undefined } & {
+  sentBy?:
+    | ({
+        __typename?: 'utilisateur' | undefined;
+      } & Pick<Utilisateur, 'nom' | 'prenom' | 'avatar' | 'numero' | 'address'>)
+    | null
+    | undefined;
+} & Pick<Demande, 'message' | 'createdAt' | 'sentById'>;
