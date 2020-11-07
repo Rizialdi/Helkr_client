@@ -7,21 +7,28 @@ import {
   Button,
   StackedToBottom
 } from '../sharedComponents';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, StyleSheet } from 'react-native';
 import { makePseudoName, sortDemandes } from '../../utils';
 import { theme } from '../../constants';
 import Item from './components/Item';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { EmptyQueryBox } from '../../assets/icons';
+
+import { MenuProvider } from 'react-native-popup-menu';
+
 import { useStoreState } from '../../models/index';
 import {
   useDemandesrecuesQuery,
-  useNewDemandeSubscription
+  useNewDemandeSubscription,
+  DemandesrecuesDocument,
+  DemandesrecuesQuery
 } from '../../graphql';
 import {
   StackNavigationInterface,
   DemandesParamsList
 } from '../../navigation/Routes';
+import { cache } from '../../ApolloClient';
+import { NewDemandeSubscription } from '../../graphql/helpkr-types';
 
 const Demandes = ({
   navigation
@@ -34,15 +41,14 @@ const Demandes = ({
     user: { id: userId }
   } = useStoreState(state => state.User);
 
-  const {
-    loading: loadingNewDemande,
-    data: dataNewDemande
-  } = useNewDemandeSubscription({
+  const { data: dataNewDemande } = useNewDemandeSubscription({
     fetchPolicy: 'network-only',
     variables: { recipientId: userId || '' }
   });
 
   useEffect(() => {
+    dataNewDemande && _update(dataNewDemande);
+
     dataNewDemande && demandes?.demandesrecues.length
       ? setDemandes({
           ...demandes,
@@ -71,27 +77,45 @@ const Demandes = ({
     setDemandes(data);
   }, [data]);
 
+  const _update = async (newDemande: NewDemandeSubscription): Promise<void> => {
+    const cachedDemandes = cache.readQuery({
+      query: DemandesrecuesDocument
+    }) as DemandesrecuesQuery | undefined;
+
+    const newCachedDemandes = cachedDemandes?.demandesrecues.length
+      ? [...cachedDemandes.demandesrecues, newDemande.newDemande]
+      : [newDemande.newDemande];
+
+    cache.writeQuery({
+      query: DemandesrecuesDocument,
+      data: { ...cachedDemandes, demandesrecues: newCachedDemandes }
+    });
+  };
+
   return (
-    <Layout title={'Demandes'}>
-      <Block flex={false} margin={[theme.sizes.inouting / 2, 0]}>
-        {(loading || loadingNewDemande) && !demandes?.demandesrecues.length ? (
+    <Layout title="Demandes">
+      <View style={{ flex: 1 }}>
+        {loading && !demandes?.demandesrecues.length ? (
           <DemandesLoadingIndicator />
         ) : called && !!demandes?.demandesrecues.length ? (
-          <FlatList
-            data={sortDemandes(demandes?.demandesrecues)}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
+          <View
             style={{
-              height: (theme.sizes.screenHeight * 4) / 5
-            }}
-            pagingEnabled={true}
-            alwaysBounceVertical={true}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('QueryDetails', { item: item })
-                  }>
+              flex: 1
+            }}>
+            <MenuProvider style={styles.container}>
+              <FlatList
+                data={demandes ? sortDemandes(demandes?.demandesrecues) : []}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                style={{
+                  height: (theme.sizes.screenHeight * 4) / 5
+                }}
+                pagingEnabled={true}
+                alwaysBounceVertical={true}
+                keyExtractor={item =>
+                  `${item.createdAt} - ${item.sentBy?.prenom}`
+                }
+                renderItem={({ item }) => (
                   <Item
                     name={makePseudoName(
                       item.sentBy?.nom as string,
@@ -100,12 +124,13 @@ const Demandes = ({
                     messageText={item?.message}
                     messageDate={item.createdAt}
                     image={item?.sentBy?.avatar}
+                    item={item}
+                    navigation={navigation}
                   />
-                </TouchableOpacity>
-              );
-            }}
-            keyExtractor={item => `${item.createdAt} - ${item.sentBy?.prenom}`}
-          />
+                )}
+              />
+            </MenuProvider>
+          </View>
         ) : (
           <Block flex={false}>
             <Text
@@ -134,9 +159,15 @@ const Demandes = ({
             </Block>
           </Block>
         )}
-      </Block>
+      </View>
     </Layout>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
 
 export default Demandes;

@@ -41,8 +41,6 @@ const RegisterUsername = ({
 
   const numero = route.params.phoneNumberToVerify;
 
-  console.log('bbb', city);
-
   const onSubmitName = (formData: FormData): void => {
     const { nom, prenom } = formData;
     numero &&

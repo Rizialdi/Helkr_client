@@ -75,4 +75,4 @@ export type queryDetailsItem = { __typename?: 'demande' | undefined } & {
       } & Pick<Utilisateur, 'nom' | 'prenom' | 'avatar' | 'numero' | 'address'>)
     | null
     | undefined;
-} & Pick<Demande, 'message' | 'createdAt' | 'sentById'>;
+} & Pick<Demande, 'message' | 'createdAt' | 'sentById' | 'id'>;

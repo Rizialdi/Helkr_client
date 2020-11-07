@@ -90,6 +90,7 @@ export type Mutation = {
   completeOffering: Scalars['Boolean'];
   createAvis: Scalars['Boolean'];
   createDemande: Scalars['Boolean'];
+  deleteDemande: Scalars['Boolean'];
   deleteOffering: Scalars['Boolean'];
   descriptionUpdate: Scalars['Boolean'];
   notificationsTokenUpdate: Scalars['Boolean'];
@@ -171,6 +172,11 @@ export type MutationCreateAvisArgs = {
 export type MutationCreateDemandeArgs = {
   message: Scalars['String'];
   recipient: Scalars['String'];
+};
+
+
+export type MutationDeleteDemandeArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -569,7 +575,7 @@ export type AvisFragment = (
 
 export type DemandeFragment = (
   { __typename?: 'demande' }
-  & Pick<Demande, 'sentById' | 'message' | 'createdAt'>
+  & Pick<Demande, 'id' | 'sentById' | 'message' | 'createdAt'>
 );
 
 export type OfferingFragment = (
@@ -649,6 +655,16 @@ export type ChooseEventDayMutationVariables = Exact<{
 export type ChooseEventDayMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'chooseEventDay'>
+);
+
+export type DeleteDemandeMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteDemandeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteDemande'>
 );
 
 export type DeleteOfferingMutationVariables = Exact<{
@@ -1077,6 +1093,7 @@ export const AvisFragmentDoc = gql`
     ${UserFragmentDoc}`;
 export const DemandeFragmentDoc = gql`
     fragment demande on demande {
+  id
   sentById
   message
   createdAt
@@ -1261,6 +1278,36 @@ export function useChooseEventDayMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type ChooseEventDayMutationHookResult = ReturnType<typeof useChooseEventDayMutation>;
 export type ChooseEventDayMutationResult = ApolloReactCommon.MutationResult<ChooseEventDayMutation>;
 export type ChooseEventDayMutationOptions = ApolloReactCommon.BaseMutationOptions<ChooseEventDayMutation, ChooseEventDayMutationVariables>;
+export const DeleteDemandeDocument = gql`
+    mutation deleteDemande($id: String!) {
+  deleteDemande(id: $id)
+}
+    `;
+export type DeleteDemandeMutationFn = ApolloReactCommon.MutationFunction<DeleteDemandeMutation, DeleteDemandeMutationVariables>;
+
+/**
+ * __useDeleteDemandeMutation__
+ *
+ * To run a mutation, you first call `useDeleteDemandeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDemandeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDemandeMutation, { data, loading, error }] = useDeleteDemandeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteDemandeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteDemandeMutation, DeleteDemandeMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteDemandeMutation, DeleteDemandeMutationVariables>(DeleteDemandeDocument, baseOptions);
+      }
+export type DeleteDemandeMutationHookResult = ReturnType<typeof useDeleteDemandeMutation>;
+export type DeleteDemandeMutationResult = ApolloReactCommon.MutationResult<DeleteDemandeMutation>;
+export type DeleteDemandeMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteDemandeMutation, DeleteDemandeMutationVariables>;
 export const DeleteOfferingDocument = gql`
     mutation deleteOffering($id: String!) {
   deleteOffering(id: $id)

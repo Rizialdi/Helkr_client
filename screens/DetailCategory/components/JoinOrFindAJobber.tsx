@@ -32,6 +32,8 @@ const JoinOrFindAJobber = ({
   const { setTags } = useStoreActions(action => action.Offering);
 
   const _update = async (cache: DataProxy): Promise<void> => {
+    if (tags.length >= 4) return;
+
     const newTags = [...new Set([...tags, referenceId])];
     setTags(newTags);
 

@@ -55,7 +55,7 @@ const Layout: SFC<LayoutProps> = ({
         </Block>
       )}
       <StatusBar style="dark" translucent={true} animated={true} />
-      <KeyboardAvoidingView enabled={true} behavior="height">
+      <View style={{ flex: 1 }}>
         {!!title && (
           <View style={styles.subContainer}>
             <>
@@ -82,8 +82,8 @@ const Layout: SFC<LayoutProps> = ({
             </>
           </View>
         )}
-        <View>{children}</View>
-      </KeyboardAvoidingView>
+        <View style={{ flex: 1 }}>{children}</View>
+      </View>
     </SafeAreaView>
   );
 };
