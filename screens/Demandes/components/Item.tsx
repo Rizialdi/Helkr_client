@@ -48,9 +48,7 @@ const Item = ({
     }) as DemandesrecuesQuery | undefined;
     if (cachedDemandes?.demandesrecues.length) {
       const newCachedDemandes = cachedDemandes.demandesrecues.filter(
-        cachedItem => {
-          return cachedItem.id !== item?.id;
-        }
+        cachedItem => cachedItem.id !== item?.id
       );
 
       cache.writeQuery({

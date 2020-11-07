@@ -1,7 +1,8 @@
 import React from 'react';
-import { Octicons } from '@expo/vector-icons';
+import { Octicons, AntDesign } from '@expo/vector-icons';
 import { useStoreState } from '../../../models';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Share, Alert } from 'react-native';
+import { makeUrl } from 'expo-linking';
 import { theme } from '../../../constants';
 import { Text, ImageComponent } from '../../sharedComponents';
 
@@ -11,6 +12,7 @@ interface Props {
   address?: string | null;
   verified?: boolean;
   pro?: boolean;
+  selfUserId?: string;
 }
 
 export default ({
@@ -18,9 +20,24 @@ export default ({
   username,
   address,
   verified = false,
-  pro = false
+  pro = false,
+  selfUserId
 }: Props) => {
   const { themeColors } = useStoreState(state => state.Preferences);
+
+  const shareProfile = async () => {
+    try {
+      await Share.share({
+        message: `Venez visiter mon profil sur Helkr. N'hesitez pas à me faire une demande de services.\n${makeUrl(
+          `profile/${selfUserId}`
+        )}`,
+        title: 'Partage de profil.'
+      });
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
+
   return (
     <>
       <View style={{ alignSelf: 'center' }}>
@@ -28,7 +45,11 @@ export default ({
           <ImageComponent {...{ image }} style={styles.image} />
         </TouchableOpacity>
         {verified && (
-          <View style={[styles.dm, { backgroundColor: themeColors.secondary }]}>
+          <View
+            style={[
+              styles.verified,
+              { backgroundColor: themeColors.secondary }
+            ]}>
             <Octicons
               name="verified"
               size={theme.sizes.twiceTen * 0.9}
@@ -39,7 +60,7 @@ export default ({
         {pro && (
           <View
             style={[
-              styles.verified,
+              styles.briefcase,
               { backgroundColor: themeColors.secondary }
             ]}>
             <Octicons
@@ -48,6 +69,11 @@ export default ({
               color={themeColors.background}
             />
           </View>
+        )}
+        {!!selfUserId && (
+          <TouchableOpacity style={styles.share} onPress={shareProfile}>
+            <AntDesign name="upload" size={24} color="black" />
+          </TouchableOpacity>
         )}
       </View>
       <View style={styles.infoContainer}>
@@ -73,7 +99,7 @@ const styles = StyleSheet.create({
     color: '#52575D'
   },
 
-  dm: {
+  verified: {
     position: 'absolute',
     top: theme.sizes.hinouting * 0.8,
     width: theme.sizes.inouting * 2,
@@ -87,7 +113,7 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
-  verified: {
+  briefcase: {
     position: 'absolute',
     bottom: 0,
     right: 0,
@@ -102,5 +128,10 @@ const styles = StyleSheet.create({
     height: theme.sizes.hinouting * 7.2,
     borderRadius: theme.sizes.radius * 50,
     overflow: 'hidden'
+  },
+  share: {
+    position: 'absolute',
+    bottom: theme.sizes.twiceTen * 3.5,
+    right: -theme.sizes.htwiceTen * 4.2
   }
 });

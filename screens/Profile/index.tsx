@@ -78,6 +78,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
               address={address}
               verified={verified}
               pro={professional}
+              selfUserId={params?.id ? '' : user.id}
             />
             <StatsContainer id={id} navigation={navigation} />
             <View style={styles.delimiter}></View>

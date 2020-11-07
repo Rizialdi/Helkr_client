@@ -29,7 +29,8 @@
 		"ios": {
 			"supportsTablet": false,
 			"usesIcloudStorage": true,
-			"requireFullScreen": true,
-		}
+			"requireFullScreen": true
+		},
+		"scheme": "helkrapp"
 	}
 }

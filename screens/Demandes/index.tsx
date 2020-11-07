@@ -21,14 +21,14 @@ import {
   useDemandesrecuesQuery,
   useNewDemandeSubscription,
   DemandesrecuesDocument,
-  DemandesrecuesQuery
+  DemandesrecuesQuery,
+  NewDemandeSubscription
 } from '../../graphql';
 import {
   StackNavigationInterface,
   DemandesParamsList
 } from '../../navigation/Routes';
 import { cache } from '../../ApolloClient';
-import { NewDemandeSubscription } from '../../graphql/helpkr-types';
 
 const Demandes = ({
   navigation
