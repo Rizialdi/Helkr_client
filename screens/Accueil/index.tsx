@@ -147,7 +147,7 @@ const Accueil = (
             <ModalItemInfos
               information={'Bienvenue'}
               description={
-                'Nous sommes heureux de vous compter dans nos rangs. Helkr existe pour vous aider afin que vous puissez faire de même. Merci.'
+                'Nous sommes heureux de vous compter dans nos rangs. Helkr existe pour vous aider afin que vous puissiez en faire de même. Merci.'
               }
               timer={1}
             />

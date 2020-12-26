@@ -150,7 +150,7 @@ const Demandes = ({
                   <TouchableOpacity onPress={() => refetch()}>
                     <Button secondary>
                       <Text center bold>
-                        Refraichir
+                        Actualiser
                       </Text>
                     </Button>
                   </TouchableOpacity>

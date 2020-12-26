@@ -64,18 +64,8 @@ const JoinOrFindAJobber = ({
   return (
     <Block padding={[20, 20]} middle white>
       <Text center vertical={[20, 20]}>
-        Voulez-vous devenir prestataire pour cette catégorie ?
+        Recherchez-vous un prestataire pour cette catégorie ?
       </Text>
-      <Button
-        secondary
-        disabled={loading}
-        onPress={(): Promise<ExecutionResult<TagsAddJobberMutation>> =>
-          addTagMutation({ variables: { tag: referenceId } })
-        }>
-        <Text center bold>
-          Oui, je propose mes services
-        </Text>
-      </Button>
 
       <Button
         secondary
@@ -86,9 +76,21 @@ const JoinOrFindAJobber = ({
           })
         }>
         <Text center bold>
-          Non, je cherche un prestataire
+          Oui, je recherche un prestataire
         </Text>
       </Button>
+
+      <Button
+        secondary
+        disabled={loading}
+        onPress={(): Promise<ExecutionResult<TagsAddJobberMutation>> =>
+          addTagMutation({ variables: { tag: referenceId } })
+        }>
+        <Text center bold>
+          Non, je propose mes services
+        </Text>
+      </Button>
+
       {loading && <ActivityIndicator size={'large'} />}
       {error && (
         <ModalItemInfos

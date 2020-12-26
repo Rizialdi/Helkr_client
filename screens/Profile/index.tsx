@@ -53,7 +53,9 @@ export default function Profile({ navigation, route: { params } }: Props) {
         };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{ backgroundColor: 'white ' }}>
       <Layout
         title={params && params.id ? 'Explorer' : 'Profil'}
         iconName={params && params.id ? 'close' : 'setting'}

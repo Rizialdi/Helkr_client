@@ -43,9 +43,8 @@ const RegisterPhoneNumber: SFC<Props> = ({ navigation }) => {
           }}>
           <Text bold>Veuillez saisir votre numéro de téléphone</Text>
           <Text small>
-            Veuillez entrer le numéro associé à votre compte Mobile Money.{' '}
-            {`\n`}Helkr va envoyer un SMS afin de vérifier votre numéro de
-            téléphone.
+            Veuillez entrer votre numéro. {`\n`}Helkr va envoyer un SMS afin de
+            vérifier votre numéro de téléphone.
           </Text>
           <Form {...{ register, setValue, validation, errors }}>
             <InputValidator
@@ -65,7 +64,7 @@ const RegisterPhoneNumber: SFC<Props> = ({ navigation }) => {
               {openAlert ? (
                 <ActivityIndicator size="small" />
               ) : (
-                <Text bold center>
+                <Text bold header center>
                   Valider
                 </Text>
               )}

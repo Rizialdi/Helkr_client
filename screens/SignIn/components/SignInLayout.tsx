@@ -20,44 +20,47 @@ const SignInLayout: FC<Props> = ({ children, ...props }) => {
 
   return (
     <Layout {...{ props }}>
-      {children}
-      <TouchableOpacity onPress={() => setShowTerms(true)}>
-        <Text
-          small
-          center
-          style={{
-            paddingTop: 15,
-            textAlign: 'center'
-          }}>
-          Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez.{'\n'}
-          Apprenez plus sur nos{' '}
+      <>
+        {children}
+        <TouchableOpacity onPress={() => setShowTerms(true)}>
           <Text
             small
+            center
             style={{
-              textDecorationLine: 'underline',
-              color: themeColors.primary
+              paddingTop: 15,
+              textAlign: 'center'
             }}>
-            politiques
-          </Text>
-        </Text>
-      </TouchableOpacity>
-      {showTerms && (
-        <Modal animated={true} animationType={'slide'} visible={showTerms}>
-          <Block padding={[50, 20]} space="between">
-            <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
-              Politiques de services
+            Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez.
+            {'\n'}
+            Apprenez plus sur nos{' '}
+            <Text
+              small
+              style={{
+                textDecorationLine: 'underline',
+                color: themeColors.primary
+              }}>
+              politiques
             </Text>
-            <TermsOfServices />
-            <Block middle padding={[theme.sizes.base / 2, 0]}>
-              <Button secondary onPress={() => setShowTerms(false)}>
-                <Text center bold>
-                  Je comprends
-                </Text>
-              </Button>
+          </Text>
+        </TouchableOpacity>
+        {showTerms && (
+          <Modal animated={true} animationType={'slide'} visible={showTerms}>
+            <Block padding={[0, 20, 20, 20]} space="between">
+              <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
+                Politiques de services
+              </Text>
+              <TermsOfServices />
+              <Block middle padding={[theme.sizes.base / 2, 0]}>
+                <Button secondary onPress={() => setShowTerms(false)}>
+                  <Text center bold>
+                    Je comprends
+                  </Text>
+                </Button>
+              </Block>
             </Block>
-          </Block>
-        </Modal>
-      )}
+          </Modal>
+        )}
+      </>
     </Layout>
   );
 };

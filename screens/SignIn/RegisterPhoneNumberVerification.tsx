@@ -112,7 +112,7 @@ const RegisterPhoneNumberVerification = ({
               errorReporting
               information={'Erreur de validation'}
               description={
-                'Vous avez introduit un code de vérification erroné. Vous serez redirigez pour le renseignement de votre numéro.'
+                'Vous avez introduit un code de vérification erroné. Vous serez redirigé pour le renseignement de votre numéro.'
               }
               timer={0.5}
               buttonMessage={'Fermer'}

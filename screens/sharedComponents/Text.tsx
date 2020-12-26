@@ -9,6 +9,7 @@ interface Props {
   h1?: boolean;
   h2?: boolean;
   h3?: boolean;
+  header?: boolean;
   title?: boolean;
   body?: boolean;
   children?:
@@ -54,6 +55,7 @@ const CustomText: React.FC<Props> = ({
   h1,
   h2,
   h3,
+  header,
   title,
   body,
   caption,
@@ -124,6 +126,7 @@ const CustomText: React.FC<Props> = ({
     h1 && styles.h1,
     h2 && styles.h2,
     h3 && styles.h3,
+    header && styles.header,
     title && styles.title,
     body && styles.body,
     caption && styles.caption,
@@ -204,6 +207,7 @@ const styles = StyleSheet.create({
   h1: theme.fonts.h1,
   h2: theme.fonts.h2,
   h3: theme.fonts.h3,
+  header: theme.fonts.header,
   title: theme.fonts.title,
   body: theme.fonts.body,
   caption: theme.fonts.caption,

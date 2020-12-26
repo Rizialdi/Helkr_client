@@ -29,11 +29,7 @@ const handleResourcesAsync = async (): Promise<void[]> => {
       josefinLight: require('./assets/fonts/JosefinSans-Light.ttf'),
       josefinRegular: require('./assets/fonts/JosefinSans-Regular.ttf'),
       josefinSemiBold: require('./assets/fonts/JosefinSans-SemiBold.ttf'),
-      rockSalt: require('./assets/fonts/RockSalt-Regular.ttf'),
-      serifRegular: require('./assets/fonts/SourceSerifPro-Regular.ttf'),
-      serifBold: require('./assets/fonts/SourceSerifPro-Bold.ttf'),
-      serifSemiBold: require('./assets/fonts/SourceSerifPro-SemiBold.ttf'),
-      HelveticaNeue: require('./assets/fonts/Raleway-Regular.ttf')
+      HelveticaNeue: require('./assets/fonts/OpenSans-Regular.ttf')
     });
   })();
 

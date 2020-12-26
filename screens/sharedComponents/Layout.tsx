@@ -27,7 +27,6 @@ const Layout: SFC<LayoutProps> = ({
   callBack,
   callBackParams
 }) => {
-  const { themeColors } = useStoreState(state => state.Preferences);
   const [isInternetConnection, setIsInternetConnection] = useState<boolean>(
     false
   );
@@ -54,7 +53,7 @@ const Layout: SFC<LayoutProps> = ({
           </Text>
         </Block>
       )}
-      <StatusBar style="dark" translucent={true} animated={true} />
+      <StatusBar style="auto" translucent={true} animated={true} />
       <View style={{ flex: 1 }}>
         {!!title && (
           <View style={styles.subContainer}>

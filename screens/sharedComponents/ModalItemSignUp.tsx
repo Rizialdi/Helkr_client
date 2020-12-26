@@ -74,7 +74,7 @@ const ModalItem: SFC<Props> = ({
             accent={errorReporting}
             style={{ width: '100%' }}
             onPress={() => onCloseModal()}>
-            <Text bold center>
+            <Text bold header center>
               {buttonMessage ? buttonMessage : 'Fermer'}
             </Text>
           </Button>

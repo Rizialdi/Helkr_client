@@ -68,7 +68,7 @@ const DropReview: FC<Props> = ({ nextStep }) => {
               inputValue && true && nextStep && nextStep();
               Keyboard.dismiss();
             }}>
-            <Text bold center>
+            <Text bold header center>
               Valider
             </Text>
           </Button>

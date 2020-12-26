@@ -10,7 +10,7 @@ const MarkPresentation = (): JSX.Element => {
         <Text
           style={{
             fontSize: theme.sizes.h1 * 1.84,
-            fontFamily: 'rockSalt'
+            fontFamily: 'HelveticaNeue'
           }}>
           Helkr
         </Text>
