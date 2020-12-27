@@ -238,10 +238,10 @@ const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
       initialRouteName="Accueil"
-      activeColor={theme.colors.primary}
       sceneAnimationEnabled={true}
       backBehavior={'initialRoute'}
-      shifting={true}
+      activeColor={theme.colors.primary}
+      shifting={false}
       barStyle={{ backgroundColor: theme.colors.white, height: 50 }}>
       <MaterialBottomTabs.Screen
         name="Gerer"
@@ -249,7 +249,7 @@ const createBottomTabs = () => {
         options={{
           tabBarLabel: 'Gerer',
           tabBarIcon: () => (
-            <AntDesign name="switcher" size={22} color="black" />
+            <AntDesign name="switcher" size={20} color="black" />
           )
         }}
       />
@@ -259,7 +259,7 @@ const createBottomTabs = () => {
         options={{
           tabBarLabel: 'Naviguer',
           tabBarIcon: () => (
-            <AntDesign name="appstore-o" size={22} color="black" />
+            <AntDesign name="appstore-o" size={20} color="black" />
           )
         }}
       />
@@ -268,7 +268,7 @@ const createBottomTabs = () => {
         component={Accueil}
         options={{
           tabBarLabel: 'Accueil',
-          tabBarIcon: () => <AntDesign name="home" size={22} color="black" />
+          tabBarIcon: () => <AntDesign name="home" size={20} color="black" />
         }}
       />
       <MaterialBottomTabs.Screen
@@ -277,7 +277,7 @@ const createBottomTabs = () => {
         options={{
           tabBarLabel: 'Demandes',
           tabBarIcon: () => (
-            <AntDesign name="notification" size={22} color="black" />
+            <AntDesign name="notification" size={20} color="black" />
           )
         }}
       />
@@ -286,7 +286,7 @@ const createBottomTabs = () => {
         component={Profile}
         options={{
           tabBarLabel: 'Profil',
-          tabBarIcon: () => <AntDesign name="user" size={22} color="black" />
+          tabBarIcon: () => <AntDesign name="user" size={20} color="black" />
         }}
       />
     </MaterialBottomTabs.Navigator>

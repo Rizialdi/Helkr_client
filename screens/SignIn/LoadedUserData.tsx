@@ -65,6 +65,15 @@ const LoadedUserData = ({
             )}
           </Button>
         </View>
+        <Text
+          small
+          center
+          style={{
+            paddingTop: 15,
+            textAlign: 'center'
+          }}>
+          En appuyant sur Confirmer, vous acceptez nos politiques de services.
+        </Text>
       </SignInLayout>
     </View>
   );

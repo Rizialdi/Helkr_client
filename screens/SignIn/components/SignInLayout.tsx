@@ -4,10 +4,10 @@ import {
   LayoutProps,
   Text,
   Button,
-  Block
+  Block,
+  TermsOfServices
 } from '../../sharedComponents';
 import { TouchableOpacity, Modal } from 'react-native';
-import TermsOfServices from './TermsOfServices';
 import { theme } from '../../../constants';
 import { useStoreState } from '../../../models';
 
@@ -30,7 +30,7 @@ const SignInLayout: FC<Props> = ({ children, ...props }) => {
               paddingTop: 15,
               textAlign: 'center'
             }}>
-            Vous devez être agé(e) d’au moins 16 ans pour vous enregistrez.
+            Vous devez être agé(e) d’au moins 18 ans pour vous enregistrez.
             {'\n'}
             Apprenez plus sur nos{' '}
             <Text
@@ -45,7 +45,7 @@ const SignInLayout: FC<Props> = ({ children, ...props }) => {
         </TouchableOpacity>
         {showTerms && (
           <Modal animated={true} animationType={'slide'} visible={showTerms}>
-            <Block padding={[0, 20, 20, 20]} space="between">
+            <Block padding={[35, 10, 20, 10]} space="between">
               <Text style={{ fontFamily: 'josefinBold', fontSize: 25 }}>
                 Politiques de services
               </Text>

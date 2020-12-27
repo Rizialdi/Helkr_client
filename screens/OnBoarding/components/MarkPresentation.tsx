@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { theme } from '../../../constants';
 import { Mark } from '../../../assets/icons';
+import { Text } from '../../sharedComponents';
 
 const MarkPresentation = (): JSX.Element => {
   return (
@@ -9,8 +10,8 @@ const MarkPresentation = (): JSX.Element => {
       <View style={styles.appTitle}>
         <Text
           style={{
-            fontSize: theme.sizes.h1 * 1.84,
-            fontFamily: 'HelveticaNeue'
+            fontFamily: 'josefinBold',
+            fontSize: theme.sizes.htwiceTen * 3
           }}>
           Helkr
         </Text>
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
   text: {
     paddingVertical: theme.sizes.hinouting * 0.6,
     fontSize: theme.sizes.header,
-    fontWeight: '500',
+    fontFamily: 'HelveticaNeue',
     justifyContent: 'center',
     alignItems: 'center'
   }

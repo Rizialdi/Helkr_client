@@ -149,6 +149,15 @@ const RegisterUsername = ({
               screen: 'Accueil'
             })}
         </View>
+        <Text
+          small
+          center
+          style={{
+            paddingTop: 15,
+            textAlign: 'center'
+          }}>
+          En créant votre compte, vous acceptez nos politiques de services.
+        </Text>
       </SignInLayout>
     </View>
   );
