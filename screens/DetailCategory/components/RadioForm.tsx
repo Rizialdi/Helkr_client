@@ -56,6 +56,7 @@ const CustomRadioForm: SFC<Props> = ({
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [submitPressed, setSubmitPressed] = useState<boolean>(false);
   const [openErrorModal, setOpenErrorModal] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const onSubmitForm = () => {
     Keyboard.dismiss();
@@ -63,8 +64,17 @@ const CustomRadioForm: SFC<Props> = ({
     onSubmit &&
       onSubmit()
         .then(({ data, errors }) => {
-          data?.addOffering && setOpenModal(true);
-          errors && setOpenErrorModal(true);
+          const {
+            addOffering: { message, status }
+          } = data;
+
+          status && !message && setOpenModal(true);
+          !status && message && setErrorMessage(message);
+          errors &&
+            setErrorMessage(
+              "Une erreur s'est produite lors de la création de la mission. Veuillez réessayer plus tard."
+            );
+          (errors || (!status && message)) && setOpenErrorModal(true);
         })
         .catch(error => {
           error && setOpenErrorModal(true);
@@ -201,7 +211,7 @@ const CustomRadioForm: SFC<Props> = ({
               <ModalItemInfos
                 information={'Votre mission'}
                 description={
-                  "Votre mission vient d'être ajouté à notre liste. Vous serez sous peu contacté par des Helkr prêt à vous aider."
+                  "Votre mission vient d'être ajouté à notre liste. Vous serez sous peu contacté par des prestataires prêt à vous aider."
                 }
                 timer={0.5}
                 callBack={navigation.goBack}
@@ -212,9 +222,7 @@ const CustomRadioForm: SFC<Props> = ({
               <ModalItemInfos
                 errorReporting
                 information={'Erreur'}
-                description={
-                  "Une erreur s'est produite lors de la création de la mission. Veuillez réessayer plus tard."
-                }
+                description={errorMessage}
                 timer={0.5}
                 callBack={navigation.goBack}
               />

@@ -12,7 +12,7 @@ import { theme } from '../../../constants';
 import { useStoreState } from '../../../models';
 
 interface Props extends LayoutProps {
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
 }
 const SignInLayout: FC<Props> = ({ children, ...props }) => {
   const [showTerms, setShowTerms] = useState<boolean>(false);

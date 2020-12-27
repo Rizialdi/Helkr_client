@@ -39,8 +39,8 @@ const UpdateDescription: FC<Props> = ({ id, closeModal, navigationBack }) => {
   ] = useDeleteOfferingMutation();
   const objValue = [
     {
-      label: 'Je souhaite supprimer mon annonce',
-      value: 'Je souhaite supprimer mon annonce'
+      label: 'Je souhaite supprimer ma mission.',
+      value: 'Je souhaite supprimer ma mission.'
     }
   ];
 
