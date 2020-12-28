@@ -68,7 +68,7 @@ const Accueil = (
   const handleInput = (): void => setInputText('');
 
   useMemo(() => {
-    setCategories(mocks.accueil);
+    setCategories(mocks.accueil as CategoriesInterface);
     user && user.prenom && setUsername(user.prenom);
   }, [user]);
 

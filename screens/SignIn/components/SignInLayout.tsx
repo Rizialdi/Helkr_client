@@ -30,7 +30,7 @@ const SignInLayout: FC<Props> = ({ children, ...props }) => {
               paddingTop: 15,
               textAlign: 'center'
             }}>
-            Vous devez être agé(e) d’au moins 18 ans pour vous enregistrez.
+            Vous devez être agé(e) d’au moins 18 ans pour vous enregistrer.
             {'\n'}
             Apprenez plus sur nos{' '}
             <Text
@@ -39,7 +39,7 @@ const SignInLayout: FC<Props> = ({ children, ...props }) => {
                 textDecorationLine: 'underline',
                 color: themeColors.primary
               }}>
-              politiques
+              politiques de services
             </Text>
           </Text>
         </TouchableOpacity>

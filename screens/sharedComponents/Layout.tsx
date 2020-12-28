@@ -1,12 +1,12 @@
 import React, { SFC, useState, useEffect } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Block from './Block';
 import { StatusBar } from 'expo-status-bar';
 import NetInfo from '@react-native-community/netinfo';
 import { AntDesign } from '@expo/vector-icons';
 import Text from './Text';
-import { useStoreState, useStoreActions } from '../../models';
+import { useStoreActions } from '../../models';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { theme } from '../../constants';
 export interface LayoutProps {
@@ -39,7 +39,7 @@ const Layout: SFC<LayoutProps> = ({
       setNetWorkStatus(isInternetReachable as boolean);
     });
 
-    return () => unsubscribe();
+    return (): void => unsubscribe();
   }, []);
 
   return (

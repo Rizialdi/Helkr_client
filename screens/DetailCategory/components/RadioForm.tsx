@@ -222,7 +222,10 @@ const CustomRadioForm: SFC<Props> = ({
               <ModalItemInfos
                 errorReporting
                 information={'Erreur'}
-                description={errorMessage}
+                description={
+                  errorMessage ||
+                  "Une erreur s'est produite lors de la création de la mission. Veuillez réessayer plus tard."
+                }
                 timer={0.5}
                 callBack={navigation.goBack}
               />

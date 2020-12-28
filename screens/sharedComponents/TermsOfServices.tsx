@@ -148,8 +148,7 @@ const TermsOfServices = () => {
         style={{
           fontFamily: 'josefinBold',
           fontSize: theme.sizes.htwiceTen * 0.8
-        }}
-        gray>
+        }}>
         Exigences légales
       </Text>
 
@@ -291,7 +290,7 @@ const TermsOfServices = () => {
         style={styles.text}>
         Si vous avez des questions sur cette politique de confidentialité,
         veuillez nous contacter.{'\n'}
-        Par téléphone: +33780813564
+        Par téléphone / WhatsApp: +33780813564
       </Text>
     </ScrollView>
   );

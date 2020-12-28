@@ -6,15 +6,18 @@ interface Props {
   username: string;
 }
 const UserWelcome: SFC<Props> = ({ username }) => {
+  const date = new Date();
+  const greeting = date.getHours() < 15 ? 'Bonjour' : 'Bonsoir';
   return (
     <>
       <Text
         style={{
           fontFamily: 'josefinLight',
           marginHorizontal: theme.sizes.twiceTen * 1.15,
-          marginVertical: theme.sizes.htwiceTen
+          marginVertical: theme.sizes.htwiceTen,
+          fontSize: theme.sizes.header * 1.05
         }}>
-        Bonjour{' '}
+        {greeting}{' '}
         <Text
           style={{
             fontFamily: 'josefinRegular',
