@@ -11,17 +11,17 @@ import {
   TransitionPresets
 } from '@react-navigation/stack';
 
-import Accueil from '../screens/Accueil';
 import Avis from '../screens/Avis';
+import Manage from '../screens/Manage';
+import Accueil from '../screens/Accueil';
+import Profile from '../screens/Profile';
+import Demandes from '../screens/Demandes';
+import Postuler from '../screens/Postuler';
+import Reglages from '../screens/Reglages';
+import OnBoarding from '../screens/OnBoarding';
 import DetailCategory from '../screens/DetailCategory';
 import DetailItem from '../screens/DetailCategory/components/DetailItem';
 import JoinOrFindAJobber from '../screens/DetailCategory/components/JoinOrFindAJobber';
-import Demandes from '../screens/Demandes';
-import Manage from '../screens/Manage';
-import Postuler from '../screens/Postuler';
-import Profile from '../screens/Profile';
-import Reglages from '../screens/Reglages';
-import OnBoarding from '../screens/OnBoarding';
 import {
   MyOfferingsModal,
   MyCandidateToOffering,
@@ -52,7 +52,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AsyncStorage } from 'react-native';
 import { BienvenueFirst } from '../screens/BienvenueFirst';
 import { DetailOfferingParamsList } from './Routes';
-import { QueryDetails } from '../screens/Demandes/components';
+import {
+  CreateDemande,
+  LinkedIdProfile,
+  QueryDetails
+} from '../screens/Demandes/components';
 
 const MainStack = createStackNavigator<MainStackParamList>();
 const MaterialBottomTabs = createMaterialBottomTabNavigator<
@@ -143,6 +147,24 @@ const DemandesScreens = () => {
           headerTitleAlign: 'center',
           headerTitleStyle: { fontSize: 20 },
           headerTintColor: 'black'
+        })}
+      />
+      <DemandesPresentation.Screen
+        name="CreateDemande"
+        component={CreateDemande}
+        options={() => ({
+          headerShown: true,
+          title: 'Créer une demande',
+          headerTitleAlign: 'center',
+          headerTitleStyle: { fontSize: 20 },
+          headerTintColor: 'black'
+        })}
+      />
+      <DemandesPresentation.Screen
+        name="LinkedIdProfile"
+        component={LinkedIdProfile}
+        options={() => ({
+          headerShown: false
         })}
       />
     </DemandesPresentation.Navigator>

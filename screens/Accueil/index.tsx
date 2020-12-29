@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import * as Notifications from 'expo-notifications';
+import * as Linking from 'expo-linking';
 
 import { Block, Layout, ModalItemInfos } from '../sharedComponents';
 import { mocks, theme } from '../../constants';
@@ -21,7 +22,8 @@ import { CategoriesInterface } from './components/Interfaces';
 import { Categories } from './components';
 import {
   registerForPushNotificationsAsync,
-  navigationOnNotification
+  navigationOnNotification,
+  handleOpenURL
 } from './utils';
 
 import { useNotificationsTokenUpdateMutation } from '../../graphql';
@@ -111,7 +113,23 @@ const Accueil = (
         navigationOnNotification(navigation, payload);
       }
     );
-    return (): void => subscription.remove();
+
+    Linking.getInitialURL()
+      .then(str => {
+        if (str) {
+          handleOpenURL(navigation, str);
+        }
+      })
+      .catch(err => {
+        console.warn('An error occurred', err);
+      });
+
+    Linking.addEventListener('url', obj => handleOpenURL(navigation, obj));
+
+    return (): void => {
+      subscription.remove();
+      Linking.removeEventListener('url', obj => handleOpenURL(navigation, obj));
+    };
   }, [navigation, tokenUpdate]);
 
   return (

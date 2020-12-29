@@ -7,6 +7,7 @@ export default gql`
       tags
       prenom
       avatar
+      numero
       address
       verified
       description

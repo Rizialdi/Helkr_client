@@ -4,12 +4,19 @@ import { CategoryInterface } from '../screens/Accueil/components/Interfaces';
 import { Utilisateur, Demande } from '../graphql/helpkr-types';
 
 type Tab = 'tabOne' | 'tabTwo';
+type ValueOf<T> = T[keyof T];
+
 export type BottomStackParamList = {
   Accueil: undefined;
   Gerer: undefined | { tab: Tab };
   SignIn: undefined;
   Postuler: undefined | { tab: Tab };
-  Demandes: undefined;
+  Demandes:
+    | undefined
+    | {
+        screen: keyof DemandesParamsList;
+        params: ValueOf<DemandesParamsList>;
+      };
   Profile: undefined;
 };
 
@@ -62,10 +69,12 @@ export type DetailOfferingParamsList = {
 };
 
 export type DemandesParamsList = {
-  Demandes: undefined;
   QueryDetails: {
     item: queryDetailsItem;
   };
+  CreateDemande: { id: string };
+  LinkedIdProfile: { id: string };
+  Demandes: undefined | { id: string };
 };
 
 export type queryDetailsItem = { __typename?: 'demande' | undefined } & {

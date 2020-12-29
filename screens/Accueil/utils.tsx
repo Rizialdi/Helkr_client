@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import { Updates } from 'expo';
 import { Platform, AsyncStorage } from 'react-native';
 import * as Permissions from 'expo-permissions';
+import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { getPermissionAsync } from '../../utils';
 import {
@@ -81,4 +82,39 @@ export const navigationOnNotification = (
   }
 };
 
-//
+type EventType = {
+  url: string;
+  nativeEvent?: MessageEvent | undefined;
+};
+
+export const handleOpenURL = async (
+  { navigation }: StackNavigationInterface<BottomStackParamList, 'Accueil'>,
+  strOrObj: string | EventType
+) => {
+  let url = '';
+
+  const myuserId = await AsyncStorage.getItem('id');
+
+  if (typeof strOrObj === 'string') {
+    url = strOrObj;
+  } else if (typeof strOrObj === 'object') {
+    url = strOrObj.url;
+  }
+
+  let { path, queryParams } = Linking.parse(url);
+
+  if (path?.includes('profile') && queryParams) {
+    if (!queryParams || !queryParams.id) return;
+
+    if (myuserId && myuserId === queryParams.id) {
+      navigation.navigate('Profile');
+    } else {
+      const { id } = queryParams;
+      console.log('ty', id);
+      navigation.navigate('Demandes', {
+        screen: 'LinkedIdProfile',
+        params: { id: id }
+      });
+    }
+  }
+};

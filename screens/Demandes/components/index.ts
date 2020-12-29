@@ -1,3 +1,4 @@
 import QueryDetails from './QueryDetails';
-
-export { QueryDetails };
+import CreateDemande from './CreateDemande';
+import LinkedIdProfile from './LinkedIdProfile';
+export { CreateDemande, LinkedIdProfile, QueryDetails };

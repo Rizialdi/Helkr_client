@@ -80,7 +80,7 @@ export type Moyenne = {
 export type Mutation = {
   __typename?: 'Mutation';
   addAuthorizedCategories: Scalars['Boolean'];
-  addOffering: Scalars['Boolean'];
+  addOffering: Scalars['JSON'];
   addressUpdate: Scalars['Boolean'];
   addVerificationpieces: Scalars['Boolean'];
   avatarUpload: Scalars['Boolean'];
@@ -657,6 +657,17 @@ export type ChooseEventDayMutation = (
   & Pick<Mutation, 'chooseEventDay'>
 );
 
+export type CreateDemandeMutationVariables = Exact<{
+  message: Scalars['String'];
+  recipient: Scalars['String'];
+}>;
+
+
+export type CreateDemandeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createDemande'>
+);
+
 export type DeleteDemandeMutationVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -982,7 +993,7 @@ export type UserByIdQuery = (
   { __typename?: 'Query' }
   & { userById?: Maybe<(
     { __typename?: 'utilisateur' }
-    & Pick<Utilisateur, 'nom' | 'tags' | 'prenom' | 'avatar' | 'address' | 'verified' | 'description' | 'professional'>
+    & Pick<Utilisateur, 'nom' | 'tags' | 'prenom' | 'avatar' | 'numero' | 'address' | 'verified' | 'description' | 'professional'>
   )> }
 );
 
@@ -1278,6 +1289,37 @@ export function useChooseEventDayMutation(baseOptions?: ApolloReactHooks.Mutatio
 export type ChooseEventDayMutationHookResult = ReturnType<typeof useChooseEventDayMutation>;
 export type ChooseEventDayMutationResult = ApolloReactCommon.MutationResult<ChooseEventDayMutation>;
 export type ChooseEventDayMutationOptions = ApolloReactCommon.BaseMutationOptions<ChooseEventDayMutation, ChooseEventDayMutationVariables>;
+export const CreateDemandeDocument = gql`
+    mutation createDemande($message: String!, $recipient: String!) {
+  createDemande(message: $message, recipient: $recipient)
+}
+    `;
+export type CreateDemandeMutationFn = ApolloReactCommon.MutationFunction<CreateDemandeMutation, CreateDemandeMutationVariables>;
+
+/**
+ * __useCreateDemandeMutation__
+ *
+ * To run a mutation, you first call `useCreateDemandeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDemandeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDemandeMutation, { data, loading, error }] = useCreateDemandeMutation({
+ *   variables: {
+ *      message: // value for 'message'
+ *      recipient: // value for 'recipient'
+ *   },
+ * });
+ */
+export function useCreateDemandeMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<CreateDemandeMutation, CreateDemandeMutationVariables>) {
+        return ApolloReactHooks.useMutation<CreateDemandeMutation, CreateDemandeMutationVariables>(CreateDemandeDocument, baseOptions);
+      }
+export type CreateDemandeMutationHookResult = ReturnType<typeof useCreateDemandeMutation>;
+export type CreateDemandeMutationResult = ApolloReactCommon.MutationResult<CreateDemandeMutation>;
+export type CreateDemandeMutationOptions = ApolloReactCommon.BaseMutationOptions<CreateDemandeMutation, CreateDemandeMutationVariables>;
 export const DeleteDemandeDocument = gql`
     mutation deleteDemande($id: String!) {
   deleteDemande(id: $id)
@@ -2111,6 +2153,7 @@ export const UserByIdDocument = gql`
     tags
     prenom
     avatar
+    numero
     address
     verified
     description

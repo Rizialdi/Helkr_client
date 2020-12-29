@@ -28,9 +28,10 @@ export default ({
   const shareProfile = async () => {
     try {
       await Share.share({
-        message: `Venez visiter mon profil sur Helkr. N'hesitez pas à me faire une demande de services.\n${makeUrl(
-          `profile/${selfUserId}`
-        )}`,
+        message:
+          'Venez visiter mon profil sur Helkr.' +
+          "N'hesitez pas à me faire une demande de services." +
+          `\n ${makeUrl('profile', { id: selfUserId })}`,
         title: 'Partage de profil.'
       });
     } catch (error) {
