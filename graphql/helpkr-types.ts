@@ -33,7 +33,7 @@ export type Authorizedcategories = {
 export type AuthPayload = {
   __typename?: 'AuthPayload';
   token: Scalars['String'];
-  user: Utilisateur;
+  user?: Maybe<Utilisateur>;
 };
 
 export type Avis = {
@@ -274,8 +274,22 @@ export type OfferingCandidatesArgs = {
   last?: Maybe<Scalars['Int']>;
 };
 
+export type OfferingAugmented = {
+  __typename?: 'OfferingAugmented';
+  endCursor: Scalars['String'];
+  hasNext: Scalars['Boolean'];
+  offerings?: Maybe<Array<Offering>>;
+};
+
 export type OfferingWhereUniqueInput = {
   id?: Maybe<Scalars['String']>;
+};
+
+export type PayLoad = {
+  __typename?: 'PayLoad';
+  endCursor: Scalars['String'];
+  hasNext: Scalars['Boolean'];
+  users?: Maybe<Array<Utilisateur>>;
 };
 
 export type PropositionToOffering = {
@@ -303,13 +317,14 @@ export type Query = {
   getVerificationPieces: Verificationpieces;
   incompleteOfferings: Array<Offering>;
   isCandidateTo: Array<Offering>;
-  myIncompleteOffering: Array<Offering>;
-  myIncompleteOfferingWithCandidates: Array<Offering>;
+  myIncompleteOffering: OfferingAugmented;
+  myIncompleteOfferingWithCandidates: OfferingAugmented;
   offeringById: Offering;
   offeringsUser: Array<Offering>;
   propositionToOfferingDetails: PropositionToOffering;
   userById?: Maybe<Utilisateur>;
   users: Array<Utilisateur>;
+  usersPagination?: Maybe<PayLoad>;
 };
 
 
@@ -365,6 +380,18 @@ export type QueryIncompleteOfferingsArgs = {
 };
 
 
+export type QueryMyIncompleteOfferingArgs = {
+  lastCursorId?: Maybe<Scalars['String']>;
+  take: Scalars['Int'];
+};
+
+
+export type QueryMyIncompleteOfferingWithCandidatesArgs = {
+  lastCursorId?: Maybe<Scalars['String']>;
+  take: Scalars['Int'];
+};
+
+
 export type QueryOfferingByIdArgs = {
   id: Scalars['String'];
 };
@@ -383,6 +410,12 @@ export type QueryPropositionToOfferingDetailsArgs = {
 
 export type QueryUserByIdArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryUsersPaginationArgs = {
+  lastCursorId?: Maybe<Scalars['String']>;
+  take: Scalars['Int'];
 };
 
 export type ReferenceidUserIdIdCompoundUniqueInput = {
@@ -701,10 +734,10 @@ export type RegisterUserMutation = (
   & { registerUser: (
     { __typename?: 'AuthPayload' }
     & Pick<AuthPayload, 'token'>
-    & { user: (
+    & { user?: Maybe<(
       { __typename?: 'utilisateur' }
       & Pick<Utilisateur, 'id' | 'prenom'>
-    ) }
+    )> }
   ) }
 );
 
@@ -903,31 +936,45 @@ export type IsCandidateToQuery = (
   )> }
 );
 
-export type MyIncompleteOfferingQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyIncompleteOfferingQueryVariables = Exact<{
+  take: Scalars['Int'];
+  lastCursorId?: Maybe<Scalars['String']>;
+}>;
 
 
 export type MyIncompleteOfferingQuery = (
   { __typename?: 'Query' }
-  & { myIncompleteOffering: Array<(
-    { __typename?: 'offering' }
-    & OfferingFragment
-  )> }
+  & { myIncompleteOffering: (
+    { __typename?: 'OfferingAugmented' }
+    & Pick<OfferingAugmented, 'hasNext' | 'endCursor'>
+    & { offerings?: Maybe<Array<(
+      { __typename?: 'offering' }
+      & OfferingFragment
+    )>> }
+  ) }
 );
 
-export type MyIncompleteOfferingWithCandidatesQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyIncompleteOfferingWithCandidatesQueryVariables = Exact<{
+  take: Scalars['Int'];
+  lastCursorId?: Maybe<Scalars['String']>;
+}>;
 
 
 export type MyIncompleteOfferingWithCandidatesQuery = (
   { __typename?: 'Query' }
-  & { myIncompleteOfferingWithCandidates: Array<(
-    { __typename?: 'offering' }
-    & Pick<Offering, 'status' | 'eventday'>
-    & { selectedCandidate?: Maybe<(
-      { __typename?: 'utilisateur' }
-      & Pick<Utilisateur, 'id'>
-    )> }
-    & OfferingFragment
-  )> }
+  & { myIncompleteOfferingWithCandidates: (
+    { __typename?: 'OfferingAugmented' }
+    & Pick<OfferingAugmented, 'hasNext' | 'endCursor'>
+    & { offerings?: Maybe<Array<(
+      { __typename?: 'offering' }
+      & Pick<Offering, 'status' | 'eventday'>
+      & { selectedCandidate?: Maybe<(
+        { __typename?: 'utilisateur' }
+        & Pick<Utilisateur, 'id'>
+      )> }
+      & OfferingFragment
+    )>> }
+  ) }
 );
 
 export type OfferingByIdQueryVariables = Exact<{
@@ -1952,9 +1999,13 @@ export type IsCandidateToQueryHookResult = ReturnType<typeof useIsCandidateToQue
 export type IsCandidateToLazyQueryHookResult = ReturnType<typeof useIsCandidateToLazyQuery>;
 export type IsCandidateToQueryResult = ApolloReactCommon.QueryResult<IsCandidateToQuery, IsCandidateToQueryVariables>;
 export const MyIncompleteOfferingDocument = gql`
-    query myIncompleteOffering {
-  myIncompleteOffering {
-    ...offering
+    query myIncompleteOffering($take: Int!, $lastCursorId: String) {
+  myIncompleteOffering(take: $take, lastCursorId: $lastCursorId) {
+    hasNext
+    endCursor
+    offerings {
+      ...offering
+    }
   }
 }
     ${OfferingFragmentDoc}`;
@@ -1971,6 +2022,8 @@ export const MyIncompleteOfferingDocument = gql`
  * @example
  * const { data, loading, error } = useMyIncompleteOfferingQuery({
  *   variables: {
+ *      take: // value for 'take'
+ *      lastCursorId: // value for 'lastCursorId'
  *   },
  * });
  */
@@ -1984,13 +2037,17 @@ export type MyIncompleteOfferingQueryHookResult = ReturnType<typeof useMyIncompl
 export type MyIncompleteOfferingLazyQueryHookResult = ReturnType<typeof useMyIncompleteOfferingLazyQuery>;
 export type MyIncompleteOfferingQueryResult = ApolloReactCommon.QueryResult<MyIncompleteOfferingQuery, MyIncompleteOfferingQueryVariables>;
 export const MyIncompleteOfferingWithCandidatesDocument = gql`
-    query myIncompleteOfferingWithCandidates {
-  myIncompleteOfferingWithCandidates {
-    ...offering
-    status
-    eventday
-    selectedCandidate {
-      id
+    query myIncompleteOfferingWithCandidates($take: Int!, $lastCursorId: String) {
+  myIncompleteOfferingWithCandidates(take: $take, lastCursorId: $lastCursorId) {
+    hasNext
+    endCursor
+    offerings {
+      ...offering
+      status
+      eventday
+      selectedCandidate {
+        id
+      }
     }
   }
 }
@@ -2008,6 +2065,8 @@ export const MyIncompleteOfferingWithCandidatesDocument = gql`
  * @example
  * const { data, loading, error } = useMyIncompleteOfferingWithCandidatesQuery({
  *   variables: {
+ *      take: // value for 'take'
+ *      lastCursorId: // value for 'lastCursorId'
  *   },
  * });
  */

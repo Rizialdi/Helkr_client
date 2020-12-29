@@ -23,18 +23,22 @@ export interface DataContent {
 interface Props {
   data?: DataContent[];
   onRefresh: () => void;
+  onEndReached?: () => void;
   emptyMessage: string;
   modalToOpen: 'ManageCandidates' | 'ManageOffering' | 'Postulees' | 'Offres';
   refreshing: boolean;
+  hasNext?: boolean;
   navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
 }
 const CustomListView: SFC<Props> = ({
   data,
+  hasNext,
   onRefresh,
   emptyMessage,
   refreshing,
   navigation,
-  modalToOpen
+  modalToOpen,
+  onEndReached
 }) => {
   const openToDescription = (id: string, status: string): void => {
     if (!modalToOpen) return;
@@ -83,12 +87,12 @@ const CustomListView: SFC<Props> = ({
         }}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        onEndReached={(): void => console.log('Fine atteinte')}
+        onEndReached={hasNext ? onEndReached : null}
         onEndReachedThreshold={0}
         pagingEnabled={true}
         alwaysBounceVertical={true}
         ListFooterComponent={
-          !data?.length ? <></> : <ActivityIndicator size="small" />
+          !hasNext ? <></> : <ActivityIndicator size="small" />
         }
         keyExtractor={(item): string => item.id}
         data={data}
@@ -96,14 +100,14 @@ const CustomListView: SFC<Props> = ({
           const { id, status } = item;
           return (
             <TouchableOpacity
-              key={index}
+              key={index + id}
               onPress={(): void | null =>
                 (status && status === 'refusée') ||
                 (status && status === 'terminée')
                   ? null
                   : openToDescription(id, status || '')
               }>
-              <ListItemOffering offering={item} />
+              <ListItemOffering key={index} offering={item} />
             </TouchableOpacity>
           );
         }}

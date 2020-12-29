@@ -1,94 +1,67 @@
-import React, { useState, useEffect, SFC } from 'react';
+import React, { SFC, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { useStoreState } from '../../../models';
-import { CustomListView } from '../../sharedComponents';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import {
-  OfferingByIdQuery,
-  OfferingByIdDocument,
-  useUpdatedEventDaySubscription,
-  MyIncompleteOfferingWithCandidatesQuery,
+  OfferingFragment,
   useMyIncompleteOfferingWithCandidatesQuery
 } from '../../../graphql';
-import { cache } from '../../../ApolloClient';
 import { MainStackParamList } from '../../../navigation/Routes';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { CustomListView } from '../../sharedComponents';
 
 interface Props {
   navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
 }
 
 const ManageCandidates: SFC<Props> = ({ navigation }) => {
-  const {
-    user: { id: userId }
-  } = useStoreState(state => state.User);
-  const [stateData, setStateData] = useState<
-    MyIncompleteOfferingWithCandidatesQuery
-  >();
-
-  const {
-    data: dataUpdateEventDay,
-    error: errorUpdateEventDay
-  } = useUpdatedEventDaySubscription({
-    variables: { userId: userId as string },
-    shouldResubscribe: true
-  });
-
-  const updateOfferingEventDay = (id: string, eventday: string): void => {
-    if (!id) return;
-
-    const offeringById = cache.readQuery({
-      query: OfferingByIdDocument,
-      variables: { id }
-    }) as OfferingByIdQuery | undefined;
-
-    const newOfferingById = {
-      ...offeringById,
-      offeringById: {
-        ...offeringById?.offeringById,
-        eventday
-      }
-    };
-
-    cache.writeQuery({
-      query: OfferingByIdDocument,
-      variables: { id },
-      data: newOfferingById
-    });
-  };
-
-  useEffect(() => {
-    if (dataUpdateEventDay?.updatedEventDay && !errorUpdateEventDay) {
-      const { offeringId, eventday } = dataUpdateEventDay.updatedEventDay;
-      if (!data?.myIncompleteOfferingWithCandidates) return;
-
-      const newOfferingData = data?.myIncompleteOfferingWithCandidates.map(
-        item => {
-          if (item.id != offeringId) return item;
-          return { ...item, eventday };
-        }
-      );
-      if (!newOfferingData) return;
-      const newData = {
-        ...data,
-        myIncompleteOfferingWithCandidates: newOfferingData
-      };
-      setStateData(newData);
-      updateOfferingEventDay(offeringId, eventday);
-    }
-  }, [dataUpdateEventDay]);
-
+  const take = 3;
+  const [stateData, setStateData] = useState<OfferingFragment[]>();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [lastCursorId, setLastCursorId] = useState<string | undefined>();
+  const [hasNext, setHasNext] = useState<boolean>(true);
 
   const {
     data,
     loading,
     error,
-    client
+    client,
+    fetchMore
   } = useMyIncompleteOfferingWithCandidatesQuery({
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'cache-and-network',
+    variables: { take }
   });
+
+  const onEndReached = () => {
+    hasNext &&
+      fetchMore({
+        variables: { take, lastCursorId: lastCursorId ? lastCursorId : '' },
+        updateQuery: (previousQueryResult, { fetchMoreResult }) => {
+          if (fetchMoreResult) {
+            const {
+              endCursor,
+              hasNext
+            } = fetchMoreResult?.myIncompleteOfferingWithCandidates;
+            setHasNext(hasNext);
+            setLastCursorId(endCursor);
+          }
+          return {
+            ...previousQueryResult,
+            myIncompleteOfferingWithCandidates: {
+              ...previousQueryResult.myIncompleteOfferingWithCandidates,
+              ...fetchMoreResult?.myIncompleteOfferingWithCandidates,
+              offerings: [
+                ...(previousQueryResult.myIncompleteOfferingWithCandidates
+                  .offerings as OfferingFragment[]),
+                ...(fetchMoreResult?.myIncompleteOfferingWithCandidates
+                  .offerings as OfferingFragment[])
+              ]
+            }
+          };
+        }
+      });
+  };
 
   const onRefresh = React.useCallback(() => {
     !refreshing && setRefreshing(true);
@@ -100,8 +73,19 @@ const ManageCandidates: SFC<Props> = ({ navigation }) => {
   }, [loading]);
 
   useEffect(() => {
-    if (!error && data) {
-      setStateData(data);
+    if (
+      !error &&
+      data &&
+      data.myIncompleteOfferingWithCandidates.offerings?.length
+    ) {
+      const {
+        endCursor,
+        hasNext,
+        offerings
+      } = data.myIncompleteOfferingWithCandidates;
+      setHasNext(hasNext);
+      setLastCursorId(endCursor);
+      setStateData(offerings);
     }
   }, [data, loading, error]);
 
@@ -111,12 +95,14 @@ const ManageCandidates: SFC<Props> = ({ navigation }) => {
 
       {stateData && (
         <CustomListView
-          data={stateData?.myIncompleteOfferingWithCandidates}
-          emptyMessage={'Aucun candidat à une offre actuellement.'}
-          refreshing={refreshing}
+          data={stateData}
+          hasNext={hasNext}
           onRefresh={onRefresh}
           navigation={navigation}
+          refreshing={refreshing}
+          onEndReached={onEndReached}
           modalToOpen={'ManageCandidates'}
+          emptyMessage={'Aucun candidat à une offre actuellement.'}
         />
       )}
     </>
