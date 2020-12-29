@@ -1,34 +1,35 @@
-import Icon from 'react-native-vector-icons/AntDesign';
-import React, { useMemo, useState, useEffect } from 'react';
+import * as Linking from 'expo-linking';
+import * as Notifications from 'expo-notifications';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
+  AsyncStorage,
   ScrollView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  View,
-  AsyncStorage
+  View
 } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-import * as Notifications from 'expo-notifications';
-import * as Linking from 'expo-linking';
-
-import { Block, Layout, ModalItemInfos } from '../sharedComponents';
-import { mocks, theme } from '../../constants';
-import { useStoreState } from '../../models';
-import { BottomStackParamList } from '../../navigation/Routes';
-import { StackNavigationInterface } from '../../navigation/Routes';
-import { UserWelcome } from './components';
-import { CategoriesInterface } from './components/Interfaces';
-import { Categories } from './components';
-import {
-  registerForPushNotificationsAsync,
-  navigationOnNotification,
-  handleOpenURL
-} from './utils';
-
-import { useNotificationsTokenUpdateMutation } from '../../graphql';
-import { firstAppOpening, Payload } from './utils';
 import { CommonActions } from '@react-navigation/native';
+
+import { mocks, theme } from '../../constants';
+import { useNotificationsTokenUpdateMutation } from '../../graphql';
+import { useStoreState } from '../../models';
+import {
+  BottomStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
+import { Block, Layout, ModalItemInfos } from '../sharedComponents';
+import { Categories, UserWelcome } from './components';
+import { CategoriesInterface } from './components/Interfaces';
+import {
+  firstAppOpening,
+  handleOpenURL,
+  navigationOnNotification,
+  Payload,
+  registerForPushNotificationsAsync
+} from './utils';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -113,6 +114,9 @@ const Accueil = (
         navigationOnNotification(navigation, payload);
       }
     );
+
+    // To open deep links in the app
+    // Deeplinks such as profile opening
 
     Linking.getInitialURL()
       .then(str => {

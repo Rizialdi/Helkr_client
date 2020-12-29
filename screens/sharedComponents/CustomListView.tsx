@@ -1,5 +1,5 @@
 import React, { SFC } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ActivityIndicator } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import Block from './Block';
@@ -83,11 +83,13 @@ const CustomListView: SFC<Props> = ({
         }}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        onEndReached={(): void => console.log('Fin atteinte')}
+        onEndReached={(): void => console.log('Fine atteinte')}
         onEndReachedThreshold={0}
         pagingEnabled={true}
         alwaysBounceVertical={true}
-        // ListFooterComponent={() => <ActivityIndicator size="small" />}
+        ListFooterComponent={
+          !data?.length ? <></> : <ActivityIndicator size="small" />
+        }
         keyExtractor={(item): string => item.id}
         data={data}
         renderItem={({ item, index }): JSX.Element => {

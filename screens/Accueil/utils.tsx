@@ -110,7 +110,6 @@ export const handleOpenURL = async (
       navigation.navigate('Profile');
     } else {
       const { id } = queryParams;
-      console.log('ty', id);
       navigation.navigate('Demandes', {
         screen: 'LinkedIdProfile',
         params: { id: id }

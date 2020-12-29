@@ -84,7 +84,7 @@ const LinkedIdProfile = ({
                   verified={verified}
                   pro={professional}
                 />
-                <StatsContainer id={id} />
+                <StatsContainer id={id} navigation={navigation} />
                 <View style={styles.delimiter}></View>
                 <Description description={description} />
                 <View style={styles.delimiter}></View>

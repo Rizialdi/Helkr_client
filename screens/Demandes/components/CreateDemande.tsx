@@ -43,14 +43,14 @@ const CreateDemande = ({
 
   const recipientId = params && params.id ? params.id : '';
 
-  const onSubmitOffer = (form: FormDataOffer): void => {
-    console.log('loa', 'loading');
+  const onSubmitDemande = (form: FormDataOffer): void => {
     createDemandeMutation({
       variables: {
         message: form.message,
         recipient: recipientId
       }
     }).then(({ data, errors: submissionError }) => {
+      console.log('errors', submissionError);
       try {
         if (data?.createDemande) {
           client.reFetchObservableQueries();
@@ -64,8 +64,6 @@ const CreateDemande = ({
         throw new Error(`Impossible de faire une demande ${err}`);
       }
     });
-    // .then(() => navigation?.goBack())
-    // .then(() => navigation?.goBack());
   };
 
   return (
@@ -101,7 +99,11 @@ const CreateDemande = ({
           </Block>
         </TouchableWithoutFeedback>
       </ScrollView>
-      {(errorModal || (called && !data?.createDemande)) && (
+      {console.log('fffg', called, data?.createDemande)}
+      {(errorModal ||
+        (called &&
+          data?.createDemande != undefined &&
+          !data?.createDemande)) && (
         <ModalItemInfos
           errorReporting
           information={'Erreur'}
@@ -130,7 +132,7 @@ const CreateDemande = ({
         <StackedToBottom>
           <TouchableOpacity
             disabled={!netWorkStatus}
-            onPress={handleSubmit(onSubmitOffer)}>
+            onPress={handleSubmit(onSubmitDemande)}>
             <Button secondary>
               {loading ? (
                 <ActivityIndicator size={'small'} />
