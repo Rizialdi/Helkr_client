@@ -1,30 +1,31 @@
 import React, { SFC, useState } from 'react';
 import {
-  ScrollView,
   KeyboardAvoidingView,
+  ScrollView,
   StyleSheet,
   View
 } from 'react-native';
 import Modal from 'react-native-modal';
 
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { theme } from '../../../constants';
+import { useOfferingByIdQuery } from '../../../graphql';
+import { useStoreState } from '../../../models';
+import { DetailOfferingParamsList } from '../../../navigation/Routes';
+import { formatDateAvis } from '../../../utils';
 import {
   Block,
-  Text,
   Button,
-  TagItem,
   OfferingDetailsOnModal,
+  OfferingLoadingIndicator,
   StackedToBottom,
-  OfferingLoadingIndicator
+  TagItem,
+  Text
 } from '../../sharedComponents';
-import { useOfferingByIdQuery } from '../../../graphql';
-import { formatDateAvis } from '../../../utils';
-import UpdateDescription from './UpdateDescription';
 import DeleteOffering from './DeleteOffering';
-import { useStoreState } from '../../../models';
-import { theme } from '../../../constants';
-import { RouteProp } from '@react-navigation/native';
-import { DetailOfferingParamsList } from '../../../navigation/Routes';
-import { StackNavigationProp } from '@react-navigation/stack';
+import UpdateDescription from './UpdateDescription';
 
 interface Props {
   route?: RouteProp<DetailOfferingParamsList, 'MyOfferingsModal'>;
@@ -170,7 +171,7 @@ const MyOfferinsgModal: SFC<Props> = ({ route, navigation }) => {
               <DeleteOffering
                 id={data?.offeringById.id}
                 closeModal={onModalClose}
-                navigationBack={navigation.goBack}
+                navigationBack={navigation ? navigation.goBack : () => null}
               />
             ) : (
               <Text>Vous ne devriez pas etre içi</Text>

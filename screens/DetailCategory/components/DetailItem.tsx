@@ -1,11 +1,12 @@
 import React from 'react';
 import {} from 'react-native';
-import MultiStepMenu from './MultiStepMenu';
-import { RadioForm } from '.';
+
 import {
-  StackNavigationInterface,
-  DetailStackParamsList
+  DetailStackParamsList,
+  StackNavigationInterface
 } from '../../../navigation/Routes';
+import { RadioForm } from './';
+import MultiStepMenu from './MultiStepMenu';
 
 const DetailItem = ({
   navigation,

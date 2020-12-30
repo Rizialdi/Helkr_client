@@ -23,11 +23,11 @@ export type BottomStackParamList = {
 export type MainStackParamList = {
   DetailCategory: {
     screen: keyof DetailStackParamsList;
-    params: { [key: string]: string | number };
+    params: ValueOf<DetailStackParamsList>;
   };
   DetailOffering: {
     screen: keyof DetailOfferingParamsList;
-    params: { [key: string]: string | number };
+    params: ValueOf<DetailOfferingParamsList>;
   };
   Reglages: undefined;
   Avis: { id: string };

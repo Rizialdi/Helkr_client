@@ -1,21 +1,21 @@
+import { DataProxy } from 'apollo-cache';
+import { ExecutionResult } from 'graphql';
 import React from 'react';
-import { Button, Text, ModalItemInfos, Block } from '../../sharedComponents';
-import {
-  StackNavigationInterface,
-  DetailStackParamsList
-} from '../../../navigation/Routes';
+import { ActivityIndicator } from 'react-native';
 
 import {
-  useTagsAddJobberMutation,
+  TagsAddJobberMutation,
   UserByIdDocument,
   UserByIdQuery,
-  TagsAddJobberMutation
+  useTagsAddJobberMutation
 } from '../../../graphql';
-import { ActivityIndicator } from 'react-native';
+import { useStoreActions, useStoreState } from '../../../models';
+import {
+  DetailStackParamsList,
+  StackNavigationInterface
+} from '../../../navigation/Routes';
 import { getReferenceIdOnCategory } from '../../../utils';
-import { DataProxy } from 'apollo-cache';
-import { useStoreState, useStoreActions } from '../../../models';
-import { ExecutionResult } from 'graphql';
+import { Block, Button, ModalItemInfos, Text } from '../../sharedComponents';
 
 const JoinOrFindAJobber = ({
   navigation,

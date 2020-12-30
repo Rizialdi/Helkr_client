@@ -1,9 +1,9 @@
 import React, { FC, useState } from 'react';
-import { CompletedOrIssue } from './ModalItemManageCandidates';
+import { Button, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 
-import { View, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
-import { useStoreState } from '../../../models';
 import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
+import CompletedOrIssue from './MultiStepMenuCheckout';
 
 interface Props {
   children: JSX.Element;

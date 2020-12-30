@@ -1,18 +1,21 @@
+import { openURL } from 'expo-linking';
 import React, { SFC } from 'react';
-import { DemandesParamsList } from '../../../navigation/Routes';
+import { ScrollView, View } from 'react-native';
+
 import { RouteProp } from '@react-navigation/native';
+
+import { theme } from '../../../constants';
+import { DemandesParamsList } from '../../../navigation/Routes';
+import { capitalize, makePseudoName } from '../../../utils';
 import {
-  StatsContainer,
-  Text,
   Block,
   Button,
-  StackedToBottom
+  StackedToBottom,
+  StatsContainer,
+  Text
 } from '../../sharedComponents';
-import { theme } from '../../../constants';
-import { ScrollView, View } from 'react-native';
-import { makePseudoName, capitalize } from '../../../utils';
 import Item from './Item';
-import { openURL } from 'expo-linking';
+
 interface Props {
   route: RouteProp<DemandesParamsList, 'QueryDetails'>;
 }

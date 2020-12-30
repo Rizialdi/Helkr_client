@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Text, Block } from '../../sharedComponents';
-import { formatDateAvis } from '../../../utils';
-import ImageComponent from '../../sharedComponents/ImageComponent';
 import { theme } from '../../../constants';
+import { formatDateAvis } from '../../../utils';
+import { Block, Text } from '../../sharedComponents';
+import ImageComponent from '../../sharedComponents/ImageComponent';
+
 interface Mark {
   scorer: string;
   score: number;

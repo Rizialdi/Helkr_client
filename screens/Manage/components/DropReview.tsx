@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
-import { Block, Button, Text } from '../../sharedComponents';
+import { Keyboard, KeyboardAvoidingView, ScrollView } from 'react-native';
 import Stars from 'react-native-stars';
-
-import { Keyboard, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { theme } from '../../../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { theme } from '../../../constants';
+import { Block, Button, Text } from '../../sharedComponents';
 import TextAreaInput from '../../sharedComponents/TextAreaInput';
 
 interface Props {

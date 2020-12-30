@@ -7,11 +7,11 @@ import {
   OfferingFragment,
   useMyIncompleteOfferingWithCandidatesQuery
 } from '../../../graphql';
-import { MainStackParamList } from '../../../navigation/Routes';
+import { BottomStackParamList } from '../../../navigation/Routes';
 import { CustomListView } from '../../sharedComponents';
 
 interface Props {
-  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
+  navigation: StackNavigationProp<BottomStackParamList, 'Gerer'>;
 }
 
 const ManageCandidates: SFC<Props> = ({ navigation }) => {

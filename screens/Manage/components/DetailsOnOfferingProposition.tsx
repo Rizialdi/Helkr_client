@@ -1,17 +1,19 @@
 import React, { SFC } from 'react';
 import { ScrollView, View } from 'react-native';
+
 import { RouteProp } from '@react-navigation/native';
-import { DetailOfferingParamsList } from '../../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  StatsContainer,
-  Text,
-  OfferingLoadingIndicator,
-  Block,
-  ImageComponent
-} from '../../sharedComponents';
-import { usePropositionToOfferingDetailsQuery } from '../../../graphql';
+
 import { theme } from '../../../constants';
+import { usePropositionToOfferingDetailsQuery } from '../../../graphql';
+import { DetailOfferingParamsList } from '../../../navigation/Routes';
+import {
+  Block,
+  ImageComponent,
+  OfferingLoadingIndicator,
+  StatsContainer,
+  Text
+} from '../../sharedComponents';
 
 interface Props {
   route?: RouteProp<DetailOfferingParamsList, 'DetailsOnOfferingProposition'>;

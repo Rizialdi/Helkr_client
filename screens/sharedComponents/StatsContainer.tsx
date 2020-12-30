@@ -1,24 +1,26 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+
 import { AntDesign } from '@expo/vector-icons';
-import AvgContainer from './AvgContainer';
-import {
-  MainStackParamList,
-  DetailOfferingParamsList
-} from '../../navigation/Routes';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-import Text from './Text';
-import { useGetUserStatsQuery } from '../../graphql';
-
-import { useStoreState } from '../../models';
 import { theme } from '../../constants';
+import { useGetUserStatsQuery } from '../../graphql';
+import { useStoreState } from '../../models';
+import {
+  DemandesParamsList,
+  DetailOfferingParamsList,
+  MainStackParamList
+} from '../../navigation/Routes';
+import AvgContainer from './AvgContainer';
+import Text from './Text';
 
 interface Props {
   id: string;
   offeringAuthorStars?: boolean;
   navigation?:
     | StackNavigationProp<MainStackParamList, 'Profile'>
+    | StackNavigationProp<DemandesParamsList, 'LinkedIdProfile'>
     | StackNavigationProp<
         DetailOfferingParamsList,
         'DetailsOnOfferingProposition'

@@ -6,13 +6,11 @@ import {
   OfferingFragment
 } from '../../../graphql';
 import { CustomListView } from '../../sharedComponents';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../../navigation/Routes';
+import { BottomStackParamList } from '../../../navigation/Routes';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 interface Props {
-  navigation: StackNavigationInterface<MainStackParamList, 'PrincipalView'>;
+  navigation: StackNavigationProp<BottomStackParamList, 'Gerer'>;
 }
 
 const ManageOffering: FC<Props> = ({ navigation }) => {

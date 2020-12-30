@@ -1,20 +1,26 @@
-import React, { useState, useEffect, FC } from 'react';
-import { Block, Text, Button, TextAreaInput } from '../../sharedComponents';
-import {
-  useUpdateOfferingMutation,
-  MyIncompleteOfferingDocument,
-  MyIncompleteOfferingQuery
-} from '../../../graphql';
+import { DataProxy } from 'apollo-cache';
+import React, { FC, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  View,
+  Keyboard,
   TouchableWithoutFeedback,
-  Keyboard
+  View
 } from 'react-native';
-import { DataProxy } from 'apollo-cache';
-import { useStoreState } from '../../../models';
-import { ModalItemInfos } from '../../sharedComponents';
+
 import { theme } from '../../../constants';
+import {
+  MyIncompleteOfferingDocument,
+  MyIncompleteOfferingQuery,
+  useUpdateOfferingMutation
+} from '../../../graphql';
+import { useStoreState } from '../../../models';
+import {
+  Block,
+  Button,
+  ModalItemInfos,
+  Text,
+  TextAreaInput
+} from '../../sharedComponents';
 
 interface Props {
   id?: string;
@@ -43,10 +49,15 @@ const UpdateDescription: FC<Props> = ({ id, previousValue, closeModal }) => {
 
     const newData = {
       ...data,
-      myIncompleteOffering: data?.myIncompleteOffering.map(item => {
-        if (item.id != id) return item;
-        return { ...item, description: text, updatedAt: Date.now() };
-      })
+      myIncompleteOffering:
+        data &&
+        data?.myIncompleteOffering &&
+        data?.myIncompleteOffering.offerings?.length
+          ? data?.myIncompleteOffering.offerings.map(item => {
+              if (item.id != id) return item;
+              return { ...item, description: text, updatedAt: Date.now() };
+            })
+          : []
     };
     cache.writeQuery({
       query: MyIncompleteOfferingDocument,

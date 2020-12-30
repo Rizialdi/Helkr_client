@@ -1,20 +1,19 @@
 import React, { SFC } from 'react';
-
+import { ExecutionResult } from 'react-apollo';
 import {
-  View,
+  KeyboardAvoidingView,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView
+  View
 } from 'react-native';
 
 import { AntDesign } from '@expo/vector-icons';
-
-import { Text } from '../../sharedComponents';
-import { useStoreState } from '../../../models';
-import { ExecutionResult } from 'react-apollo';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DetailStackParamsList } from '../../../navigation/Routes';
+
 import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
+import { DetailStackParamsList } from '../../../navigation/Routes';
+import { Text } from '../../sharedComponents';
 
 interface Props {
   children: JSX.Element;

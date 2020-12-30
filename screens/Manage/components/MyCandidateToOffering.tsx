@@ -110,16 +110,22 @@ const MyCandidatesToOffering: SFC<Props> = ({ route, navigation }) => {
       item => item.id === selectedId
     );
 
-    const newMyIncompeleteOfferingWithCandidates = myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates.map(
-      item => {
-        if (item.id != route?.params.id) return item;
-        return {
-          ...item,
-          status: 'validée',
-          selectedCandidate
-        };
-      }
-    );
+    const newMyIncompeleteOfferingWithCandidates =
+      myIncompleteOfferingWithCandidates &&
+      myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates &&
+      myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates
+        .offerings?.length
+        ? myIncompleteOfferingWithCandidates?.myIncompleteOfferingWithCandidates.offerings.map(
+            item => {
+              if (item.id != route?.params.id) return item;
+              return {
+                ...item,
+                status: 'validée',
+                selectedCandidate
+              };
+            }
+          )
+        : [];
 
     const newMyIncompleteOfferingsWithCandidates = {
       myIncompleteOfferingWithCandidates: newMyIncompeleteOfferingWithCandidates

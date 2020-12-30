@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Block, Button, Text } from '../../sharedComponents';
-import { CompletedOrIssue } from './ModalItemManageCandidates';
+import CompletedOrIssue from './MenuItemCheckout';
 import { useStoreState } from '../../../models';
 import { theme } from '../../../constants';
 
@@ -13,7 +13,9 @@ interface Props {
   onChangeValue?: (a: string, b: string) => void;
   onSelected?: () => void;
   openModal?: (a: boolean) => void;
-  setCompletedOrIssue: React.Dispatch<React.SetStateAction<CompletedOrIssue>>;
+  setCompletedOrIssue: React.Dispatch<
+    React.SetStateAction<typeof CompletedOrIssue>
+  >;
 }
 const CompletedOrIssueComponent: FC<Props> = ({
   setCompletedOrIssue,

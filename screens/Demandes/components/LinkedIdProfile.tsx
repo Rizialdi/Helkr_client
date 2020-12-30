@@ -1,17 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { View, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
-import { Text, Block, Button } from '../../sharedComponents';
-import {
-  StackNavigationInterface,
-  DemandesParamsList
-} from '../../../navigation/Routes';
-import { useUserByIdQuery, UserByIdQuery } from '../../../graphql';
-import { Layout, StatsContainer } from '../../sharedComponents';
-import { ProfilContainer, Description, Tag } from '../../Profile/components';
-import { theme } from '../../../constants';
-import { makePseudoName } from '../../../utils';
-import { openURL } from 'expo-linking';
 import { ApolloError } from 'apollo-client';
+import { openURL } from 'expo-linking';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+
+import { theme } from '../../../constants';
+import { UserByIdQuery, useUserByIdQuery } from '../../../graphql';
+import {
+  DemandesParamsList,
+  StackNavigationInterface
+} from '../../../navigation/Routes';
+import { makePseudoName } from '../../../utils';
+import { Description, ProfilContainer, Tag } from '../../Profile/components';
+import {
+  Block,
+  Button,
+  Layout,
+  StatsContainer,
+  Text
+} from '../../sharedComponents';
 
 const LinkedIdProfile = ({
   navigation,

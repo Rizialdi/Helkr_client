@@ -1,5 +1,7 @@
-import React, { SFC, useState, useEffect } from 'react';
-import { View, StyleSheet, Keyboard, ActivityIndicator } from 'react-native';
+import React, { SFC, useEffect, useState } from 'react';
+import { ExecutionResult } from 'react-apollo';
+import { ActivityIndicator, Keyboard, StyleSheet, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
@@ -7,15 +9,18 @@ import RadioForm, {
   //@ts-ignore
 } from 'react-native-simple-radio-button';
 
-import { Button, ModalItemInfos } from '../../sharedComponents';
-
-import { Text, TextAreaInput, Block } from '../../sharedComponents';
-import { useStoreState } from '../../../models';
-import { theme } from '../../../constants';
-import { ExecutionResult } from 'react-apollo';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
 import { DetailStackParamsList } from '../../../navigation/Routes';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {
+  Block,
+  Button,
+  ModalItemInfos,
+  Text,
+  TextAreaInput
+} from '../../sharedComponents';
 
 type valuesInterface = {
   [name: string]: string;

@@ -1,23 +1,24 @@
+import { DataProxy } from 'apollo-cache';
 import React, { Component, ComponentClass } from 'react';
 import {
+  DataValue,
   ExecutionResult,
   graphql,
-  MutationFunctionOptions,
-  DataValue
+  MutationFunctionOptions
 } from 'react-apollo';
-import { View, AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 
-import MenuItem from './MenuItem';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import {
   AddOfferingDocument,
-  AddOfferingMutationVariables,
   AddOfferingMutationResult,
+  AddOfferingMutationVariables,
   GetUserStatsDocument,
   GetUserStatsQuery
 } from '../../../graphql';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { DetailStackParamsList } from '../../../navigation/Routes';
-import { DataProxy } from 'apollo-cache';
+import MenuItem from './MenuItem';
 
 // todo values object ? array ?
 interface State {

@@ -1,4 +1,5 @@
-import React, { useState, FC } from 'react';
+import { DataProxy } from 'apollo-cache';
+import React, { FC, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import RadioForm, {
   RadioButton,
@@ -7,17 +8,16 @@ import RadioForm, {
   //@ts-ignore
 } from 'react-native-simple-radio-button';
 
-import { Block, Text, Button } from '../../sharedComponents';
+import { theme } from '../../../constants';
 import {
-  MyIncompleteOfferingQuery,
-  useDeleteOfferingMutation,
-  MyIncompleteOfferingDocument,
+  GetUserStatsDocument,
   GetUserStatsQuery,
-  GetUserStatsDocument
+  MyIncompleteOfferingDocument,
+  MyIncompleteOfferingQuery,
+  useDeleteOfferingMutation
 } from '../../../graphql';
 import { useStoreState } from '../../../models';
-import { DataProxy } from 'apollo-cache';
-import { theme } from '../../../constants';
+import { Block, Button, Text } from '../../sharedComponents';
 
 interface Props {
   id?: string;
@@ -53,9 +53,14 @@ const UpdateDescription: FC<Props> = ({ id, closeModal, navigationBack }) => {
     // Update my icncomplete offerings list
     const newData = {
       ...dataMyIncompleteOffering,
-      myIncompleteOffering: dataMyIncompleteOffering?.myIncompleteOffering.filter(
-        item => item.id !== id
-      )
+      myIncompleteOffering:
+        dataMyIncompleteOffering &&
+        dataMyIncompleteOffering?.myIncompleteOffering &&
+        dataMyIncompleteOffering?.myIncompleteOffering.offerings?.length
+          ? dataMyIncompleteOffering?.myIncompleteOffering.offerings.filter(
+              item => item.id !== id
+            )
+          : []
     };
 
     cache.writeQuery({

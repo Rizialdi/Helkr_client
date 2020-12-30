@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Keyboard, ScrollView, View } from 'react-native';
 import {
-  TouchableWithoutFeedback,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableWithoutFeedback
 } from 'react-native-gesture-handler';
+
+import client from '../../../ApolloClient';
+import { theme } from '../../../constants';
+import { useCreateDemandeMutation } from '../../../graphql';
+import { useStoreState } from '../../../models';
+import {
+  DemandesParamsList,
+  StackNavigationInterface
+} from '../../../navigation/Routes';
 import {
   Block,
-  Text,
   Button,
-  TextAreaInputValidator,
+  ModalItemInfos,
   StackedToBottom,
-  ModalItemInfos
+  Text,
+  TextAreaInputValidator
 } from '../../sharedComponents';
-import { theme } from '../../../constants';
-import validation from './createDemandeValidation';
 import { Form } from '../../SignIn/components';
-import { useForm } from 'react-hook-form';
-import { FormDataOffer } from './createDemandeValidation';
-import { useStoreState } from '../../../models';
-import { useCreateDemandeMutation } from '../../../graphql';
-import {
-  StackNavigationInterface,
-  DemandesParamsList
-} from '../../../navigation/Routes';
-import client from '../../../ApolloClient';
+import validation, { FormDataOffer } from './createDemandeValidation';
 
 const CreateDemande = ({
   navigation,

@@ -1,11 +1,11 @@
 import React, { SFC } from 'react';
-import { Image, ImageStyle } from 'react-native';
+import { Image, ImageStyle, StyleProp } from 'react-native';
 import { theme } from '../../constants';
 import { useStoreState } from '../../models/index';
 
 interface Props {
   image?: string | null | undefined;
-  style?: ImageStyle;
+  style?: StyleProp<ImageStyle>;
   moyenne?: number;
 }
 

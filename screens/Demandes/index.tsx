@@ -1,34 +1,33 @@
 import React, { useEffect } from 'react';
-import {
-  Layout,
-  Block,
-  Text,
-  DemandesLoadingIndicator,
-  Button,
-  StackedToBottom
-} from '../sharedComponents';
-import { FlatList, View, StyleSheet } from 'react-native';
-import { makePseudoName, sortDemandes } from '../../utils';
-import { theme } from '../../constants';
-import Item from './components/Item';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { EmptyQueryBox } from '../../assets/icons';
-
 import { MenuProvider } from 'react-native-popup-menu';
 
-import { useStoreState } from '../../models/index';
+import { cache } from '../../ApolloClient';
+import { EmptyQueryBox } from '../../assets/icons';
+import { theme } from '../../constants';
 import {
-  useDemandesrecuesQuery,
-  useNewDemandeSubscription,
   DemandesrecuesDocument,
   DemandesrecuesQuery,
-  NewDemandeSubscription
+  NewDemandeSubscription,
+  useDemandesrecuesQuery,
+  useNewDemandeSubscription
 } from '../../graphql';
+import { useStoreState } from '../../models/index';
 import {
-  StackNavigationInterface,
-  DemandesParamsList
+  DemandesParamsList,
+  StackNavigationInterface
 } from '../../navigation/Routes';
-import { cache } from '../../ApolloClient';
+import { makePseudoName, sortDemandes } from '../../utils';
+import {
+  Block,
+  Button,
+  DemandesLoadingIndicator,
+  Layout,
+  StackedToBottom,
+  Text
+} from '../sharedComponents';
+import Item from './components/Item';
 
 const Demandes = ({
   navigation

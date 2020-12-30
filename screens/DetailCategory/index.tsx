@@ -1,15 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { AntDesign } from '@expo/vector-icons';
-import { useStoreState } from '../../models';
-import { Text } from '../sharedComponents';
-import {
-  StackNavigationInterface,
-  DetailStackParamsList
-} from '../../navigation/Routes';
+
 import { theme } from '../../constants';
+import { useStoreState } from '../../models';
+import {
+  DetailStackParamsList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
+import { Text } from '../sharedComponents';
 
 const Item = ({ title }: { title: string }) => {
   return (

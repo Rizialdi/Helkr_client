@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useStoreState } from '../../models';
-import { Block, Layout, Text } from '../sharedComponents';
-import { ManageOffering, ManageCandidates } from './components';
-import {
-  StackNavigationInterface,
-  BottomStackParamList
-} from '../../navigation/Routes';
 import { theme } from '../../constants';
-
-// import { Offres, Postulees } from './components';
-
-//TODO implement infinite scroll when Issue resolved
-// cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
+import { useStoreState } from '../../models';
+import {
+  BottomStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
+import { Block, Layout, Text } from '../sharedComponents';
+import { ManageCandidates, ManageOffering } from './components';
 
 const Manage = ({
   route: { params },
