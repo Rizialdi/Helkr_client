@@ -1,13 +1,14 @@
 import React, { SFC } from 'react';
-import { FlatList, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { theme } from '../../constants';
+import { MainStackParamList } from '../../navigation/Routes';
 import Block from './Block';
 import ListItemOffering from './ListItemOffering';
 import Text from './Text';
-import { theme } from '../../constants';
-import { MainStackParamList } from '../../navigation/Routes';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 export interface DataContent {
   id: string;
@@ -92,7 +93,7 @@ const CustomListView: SFC<Props> = ({
         pagingEnabled={true}
         alwaysBounceVertical={true}
         ListFooterComponent={
-          !hasNext ? <></> : <ActivityIndicator size="small" />
+          !hasNext || !data?.length ? <></> : <ActivityIndicator size="small" />
         }
         keyExtractor={(item): string => item.id}
         data={data}

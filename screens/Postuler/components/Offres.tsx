@@ -116,10 +116,10 @@ const Offres: SFC<Props> = ({ navigation }) => {
   return (
     <>
       {loadingTabOne && !stateData && <ActivityIndicator />}
-      {stateData && (
+      {
         <CustomListView
           hasNext={hasNext}
-          data={stateData}
+          data={stateData ? stateData : []}
           emptyMessage={
             tags.length
               ? "Aucune mission pour vos tags n'est trouvée."
@@ -131,7 +131,7 @@ const Offres: SFC<Props> = ({ navigation }) => {
           refreshing={refreshing}
           onEndReached={onEndReached}
         />
-      )}
+      }
     </>
   );
 };

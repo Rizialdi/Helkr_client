@@ -259,11 +259,13 @@ const DetailOfferingScreens = () => {
 const createBottomTabs = () => {
   return (
     <MaterialBottomTabs.Navigator
+      labeled
+      shifting={false}
+      activeColor={'black'}
+      inactiveColor={'gray'}
       initialRouteName="Accueil"
       sceneAnimationEnabled={true}
       backBehavior={'initialRoute'}
-      activeColor={theme.colors.primary}
-      shifting={false}
       barStyle={{ backgroundColor: theme.colors.white, height: 50 }}>
       <MaterialBottomTabs.Screen
         name="Gerer"

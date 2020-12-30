@@ -120,7 +120,7 @@ const Postulees: SFC<Props> = ({ navigation }) => {
   return (
     <>
       {loadingTabTwo && !stateData && <ActivityIndicator />}
-      {stateData && (
+      {
         <CustomListView
           hasNext={hasNext}
           data={sortPostuleeOnInterest(stateData)}
@@ -131,7 +131,7 @@ const Postulees: SFC<Props> = ({ navigation }) => {
           modalToOpen={'Postulees'}
           onEndReached={onEndReached}
         />
-      )}
+      }
     </>
   );
 };

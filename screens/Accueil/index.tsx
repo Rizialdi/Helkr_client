@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -44,9 +45,12 @@ const Accueil = (
 ): JSX.Element => {
   const [tokenUpdate] = useNotificationsTokenUpdateMutation();
 
-  const [categories, setCategories] = useState<CategoriesInterface | null>();
+  const [categories, setCategories] = useState<CategoriesInterface | null>(
+    null
+  );
   const [inputText, setInputText] = useState<string>('');
   const [username, setUsername] = useState<string>('');
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const [firstOpening, setFirstOpening] = useState<boolean>(false);
   const { user } = useStoreState(state => state.User);
   const [placeholder, setPlaceholder] = useState<string>('Babysitting');
@@ -70,10 +74,17 @@ const Accueil = (
 
   const handleInput = (): void => setInputText('');
 
+  useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+
   useMemo(() => {
-    setCategories(mocks.accueil as CategoriesInterface);
-    user && user.prenom && setUsername(user.prenom);
-  }, [user]);
+    if (isMounted) {
+      setCategories(mocks.accueil as CategoriesInterface);
+      user && user.prenom && setUsername(user.prenom);
+    }
+  }, [user, isMounted]);
 
   useEffect(() => {
     (async (): Promise<void> => {
@@ -138,55 +149,66 @@ const Accueil = (
 
   return (
     <Layout>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{
-          paddingVertical: theme.sizes.base * 2
-        }}>
-        {username && <UserWelcome {...{ username }} />}
-        <View style={styles.container}>
-          <Block style={styles.tabBar}>
-            <View
-              style={{ flexDirection: 'row', flex: 1, alignItems: 'center' }}>
-              <TextInput
-                style={{ flex: 1, marginLeft: 10, ...styles.input }}
-                defaultValue={inputText}
-                placeholder={'Essayer '.concat('"', placeholder, '"')}
-                onChangeText={(text): void => setInputText(text)}
-              />
-              <TouchableOpacity
-                style={styles.touchable}
-                onPress={(): void => handleInput()}>
-                {inputText ? (
-                  <Icon name="close" size={16} color="black" />
-                ) : (
-                  <Icon name="search1" size={16} color="black" />
-                )}
-              </TouchableOpacity>
+      <>
+        {!isMounted || !categories ? (
+          <View
+            style={{
+              zIndex: 99,
+              position: 'absolute',
+              top: theme.sizes.screenHeight / 2,
+              marginHorizontal: theme.sizes.screenWidth / 2
+            }}>
+            <ActivityIndicator size="large" color="black" />
+          </View>
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+              paddingVertical: theme.sizes.base * 2
+            }}>
+            {username && <UserWelcome {...{ username }} />}
+            <View style={styles.container}>
+              <Block style={styles.tabBar}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                    alignItems: 'center'
+                  }}>
+                  <TextInput
+                    style={{ flex: 1, marginLeft: 10, ...styles.input }}
+                    defaultValue={inputText}
+                    placeholder={'Essayer '.concat('"', placeholder, '"')}
+                    onChangeText={(text): void => setInputText(text)}
+                  />
+                  <TouchableOpacity
+                    style={styles.touchable}
+                    onPress={(): void => handleInput()}>
+                    {inputText ? (
+                      <Icon name="close" size={16} color="black" />
+                    ) : (
+                      <Icon name="search1" size={16} color="black" />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </Block>
+              {firstOpening && (
+                <ModalItemInfos
+                  information={'Bienvenue'}
+                  description={
+                    'Nous sommes heureux de vous compter dans nos rangs. Helkr existe pour vous aider afin que vous puissiez en faire de même. Merci.'
+                  }
+                  timer={1}
+                />
+              )}
             </View>
-          </Block>
-          {firstOpening && (
-            <ModalItemInfos
-              information={'Bienvenue'}
-              description={
-                'Nous sommes heureux de vous compter dans nos rangs. Helkr existe pour vous aider afin que vous puissiez en faire de même. Merci.'
-              }
-              timer={1}
-            />
-          )}
-
-          {/* When many cities */}
-          {/* <TouchableOpacity
-            style={styles.loopTouchable}
-            onPress={() => handleInput()}>
-            <Icon name="ellipsis1" size={16} color="black" />
-          </TouchableOpacity> */}
-        </View>
-        {categories && (
-          //@ts-ignore
-          <Categories {...{ categories, inputText, navigation }} />
+            {categories && (
+              //@ts-ignore
+              <Categories {...{ categories, inputText, navigation }} />
+            )}
+          </ScrollView>
         )}
-      </ScrollView>
+      </>
     </Layout>
   );
 };

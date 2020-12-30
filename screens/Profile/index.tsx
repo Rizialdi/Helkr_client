@@ -1,33 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
+import { theme } from '../../constants';
+import { UserByIdQuery, useUserByIdQuery } from '../../graphql';
+import { useStoreState } from '../../models';
+import {
+  MainStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
 import { makePseudoName } from '../../utils';
-import { Text, Layout } from '../sharedComponents';
+import { Layout, Text } from '../sharedComponents';
 import {
   Description,
   ProfilContainer,
   StatsContainer,
   Tag
 } from './components';
-import { useUserByIdQuery } from '../../graphql';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
-import { useStoreState } from '../../models';
-import { theme } from '../../constants';
 
 type Props = StackNavigationInterface<MainStackParamList, 'Profile'>;
 
 export default function Profile({ navigation, route: { params } }: Props) {
   const { user } = useStoreState(state => state.User);
+  const [data, setData] = useState<UserByIdQuery | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [called, setCalled] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const id = params && params?.id ? params.id : user.id ? user.id : '';
 
-  const { data, loading } = useUserByIdQuery({
+  const { data: Data, loading: Loading, called: Called } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network'
   });
+
+  useEffect(() => {
+    setIsMounted(true);
+
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      setData(Data);
+      setCalled(called);
+      setLoading(Loading);
+    }
+  }, [Data, Loading, Called]);
 
   const {
     nom,
@@ -62,7 +82,7 @@ export default function Profile({ navigation, route: { params } }: Props) {
         callBack={params && params.id ? navigation.goBack : navigation.navigate}
         callBackParams={params && params.id ? [] : ['Reglages']}>
         <>
-          {loading && (
+          {!isMounted || !data || loading ? (
             <View
               style={{
                 zIndex: 99,
@@ -72,44 +92,45 @@ export default function Profile({ navigation, route: { params } }: Props) {
               }}>
               <ActivityIndicator size="large" color="black" />
             </View>
-          )}
-          <ScrollView showsVerticalScrollIndicator={true}>
-            <ProfilContainer
-              image={avatar}
-              username={makePseudoName(nom, prenom)}
-              address={address}
-              verified={verified}
-              pro={professional}
-              selfUserId={params?.id ? '' : user.id}
-            />
-            <StatsContainer id={id} navigation={navigation} />
-            <View style={styles.delimiter}></View>
-            <Description description={description} />
-            <View style={styles.delimiter}></View>
-            <View>
-              <Text
-                medium
-                style={[
-                  styles.text,
-                  {
-                    paddingLeft: theme.sizes.twiceTen,
-                    fontSize: theme.sizes.twiceTen * 1.2
-                  }
-                ]}>
-                Tags
-              </Text>
-              {tags && tags?.length > 0 ? (
-                <Tag tags={tags} />
-              ) : (
+          ) : (
+            <ScrollView showsVerticalScrollIndicator={true}>
+              <ProfilContainer
+                image={avatar}
+                username={makePseudoName(nom, prenom)}
+                address={address}
+                verified={verified}
+                pro={professional}
+                selfUserId={params?.id ? '' : user.id}
+              />
+              <StatsContainer id={id} navigation={navigation} />
+              <View style={styles.delimiter}></View>
+              <Description description={description} />
+              <View style={styles.delimiter}></View>
+              <View>
                 <Text
-                  horizontal={theme.sizes.twiceTen * 1.25}
-                  vertical={[0, theme.sizes.hbase]}
-                  gray>
-                  _
+                  medium
+                  style={[
+                    styles.text,
+                    {
+                      paddingLeft: theme.sizes.twiceTen,
+                      fontSize: theme.sizes.twiceTen * 1.2
+                    }
+                  ]}>
+                  Tags
                 </Text>
-              )}
-            </View>
-          </ScrollView>
+                {tags && tags?.length > 0 ? (
+                  <Tag tags={tags} />
+                ) : (
+                  <Text
+                    horizontal={theme.sizes.twiceTen * 1.25}
+                    vertical={[0, theme.sizes.hbase]}
+                    gray>
+                    _
+                  </Text>
+                )}
+              </View>
+            </ScrollView>
+          )}
         </>
       </Layout>
     </ScrollView>

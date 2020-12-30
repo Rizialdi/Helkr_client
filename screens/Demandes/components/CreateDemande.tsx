@@ -50,7 +50,6 @@ const CreateDemande = ({
         recipient: recipientId
       }
     }).then(({ data, errors: submissionError }) => {
-      console.log('errors', submissionError);
       try {
         if (data?.createDemande) {
           client.reFetchObservableQueries();
@@ -99,7 +98,6 @@ const CreateDemande = ({
           </Block>
         </TouchableWithoutFeedback>
       </ScrollView>
-      {console.log('fffg', called, data?.createDemande)}
       {(errorModal ||
         (called &&
           data?.createDemande != undefined &&

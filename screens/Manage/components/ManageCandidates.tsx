@@ -93,9 +93,9 @@ const ManageCandidates: SFC<Props> = ({ navigation }) => {
     <>
       {loadingTabTwo && !stateData && <ActivityIndicator />}
 
-      {stateData && (
+      {
         <CustomListView
-          data={stateData}
+          data={stateData ? stateData : []}
           hasNext={hasNext}
           onRefresh={onRefresh}
           navigation={navigation}
@@ -104,7 +104,7 @@ const ManageCandidates: SFC<Props> = ({ navigation }) => {
           modalToOpen={'ManageCandidates'}
           emptyMessage={'Aucun candidat à une offre actuellement.'}
         />
-      )}
+      }
     </>
   );
 };

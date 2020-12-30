@@ -17,7 +17,7 @@ const LinkedIdProfile = ({
   navigation,
   route: { params }
 }: StackNavigationInterface<DemandesParamsList, 'LinkedIdProfile'>) => {
-  const { id } = params;
+  let id = params && params.id ? params.id : '';
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<ApolloError>();
@@ -26,18 +26,19 @@ const LinkedIdProfile = ({
   const { data: Data, loading: Loading, error: Error } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
-    fetchPolicy: 'cache-and-network'
+    fetchPolicy: 'network-only'
   });
 
   useEffect(() => {
     let isMounted = true;
 
-    if (isMounted && Error) setError(error);
-    if (isMounted && Loading) setLoading(loading);
-    if (isMounted && Data && !Error) setData(Data);
+    if (id && isMounted && Error) setError(error);
+    if (id && isMounted && Loading) setLoading(loading);
+    if (id && isMounted && Data && !Error) setData(Data);
 
     return () => {
       isMounted = false;
+      navigation.setParams({ id: '' });
       return;
     };
   }, [Data, Loading, Error]);

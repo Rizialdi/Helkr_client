@@ -90,9 +90,9 @@ const ManageOffering: FC<Props> = ({ navigation }) => {
   return (
     <>
       {loadingTabOne && !stateData && <ActivityIndicator />}
-      {stateData && (
+      {
         <CustomListView
-          data={stateData}
+          data={stateData ? stateData : []}
           hasNext={hasNext}
           onRefresh={onRefresh}
           refreshing={refreshing}
@@ -101,7 +101,7 @@ const ManageOffering: FC<Props> = ({ navigation }) => {
           modalToOpen={'ManageOffering'}
           emptyMessage={"Vous n'avez aucune offre en attente actuellement."}
         />
-      )}
+      }
     </>
   );
 };

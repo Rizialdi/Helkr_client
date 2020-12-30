@@ -135,19 +135,21 @@ const Demandes = ({
           <Block flex={false}>
             <Text
               horizontal={theme.sizes.twiceTen * 1.75}
-              vertical={[theme.sizes.htwiceTen, theme.sizes.htwiceTen]}
-              numberOfLines={1}>
-              Vous n'avez aucune demande actuellement.
+              vertical={[theme.sizes.htwiceTen / 2, theme.sizes.htwiceTen]}
+              numberOfLines={2}>
+              N'hésitez pas à partager votre profil pour augmenter vos missions
+              et booster vos revenus.
             </Text>
             <Block
               flex={false}
               center
-              padding={[theme.sizes.screenHeight / 7, 0]}>
+              padding={[theme.sizes.screenHeight / 8, 0]}>
               <EmptyQueryBox />
 
               <StackedToBottom>
                 <View style={{ paddingHorizontal: theme.sizes.hinouting }}>
-                  <TouchableOpacity onPress={() => refetch()}>
+                  <TouchableOpacity
+                    onPress={() => (refetch ? refetch() : null)}>
                     <Button secondary>
                       <Text center bold>
                         Actualiser
