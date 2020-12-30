@@ -1,31 +1,69 @@
 import React, { SFC, useEffect, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 
-import { useStoreState } from '../../../models';
-import { CustomListView } from '../../sharedComponents';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import {
-  IncompleteOfferingsQuery,
+  OfferingFragment,
   useIncompleteOfferingsQuery,
   useOnOfferingAddedSubscription
 } from '../../../graphql';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useStoreState } from '../../../models';
 import { MainStackParamList } from '../../../navigation/Routes';
+import { CustomListView } from '../../sharedComponents';
 
 interface Props {
   navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
 }
 
 const Offres: SFC<Props> = ({ navigation }) => {
-  const [stateData, setStateData] = useState<IncompleteOfferingsQuery>();
+  const take = 3;
+  const [stateData, setStateData] = useState<OfferingFragment[]>();
   const [loadingTabOne, setLoadingTabOne] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [lastCursorId, setLastCursorId] = useState<string | undefined>();
+  const [hasNext, setHasNext] = useState<boolean>(true);
+
   const { tags } = useStoreState(state => state.Offering);
   const { user } = useStoreState(state => state.User);
 
-  const { data, loading, error, client } = useIncompleteOfferingsQuery({
+  const {
+    data,
+    loading,
+    error,
+    client,
+    fetchMore
+  } = useIncompleteOfferingsQuery({
     fetchPolicy: 'cache-and-network',
-    variables: { filters: tags }
+    variables: { take, filters: tags }
   });
+
+  const onEndReached = () => {
+    hasNext &&
+      fetchMore({
+        variables: { take, lastCursorId: lastCursorId ? lastCursorId : '' },
+        updateQuery: (previousQueryResult, { fetchMoreResult }) => {
+          if (fetchMoreResult) {
+            const { endCursor, hasNext } = fetchMoreResult?.incompleteOfferings;
+            setHasNext(hasNext);
+            setLastCursorId(endCursor);
+          }
+          return {
+            ...previousQueryResult,
+            incompleteOfferings: {
+              ...previousQueryResult.incompleteOfferings,
+              ...fetchMoreResult?.incompleteOfferings,
+              offerings: [
+                ...(previousQueryResult.incompleteOfferings
+                  .offerings as OfferingFragment[]),
+                ...(fetchMoreResult?.incompleteOfferings
+                  .offerings as OfferingFragment[])
+              ]
+            }
+          };
+        }
+      });
+  };
 
   const {
     data: dataNewOffering,
@@ -50,48 +88,48 @@ const Offres: SFC<Props> = ({ navigation }) => {
   }, [loading]);
 
   useEffect(() => {
-    if (!error) {
-      setStateData(data);
+    if (
+      !error &&
+      data &&
+      data.incompleteOfferings &&
+      data.incompleteOfferings.offerings
+    ) {
+      const { hasNext, endCursor, offerings } = data.incompleteOfferings;
+      setHasNext(hasNext);
+      setLastCursorId(endCursor);
+      setStateData(offerings);
     }
   }, [data, error, loading]);
 
   useEffect(() => {
     if (
       dataNewOffering &&
-      stateData?.incompleteOfferings &&
+      stateData &&
       dataNewOffering?.onOfferingAdded &&
       !errorNewOffering &&
       dataNewOffering.onOfferingAdded.author.id !== user.id
     ) {
-      setStateData({
-        incompleteOfferings: [
-          dataNewOffering?.onOfferingAdded,
-          ...stateData?.incompleteOfferings
-        ]
-      });
+      setStateData([dataNewOffering?.onOfferingAdded, ...stateData]);
     }
-  }, [
-    dataNewOffering,
-    errorNewOffering,
-    stateData?.incompleteOfferings,
-    user.id
-  ]);
+  }, [dataNewOffering, errorNewOffering, stateData, user.id]);
 
   return (
     <>
       {loadingTabOne && !stateData && <ActivityIndicator />}
       {stateData && (
         <CustomListView
-          data={stateData?.incompleteOfferings}
+          hasNext={hasNext}
+          data={stateData}
           emptyMessage={
             tags.length
               ? "Aucune mission pour vos tags n'est trouvée."
               : "Veuillez tout d'abord ajouter des tags dans vos préférences."
           }
-          modalToOpen={'Offres'}
-          refreshing={refreshing}
           onRefresh={onRefresh}
+          modalToOpen={'Offres'}
           navigation={navigation}
+          refreshing={refreshing}
+          onEndReached={onEndReached}
         />
       )}
     </>

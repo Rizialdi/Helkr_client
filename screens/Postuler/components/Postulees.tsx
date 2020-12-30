@@ -2,11 +2,12 @@ import React, { useEffect, useState, SFC } from 'react';
 import { ActivityIndicator } from 'react-native';
 
 import { useStoreState } from '../../../models';
-import { CustomListView, DataContent } from '../../sharedComponents';
+import { CustomListView } from '../../sharedComponents';
 import {
-  IsCandidateToQuery,
   useIsCandidateToQuery,
-  useUpdateAppliedToSubscription
+  useUpdateAppliedToSubscription,
+  OfferingFragment,
+  Offering
 } from '../../../graphql';
 import { sortPostuleeOnInterest } from '../../../utils';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,16 +16,27 @@ import { MainStackParamList } from '../../../navigation/Routes';
 interface Props {
   navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
 }
+type LocalOffering = Array<
+  { __typename?: 'offering' } & Pick<
+    Offering,
+    'status' | 'eventday' | 'completed'
+  > &
+    OfferingFragment
+>;
 
 const Postulees: SFC<Props> = ({ navigation }) => {
-  const [stateData, setStateData] = useState<IsCandidateToQuery>();
+  const take = 3;
+  const [stateData, setStateData] = useState<LocalOffering | null>();
   const [loadingTabTwo, setLoadingTabTwo] = useState<boolean>(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [lastCursorId, setLastCursorId] = useState<string | undefined>();
+  const [hasNext, setHasNext] = useState<boolean>(true);
 
   const { user } = useStoreState(state => state.User);
 
-  const { data, loading, error, client } = useIsCandidateToQuery({
-    fetchPolicy: 'cache-and-network'
+  const { data, loading, error, client, fetchMore } = useIsCandidateToQuery({
+    fetchPolicy: 'cache-and-network',
+    variables: { take }
   });
 
   const {
@@ -34,6 +46,36 @@ const Postulees: SFC<Props> = ({ navigation }) => {
     variables: { userId: user?.id || '' },
     shouldResubscribe: true
   });
+
+  const onEndReached = () => {
+    hasNext &&
+      fetchMore({
+        variables: { take, lastCursorId: lastCursorId ? lastCursorId : '' },
+        updateQuery: (previousQueryResult, { fetchMoreResult }) => {
+          if (
+            fetchMoreResult &&
+            fetchMoreResult.isCandidateTo &&
+            fetchMoreResult.isCandidateTo.offerings?.length
+          ) {
+            const { endCursor, hasNext } = fetchMoreResult?.isCandidateTo;
+            setHasNext(hasNext);
+            setLastCursorId(endCursor);
+          }
+          return {
+            ...previousQueryResult,
+            isCandidateTo: {
+              ...previousQueryResult.isCandidateTo,
+              ...fetchMoreResult?.isCandidateTo,
+              offerings: [
+                ...(previousQueryResult.isCandidateTo
+                  .offerings as LocalOffering),
+                ...(fetchMoreResult?.isCandidateTo.offerings as LocalOffering)
+              ]
+            }
+          };
+        }
+      });
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -45,24 +87,28 @@ const Postulees: SFC<Props> = ({ navigation }) => {
   }, [loading]);
 
   useEffect(() => {
-    if (!error && data) {
-      setStateData(data);
+    if (
+      !error &&
+      data &&
+      data.isCandidateTo &&
+      data.isCandidateTo.offerings?.length
+    ) {
+      const { hasNext, endCursor, offerings } = data.isCandidateTo;
+      setHasNext(hasNext);
+      setLastCursorId(endCursor);
+      setStateData(offerings);
     }
   }, [data, loading]);
 
   useEffect(() => {
-    if (
-      stateData?.isCandidateTo &&
-      dataUpdate?.updateAppliedTo &&
-      !errorUpdate
-    ) {
-      const updatedStatus: DataContent[] = stateData?.isCandidateTo
+    if (stateData && dataUpdate?.updateAppliedTo && !errorUpdate) {
+      const updatedStatus = stateData
         .filter(offering => offering.id === dataUpdate?.updateAppliedTo?.id)
         .map(offering => {
           return { ...offering, status: dataUpdate?.updateAppliedTo?.status };
         });
 
-      const newArray = stateData?.isCandidateTo.filter(
+      const newArray = stateData.filter(
         offering => !(offering.id === dataUpdate?.updateAppliedTo?.id)
       );
       setStateData({
@@ -76,13 +122,14 @@ const Postulees: SFC<Props> = ({ navigation }) => {
       {loadingTabTwo && !stateData && <ActivityIndicator />}
       {stateData && (
         <CustomListView
-          // TODO resolve typescrit linting
-          data={sortPostuleeOnInterest(stateData?.isCandidateTo)}
+          hasNext={hasNext}
+          data={sortPostuleeOnInterest(stateData)}
           emptyMessage={"Vous n'avez aucune candidature."}
           refreshing={refreshing}
           onRefresh={onRefresh}
           navigation={navigation}
           modalToOpen={'Postulees'}
+          onEndReached={onEndReached}
         />
       )}
     </>

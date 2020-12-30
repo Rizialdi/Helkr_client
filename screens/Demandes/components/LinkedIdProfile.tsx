@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
 import { Text, Block, Button } from '../../sharedComponents';
 import {
   StackNavigationInterface,
   DemandesParamsList
 } from '../../../navigation/Routes';
-import { useUserByIdQuery } from '../../../graphql';
+import { useUserByIdQuery, UserByIdQuery } from '../../../graphql';
 import { Layout, StatsContainer } from '../../sharedComponents';
 import { ProfilContainer, Description, Tag } from '../../Profile/components';
 import { theme } from '../../../constants';
 import { makePseudoName } from '../../../utils';
 import { openURL } from 'expo-linking';
+import { ApolloError } from 'apollo-client';
 
 const LinkedIdProfile = ({
   navigation,
@@ -18,11 +19,28 @@ const LinkedIdProfile = ({
 }: StackNavigationInterface<DemandesParamsList, 'LinkedIdProfile'>) => {
   const { id } = params;
 
-  const { data, loading, error } = useUserByIdQuery({
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<ApolloError>();
+  const [data, setData] = useState<UserByIdQuery | null>(null);
+
+  const { data: Data, loading: Loading, error: Error } = useUserByIdQuery({
     variables: { id },
     errorPolicy: 'ignore',
     fetchPolicy: 'cache-and-network'
   });
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted && Error) setError(error);
+    if (isMounted && Loading) setLoading(loading);
+    if (isMounted && Data && !Error) setData(Data);
+
+    return () => {
+      isMounted = false;
+      return;
+    };
+  }, [Data, Loading, Error]);
 
   const {
     nom,

@@ -315,8 +315,8 @@ export type Query = {
   getUserInfo: AuthPayload;
   getUserStats: Stats;
   getVerificationPieces: Verificationpieces;
-  incompleteOfferings: Array<Offering>;
-  isCandidateTo: Array<Offering>;
+  incompleteOfferings: OfferingAugmented;
+  isCandidateTo: OfferingAugmented;
   myIncompleteOffering: OfferingAugmented;
   myIncompleteOfferingWithCandidates: OfferingAugmented;
   offeringById: Offering;
@@ -377,6 +377,14 @@ export type QueryGetVerificationPiecesArgs = {
 
 export type QueryIncompleteOfferingsArgs = {
   filters: Array<Scalars['String']>;
+  lastCursorId?: Maybe<Scalars['String']>;
+  take: Scalars['Int'];
+};
+
+
+export type QueryIsCandidateToArgs = {
+  lastCursorId?: Maybe<Scalars['String']>;
+  take: Scalars['Int'];
 };
 
 
@@ -912,28 +920,41 @@ export type GetUserStatsQuery = (
 );
 
 export type IncompleteOfferingsQueryVariables = Exact<{
+  take: Scalars['Int'];
+  lastCursorId?: Maybe<Scalars['String']>;
   filters: Array<Scalars['String']>;
 }>;
 
 
 export type IncompleteOfferingsQuery = (
   { __typename?: 'Query' }
-  & { incompleteOfferings: Array<(
-    { __typename?: 'offering' }
-    & OfferingFragment
-  )> }
+  & { incompleteOfferings: (
+    { __typename?: 'OfferingAugmented' }
+    & Pick<OfferingAugmented, 'hasNext' | 'endCursor'>
+    & { offerings?: Maybe<Array<(
+      { __typename?: 'offering' }
+      & OfferingFragment
+    )>> }
+  ) }
 );
 
-export type IsCandidateToQueryVariables = Exact<{ [key: string]: never; }>;
+export type IsCandidateToQueryVariables = Exact<{
+  take: Scalars['Int'];
+  lastCursorId?: Maybe<Scalars['String']>;
+}>;
 
 
 export type IsCandidateToQuery = (
   { __typename?: 'Query' }
-  & { isCandidateTo: Array<(
-    { __typename?: 'offering' }
-    & Pick<Offering, 'status' | 'eventday' | 'completed'>
-    & OfferingFragment
-  )> }
+  & { isCandidateTo: (
+    { __typename?: 'OfferingAugmented' }
+    & Pick<OfferingAugmented, 'hasNext' | 'endCursor'>
+    & { offerings?: Maybe<Array<(
+      { __typename?: 'offering' }
+      & Pick<Offering, 'status' | 'eventday' | 'completed'>
+      & OfferingFragment
+    )>> }
+  ) }
 );
 
 export type MyIncompleteOfferingQueryVariables = Exact<{
@@ -1931,9 +1952,13 @@ export type GetUserStatsQueryHookResult = ReturnType<typeof useGetUserStatsQuery
 export type GetUserStatsLazyQueryHookResult = ReturnType<typeof useGetUserStatsLazyQuery>;
 export type GetUserStatsQueryResult = ApolloReactCommon.QueryResult<GetUserStatsQuery, GetUserStatsQueryVariables>;
 export const IncompleteOfferingsDocument = gql`
-    query incompleteOfferings($filters: [String!]!) {
-  incompleteOfferings(filters: $filters) {
-    ...offering
+    query incompleteOfferings($take: Int!, $lastCursorId: String, $filters: [String!]!) {
+  incompleteOfferings(take: $take, lastCursorId: $lastCursorId, filters: $filters) {
+    hasNext
+    endCursor
+    offerings {
+      ...offering
+    }
   }
 }
     ${OfferingFragmentDoc}`;
@@ -1950,6 +1975,8 @@ export const IncompleteOfferingsDocument = gql`
  * @example
  * const { data, loading, error } = useIncompleteOfferingsQuery({
  *   variables: {
+ *      take: // value for 'take'
+ *      lastCursorId: // value for 'lastCursorId'
  *      filters: // value for 'filters'
  *   },
  * });
@@ -1964,12 +1991,16 @@ export type IncompleteOfferingsQueryHookResult = ReturnType<typeof useIncomplete
 export type IncompleteOfferingsLazyQueryHookResult = ReturnType<typeof useIncompleteOfferingsLazyQuery>;
 export type IncompleteOfferingsQueryResult = ApolloReactCommon.QueryResult<IncompleteOfferingsQuery, IncompleteOfferingsQueryVariables>;
 export const IsCandidateToDocument = gql`
-    query isCandidateTo {
-  isCandidateTo {
-    ...offering
-    status
-    eventday
-    completed
+    query isCandidateTo($take: Int!, $lastCursorId: String) {
+  isCandidateTo(take: $take, lastCursorId: $lastCursorId) {
+    hasNext
+    endCursor
+    offerings {
+      ...offering
+      status
+      eventday
+      completed
+    }
   }
 }
     ${OfferingFragmentDoc}`;
@@ -1986,6 +2017,8 @@ export const IsCandidateToDocument = gql`
  * @example
  * const { data, loading, error } = useIsCandidateToQuery({
  *   variables: {
+ *      take: // value for 'take'
+ *      lastCursorId: // value for 'lastCursorId'
  *   },
  * });
  */
