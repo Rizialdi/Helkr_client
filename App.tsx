@@ -11,6 +11,8 @@ import Amplify from 'aws-amplify';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
+import * as Sentry from 'sentry-expo';
+
 import { ApolloProvider } from '@apollo/react-hooks';
 import { InitialState } from '@react-navigation/native';
 
@@ -43,6 +45,14 @@ const handleResourcesAsync = async (): Promise<void[]> => {
 
   return Promise.all(cacheIcons);
 };
+
+// TODO: Set to false Sentry properties for prod
+Sentry.init({
+  dsn:
+    'https://e8b1308767024fedb1e5c4d945326c8c@o498122.ingest.sentry.io/5576044',
+  enableInExpoDevelopment: true,
+  debug: true // Sentry will try to print out useful debugging information if something goes wrong with sending an event. Set this to `false` in production.
+});
 
 const App: SFC<Props> = ({ skipLoadingScreen }) => {
   const [isNavigationReady, setIsNavigationReady] = useState(!__DEV__);

@@ -90,6 +90,7 @@
 		"react-native-web-maps": "^0.2.0",
 		"react-native-webview": "9.4.0",
 		"rn-placeholder": "^3.0.3",
+		"sentry-expo": "^3.0.4",
 		"subscriptions-transport-ws": "^0.9.16"
 	},
 	"devDependencies": {

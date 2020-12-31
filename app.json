@@ -31,6 +31,16 @@
 			"usesIcloudStorage": true,
 			"requireFullScreen": true
 		},
-		"scheme": "helkrapp"
+		"scheme": "helkrapp",
+		"hooks": {
+			"postPublish": [{
+				"file": "sentry-expo/upload-sourcemaps",
+				"config": {
+					"organization": "helkrapp",
+					"project": "helkrapp_client",
+					"authToken": "05bb726806f34ceab3600b62cf6beee7cdf8b019dcd9486984faa8d6c2956178"
+				}
+			}]
+		}
 	}
 }
