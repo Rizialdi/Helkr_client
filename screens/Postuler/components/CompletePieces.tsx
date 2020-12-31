@@ -8,7 +8,7 @@ import { useStoreState, useStoreActions } from '../../../models';
 import { ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import { getPermissionAsync, getFileName } from '../../../utils';
 import MultiStepMenuCompletePieces from './MultiStepMenuCompletePieces';
-import { ListOfPieces } from './ModalItemApplyToOffering';
+import { ListOfPieces } from './ListOfPieces';
 import { ReactNativeFile } from 'apollo-upload-client';
 import { useAddVerificationpiecesMutation, Maybe } from '../../../graphql';
 import { ModalItemInfos } from '../../sharedComponents';
@@ -195,7 +195,7 @@ const FirstScreen = ({ ...props }) => {
             Vous trouverez ci-dessous une liste de pièces à fournir:
             {'\n'}
           </Text>
-          {documentList?.map((item, idx) => (
+          {documentList.map((item, idx) => (
             <Text
               key={idx}
               vertical={[theme.sizes.hinouting / 5, theme.sizes.inouting / 5]}>

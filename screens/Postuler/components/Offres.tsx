@@ -9,11 +9,11 @@ import {
   useOnOfferingAddedSubscription
 } from '../../../graphql';
 import { useStoreState } from '../../../models';
-import { MainStackParamList } from '../../../navigation/Routes';
+import { BottomStackParamList } from '../../../navigation/Routes';
 import { CustomListView } from '../../sharedComponents';
 
 interface Props {
-  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
+  navigation: StackNavigationProp<BottomStackParamList, 'Postuler'>;
 }
 
 const Offres: SFC<Props> = ({ navigation }) => {

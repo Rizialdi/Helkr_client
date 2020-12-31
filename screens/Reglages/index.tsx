@@ -1,23 +1,19 @@
+import { ReactNativeFile } from 'apollo-upload-client';
+import { ImagePicker } from 'expo';
 import React, { useEffect, useState } from 'react';
-import { useApolloClient } from '@apollo/react-hooks';
 import {
+  ActivityIndicator,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View
 } from 'react-native';
-import { ImagePicker } from 'expo';
-import { ReactNativeFile } from 'apollo-upload-client';
+
+import { useApolloClient } from '@apollo/react-hooks';
 import { AntDesign } from '@expo/vector-icons';
 
 import { theme } from '../../constants';
-import { Text, Block } from '../sharedComponents';
-import { Description, ProfilContainer, Tag } from './components';
-import { useStoreActions, useStoreState } from '../../models';
-import { getFileName } from '../../utils';
-import Layout from '../sharedComponents/Layout';
-import { ActivityIndicator } from 'react-native';
 import {
   useAddressUpdateMutation,
   useAvatarUploadMutation,
@@ -25,10 +21,15 @@ import {
   useTagsUpdateMutation,
   useUserByIdQuery
 } from '../../graphql';
+import { useStoreActions, useStoreState } from '../../models';
 import {
-  StackNavigationInterface,
-  MainStackParamList
+  MainStackParamList,
+  StackNavigationInterface
 } from '../../navigation/Routes';
+import { getFileName } from '../../utils';
+import { Block, Text } from '../sharedComponents';
+import Layout from '../sharedComponents/Layout';
+import { Description, ProfilContainer, Tag } from './components';
 
 export default function Profile({
   navigation

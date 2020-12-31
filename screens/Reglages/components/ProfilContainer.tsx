@@ -1,16 +1,16 @@
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
-import { Octicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import ModalSelector from 'react-native-modal-selector';
 
-import { useStoreState } from '../../../models';
+import { Octicons } from '@expo/vector-icons';
 
 import { theme } from '../../../constants';
-import { getPermissionAsync } from '../../../utils';
-import { Text, ImageComponent } from '../../sharedComponents';
-import ModalSelector from 'react-native-modal-selector';
 import { cities } from '../../../constants/mocks';
+import { useStoreState } from '../../../models';
+import { getPermissionAsync } from '../../../utils';
+import { ImageComponent, Text } from '../../sharedComponents';
 
 interface Props {
   image: string;

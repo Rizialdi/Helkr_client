@@ -1,9 +1,9 @@
 import React, { SFC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { theme } from '../../constants';
 import { useStoreState } from '../../models';
 import Text from './Text';
-import { theme } from '../../constants';
 
 interface Props {
   tag: string | undefined;

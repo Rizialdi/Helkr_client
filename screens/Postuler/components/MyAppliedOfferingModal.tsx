@@ -1,25 +1,26 @@
-import React, { SFC, useState, useEffect } from 'react';
+import React, { SFC, useEffect, useState } from 'react';
 import { ScrollView } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
 
-import { DetailOfferingParamsList } from '../../../navigation/Routes';
+import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {
-  useOfferingByIdPostuleesQuery,
-  OfferingByIdPostuleesQuery
-} from '../../../graphql';
-import {
-  Text,
-  Block,
-  TagItem,
-  Card,
-  OfferingDetailsOnModal
-} from '../../sharedComponents';
+
 import { theme } from '../../../constants';
+import {
+  OfferingByIdPostuleesQuery,
+  useOfferingByIdPostuleesQuery
+} from '../../../graphql';
+import { DetailOfferingParamsList } from '../../../navigation/Routes';
 import { formatDateAvis } from '../../../utils';
-import AuthorCard from './AuthorCard';
+import {
+  Block,
+  Card,
+  OfferingDetailsOnModal,
+  OfferingLoadingIndicator,
+  TagItem,
+  Text
+} from '../../sharedComponents';
 import EventDay from '../../sharedComponents/EventDay';
-import { OfferingLoadingIndicator } from '../../sharedComponents';
+import AuthorCard from './AuthorCard';
 import PreferredDays from './PreferredDays';
 
 interface Props {

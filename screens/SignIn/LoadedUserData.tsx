@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
-import { Button, Text } from '../sharedComponents';
+import { ActivityIndicator, Dimensions, Keyboard, View } from 'react-native';
+
 import { theme } from '../../constants';
-import { storeCredentials } from '../../utils';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
 import { useStoreActions, useStoreState } from '../../models';
+import {
+  MainStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
+import { storeCredentials } from '../../utils';
+import { Button, Text } from '../sharedComponents';
 import { SignInLayout } from './components';
 
 const { width } = Dimensions.get('screen');

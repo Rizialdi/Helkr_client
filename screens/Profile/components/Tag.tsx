@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import TagItem from './TagItem';
 import { theme } from '../../../constants';
 import { getItemNameOnReferenceId } from '../../../constants/mocks';
+import TagItem from './TagItem';
 
 interface Props {
   tags?: string[];

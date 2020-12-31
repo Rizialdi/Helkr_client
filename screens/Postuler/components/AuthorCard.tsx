@@ -1,18 +1,19 @@
+import * as Linking from 'expo-linking';
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
 
+import { AntDesign } from '@expo/vector-icons';
+
+import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
+import { makePseudoName } from '../../../utils';
 import {
-  Text,
   Block,
   ImageComponent,
-  StatsContainer
+  StatsContainer,
+  Text
 } from '../../sharedComponents';
-import { makePseudoName } from '../../../utils';
-import { AntDesign } from '@expo/vector-icons';
-import { useStoreState } from '../../../models';
-import * as Linking from 'expo-linking';
-import Modal from 'react-native-modal';
-import { theme } from '../../../constants';
 
 const { height } = Dimensions.get('screen');
 interface author {

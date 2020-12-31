@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { theme } from '../../constants';
 import { useStoreState } from '../../models';
-import { Block, Layout, Text } from '../sharedComponents';
-import { Offres, Postulees } from './components';
 import {
   BottomStackParamList,
   StackNavigationInterface
 } from '../../navigation/Routes';
-import { theme } from '../../constants';
-
-//TODO implement infinite scroll when Issue resolved
-// cf https://gist.github.com/ctrlplusb/17b5a1bd1736b5ba547bb15b3dd5be29
+import { Block, Layout, Text } from '../sharedComponents';
+import { Offres, Postulees } from './components';
 
 const Postuler = ({
   navigation,
@@ -79,8 +76,8 @@ const Postuler = ({
           {tabs.map(tab => renderTab(tab))}
         </Block>
         <Block flex={false}>
-          {activeTab === tabs[0] && <Offres {...{ navigation }} />}
-          {activeTab === tabs[1] && <Postulees {...{ navigation }} />}
+          {activeTab === tabs[0] && <Offres navigation={navigation} />}
+          {activeTab === tabs[1] && <Postulees navigation={navigation} />}
         </Block>
       </>
     </Layout>

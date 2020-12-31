@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, View, Dimensions, Keyboard } from 'react-native';
 import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Dimensions, Keyboard, View } from 'react-native';
 
-import { Button, Text, ModalItemInfos } from '../sharedComponents';
 import { theme } from '../../constants';
-import { Form, InputValidator, validation, SignInLayout } from './components';
-import { FormData } from './components/validation';
 import {
-  useAuthStepTwoLazyQuery,
-  useAuthStepOneLazyQuery
+  useAuthStepOneLazyQuery,
+  useAuthStepTwoLazyQuery
 } from '../../graphql';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
 import { useStoreState } from '../../models';
+import {
+  MainStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
+import { Button, ModalItemInfos, Text } from '../sharedComponents';
+import { Form, InputValidator, SignInLayout, validation } from './components';
+import { FormData } from './components/validation';
 
 const { width } = Dimensions.get('screen');
 

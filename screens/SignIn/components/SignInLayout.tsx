@@ -1,15 +1,16 @@
 import React, { FC, useState } from 'react';
-import {
-  Layout,
-  LayoutProps,
-  Text,
-  Button,
-  Block,
-  TermsOfServices
-} from '../../sharedComponents';
-import { TouchableOpacity, Modal } from 'react-native';
+import { Modal, TouchableOpacity } from 'react-native';
+
 import { theme } from '../../../constants';
 import { useStoreState } from '../../../models';
+import {
+  Block,
+  Button,
+  Layout,
+  LayoutProps,
+  TermsOfServices,
+  Text
+} from '../../sharedComponents';
 
 interface Props extends LayoutProps {
   children: JSX.Element | JSX.Element[];

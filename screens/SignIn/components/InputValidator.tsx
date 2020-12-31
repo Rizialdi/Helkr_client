@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, TextInput, TextInputProps } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
 import { FieldError } from 'react-hook-form';
+import { StyleSheet, TextInput, TextInputProps } from 'react-native';
 
-import Text from '../../sharedComponents/Text';
+import { Ionicons } from '@expo/vector-icons';
+
+import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
 import Block from '../../sharedComponents/Block';
 import Button from '../../sharedComponents/Button';
-import { useStoreState } from '../../../models';
-import { theme } from '../../../constants';
+import Text from '../../sharedComponents/Text';
+
 interface Props extends TextInputProps {
   name: string;
   email?: boolean;
@@ -87,6 +89,7 @@ export default React.forwardRef<unknown, Props>(
       <Block flex={false} margin={[16, 0]}>
         {renderLabel()}
         <TextInput
+          //@ts-ignore
           ref={ref}
           style={inputStyles}
           secureTextEntry={isSecure}

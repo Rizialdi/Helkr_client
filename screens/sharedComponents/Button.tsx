@@ -1,12 +1,11 @@
 import React, { SFC } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useStoreState } from '../../models';
+
 import { theme } from '../../constants';
+import { useStoreState } from '../../models';
+
 interface Props {
   style?: object;
-  opacity?: number;
-  gradient?: boolean;
   shadow?: object;
   accent?: boolean;
   primary?: boolean;
@@ -22,7 +21,6 @@ interface Props {
 
 const Button: SFC<Props> = ({
   style,
-  gradient,
   shadow,
   children,
   accent,
@@ -36,13 +34,6 @@ const Button: SFC<Props> = ({
   ...props
 }) => {
   const { themeColors } = useStoreState(state => state.Preferences);
-
-  const startColor = themeColors.primary,
-    endColor = themeColors.secondary,
-    start = { x: 0, y: 0 },
-    end = { x: 1, y: 1 },
-    locations = [0.1, 0.9],
-    opacity = 0.8;
 
   const buttonStyles = [
     styles.button,
@@ -60,26 +51,8 @@ const Button: SFC<Props> = ({
     style
   ];
 
-  if (gradient) {
-    return (
-      <TouchableOpacity style={buttonStyles} activeOpacity={opacity} {...props}>
-        <LinearGradient
-          start={start}
-          end={end}
-          locations={locations}
-          style={buttonStyles}
-          colors={[startColor, endColor]}>
-          {children}
-        </LinearGradient>
-      </TouchableOpacity>
-    );
-  }
-
   return (
-    <TouchableOpacity
-      style={buttonStyles}
-      activeOpacity={opacity || 0.8}
-      {...props}>
+    <TouchableOpacity style={buttonStyles} activeOpacity={0.8} {...props}>
       {children}
     </TouchableOpacity>
   );

@@ -1,10 +1,11 @@
-import React, { SFC, useState, useEffect, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { SFC, useEffect, useRef, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Modal from 'react-native-modal';
-import Text from './Text';
-import Button from './Button';
-import Block from './Block';
+
 import { theme } from '../../constants';
+import Block from './Block';
+import Button from './Button';
+import Text from './Text';
 
 interface Props {
   timer: number;

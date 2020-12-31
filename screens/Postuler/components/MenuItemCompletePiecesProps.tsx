@@ -1,4 +1,4 @@
-import { ListOfPieces } from './ModalItemApplyToOffering';
+import { ListOfPieces } from './ListOfPieces';
 export interface MenuItemCompletePiecesProps {
   children: JSX.Element;
   values: object;

@@ -1,10 +1,12 @@
-import React from 'react';
-import { Octicons, AntDesign } from '@expo/vector-icons';
-import { useStoreState } from '../../../models';
-import { StyleSheet, TouchableOpacity, View, Share, Alert } from 'react-native';
 import { makeUrl } from 'expo-linking';
+import React from 'react';
+import { Alert, Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+
+import { AntDesign, Octicons } from '@expo/vector-icons';
+
 import { theme } from '../../../constants';
-import { Text, ImageComponent } from '../../sharedComponents';
+import { useStoreState } from '../../../models';
+import { ImageComponent, Text } from '../../sharedComponents';
 
 interface Props {
   image?: string | null;

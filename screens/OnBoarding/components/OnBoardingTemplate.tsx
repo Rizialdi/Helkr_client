@@ -1,11 +1,7 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-import { SvgUri } from 'react-native-svg';
 import {
   Mark,
-  Phone1,
-  Phone2,
-  Phone3,
   CreateOfferingSvg,
   ReceivePropositionSvg,
   MakeMoneySvg,

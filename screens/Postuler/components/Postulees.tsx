@@ -11,10 +11,10 @@ import {
 } from '../../../graphql';
 import { sortPostuleeOnInterest } from '../../../utils';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MainStackParamList } from '../../../navigation/Routes';
+import { BottomStackParamList } from '../../../navigation/Routes';
 
 interface Props {
-  navigation: StackNavigationProp<MainStackParamList, 'DetailOffering'>;
+  navigation: StackNavigationProp<BottomStackParamList, 'Postuler'>;
 }
 type LocalOffering = Array<
   { __typename?: 'offering' } & Pick<

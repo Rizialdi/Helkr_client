@@ -1,14 +1,15 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-
-import Text from './Text';
-import Block from './Block';
-import { AntDesign } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import { AntDesign } from '@expo/vector-icons';
+
+import { theme } from '../../constants';
 import { useStoreState } from '../../models';
+import Block from './Block';
 import Card from './Card';
 import ImageComponent from './ImageComponent';
-import { theme } from '../../constants';
+import Text from './Text';
 
 interface Props {
   id: string;

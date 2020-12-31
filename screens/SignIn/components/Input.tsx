@@ -1,13 +1,14 @@
 import * as React from 'react';
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  TextStyle,
-  TextInputProps
-} from 'react-native';
 import { FieldError } from 'react-hook-form';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  View
+} from 'react-native';
+
 interface Props extends TextInputProps {
   name: string;
   label?: string;

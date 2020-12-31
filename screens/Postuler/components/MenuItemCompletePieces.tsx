@@ -1,9 +1,9 @@
 import React, { SFC, useState } from 'react';
-import { View, Button, KeyboardAvoidingView } from 'react-native';
+import { Button, KeyboardAvoidingView, View } from 'react-native';
 
-import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
-import { useStoreState } from '../../../models';
 import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
+import { MenuItemCompletePiecesProps } from './MenuItemCompletePiecesProps';
 
 const MenuItemCompletePieces: SFC<MenuItemCompletePiecesProps> = ({
   children,

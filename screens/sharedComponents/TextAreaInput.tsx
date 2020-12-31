@@ -1,15 +1,17 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
+  Keyboard,
+  StyleProp,
   StyleSheet,
   TextInput,
-  StyleProp,
-  ViewStyle,
-  View
+  View,
+  ViewStyle
 } from 'react-native';
-import Text from './Text';
-import { useStoreState } from '../../models';
+
 import { theme } from '../../constants';
-import { Keyboard } from 'react-native';
+import { useStoreState } from '../../models';
+import Text from './Text';
+
 interface Props {
   min: number;
   max: number;

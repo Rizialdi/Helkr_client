@@ -1,36 +1,35 @@
 import React, { SFC, useState } from 'react';
-import { View, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Keyboard, ScrollView, View } from 'react-native';
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback
+} from 'react-native-gesture-handler';
+
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import client from '../../../ApolloClient';
+import { theme } from '../../../constants';
+import { useCandidateToOfferingMutation } from '../../../graphql';
+import { useStoreState } from '../../../models';
+import { DetailOfferingParamsList } from '../../../navigation/Routes';
+import { formatDate } from '../../../utils';
 import {
   Block,
-  Text,
-  TextAreaInputValidator,
+  Button,
+  ModalItemInfos,
   StackedToBottom,
   TagItem,
-  Button,
-  ModalItemInfos
+  Text,
+  TextAreaInputValidator
 } from '../../sharedComponents';
-import { RouteProp } from '@react-navigation/native';
-import { DetailOfferingParamsList } from '../../../navigation/Routes';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { theme } from '../../../constants';
-import { formatDate } from '../../../utils';
-import { useStoreState } from '../../../models';
-import {
-  TouchableWithoutFeedback,
-  TouchableOpacity
-} from 'react-native-gesture-handler';
-import { useForm } from 'react-hook-form';
-import { FormDataOffer } from './makeAnOfferValidation';
 import { Form } from '../../SignIn/components';
-import validation from './makeAnOfferValidation';
-import { useCandidateToOfferingMutation } from '../../../graphql';
-import client from '../../../ApolloClient';
+import validation, { FormDataOffer } from './makeAnOfferValidation';
+
 interface Props {
-  route?: RouteProp<DetailOfferingParamsList, 'OfferingsListModal'>;
-  navigation?: StackNavigationProp<
-    DetailOfferingParamsList,
-    'OfferingsListModal'
-  >;
+  route?: RouteProp<DetailOfferingParamsList, 'MakeAnOffer'>;
+  navigation?: StackNavigationProp<DetailOfferingParamsList, 'MakeAnOffer'>;
 }
 
 const MakeAnOffer: SFC<Props> = ({ navigation, route }) => {

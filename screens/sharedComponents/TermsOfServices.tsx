@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import Text from './Text';
+
 import { theme } from '../../constants';
+import Text from './Text';
 
 const TermsOfServices = () => {
   return (

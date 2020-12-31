@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useStoreState } from '../../../models';
+
 import { theme } from '../../../constants';
+import { useStoreState } from '../../../models';
 
 interface DotProps {
   isActive: boolean;

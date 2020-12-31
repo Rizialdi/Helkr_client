@@ -1,18 +1,19 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { View, ActivityIndicator, Dimensions, Keyboard } from 'react-native';
-import { Button, Text } from '../sharedComponents';
-import { theme, mocks } from '../../constants';
-import { Form, InputValidator, validation, SignInLayout } from './components';
-import { FormData } from './components/validation';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
-import { useRegisterUserMutation } from '../../graphql';
-import { storeCredentials } from '../../utils';
-import { useStoreActions, useStoreState } from '../../models';
+import { ActivityIndicator, Dimensions, Keyboard, View } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
+
+import { mocks, theme } from '../../constants';
+import { useRegisterUserMutation } from '../../graphql';
+import { useStoreActions, useStoreState } from '../../models';
+import {
+  MainStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
+import { storeCredentials } from '../../utils';
+import { Button, Text } from '../sharedComponents';
+import { Form, InputValidator, SignInLayout, validation } from './components';
+import { FormData } from './components/validation';
 
 const { width } = Dimensions.get('screen');
 
@@ -49,10 +50,8 @@ const RegisterUsername = ({
 
   useEffect(() => {
     if (data && data.registerUser.token) {
-      const {
-        token,
-        user: { id, prenom }
-      } = data.registerUser;
+      const { token, user } = data.registerUser;
+      const { id, prenom } = user ? user : { id: '', prenom: '' };
       storeCredentials({ id, prenom, token });
       setUser({ id, prenom, token });
     }

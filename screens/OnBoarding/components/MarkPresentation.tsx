@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { theme } from '../../../constants';
+
 import { Mark } from '../../../assets/icons';
+import { theme } from '../../../constants';
 import { Text } from '../../sharedComponents';
 
 const MarkPresentation = (): JSX.Element => {

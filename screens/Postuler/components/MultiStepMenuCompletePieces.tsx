@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
 import { View } from 'react-native';
 
 import MenuItemCompletePieces from './MenuItemCompletePieces';
-import { ListOfPieces } from './ModalItemApplyToOffering';
+import { ListOfPieces } from './ListOfPieces';
 
 // todo values object ? array ?
 
@@ -48,17 +47,17 @@ class MultiStepMenuCompletePieces extends Component<Props, State, any> {
         {React.Children.map(children, (child: any, idx: number) => {
           if (idx === this.state.step) {
             return React.cloneElement(child, {
+              onSubmit: this._onSubmit,
+              nextStep: this._nextStep,
               values: this.state.values,
               currentIndex: this.state.step,
               totalChildren: children?.length,
+              onChangeValue: this._onChangeValue,
               referenceId: this.props.referenceId,
               listOfPieces: this.props.listOfPieces,
               setOpenModal: this.props.setOpenModal,
               setModalOverlaySize: this.props.setModalOverlaySize,
-              isLast: children ? this.state.step === children.length - 1 : true,
-              onSubmit: this._onSubmit,
-              nextStep: this._nextStep,
-              onChangeValue: this._onChangeValue
+              isLast: children ? this.state.step === children.length - 1 : true
             });
           }
           return null;

@@ -1,15 +1,17 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { FieldError } from 'react-hook-form';
 import {
+  StyleProp,
   StyleSheet,
   TextInput,
-  StyleProp,
-  ViewStyle,
-  View
+  View,
+  ViewStyle
 } from 'react-native';
-import Text from './Text';
-import { useStoreState } from '../../models';
+
 import { theme } from '../../constants';
-import { FieldError } from 'react-hook-form';
+import { useStoreState } from '../../models';
+import Text from './Text';
+
 interface InputProps {
   min: number;
   max: number;
@@ -75,7 +77,7 @@ export default React.forwardRef<unknown, InputProps>(
     const [value, setValue] = useState<string>('');
     const [count, setCount] = useState<number>(0);
     const { themeColors } = useStoreState(state => state.Preferences);
-    if (min >= max) return null;
+    if (min >= max) return <></>;
 
     useEffect(() => {
       if (Inputprops.value) {
@@ -112,6 +114,7 @@ export default React.forwardRef<unknown, InputProps>(
         </Text>
         <View style={[styles.container, blockStyles]}>
           <TextInput
+            //@ts-ignore
             ref={ref}
             maxLength={max}
             multiline={true}

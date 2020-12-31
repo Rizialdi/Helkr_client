@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, StyleSheet, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 
-import { useStoreState } from '../../models';
 import { theme } from '../../constants';
+import { useStoreState } from '../../models';
 import { VertInterface } from './Interface';
 
 interface Props {

@@ -1,5 +1,5 @@
 import React, { SFC, useState } from 'react';
-import { LocaleConfig, Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 
 LocaleConfig.locales['fr'] = {
   monthNames: [

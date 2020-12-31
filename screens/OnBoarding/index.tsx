@@ -1,22 +1,22 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
   Dimensions,
-  StyleSheet,
-  View,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  ScrollView,
+  StyleSheet,
   TouchableOpacity,
-  ScrollView
+  View
 } from 'react-native';
 
+import { mocks, theme } from '../../constants';
+import { useStoreState } from '../../models';
+import {
+  MainStackParamList,
+  StackNavigationInterface
+} from '../../navigation/Routes';
 import { Text } from '../sharedComponents';
 import { Dots, MarkPresentation, OnBoardingTemplate } from './components';
-import { mocks, theme } from '../../constants';
-import {
-  StackNavigationInterface,
-  MainStackParamList
-} from '../../navigation/Routes';
-import { useStoreState } from '../../models';
 
 const { width } = Dimensions.get('screen');
 

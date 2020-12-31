@@ -1,23 +1,26 @@
-import React, { SFC, useState, useEffect } from 'react';
-import { RouteProp } from '@react-navigation/native';
-import { DetailOfferingParamsList } from '../../../navigation/Routes';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useOfferingByIdQuery } from '../../../graphql';
 import { useStoreState } from 'easy-peasy';
+import React, { SFC, useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import Modal from 'react-native-modal';
+
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import { mocks, theme } from '../../../constants';
+import { useOfferingByIdQuery } from '../../../graphql';
+import { DetailOfferingParamsList } from '../../../navigation/Routes';
+import { formatDate } from '../../../utils';
 import {
   Block,
-  Text,
-  TagItem,
-  OfferingDetailsOnModal,
-  StackedToBottom,
   Button,
-  OfferingLoadingIndicator
+  OfferingDetailsOnModal,
+  OfferingLoadingIndicator,
+  StackedToBottom,
+  TagItem,
+  Text
 } from '../../sharedComponents';
-import { formatDate } from '../../../utils';
 import CompletePieces from './CompletePieces';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import Modal from 'react-native-modal';
+
 interface Props {
   route?: RouteProp<DetailOfferingParamsList, 'OfferingsListModal'>;
   navigation?: StackNavigationProp<
@@ -25,15 +28,6 @@ interface Props {
     'OfferingsListModal'
   >;
 }
-
-type ListOfPieces =
-  | {
-      id: number;
-      label: string;
-      titre: string;
-      description: string;
-    }[]
-  | undefined;
 
 const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
   const { data, loading, error } = useOfferingByIdQuery({
@@ -58,7 +52,7 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
       setIsAuthorized(true);
     } else {
       const list = mocks.getListofPieces(data?.offeringById.referenceId);
-      setListOfPieces(list);
+      list && setListOfPieces(list);
     }
   }, [data, jobAuthorizations]);
 
@@ -170,7 +164,7 @@ const OfferingsListModal: SFC<Props> = ({ navigation, route }) => {
             <CompletePieces
               listOfPieces={listOfPieces}
               referenceId={data?.offeringById.referenceId as string}
-              setOpenModal={navigation?.goBack}
+              setOpenModal={navigation ? navigation?.goBack : () => null}
               setModalOverlaySize={setModalOverlaySize}
             />
           )}

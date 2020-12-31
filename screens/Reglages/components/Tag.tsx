@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { theme } from '../../../constants';
+import { getItemNameOnReferenceId } from '../../../constants/mocks';
 import { Text } from '../../sharedComponents';
 import TagItem from './TagItem';
-import { getItemNameOnReferenceId } from '../../../constants/mocks';
 
 interface Props {
   tags?: string[] | null;

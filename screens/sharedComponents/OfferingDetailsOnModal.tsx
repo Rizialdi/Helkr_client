@@ -1,7 +1,9 @@
 import React, { SFC } from 'react';
-import Text from './Text';
-import { capitalize } from '../../utils';
+
 import { theme } from '../../constants';
+import { capitalize } from '../../utils';
+import Text from './Text';
+
 interface Props {
   details: { details: string };
 }

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useStoreState } from '../../models';
 import Block, { BlockProps } from './Block';
+
 interface Props extends BlockProps {
   title?: string;
   children: JSX.Element | JSX.Element[];

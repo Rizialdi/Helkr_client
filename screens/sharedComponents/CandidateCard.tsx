@@ -4,7 +4,7 @@ import { AntDesign } from '@expo/vector-icons';
 
 import Text from './Text';
 import Block from './Block';
-import { CandidateCardClickedPart } from '../Manage/components/ModalItemManageCandidates';
+import { CandidateCardClickedPart } from '../Manage/components/MyCandidateToOffering';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useStoreState } from '../../models';
 import Card from './Card';

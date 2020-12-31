@@ -1,15 +1,15 @@
-import React, { useState, SFC } from 'react';
-import { ActivityIndicator, View, Dimensions, Keyboard } from 'react-native';
+import React, { SFC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-
-import { Button, ModalItemSignUp, Text } from '../sharedComponents';
-import { theme } from '../../constants';
-import { Form, InputValidator, validation, SignInLayout } from './components';
-import { FormData } from './components/validation';
+import { ActivityIndicator, Dimensions, Keyboard, View } from 'react-native';
 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MainStackParamList } from '../../navigation/Routes';
+
+import { theme } from '../../constants';
 import { useStoreState } from '../../models';
+import { MainStackParamList } from '../../navigation/Routes';
+import { Button, ModalItemSignUp, Text } from '../sharedComponents';
+import { Form, InputValidator, SignInLayout, validation } from './components';
+import { FormData } from './components/validation';
 
 const { width } = Dimensions.get('screen');
 
