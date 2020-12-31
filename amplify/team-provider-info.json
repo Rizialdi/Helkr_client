@@ -1,0 +1,20 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-helkrclient-dev-130530-authRole",
+            "UnauthRoleArn": "arn:aws:iam::132839074918:role/amplify-helkrclient-dev-130530-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::132839074918:role/amplify-helkrclient-dev-130530-authRole",
+            "Region": "eu-central-1",
+            "DeploymentBucketName": "amplify-helkrclient-dev-130530-deployment",
+            "UnauthRoleName": "amplify-helkrclient-dev-130530-unauthRole",
+            "StackName": "amplify-helkrclient-dev-130530",
+            "StackId": "arn:aws:cloudformation:eu-central-1:132839074918:stack/amplify-helkrclient-dev-130530/7b8528c0-4b60-11eb-b995-0a33f5512642",
+            "AmplifyAppId": "d2l8wbmzmxg2tv"
+        },
+        "categories": {
+            "auth": {
+                "cognito79f13929": {}
+            }
+        }
+    }
+}

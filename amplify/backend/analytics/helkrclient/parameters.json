@@ -1,0 +1,21 @@
+{
+    "appName": "helkrclient",
+    "roleName": "pinpointLambdaRole779846f9",
+    "cloudformationPolicyName": "cloudformationPolicy779846f9",
+    "cloudWatchPolicyName": "cloudWatchPolicy779846f9",
+    "pinpointPolicyName": "pinpointPolicy779846f9",
+    "authPolicyName": "pinpoint_amplify_779846f9",
+    "unauthPolicyName": "pinpoint_amplify_779846f9",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

@@ -1,18 +1,22 @@
-import { ApolloProvider } from '@apollo/react-hooks';
 import { StoreProvider } from 'easy-peasy';
 import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
-import * as Font from 'expo-font';
-import React, { SFC, useState, useEffect, useCallback } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { InitialState } from '@react-navigation/native';
 import Constants from 'expo-constants';
+import * as Font from 'expo-font';
+import React, { SFC, useCallback, useEffect, useState } from 'react';
+import { AsyncStorage } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import store from './models';
-import Navigation from './navigation';
+import Amplify from 'aws-amplify';
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
+
+import { ApolloProvider } from '@apollo/react-hooks';
+import { InitialState } from '@react-navigation/native';
 
 import client from './ApolloClient';
-import { AsyncStorage } from 'react-native';
+import store from './models';
+import Navigation from './navigation';
 
 const NAVIGATION_STATE_KEY = `NAVIGATION_STATE_KEY-${Constants.manifest.sdkVersion}`;
 
