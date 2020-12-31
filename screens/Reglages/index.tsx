@@ -6,8 +6,10 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
+  Switch,
   TouchableOpacity,
-  View
+  View,
+  Vibration
 } from 'react-native';
 
 import { useApolloClient } from '@apollo/react-hooks';
@@ -49,9 +51,18 @@ export default function Profile({
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const { user } = useStoreState(state => state.User);
+  const { vibrations } = useStoreState(state => state.Preferences);
+  const { changeVibrations } = useStoreActions(action => action.Preferences);
   const { themeColors } = useStoreState(state => state.Preferences);
 
   const id = user && user.id ? user.id : '';
+
+  const [localVibrations, setLocalVibrations] = useState<boolean>(true);
+  const [notifications, setNotifications] = useState<boolean>(true);
+
+  useEffect(() => {
+    setLocalVibrations(vibrations);
+  }, [vibrations]);
 
   const { data, loading } = useUserByIdQuery({
     variables: { id },
@@ -175,6 +186,13 @@ export default function Profile({
       throw new Error('tags storage failed');
     }
   };
+
+  const onVibrationSwitchChange = (value: boolean) => {
+    setLocalVibrations(value);
+    !localVibrations && Vibration.vibrate(200);
+    changeVibrations({ vibrations: value });
+  };
+
   const color =
     isModified && !disableSaveButton
       ? theme.colors.secondary
@@ -248,6 +266,63 @@ export default function Profile({
                     </Text>
                     <Tag tags={tags} parentCallback={SetTags} />
                   </View>
+                  <View style={styles.delimiter}></View>
+                  <Block
+                    row
+                    center
+                    space="between"
+                    padding={[
+                      theme.sizes.twiceTen / 4,
+                      theme.sizes.htwiceTen,
+                      0,
+                      0
+                    ]}>
+                    <Text
+                      gray2
+                      medium
+                      style={[
+                        styles.text,
+                        {
+                          paddingLeft: theme.sizes.twiceTen,
+                          fontSize: theme.sizes.twiceTen * 1.2,
+                          paddingTop: theme.sizes.hinouting * 0.4
+                        }
+                      ]}>
+                      Vibrations
+                    </Text>
+                    <Switch
+                      value={localVibrations}
+                      onValueChange={value => onVibrationSwitchChange(value)}
+                    />
+                  </Block>
+                  <Block
+                    row
+                    center
+                    space="between"
+                    padding={[
+                      theme.sizes.twiceTen / 4,
+                      theme.sizes.htwiceTen,
+                      0,
+                      0
+                    ]}>
+                    <Text
+                      gray2
+                      medium
+                      style={[
+                        styles.text,
+                        {
+                          paddingLeft: theme.sizes.twiceTen,
+                          fontSize: theme.sizes.twiceTen * 1.2,
+                          paddingTop: theme.sizes.hinouting * 0.4
+                        }
+                      ]}>
+                      Notifications
+                    </Text>
+                    <Switch
+                      value={notifications}
+                      onValueChange={value => setNotifications(value)}
+                    />
+                  </Block>
                 </ScrollView>
               </KeyboardAvoidingView>
             </>

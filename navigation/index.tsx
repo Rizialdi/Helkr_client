@@ -461,6 +461,7 @@ export default ({ initialState, onStateChange }: Props) => {
   const {
     User: { loadUser },
     Offering: { loadTags },
+    Preferences: { loadVibrations },
     ChatMessages: { loadLastMessageReadIds },
     JobAuthorization: { loadJobAuthorizations },
     SendVerifPiecesReferenceIds: { loadsendVerifPiecesReferenceIds }
@@ -486,6 +487,7 @@ export default ({ initialState, onStateChange }: Props) => {
       if (token) {
         loadUser();
         loadTags();
+        loadVibrations();
         loadLastMessageReadIds();
         loadJobAuthorizations();
         loadsendVerifPiecesReferenceIds();

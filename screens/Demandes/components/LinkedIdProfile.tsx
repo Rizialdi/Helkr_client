@@ -44,8 +44,6 @@ const LinkedIdProfile = ({
 
     return () => {
       isMounted = false;
-      navigation.setParams({ id: '' });
-      return;
     };
   }, [Data, Loading, Error]);
 

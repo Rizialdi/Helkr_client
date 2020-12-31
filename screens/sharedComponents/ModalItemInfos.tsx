@@ -1,11 +1,12 @@
 import React, { SFC, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Vibration } from 'react-native';
 import Modal from 'react-native-modal';
 
 import { theme } from '../../constants';
 import Block from './Block';
 import Button from './Button';
 import Text from './Text';
+import { useStoreState } from '../../models';
 
 interface Props {
   timer: number;
@@ -26,10 +27,14 @@ const ModalItem: SFC<Props> = ({
   errorReporting
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+
+  const { vibrations } = useStoreState(state => state.Preferences);
+
   const count = useRef(0);
   useEffect(() => {
     count.current === 0 &&
       setTimeout(() => {
+        vibrations && Vibration.vibrate(200);
         setModalVisible(!modalVisible);
       }, timer * 1000);
 
