@@ -32,14 +32,6 @@ import {
   registerForPushNotificationsAsync
 } from './utils';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false
-  })
-});
-
 const Accueil = (
   navigation: StackNavigationInterface<BottomStackParamList, 'Accueil'>
 ): JSX.Element => {

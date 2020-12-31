@@ -1,4 +1,5 @@
 import { Action, action, thunk, Thunk } from 'easy-peasy';
+import * as Notifications from 'expo-notifications';
 import { AsyncStorage } from 'react-native';
 interface themeInterface {
   accent: string;
@@ -41,13 +42,16 @@ const darkTheme: themeInterface = {
 
 export interface PreferencesModel {
   vibrations: boolean;
+  notifications: boolean;
   loadVibrations: Thunk<PreferencesModel>;
+  loadNotifications: Thunk<PreferencesModel>;
   themeColors: themeInterface;
   changeTheme: Action<PreferencesModel, { themeColors: themeInterface }>;
   changeVibrations: Action<PreferencesModel, { vibrations: boolean }>;
+  changeNotifications: Action<PreferencesModel, { notifications: boolean }>;
 }
 
-const storedData = async () => {
+const storedVibrationsValue = async () => {
   try {
     const vibrations = await AsyncStorage.getItem('vibrations');
     if (vibrations?.length) {
@@ -59,12 +63,29 @@ const storedData = async () => {
   }
 };
 
+const storedNotificationsValue = async () => {
+  try {
+    const notifications = await AsyncStorage.getItem('notifications');
+    if (notifications?.length) {
+      return notifications === 'true';
+    }
+    return true;
+  } catch (error) {
+    throw new Error('Unable to load Credentials');
+  }
+};
+
 const preferences: PreferencesModel = {
   themeColors: lightTheme,
   vibrations: false,
+  notifications: false,
   loadVibrations: thunk(async actions => {
-    const vibrations = await storedData();
+    const vibrations = await storedVibrationsValue();
     actions.changeVibrations({ vibrations });
+  }),
+  loadNotifications: thunk(async actions => {
+    const notifications = await storedNotificationsValue();
+    actions.changeNotifications({ notifications });
   }),
   // actions
   changeTheme: action((state, payload) => {
@@ -73,6 +94,17 @@ const preferences: PreferencesModel = {
   changeVibrations: action((state, payload) => {
     state.vibrations = payload.vibrations;
     AsyncStorage.setItem('vibrations', payload.vibrations.toString());
+  }),
+  changeNotifications: action((state, payload) => {
+    state.notifications = payload.notifications;
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: payload.notifications,
+        shouldPlaySound: true,
+        shouldSetBadge: false
+      })
+    });
+    AsyncStorage.setItem('notifications', payload.notifications.toString());
   })
 };
 

@@ -51,18 +51,22 @@ export default function Profile({
   const { netWorkStatus } = useStoreState(state => state.NetWorkStatus);
 
   const { user } = useStoreState(state => state.User);
-  const { vibrations } = useStoreState(state => state.Preferences);
-  const { changeVibrations } = useStoreActions(action => action.Preferences);
-  const { themeColors } = useStoreState(state => state.Preferences);
+  const { vibrations, notifications, themeColors } = useStoreState(
+    state => state.Preferences
+  );
+  const { changeVibrations, changeNotifications } = useStoreActions(
+    action => action.Preferences
+  );
 
   const id = user && user.id ? user.id : '';
 
   const [localVibrations, setLocalVibrations] = useState<boolean>(true);
-  const [notifications, setNotifications] = useState<boolean>(true);
+  const [localNotifications, setLocalNotifications] = useState<boolean>(true);
 
   useEffect(() => {
     setLocalVibrations(vibrations);
-  }, [vibrations]);
+    setLocalNotifications(notifications);
+  }, [vibrations, notifications]);
 
   const { data, loading } = useUserByIdQuery({
     variables: { id },
@@ -193,6 +197,11 @@ export default function Profile({
     changeVibrations({ vibrations: value });
   };
 
+  const onNotificationSwitchChange = (value: boolean) => {
+    setLocalNotifications(value);
+    changeNotifications({ notifications: value });
+  };
+
   const color =
     isModified && !disableSaveButton
       ? theme.colors.secondary
@@ -319,8 +328,8 @@ export default function Profile({
                       Notifications
                     </Text>
                     <Switch
-                      value={notifications}
-                      onValueChange={value => setNotifications(value)}
+                      value={localNotifications}
+                      onValueChange={value => onNotificationSwitchChange(value)}
                     />
                   </Block>
                 </ScrollView>
