@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback
 } from 'react-native-gesture-handler';
 
+import { Analytics } from 'aws-amplify';
+
 import client from '../../../ApolloClient';
 import { theme } from '../../../constants';
 import { useCreateDemandeMutation } from '../../../graphql';
@@ -125,6 +127,12 @@ const CreateDemande = ({
           callBack={navigation?.goBack}
         />
       )}
+      {data?.createDemande &&
+        Analytics.record({
+          name: 'createDemande',
+          writeOrCall: 'writing',
+          recipientId
+        })}
       <Block
         margin={[-theme.sizes.hinouting * 0.1, theme.sizes.inouting * 0.8]}>
         <StackedToBottom>

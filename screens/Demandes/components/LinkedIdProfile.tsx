@@ -3,6 +3,8 @@ import { openURL } from 'expo-linking';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Analytics } from 'aws-amplify';
+
 import { theme } from '../../../constants';
 import { UserByIdQuery, useUserByIdQuery } from '../../../graphql';
 import {
@@ -40,7 +42,14 @@ const LinkedIdProfile = ({
 
     if (id && isMounted && Error) setError(error);
     if (id && isMounted && Loading) setLoading(loading);
-    if (id && isMounted && Data && !Error) setData(Data);
+    if (id && isMounted && Data && !Error) {
+      setData(Data);
+
+      Analytics.record({
+        id,
+        name: 'profileViewed'
+      });
+    }
 
     return () => {
       isMounted = false;
@@ -159,7 +168,14 @@ const LinkedIdProfile = ({
                     <Button
                       secondary
                       style={{ width: theme.sizes.screenWidth / 2.3 }}
-                      onPress={() => openURL(`tel:${numero}`)}>
+                      onPress={() => {
+                        openURL(`tel:${numero}`);
+                        Analytics.record({
+                          name: 'createDemande',
+                          writeOrCall: 'call',
+                          recipientId: id
+                        });
+                      }}>
                       <Text center bold>
                         Appeler
                       </Text>

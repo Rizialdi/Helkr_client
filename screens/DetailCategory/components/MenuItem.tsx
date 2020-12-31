@@ -27,6 +27,7 @@ interface Props {
   prevStep: () => void;
   onChangeValue: (a: string, b: string) => void;
   onSelected: () => void;
+  categoryItemReferenceId: string;
   openModal: (a: boolean) => void;
   navigation: StackNavigationProp<DetailStackParamsList>;
 }
@@ -81,6 +82,8 @@ const MenuItem: SFC<Props> = ({ children, navigation, ...props }) => {
         onChange: props.onChangeValue,
         nextStep: props.nextStep,
         isLast: props.isLast,
+        categoryItem: props.categoryItem,
+        categoryItemReferenceId: props.categoryItemReferenceId,
         onSubmit: props.onSubmit,
         navigation: navigation
       })}

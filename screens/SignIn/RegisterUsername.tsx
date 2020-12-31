@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { ActivityIndicator, Dimensions, Keyboard, View } from 'react-native';
 import ModalSelector from 'react-native-modal-selector';
 
+import { Analytics } from 'aws-amplify';
+
 import { mocks, theme } from '../../constants';
 import { useRegisterUserMutation } from '../../graphql';
 import { useStoreActions, useStoreState } from '../../models';
@@ -146,6 +148,10 @@ const RegisterUsername = ({
           {data?.registerUser.token &&
             navigation.navigate('PrincipalView', {
               screen: 'Accueil'
+            })}
+          {data?.registerUser.token &&
+            Analytics.record({
+              newUserRegistration: data.registerUser.user?.id
             })}
         </View>
         <Text

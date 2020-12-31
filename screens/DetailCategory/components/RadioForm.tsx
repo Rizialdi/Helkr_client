@@ -9,6 +9,8 @@ import RadioForm, {
   //@ts-ignore
 } from 'react-native-simple-radio-button';
 
+import { Analytics } from 'aws-amplify';
+
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { theme } from '../../../constants';
@@ -28,6 +30,8 @@ type valuesInterface = {
 
 interface Props {
   name: string;
+  categoryItem: string;
+  categoryItemReferenceId: string;
   values?: valuesInterface;
   isLast?: boolean;
   radioProps?: { label: string; value: string }[];
@@ -47,7 +51,9 @@ const CustomRadioForm: SFC<Props> = ({
   onSelected,
   navigation,
   radioProps,
-  onSubmit
+  onSubmit,
+  categoryItem,
+  categoryItemReferenceId
 }) => {
   values && values[name] && onSelected && onSelected(true);
   values?.offeringDescription?.length
@@ -73,8 +79,24 @@ const CustomRadioForm: SFC<Props> = ({
             addOffering: { message, status }
           } = data;
 
-          status && !message && setOpenModal(true);
-          !status && message && setErrorMessage(message);
+          if (status && !message) {
+            setOpenModal(true);
+            Analytics.record({
+              name: 'addedMission',
+              category: categoryItem,
+              referenceId: categoryItemReferenceId
+            });
+          }
+
+          if (!status && message) {
+            setErrorMessage(message);
+            Analytics.record({
+              name: 'MissingProfessionals',
+              category: categoryItem,
+              referenceId: categoryItemReferenceId
+            });
+          }
+
           errors &&
             setErrorMessage(
               "Une erreur s'est produite lors de la création de la mission. Veuillez réessayer plus tard."

@@ -106,12 +106,19 @@ class MultiStepMenu extends Component<Props, State, any> {
   };
 
   render() {
-    const { children, categoryItem, navigation } = this.props;
+    const {
+      children,
+      categoryItem,
+      navigation,
+      categoryItemReferenceId
+    } = this.props;
     return (
       <View>
         {React.Children.map(children, (child: any, idx: number) => {
           if (idx === this.state.step) {
             return React.cloneElement(child, {
+              navigation,
+              categoryItem,
               values: this.state.values,
               currentIndex: this.state.step,
               totalChildren: children?.length,
@@ -119,8 +126,7 @@ class MultiStepMenu extends Component<Props, State, any> {
               onSubmit: this._onSubmit,
               nextStep: this._nextStep,
               prevStep: this._prevStep,
-              categoryItem: categoryItem,
-              navigation: navigation,
+              categoryItemReferenceId,
               onChangeValue: this._onChangeValue
             });
           }
